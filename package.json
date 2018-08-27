@@ -1,7 +1,7 @@
 {
-	"name": "webpack-core",
+	"name": "elctron-core",
 	"version": "0.0.1",
-	"description": "Webpack environment with Standardized ESLint, Code Splitting and Vue Support",
+	"description": "Webpack environment with Standardized ESLint, Code Splitting and Vue Support to build Electron Based apps",
 	"main": "src/index.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
@@ -12,15 +12,16 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "git+https://bitbucket.org/rubixcode/webpack-core.git"
+		"url": "git+https://bitbucket.org/rubixcode/electron-core.git"
 	},
 	"keywords": [
 		"vue",
-		"webpack"
+		"webpack",
+		"electron"
 	],
 	"author": "Rubixcode",
 	"license": "MIT",
-	"homepage": "https://bitbucket.org/rubixcode/webpack-core#readme",
+	"homepage": "https://bitbucket.org/rubixcode/electron-core#readme",
 	"devDependencies": {
 		"babel-cli": "^6.26.0",
 		"babel-core": "^6.26.3",
