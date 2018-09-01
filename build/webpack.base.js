@@ -11,9 +11,6 @@ function resolve(dir) {
 }
 
 module.exports = {
-	entry: {
-		index: [ "./src/index.js", ]
-	},
 	output: {
 		path: config.build.assetsRoot,
 		filename: "js/[name].js",
@@ -22,9 +19,9 @@ module.exports = {
 			: config.dev.assetsPublicPath
 	},
 	resolve: {
-		extensions: [ ".js", ".vue", ".json", ],
+		extensions: [ ".js", ".vue", ".json", ".node", ],
 		alias: {
-			"@": resolve("src"),
+			"@": resolve("src/app"),
 			"vue$": "vue/dist/vue.esm.js" // 'vue/dist/vue.common.js' for webpack
 		}
 	},
@@ -51,10 +48,6 @@ module.exports = {
 				use: "babel-loader",
 				exclude: /node_modules/,
 				include: [ resolve("src"), resolve("test"), ]
-			},
-			{ 
-				test: /\.json$/, 
-				loader: "json" 
 			},
 			{
 				test: /\.node$/,
