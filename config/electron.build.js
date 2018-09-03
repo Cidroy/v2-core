@@ -41,7 +41,7 @@ const build = {
  */
 module.exports = {
 	arch: "x64",
-	asar: true,
+	asar: false,
 	prune: true,
 	dir: path.join(__dirname, "../"),
 	icon: path.join(__dirname, "../static/icons/icon"),

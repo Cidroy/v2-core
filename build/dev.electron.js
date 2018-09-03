@@ -3,7 +3,6 @@
 const chalk = require("chalk")
 const electron = require("electron")
 const path = require("path")
-const { say } = require("cfonts")
 const { spawn } = require("child_process")
 const webpack = require("webpack")
 const WebpackDevServer = require("webpack-dev-server")
@@ -11,10 +10,12 @@ const webpackHotMiddleware = require("webpack-hot-middleware")
 
 const mainConfig = require("./webpack.electron.main")
 const rendererConfig = require("./webpack.electron.renderer")
+const splashscreenConfig = require("./webpack.electron.splashscreen")
 
 let electronProcess = null
 let manualRestart = false
 let hotMiddleware
+let splashscreenHotMiddleware
 
 function logStats (proc, data) {
 	let log = ""
@@ -42,26 +43,54 @@ function logStats (proc, data) {
 function startRenderer () {
 	return new Promise((resolve, reject) => {
 		rendererConfig.entry.renderer = [ path.join(__dirname, "dev-client"), ].concat(rendererConfig.entry.renderer)
+		splashscreenConfig.entry.splashscreen = [ path.join(__dirname, "dev-client"), ].concat(splashscreenConfig.entry.splashscreen)
 
-		const compiler = webpack(rendererConfig)
-		hotMiddleware = webpackHotMiddleware(compiler, { 
+		const rendererCompiler = webpack(rendererConfig)
+		const splashscreenCompiler = webpack(splashscreenConfig)
+		hotMiddleware = webpackHotMiddleware(rendererCompiler, { 
+			log: false, 
+			heartbeat: 2500 
+		})
+		splashscreenHotMiddleware = webpackHotMiddleware(splashscreenCompiler, { 
 			log: false, 
 			heartbeat: 2500 
 		})
 
-		compiler.plugin("compilation", compilation => {
+		splashscreenCompiler.plugin("compilation", compilation => {
+			compilation.plugin("html-webpack-plugin-after-emit", (data, cb) => {
+				splashscreenHotMiddleware.publish({ action: "reload" })
+				if(typeof cb==="function") cb()
+			})
+		})
+		rendererCompiler.plugin("compilation", compilation => {
 			compilation.plugin("html-webpack-plugin-after-emit", (data, cb) => {
 				hotMiddleware.publish({ action: "reload" })
-				cb()
+				if(typeof cb==="function") cb()
 			})
 		})
 
-		compiler.plugin("done", stats => {
+		splashscreenCompiler.plugin("done", stats => {
+			logStats("Splashscreen", stats)
+		})
+		rendererCompiler.plugin("done", stats => {
 			logStats("Renderer", stats)
 		})
 
+		const splashscreenServer = new WebpackDevServer(
+			splashscreenCompiler,
+			{
+				contentBase: path.join(__dirname, "../"),
+				quiet: true,
+				before (app, ctx) {
+					app.use(splashscreenHotMiddleware)
+					ctx.middleware.waitUntilValid(() => {
+						resolve()
+					})
+				}
+			}
+		)
 		const server = new WebpackDevServer(
-			compiler,
+			rendererCompiler,
 			{
 				contentBase: path.join(__dirname, "../"),
 				quiet: true,
@@ -75,6 +104,7 @@ function startRenderer () {
 		)
 
 		server.listen(9080)
+		splashscreenServer.listen(9081)
 	})
 }
 
@@ -147,21 +177,7 @@ function electronLog (data, color) {
 }
 
 function greeting () {
-	const cols = process.stdout.columns
-	let text = ""
-
-	if (cols > 104) text = "electron-vue"
-	else if (cols > 76) text = "electron-|vue"
-	else text = false
-
-	if (text) {
-		say(text, {
-			colors: [ "yellow",  ],
-			font: "simple3d",
-			space: false
-		})
-	}
-	else console.log(chalk.yellow.bold("\n  electron-vue"))
+	console.log(chalk.yellow.bold("\n  electron-vue"))
 	console.log(chalk.blue("  getting ready...") + "\n")
 }
 

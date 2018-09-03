@@ -1,4 +1,5 @@
 import { app, BrowserWindow } from "electron"
+const electron = require("electron-util")
 
 /**
  * Set `__static` path to static files in production
@@ -9,38 +10,43 @@ if (process.env.NODE_ENV !== "development") {
 }
 
 let mainWindow
-const winURL = process.env.NODE_ENV === "development"
+let splashWindow
+let mainWindowOpts = {
+	frame: false,
+	show: false
+}
+let splashWindowOpts = {
+	height: 200,
+	width: 200,
+	frame: false,
+	// transparent: true
+}
+const mainURL = process.env.NODE_ENV === "development"
 	? "http://localhost:9080"
 	: `file://${__dirname}/index.html`
+const splashURL = process.env.NODE_ENV === "development"
+	? "http://localhost:9081/splashscreen.html"
+	: `file://${__dirname}/splashscreen.html`
 
-function createWindow () {
-	/**
-   * Initial window options
-   */
-	mainWindow = new BrowserWindow({
-		height: 563,
-		useContentSize: true,
-		width: 1000
-	})
+const initialize = async () => {
+	await electron.appReady
+	if (electron.menuBarHeight()) electron.enforceMacOSAppLocation()
 
-	mainWindow.loadURL(winURL)
-	mainWindow.webContents.openDevTools()
+	splashWindow = new BrowserWindow(splashWindowOpts)
+	splashWindow.loadURL(splashURL)
+	splashWindow.on("closed", () => { splashWindow = null })
 
-	mainWindow.on("closed", () => {
-		mainWindow = null
+	mainWindow = new BrowserWindow(mainWindowOpts)
+	mainWindow.loadURL(mainURL)
+	mainWindow.on("closed", () => { mainWindow = null })
+	mainWindow.once("ready-to-show", () => {
+		setTimeout(() => {
+			splashWindow.destroy()
+			mainWindow.maximize()
+		}, 2000)
 	})
 }
 
-app.on("ready", createWindow)
+app.on("window-all-closed", () => app.quit())
 
-app.on("window-all-closed", () => {
-	if (process.platform !== "darwin") {
-		app.quit()
-	}
-})
-
-app.on("activate", () => {
-	if (mainWindow === null) {
-		createWindow()
-	}
-})
+initialize()

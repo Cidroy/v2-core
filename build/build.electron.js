@@ -2,7 +2,6 @@
 
 process.env.NODE_ENV = "production"
 
-const { say } = require("cfonts")
 const chalk = require("chalk")
 const del = require("del")
 const packager = require("electron-packager")
@@ -12,27 +11,51 @@ const Multispinner = require("multispinner")
 const buildConfig = require("../config/electron.build")
 const mainConfig = require("./webpack.electron.main")
 const rendererConfig = require("./webpack.electron.renderer")
+const splashscreenConfig = require("./webpack.electron.splashscreen")
 
 const doneLog = chalk.bgGreen.white(" DONE ") + " "
 const errorLog = chalk.bgRed.white(" ERROR ") + " "
 const okayLog = chalk.bgBlue.white(" OKAY ") + " "
-const isCI = process.env.CI || false
 
-if (process.env.BUILD_TARGET === "clean") clean()
-else build()
+const pack = (config) => new Promise((resolve, reject) => {
+	webpack(config, (err, stats) => {
+		if (err) reject(err.stack || err)
+		else if (stats.hasErrors()) {
+			let err = ""
 
-function clean () {
-	del.sync([ "build/*", "!build/icons", "!build/icons/icon.*", ])
-	console.log(`\n${doneLog}\n`)
-	process.exit()
-}
+			stats.toString({
+				chunks: false,
+				colors: true
+			})
+				.split(/\r?\n/)
+				.forEach(line => {
+					err += `    ${line}\n`
+				})
 
-function build () {
-	greeting()
+			reject(err)
+		}
+		else {
+			resolve(stats.toString({
+				chunks: false,
+				colors: true
+			}))
+		}
+	})
+})
+
+const bundleApp = () => packager(buildConfig)
+	.then(appPaths => console.log(`\n${doneLog}\n`))
+	.catch(err => {
+		console.log(`\n${errorLog}${chalk.yellow("`electron-packager`")} says...\n`)
+		console.log(err + "\n")
+	})
+
+const build = () => {
+	console.log(chalk.yellow.bold("Building ..."))
 
 	del.sync([ "dist/electron/*", "!.gitkeep",  ])
 
-	const tasks = [ "main", "renderer",  ]
+	const tasks = [ "main", "renderer", "splashscreen", ]
 	const m = new Multispinner(tasks, {
 		preText: "building",
 		postText: "process"
@@ -66,63 +89,16 @@ function build () {
 		console.error(`\n${err}\n`)
 		process.exit(1)
 	})
-}
 
-function pack (config) {
-	return new Promise((resolve, reject) => {
-		webpack(config, (err, stats) => {
-			if (err) reject(err.stack || err)
-			else if (stats.hasErrors()) {
-				let err = ""
-
-				stats.toString({
-					chunks: false,
-					colors: true
-				})
-					.split(/\r?\n/)
-					.forEach(line => {
-						err += `    ${line}\n`
-					})
-
-				reject(err)
-			}
-			else {
-				resolve(stats.toString({
-					chunks: false,
-					colors: true
-				}))
-			}
-		})
+	pack(splashscreenConfig).then(result => {
+		results += result + "\n\n"
+		m.success("splashscreen")
+	}).catch(err => {
+		m.error("splashscreen")
+		console.log(`\n  ${errorLog}failed to build splashscreen process`)
+		console.error(`\n${err}\n`)
+		process.exit(1)
 	})
 }
 
-function bundleApp () {
-	packager(buildConfig, (err, appPaths) => {
-		if (err) {
-			console.log(`\n${errorLog}${chalk.yellow("`electron-packager`")} says...\n`)
-			console.log(err + "\n")
-		}
-		else {
-			console.log(`\n${doneLog}\n`)
-		}
-	})
-}
-
-function greeting () {
-	const cols = process.stdout.columns
-	let text = ""
-
-	if (cols > 85) text = "lets-build"
-	else if (cols > 60) text = "lets-|build"
-	else text = false
-
-	if (text && !isCI) {
-		say(text, {
-			colors: [ "yellow",  ],
-			font: "simple3d",
-			space: false
-		})
-	}
-	else console.log(chalk.yellow.bold("\n  lets-build"))
-	console.log()
-}
+build()
