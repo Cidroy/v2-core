@@ -1,0 +1,3 @@
+[submodule "src"]
+	path = src
+	url = https://rinzler_d_vicky@bitbucket.org/rubixcode/vuetify-enterprise.git
