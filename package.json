@@ -6,9 +6,9 @@
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"eslint": "eslint",
-		"start:web": "http-server dist/web/",
-		"dev:web": "node build/dev.web.js",
-		"build:web": "node build/build.web.js"
+		"start": "http-server dist/web/",
+		"dev": "node build/dev.web.js",
+		"build": "node build/build.web.js"
 	},
 	"repository": {
 		"type": "git",
@@ -35,6 +35,7 @@
 		"babel-polyfill": "^6.26.0",
 		"babel-preset-env": "^1.7.0",
 		"babel-preset-flow": "^6.23.0",
+		"babel-preset-stage-0": "^6.24.1",
 		"babel-preset-stage-2": "^6.24.1",
 		"babel-preset-stage-3": "^6.24.1",
 		"chalk": "^2.4.1",
