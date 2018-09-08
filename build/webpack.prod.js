@@ -10,6 +10,8 @@ var baseWebpackConfig = require("./webpack.base")
 var config = require("../config")
 var loadMinified = require("../config/load-minified")
 
+process.env.BABEL_ENV = "web"
+
 var webpackProdConfig = webpackMerge(
 	baseWebpackConfig,
 	{

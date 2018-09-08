@@ -1,6 +1,6 @@
 "use strict"
 
-process.env.BABEL_ENV = "splashscreen"
+process.env.BABEL_ENV = "renderer"
 
 const path = require("path")
 const webpack = require("webpack")
