@@ -82,7 +82,6 @@ module.exports = {
 				use: [
 					MiniCssExtractPlugin.loader, 
 					"css-loader",
-					MediaQueryPlugin.loader,
 					"stylus-loader",
 				]			
 			},
@@ -91,12 +90,10 @@ module.exports = {
 				use: [
 					MiniCssExtractPlugin.loader, 
 					"css-loader",
-					MediaQueryPlugin.loader,
 					"sass-loader",
 				]			
 			},
 		]
-		//	.concat((Object.values(utils.styleLoaders())))
 	},
 	plugins: [
 		// vue-loader version is 15 and above ,you should add VueLoaderPlugin like this in your webpack config
@@ -104,17 +101,8 @@ module.exports = {
 		// alternative to extract-text-webpack-plugin because rumors is that they will stop developing it
 		// extract css into its own file
 		new MiniCssExtractPlugin({
-			filename: "css/[name].css",
+			filename: "[name].css",
 			chunkFilename: "css/[name].[id].css"
-		}),
-		new MediaQueryPlugin({
-			queries: {
-				"screen and (max-width: 599px)": "xs",
-				"screen and (min-width: 600px) and (max-width: 959px)": "sm",
-				"screen and (min-width: 960px) and (max-width: 1263px)": "md",
-				"screen and (min-width: 1264px) and (max-width: 1903px)": "lg",
-				"screen and (min-width: 1904px)": "xl"
-			}
 		}),
 	]
 }
