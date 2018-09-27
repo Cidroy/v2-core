@@ -25,8 +25,19 @@ module.exports = {
 			"vue$": "vue/dist/vue.esm.js" // 'vue/dist/vue.common.js' for webpack
 		}
 	},
+	resolveLoader: {
+		modules: [ "node_modules", path.resolve(__dirname, "../app_modules/webpack/loaders"), ]
+	},
 	module: {
 		rules: [
+			{
+				test: /\.(js|vue)$/,
+				// loader: "eslint-loader",
+				use: "strip-debug-block",
+				enforce: "pre",
+				exclude: /node_modules/,
+				include: [ resolve("src"), resolve("test"), ],
+			},
 			{
 				test: /\.(js|vue)$/,
 				loader: "eslint-loader",
