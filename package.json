@@ -12,6 +12,7 @@
 		"dev:web": "node build/dev.web.js",
 		"build:web": "node build/build.web.js",
 		"dev": "node build/dev.electron.js",
+		"make-icons": "node build/build.icons.js",
 		"build": "node build/build.electron.js",
 		"build:darwin": "cross-env BUILD_TARGET=darwin node build/build.electron.js",
 		"build:linux": "cross-env BUILD_TARGET=linux node build/build.electron.js",
@@ -57,6 +58,7 @@
 		"del": "^3.0.0",
 		"electron": "^2.0.8",
 		"electron-devtools-installer": "^2.2.4",
+		"electron-first-run": "^2.0.0",
 		"electron-packager": "^12.1.1",
 		"electron-webpack": "^2.3.0",
 		"eslint": "^5.4.0",
@@ -76,6 +78,8 @@
 		"friendly-errors-webpack-plugin": "^1.7.0",
 		"html-webpack-plugin": "^3.2.0",
 		"http-proxy-middleware": "^0.18.0",
+		"icon-gen": "^1.2.3",
+		"jimp": "^0.5.1",
 		"json-loader": "^0.5.7",
 		"less-loader": "^4.1.0",
 		"media-query-plugin": "^1.2.0",
@@ -126,9 +130,10 @@
 		"fix-path": "^2.1.0",
 		"vue": "^2.5.17",
 		"vue-electron": "^1.0.6",
-		"vue-router": "^3.0.1",
-		"vuetify": "^1.2.1",
+		"vue-i18n": "^8.1.0",
 		"vue-meta": "^1.5.3",
+		"vue-router": "^3.0.1",
+		"vuetify": "^1.2.4",
 		"vuex": "^3.0.1"
 	}
 }
