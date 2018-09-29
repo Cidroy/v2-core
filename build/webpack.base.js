@@ -12,7 +12,7 @@ function resolve(dir) {
 
 module.exports = {
 	entry: {
-		index: [ "./src/index.js", ]
+		index: [ "./src/index.ts", ]
 	},
 	output: {
 		path: config.build.assetsRoot,
@@ -22,7 +22,14 @@ module.exports = {
 			: config.dev.assetsPublicPath
 	},
 	resolve: {
-		extensions: [ ".js", ".vue", ".json", ],
+		extensions: [ 
+			".js", 
+			".jsx", 
+			".vue", 
+			".json", 
+			".ts",
+			".tsx",
+		],
 		alias: {
 			"@": resolve("src"),
 			"vue$": "vue/dist/vue.esm.js" // 'vue/dist/vue.common.js' for webpack
@@ -47,7 +54,7 @@ module.exports = {
 				options: vueLoaderConfig
 			},
 			{
-				test: /\.js$/,
+				test: /\.(js|tsx?)$/,
 				use: "babel-loader",
 				exclude: /node_modules/,
 				include: [ resolve("src"), resolve("test"), ]
