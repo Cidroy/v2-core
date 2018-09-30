@@ -19,7 +19,15 @@ module.exports = {
 			: config.dev.assetsPublicPath
 	},
 	resolve: {
-		extensions: [ ".js", ".vue", ".json", ".node", ],
+		extensions: [ 
+			".js", 
+			".jsx", 
+			".vue", 
+			".json", 
+			".node", 
+			".ts",
+			".tsx",
+		],
 		alias: {
 			"@": resolve("src/app"),
 			"vue$": "vue/dist/vue.esm.js" // 'vue/dist/vue.common.js' for webpack
@@ -31,12 +39,11 @@ module.exports = {
 	module: {
 		rules: [
 			{
-				test: /\.(js|vue)$/,
-				// loader: "eslint-loader",
+				test: /\.(js|vue|tsx?)$/,
 				use: "strip-debug-block",
 				enforce: "pre",
 				exclude: /node_modules/,
-				include: [ resolve("src"), resolve("test"), ],
+				include: [ resolve("src"), resolve("test"),  ],
 			},
 			{
 				test: /\.(js|vue)$/,
@@ -55,7 +62,7 @@ module.exports = {
 				options: vueLoaderConfig
 			},
 			{
-				test: /\.js$/,
+				test: /\.(js|tsx?)$/,
 				use: "babel-loader",
 				exclude: /node_modules/,
 				include: [ resolve("src"), resolve("test"), ]

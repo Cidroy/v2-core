@@ -16,6 +16,15 @@ var webpackProdConfig = webpackMerge(
 	baseWebpackConfig,
 	{
 		mode: "production",
+		entry: {
+			main: path.join(__dirname, "../src/app/index.ts")
+		},
+		output: {
+			filename: "js/[name].js",
+			libraryTarget: "commonjs2",
+			path: path.join(__dirname, "../dist/web")
+		},
+		"target": "node",
 		optimization: {
 			minimizer: [
 				// we specify a custom UglifyJsPlugin here to get source maps in production

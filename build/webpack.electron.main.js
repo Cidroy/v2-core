@@ -13,7 +13,7 @@ const webpackBase = require("./webpack.base")
 let mainConfig = {
 	mode: "production",
 	entry: {
-		main: path.join(__dirname, "../src/electron/index.js")
+		main: path.join(__dirname, "../src/electron/index.ts")
 	},
 	externals: [ ...Object.keys(dependencies || {}),  ],
 	node: {

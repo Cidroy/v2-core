@@ -14,7 +14,7 @@ let splashscreenConfig = {
 	mode: "production",
 	devtool: "#cheap-module-eval-source-map",
 	entry: {
-		splashscreen: path.join(__dirname, "../src/splashscreen/main.js")
+		splashscreen: path.join(__dirname, "../src/splashscreen/main.ts")
 	},
 	plugins: [
 		new HtmlWebpackPlugin({
