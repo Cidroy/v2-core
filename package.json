@@ -7,11 +7,10 @@
 	"main": "./dist/electron/main.js",
 	"scripts": {
 		"test": "echo \"Error: no test specified\" && exit 1",
-		"eslint": "eslint",
-		"start:web": "http-server dist/web/",
+		"build:web": "node build/build.web.js",
+		"start:web": "npm run build:web && http-server dist/web/",
 		"dev:web": "node build/dev.web.js",
 		"make-icons": "node build/build.icons.js",
-		"build:web": "node build/build.web.js",
 		"dev": "node build/dev.electron.js",
 		"build": "node build/build.electron.js",
 		"build:darwin": "cross-env BUILD_TARGET=darwin node build/build.electron.js",
