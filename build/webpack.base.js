@@ -32,6 +32,7 @@ module.exports = {
 		],
 		alias: {
 			"@": resolve("src"),
+			"@typescript": resolve("typescript"),
 			"vue$": "vue/dist/vue.esm.js" // 'vue/dist/vue.common.js' for webpack
 		}
 	},
@@ -42,7 +43,7 @@ module.exports = {
 				loader: "eslint-loader",
 				enforce: "pre",
 				exclude: /node_modules/,
-				include: [ resolve("src"), resolve("test"), ],
+				include: [ resolve("src"), resolve("typescript"), resolve("test"), ],
 				options: {
 					formatter: require("eslint-friendly-formatter"),
 					emitWarning: !config.dev.showEslintErrorsInOverlay
@@ -54,10 +55,10 @@ module.exports = {
 				options: vueLoaderConfig
 			},
 			{
-				test: /\.(js|tsx?)$/,
+				test: /\.((j|t)sx?)$/,
 				use: "babel-loader",
 				exclude: /node_modules/,
-				include: [ resolve("src"), resolve("test"), ]
+				include: [ resolve("src"), resolve("typescript"), resolve("test"), ]
 			},
 			{ 
 				test: /\.json$/, 
