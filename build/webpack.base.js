@@ -30,6 +30,7 @@ module.exports = {
 		],
 		alias: {
 			"@": resolve("src/app"),
+			"@electron": resolve("src/electron"),
 			"@typescript": resolve("typescript"),
 			"vue$": "vue/dist/vue.esm.js" // 'vue/dist/vue.common.js' for webpack
 		}

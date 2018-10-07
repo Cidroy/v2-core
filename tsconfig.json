@@ -30,6 +30,7 @@
 		"baseUrl": ".",
 		"paths": {
 			"@/*": [ "src/app/*" ],
+			"@electron/*": [ "src/electron/*" ],
 			"@typescript/*": [ "typescript/*" ]
 		},
 		"lib": [
@@ -39,7 +40,8 @@
 	},
 	"include": [
 		"src/**/*",
-		"src/**/*.vue"
+		"src/**/*.vue",
+		"typescript/**/*"
 	],
 	"exclude": [
 		"node_modules",
