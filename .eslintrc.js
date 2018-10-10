@@ -38,7 +38,7 @@ module.exports = {
 		"no-invalid-this": "error",
 		"no-undefined": "error",
 		"no-fallthrough": "error",
-		"class-methods-use-this": "error",
+		"class-methods-use-this": 0,
 		"block-scoped-var": "error",
 		"block-spacing": "error",
 		"no-undef-init": "error",

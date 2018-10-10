@@ -29,6 +29,7 @@ module.exports = {
 			".tsx",
 		],
 		alias: {
+			"@@": resolve("src"),
 			"@": resolve("src/app"),
 			"@electron": resolve("src/electron"),
 			"@typescript": resolve("typescript"),

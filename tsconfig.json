@@ -29,13 +29,15 @@
 		],
 		"baseUrl": ".",
 		"paths": {
+			"@@/*": [ "src/*" ],
 			"@/*": [ "src/app/*" ],
 			"@electron/*": [ "src/electron/*" ],
 			"@typescript/*": [ "typescript/*" ]
 		},
 		"lib": [
 			"es2015", 
-			"esnext"
+			"esnext",
+			"dom"
 		]
 	},
 	"include": [
