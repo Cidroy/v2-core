@@ -46,7 +46,7 @@ module.exports = {
 		"linebreak-style": 0,
 		"comma-dangle": ["error", {
 			"arrays": "always",
-			"objects": "only-multiline",
+			"objects": "always",
 			"imports": "never",
 			"exports": "never",
 			"functions": "ignore"
