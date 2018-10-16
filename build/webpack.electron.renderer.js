@@ -33,7 +33,8 @@ let rendererConfig = {
 		__filename: process.env.NODE_ENV !== "production"
 	},
 	plugins: [
-		new HtmlWebpackPlugin({
+		new HtmlWebpackPlugin({ 	
+			chunksSortMode: "none",
 			filename: "index.html",
 			template: path.resolve(__dirname, "../src/index.ejs"),
 			minify: {

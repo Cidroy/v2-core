@@ -28,7 +28,8 @@ module.exports = merge(baseWebpackConfig, {
 			"process.env": config.dev.env
 		}),
 		// https://github.com/glenjamin/webpack-hot-middleware#installation--usage
-		new HtmlWebpackPlugin({
+		new HtmlWebpackPlugin({ 	
+			chunksSortMode: "none",
 			filename: "index.html",
 			template: "index.html",
 			inject: true

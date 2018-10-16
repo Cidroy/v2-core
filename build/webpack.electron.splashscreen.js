@@ -17,7 +17,8 @@ let splashscreenConfig = {
 		splashscreen: path.join(__dirname, "../src/splashscreen/main.ts")
 	},
 	plugins: [
-		new HtmlWebpackPlugin({
+		new HtmlWebpackPlugin({ 	
+			chunksSortMode: "none",
 			filename: "splashscreen.html",
 			template: path.resolve(__dirname, "../src/splashscreen/splashscreen.html"),
 			minify: {

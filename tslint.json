@@ -49,7 +49,7 @@
 		"arrow-return-shorthand":true,
 		"no-unnecessary-callback-wrapper":true,
 		"no-consecutive-blank-lines":true,
-		"no-trailing-whitespace": [true, "ignore-template-strings"],
+		"no-trailing-whitespace": [true, "ignore-template-strings", "ignore-blank-lines"],
 		"object-literal-key-quotes": [true, "as-needed"],
 		"quotemark":[true, "double"],
 		"semicolon": [true, "never"],
