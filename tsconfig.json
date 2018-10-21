@@ -29,10 +29,12 @@
 		],
 		"baseUrl": ".",
 		"paths": {
-			"@@/*": [ "src/*" ],
-			"@/*": [ "src/app/*" ],
 			"@electron/*": [ "src/electron/*" ],
-			"@typescript/*": [ "typescript/*" ]
+			"@typescript/*": [ "typescript/*" ],
+			"@classes/*": [ "classes/*" ],
+			"@server/*": [ "server/*" ],
+			"@/*": [ "src/app/*" ],
+			"@@/*": [ "src/*" ]
 		},
 		"lib": [
 			"es2015", 
@@ -43,6 +45,8 @@
 	"include": [
 		"src/**/*",
 		"src/**/*.vue",
+		"classes/**/*",
+		"server/**/*",
 		"typescript/**/*"
 	],
 	"exclude": [

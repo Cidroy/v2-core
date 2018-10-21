@@ -1,6 +1,5 @@
 var path = require("path")
 const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const MediaQueryPlugin = require("media-query-plugin")
 const { VueLoaderPlugin } = require("vue-loader")
 var vueLoaderConfig = require("../config/vue-loader")
 const config = require("../config")
@@ -9,6 +8,8 @@ const utils = require("../config/utils")
 function resolve(dir) {
 	return path.join(__dirname, "..", dir)
 }
+
+let RESOLVE_PATHS = [resolve("src"), resolve("typescript"), resolve("classes"), resolve("test"),]
 
 module.exports = {
 	output: {
@@ -33,6 +34,8 @@ module.exports = {
 			"@": resolve("src/app"),
 			"@electron": resolve("src/electron"),
 			"@typescript": resolve("typescript"),
+			"@classes": resolve("classes"),
+			"@server": resolve("server"),
 			"vue$": "vue/dist/vue.esm.js" // 'vue/dist/vue.common.js' for webpack
 		}
 	},
@@ -53,7 +56,7 @@ module.exports = {
 				loader: "eslint-loader",
 				enforce: "pre",
 				exclude: /node_modules/,
-				include: [ resolve("src"), resolve("typescript"), resolve("test"), ],
+				include: RESOLVE_PATHS,
 				options: {
 					formatter: require("eslint-friendly-formatter"),
 					emitWarning: !config.dev.showEslintErrorsInOverlay
@@ -68,7 +71,7 @@ module.exports = {
 				test: /\.((j|t)sx?)$/,
 				use: "babel-loader",
 				exclude: /node_modules/,
-				include: [ resolve("src"), resolve("typescript"), resolve("test"), ]
+				include: RESOLVE_PATHS
 			},
 			{
 				test: /\.node$/,
