@@ -9,7 +9,12 @@ function resolve(dir) {
 	return path.join(__dirname, "..", dir)
 }
 
-let RESOLVE_PATHS = [resolve("src"), resolve("typescript"), resolve("classes"), resolve("test"),]
+let RESOLVE_PATHS = [
+	resolve("src"),
+	resolve("typescript"),
+	resolve("classes"),
+	resolve("test"),
+]
 
 module.exports = {
 	output: {
@@ -49,7 +54,7 @@ module.exports = {
 				use: "strip-debug-block",
 				enforce: "pre",
 				exclude: /node_modules/,
-				include: [ resolve("src"), resolve("test"),  ],
+				include: RESOLVE_PATHS,
 			},
 			{
 				test: /\.(js|vue)$/,

@@ -7,11 +7,16 @@ const del = require("del")
 const packager = require("electron-packager")
 const webpack = require("webpack")
 const Multispinner = require("multispinner")
+const { compile } = require("nexe")
+const run = require("npm-run")
+const path = require("path")
 
 const buildConfig = require("../config/electron.build")
 const mainConfig = require("./webpack.electron.main")
 const rendererConfig = require("./webpack.electron.renderer")
 const splashscreenConfig = require("./webpack.electron.splashscreen")
+const serverConfig = require("./webpack.server.build")
+const server = require("../config/server.build")
 
 const doneLog = chalk.bgGreen.white(" DONE ") + " "
 const errorLog = chalk.bgRed.white(" ERROR ") + " "
@@ -43,17 +48,44 @@ const pack = (config) => new Promise((resolve, reject) => {
 	})
 })
 
-const bundleApp = () => packager(buildConfig)
-	.then(appPaths => console.log(`\n${doneLog}\n`))
-	.catch(err => {
-		console.log(`\n${errorLog}${chalk.yellow("`electron-packager`")} says...\n`)
-		console.log(err + "\n")
-	})
+const bundleServer = async (appPaths, platform) => {
+	console.log("Building Server")
+	try{
+		await pack(serverConfig)
+		for (const key in appPaths) {
+			await compile(Object.assign(server.pack, {
+				output: path.resolve(appPaths[key], "resources", server.pack.output),
+				target: platform
+			}))
+		}
+	}catch(e){
+		console.log(errorLog, "Server build failed because")
+		console.log(e)
+		throw "Server build failure"
+	}
+}
+
+const bundleApp = async () => {
+	try {
+		let appPaths = []
+		try{
+			appPaths = await packager(buildConfig)
+		} catch(err){
+			console.log(`\n${errorLog}${chalk.yellow("`electron-packager`")} says...\n`)
+			console.log(err + "\n")
+			throw "Electron packager failed"
+		}
+		console.log(`\n${doneLog}\nTime to Pack other things`)
+		await bundleServer(appPaths,buildConfig.platform)
+	} catch (err) {
+		chalk.red(err)
+	}
+}
 
 const build = () => {
 	console.log(chalk.yellow.bold("Building ..."))
 
-	del.sync([ "dist/electron/*", "!.gitkeep",  ])
+	del.sync([ "dist/*", "bin/*", "!.gitkeep",  ])
 
 	const tasks = [ "main", "renderer", "splashscreen", ]
 	const m = new Multispinner(tasks, {
