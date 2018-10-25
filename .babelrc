@@ -15,6 +15,11 @@
 			"presets": [
 				["@babel/env", { "modules": false }]
 			]
+		},
+		"server": {
+			"presets": [
+				["@babel/env", { "targets": { "node": 7 } }]
+			]
 		}
 	},
 	"presets": [
