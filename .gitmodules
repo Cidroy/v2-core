@@ -1,3 +1,6 @@
 [submodule "src"]
 	path = src
-	url = https://rinzler_d_vicky@bitbucket.org/gymkonnect/v2-src.git
+	url = https://bitbucket.org/gymkonnect/v2-src.git
+[submodule "server"]
+	path = server
+	url = https://bitbucket.org/gymkonnect/v2-server.git
