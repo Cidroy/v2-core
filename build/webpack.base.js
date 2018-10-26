@@ -83,6 +83,10 @@ module.exports = {
 				use: "node-loader"
 			},
 			{
+				test: /\.json5$/,
+				use: "json5-loader"
+			},
+			{
 				test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
 				loader: "url-loader",
 				options: {

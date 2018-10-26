@@ -92,6 +92,10 @@ module.exports = {
 				include: RESOLVE_PATHS
 			},
 			{
+				test: /\.json5$/,
+				use: "json5-loader"
+			},
+			{
 				test: /\.node$/,
 				use: "node-loader"
 			}
