@@ -1,0 +1,37 @@
+process.env.BABEL_ENV = "server"
+
+import webpackMerge from "webpack-merge"
+import webpack from "webpack"
+import nodeExternals from "webpack-node-externals"
+import StartServerPlugin from "start-server-webpack-plugin"
+import { resolve } from "~build/webpack.base"
+import webpackBase from "~build/server/webpack.base"
+
+const serverConfig: webpack.Configuration = {
+	name: "server-dev",
+	mode : "development",
+	entry: {
+		index: [ "webpack/hot/poll?100", resolve("server/index.dev.ts"), ],
+	},
+	devtool: "cheap-source-map",
+	devServer: {
+		contentBase: resolve("dist/server"),
+		stats: {
+			colors: true,
+			chunks: false,
+			children: false
+		},
+	},
+	watch: true,
+	externals: [
+		nodeExternals({
+			whitelist: [ "webpack/hot/poll?100", ],
+		}),
+	],
+	plugins: [
+		new webpack.HotModuleReplacementPlugin(),
+		new StartServerPlugin("index.js"),
+	]
+}
+
+export default webpackMerge(webpackBase, serverConfig)

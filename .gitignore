@@ -8,3 +8,4 @@ npm-debug.log.*
 package-lock.json
 !.gitignore
 /~$*
+/app_modules/mysql/mysql-*/**

@@ -1,11 +1,15 @@
-const path = require("path")
-const _package = require("../package.json")
+import path from "path"
+// @ts-ignore
+import _package from "~/package"
+import electronPackager from "electron-packager"
+
+type Platform = "linux" | "win32" | "darwin" | "mas" | "all" | undefined
 
 /**
  * `electron-packager` options
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-electron-packager.html
  */
-module.exports = {
+const config: electronPackager.Options = {
 	arch: "x64",
 	asar: false,
 	prune: true,
@@ -15,8 +19,8 @@ module.exports = {
 	out: path.join(__dirname, "../bin"),
 	overwrite: true,
 	appCopyright: "© " + (new Date()).getUTCFullYear + " " + _package.author,
-	appVersion: _package.version,
 	executableName: _package.appName,
-	prune: true,
-	platform: process.env.BUILD_TARGET || "all"
+	platform: process.env.BUILD_TARGET as Platform || "all",
 }
+
+export default config

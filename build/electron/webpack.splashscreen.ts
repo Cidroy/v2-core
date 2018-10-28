@@ -1,33 +1,31 @@
-"use strict"
-
 process.env.BABEL_ENV = "renderer"
 
-const path = require("path")
-const webpack = require("webpack")
-const webpackMerge = require("webpack-merge")
-const BabiliWebpackPlugin = require("babili-webpack-plugin")
-const HtmlWebpackPlugin = require("html-webpack-plugin")
+import webpack from "webpack"
+import webpackMerge from "webpack-merge"
+import BabiliWebpackPlugin from "babili-webpack-plugin"
+import HtmlWebpackPlugin from "html-webpack-plugin"
 
-const webpackBase = require("./webpack.base")
+import webpackBase, { resolve } from "~build/webpack.base"
 
-let splashscreenConfig = {
+let splashscreenConfig: webpack.Configuration = {
+	name: "electron-splashscreen",
 	mode: "production",
 	devtool: "#cheap-module-eval-source-map",
 	entry: {
-		splashscreen: path.join(__dirname, "../src/splashscreen/main.ts")
+		splashscreen: resolve("src/splashscreen/main.ts")
 	},
 	plugins: [
-		new HtmlWebpackPlugin({ 	
+		new HtmlWebpackPlugin({
 			chunksSortMode: "none",
 			filename: "splashscreen.html",
-			template: path.resolve(__dirname, "../src/splashscreen/splashscreen.html"),
+			template: resolve("src/splashscreen/splashscreen.html"),
 			minify: {
 				collapseWhitespace: true,
 				removeAttributeQuotes: true,
 				removeComments: true
 			},
 			nodeModules: process.env.NODE_ENV !== "production"
-				? path.resolve(__dirname, "../node_modules")
+				? resolve("node_modules")
 				: false
 		}),
 		new webpack.HotModuleReplacementPlugin(),
@@ -36,7 +34,7 @@ let splashscreenConfig = {
 	output: {
 		filename: "js/[name].js",
 		libraryTarget: "commonjs2",
-		path: path.join(__dirname, "../dist/electron")
+		path: resolve("dist/electron")
 	},
 	target: "electron-renderer"
 }
@@ -52,9 +50,9 @@ if (process.env.NODE_ENV !== "production") {
  * Adjust rendererConfig for production settings
  */
 if (process.env.NODE_ENV === "production") {
-	splashscreenConfig.devtool = ""
+	splashscreenConfig.devtool = false;
 
-	splashscreenConfig.plugins.push(
+	(<webpack.Plugin[]>splashscreenConfig.plugins).push(
 		new BabiliWebpackPlugin(),
 		new webpack.DefinePlugin({
 			"process.env.NODE_ENV": "\"production\""
@@ -65,4 +63,4 @@ if (process.env.NODE_ENV === "production") {
 	)
 }
 
-module.exports = webpackMerge(webpackBase, splashscreenConfig)
+export default webpackMerge(webpackBase, splashscreenConfig)

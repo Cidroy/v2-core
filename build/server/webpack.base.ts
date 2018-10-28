@@ -1,18 +1,16 @@
-var path = require("path")
-var UglifyJsPlugin = require("uglifyjs-webpack-plugin")
+import UglifyJsPlugin from "uglifyjs-webpack-plugin"
+import webpack from "webpack"
+import { resolve } from "~build/webpack.base"
 
-function resolve(dir) {
-	return path.join(__dirname, "..", dir)
-}
-
-let RESOLVE_PATHS = [
+const RESOLVE_PATHS = [
 	resolve("server"),
 	resolve("typescript"),
 	resolve("classes"),
 	resolve("test"),
 ]
 
-module.exports = {
+const baseConfig: webpack.Configuration = {
+	name: "server-base",
 	target: "node",
 	entry: {
 		index: resolve("server/index.ts"),
@@ -67,7 +65,10 @@ module.exports = {
 		}
 	},
 	resolveLoader: {
-		modules: ["node_modules", path.resolve(__dirname, "../app_modules/webpack/loaders"),]
+		modules: [
+			"node_modules",
+			resolve("app_modules/webpack/loaders"),
+		]
 	},
 	module: {
 		rules: [
@@ -98,7 +99,9 @@ module.exports = {
 			{
 				test: /\.node$/,
 				use: "node-loader"
-			}
+			},
 		]
 	},
 }
+
+export default baseConfig

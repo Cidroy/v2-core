@@ -1,16 +1,13 @@
-"use strict"
-
 process.env.BABEL_ENV = "renderer"
 
-const path = require("path")
-const { dependencies } = require("../package.json")
-const webpack = require("webpack")
-const webpackMerge = require("webpack-merge")
-const BabiliWebpackPlugin = require("babili-webpack-plugin")
-const CopyWebpackPlugin = require("copy-webpack-plugin")
-const HtmlWebpackPlugin = require("html-webpack-plugin")
+const { dependencies } = require("~/package.json")
+import webpack from "webpack"
+import webpackMerge from "webpack-merge"
+import BabiliWebpackPlugin from "babili-webpack-plugin"
+import CopyWebpackPlugin from "copy-webpack-plugin"
+import HtmlWebpackPlugin from "html-webpack-plugin"
 
-const webpackBase = require("./webpack.base")
+import webpackBase, { resolve } from "~build/webpack.base"
 
 /**
  * List of node_modules to include in webpack bundle
@@ -21,11 +18,12 @@ const webpackBase = require("./webpack.base")
  */
 let whiteListedModules = [ "vue", "vuetify", ]
 
-let rendererConfig = {
+let rendererConfig: webpack.Configuration = {
+	name: "electron-renderer",
 	mode: "production",
 	devtool: "#cheap-module-eval-source-map",
 	entry: {
-		renderer: path.join(__dirname, "../src/app/index.ts")
+		renderer: resolve("src/app/index.ts")
 	},
 	externals: [ ...Object.keys(dependencies || {}).filter(d => !whiteListedModules.includes(d)),  ],
 	node: {
@@ -33,17 +31,17 @@ let rendererConfig = {
 		__filename: process.env.NODE_ENV !== "production"
 	},
 	plugins: [
-		new HtmlWebpackPlugin({ 	
+		new HtmlWebpackPlugin({
 			chunksSortMode: "none",
 			filename: "index.html",
-			template: path.resolve(__dirname, "../src/index.ejs"),
+			template: resolve("src/index.ejs"),
 			minify: {
 				collapseWhitespace: true,
 				removeAttributeQuotes: true,
 				removeComments: true
 			},
 			nodeModules: process.env.NODE_ENV !== "production"
-				? path.resolve(__dirname, "../node_modules")
+				? resolve("node_modules")
 				: false
 		}),
 		new webpack.HotModuleReplacementPlugin(),
@@ -52,7 +50,7 @@ let rendererConfig = {
 	output: {
 		filename: "js/[name].js",
 		libraryTarget: "commonjs2",
-		path: path.join(__dirname, "../dist/electron")
+		path: resolve("dist/electron")
 	},
 	target: "electron-renderer"
 }
@@ -61,9 +59,9 @@ let rendererConfig = {
  * Adjust rendererConfig for development settings
  */
 if (process.env.NODE_ENV !== "production") {
-	rendererConfig.plugins.push(
+	(<webpack.Plugin[]>rendererConfig.plugins).push(
 		new webpack.DefinePlugin({
-			"__static": `"${path.join(__dirname, "../static").replace(/\\/g, "\\\\")}"`
+			__static: `"${resolve("static").replace(/\\/g, "\\\\")}"`
 		})
 	)
 	rendererConfig.mode = "development"
@@ -73,14 +71,14 @@ if (process.env.NODE_ENV !== "production") {
  * Adjust rendererConfig for production settings
  */
 if (process.env.NODE_ENV === "production") {
-	rendererConfig.devtool = ""
+	rendererConfig.devtool = false;
 
-	rendererConfig.plugins.push(
+	(<webpack.Plugin[]>rendererConfig.plugins).push(
 		new BabiliWebpackPlugin(),
 		new CopyWebpackPlugin([
 			{
-				from: path.join(__dirname, "../static"),
-				to: path.join(__dirname, "../dist/electron/static"),
+				from: resolve("static"),
+				to: resolve("dist/electron/static"),
 				ignore: [ ".*", ]
 			},
 		]),
@@ -93,4 +91,4 @@ if (process.env.NODE_ENV === "production") {
 	)
 }
 
-module.exports = webpackMerge(webpackBase, rendererConfig)
+export default webpackMerge(webpackBase, rendererConfig)

@@ -1,11 +1,12 @@
-var path = require("path")
-const MiniCssExtractPlugin = require("mini-css-extract-plugin")
-const { VueLoaderPlugin } = require("vue-loader")
-var vueLoaderConfig = require("../config/vue-loader")
-const config = require("../config")
-const utils = require("../config/utils")
+import path from "path"
+import MiniCssExtractPlugin from "mini-css-extract-plugin"
+import { VueLoaderPlugin } from "vue-loader"
+import vueLoaderConfig from "~config/vue-loader"
+import config from "~config/index"
+import * as utils from "~config/utils"
+import webpack from "webpack"
 
-function resolve(dir) {
+export function resolve(dir) {
 	return path.join(__dirname, "..", dir)
 }
 
@@ -16,7 +17,8 @@ let RESOLVE_PATHS = [
 	resolve("test"),
 ]
 
-module.exports = {
+const baseConfig: webpack.Configuration = {
+	name: "base",
 	output: {
 		path: config.build.assetsRoot,
 		filename: "js/[name].js",
@@ -25,12 +27,12 @@ module.exports = {
 			: config.dev.assetsPublicPath
 	},
 	resolve: {
-		extensions: [ 
-			".js", 
-			".jsx", 
-			".vue", 
-			".json", 
-			".node", 
+		extensions: [
+			".js",
+			".jsx",
+			".vue",
+			".json",
+			".node",
 			".ts",
 			".tsx",
 		],
@@ -41,11 +43,14 @@ module.exports = {
 			"@typescript": resolve("typescript"),
 			"@classes": resolve("classes"),
 			"@server": resolve("server"),
-			"vue$": "vue/dist/vue.esm.js" // 'vue/dist/vue.common.js' for webpack
+			vue$: "vue/dist/vue.esm.js" // 'vue/dist/vue.common.js' for webpack
 		}
 	},
 	resolveLoader: {
-		modules: [ "node_modules", path.resolve(__dirname, "../app_modules/webpack/loaders"), ]
+		modules: [
+			"node_modules",
+			path.resolve(__dirname, "../app_modules/webpack/loaders"),
+		]
 	},
 	module: {
 		rules: [
@@ -113,25 +118,25 @@ module.exports = {
 			{
 				test: /\.(styl|stylus)$/,
 				use: [
-					MiniCssExtractPlugin.loader, 
+					MiniCssExtractPlugin.loader,
 					"css-loader",
 					"stylus-loader",
-				]			
+				]
 			},
 			{
 				test: /\.css$/,
 				use: [
-					MiniCssExtractPlugin.loader, 
+					MiniCssExtractPlugin.loader,
 					"css-loader",
-				]			
+				]
 			},
 			{
 				test: /\.s[ac]ss$/,
 				use: [
-					MiniCssExtractPlugin.loader, 
+					MiniCssExtractPlugin.loader,
 					"css-loader",
 					"sass-loader",
-				]			
+				]
 			},
 		]
 	},
@@ -146,3 +151,5 @@ module.exports = {
 		}),
 	]
 }
+
+export default baseConfig

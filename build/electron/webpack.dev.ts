@@ -1,9 +1,10 @@
-const path = require("path")
-const webpack = require("webpack")
-const webpackMerge = require("webpack-merge")
-const webpackBase = require("./webpack.base")
+import webpack from "webpack"
+import webpackMerge from "webpack-merge"
+import webpackBase, { resolve } from "~build/webpack.base"
+import { spawn } from "child_process"
 
-module.exports = webpackMerge(webpackBase, {
+export default webpackMerge(webpackBase, {
+	name: "electron-dev",
 	target: "electron-renderer",
 	mode: "development",
 	plugins: [
@@ -13,7 +14,7 @@ module.exports = webpackMerge(webpackBase, {
 	],
 	devtool: "cheap-source-map",
 	devServer: {
-		contentBase: path.resolve(__dirname, "../dist", "dev"),
+		contentBase: resolve("dist/dev"),
 		stats: {
 			colors: true,
 			chunks: false,

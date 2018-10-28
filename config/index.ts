@@ -1,10 +1,9 @@
-"use strict"
 // Template version: 1.2.8
 // see http://vuejs-templates.github.io/webpack for documentation.
 
-const path = require("path")
+import path from "path"
 
-module.exports = {
+export default {
 	dev: {
 		env: require("./dev.env"),
 		// Paths

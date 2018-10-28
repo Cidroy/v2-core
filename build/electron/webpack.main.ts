@@ -2,18 +2,18 @@
 
 process.env.BABEL_ENV = "main"
 
-const path = require("path")
-const { dependencies } = require("../package.json")
-const webpack = require("webpack")
-const webpackMerge = require("webpack-merge")
-const BabiliWebpackPlugin = require("babili-webpack-plugin")
+const { dependencies } = require("~/package.json")
+import webpack from "webpack"
+import webpackMerge from "webpack-merge"
+import BabiliWebpackPlugin from "babili-webpack-plugin"
 
-const webpackBase = require("./webpack.base")
+import webpackBase, { resolve } from "~build/webpack.base"
 
-let mainConfig = {
+let mainConfig : webpack.Configuration= {
+	name: "electron-main",
 	mode: "production",
 	entry: {
-		main: path.join(__dirname, "../src/electron/index.ts")
+		main: resolve("src/electron/index.ts")
 	},
 	externals: [ ...Object.keys(dependencies || {}),  ],
 	node: {
@@ -23,7 +23,7 @@ let mainConfig = {
 	output: {
 		filename: "[name].js",
 		libraryTarget: "commonjs2",
-		path: path.join(__dirname, "../dist/electron")
+		path: resolve("dist/electron")
 	},
 	plugins: [ new webpack.NoEmitOnErrorsPlugin(),  ],
 	target: "electron-main"
@@ -33,9 +33,9 @@ let mainConfig = {
  * Adjust mainConfig for development settings
  */
 if (process.env.NODE_ENV !== "production") {
-	mainConfig.plugins.push(
+	(<webpack.Plugin[]>mainConfig.plugins).push(
 		new webpack.DefinePlugin({
-			"__static": `"${path.join(__dirname, "../static").replace(/\\/g, "\\\\")}"`
+			__static: `"${resolve("static").replace(/\\/g, "\\\\")}"`
 		})
 	)
 	mainConfig.mode = "development"
@@ -45,7 +45,7 @@ if (process.env.NODE_ENV !== "production") {
  * Adjust mainConfig for production settings
  */
 if (process.env.NODE_ENV === "production") {
-	mainConfig.plugins.push(
+	(<webpack.Plugin[]>mainConfig.plugins).push(
 		new BabiliWebpackPlugin(),
 		new webpack.DefinePlugin({
 			"process.env.NODE_ENV": "\"production\""
@@ -53,4 +53,4 @@ if (process.env.NODE_ENV === "production") {
 	)
 }
 
-module.exports = webpackMerge(webpackBase, mainConfig)
+export default webpackMerge(webpackBase, mainConfig)
