@@ -11,9 +11,9 @@ import fs from "fs"
 import iconGenerator from "icon-gen"
 import chalk from "chalk"
 import rm from "rimraf"
-import { resolve } from "~build/webpack.base"
+import BuildHelper from "~build/helper"
 
-class IconGenerator {
+class IconGenerator extends BuildHelper {
 	private input: string
 	private output: string
 	private pngSizes: number[] = [16, 24, 32, 48, 64, 128, 256, 512, 1024,]
@@ -22,17 +22,9 @@ class IconGenerator {
 		type: "png",
 		report: true,
 	}
-	private console = {
-		error: (e: string,i ?: any) =>{
-			console.log(chalk.bgRed("ERROR") + " " + chalk.bold(e))
-			if(i) console.log(chalk.gray(i))
-		},
-		warning: (e: string) => console.log(chalk.bgYellow("WARN") + " " + chalk.bold(e)),
-		done: (e: string) => console.log(chalk.bgGreen("DONE") + " " + chalk.bold(e)),
-		log: (e: string) => console.log(e),
-	}
 
 	constructor(input: string, output: string) {
+		super()
 		this.input = input
 		this.output = output
 
@@ -61,11 +53,11 @@ class IconGenerator {
 					{ type: "png", names: { ico: "icon" }, modes: ["ico",], report: true }
 				)
 				// rename the PNGs to electron format
-				this.console.log("Renaming PNGs to Electron Format")
+				IconGenerator.console.log("Renaming PNGs to Electron Format")
 				fs.copyFileSync(this.input, this.PNGoutputDir + "icon.png")
 				this.renamePNG()
 			}catch(error){
-				this.console.error("Generator failed", error)
+				IconGenerator.console.error("Generator failed", error)
 				throw error
 			}
 		}
@@ -84,7 +76,7 @@ class IconGenerator {
 			let logger = "Created " + fileName
 			return logger
 		} catch (error) {
-			this.console.error("Create PNG Failed", error)
+			IconGenerator.console.error("Create PNG Failed", error)
 			throw error
 		}
 	}
@@ -97,22 +89,22 @@ class IconGenerator {
 				this.PNGoutputDir + startName,
 				this.PNGoutputDir + endName,
 				err => {
-					this.console.log("Renamed " + startName + " to " + endName)
+					IconGenerator.console.log("Renamed " + startName + " to " + endName)
 					if (err) throw err
 					else if (position < this.pngSizes.length - 1) this.renamePNG(position + 1) // not done yet. Run the next one
-					else this.console.done("ALL DONE")
+					else IconGenerator.console.done("ALL DONE")
 				}
 			)
 		} catch (error) {
-			this.console.error("Rename Failed", error)
+			IconGenerator.console.error("Rename Failed", error)
 			throw error
 		}
 	}
 }
 
 let generator = new IconGenerator(
-	resolve("static/logo.png"),
-	resolve("static/icons")
+	IconGenerator.resolve("static/logo.png"),
+	IconGenerator.resolve("static/icons")
 )
 
 generator.clean()

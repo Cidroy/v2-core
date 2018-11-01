@@ -5,122 +5,46 @@ import del from "del"
 import packager from "electron-packager"
 import webpack from "webpack"
 import Multispinner from "multispinner"
-import { compile } from "nexe"
 import path from "path"
 
 import buildConfig from "~config/electron.build.ts"
-import server from "~config/server.build"
 import mainConfig from "~build/electron/webpack.main"
 import rendererConfig from "~build/electron/webpack.renderer"
 import splashscreenConfig from "~build/electron/webpack.splashscreen"
-import serverConfig from "~build/server/webpack.prod"
+import Helper from "~build/helper"
 
-class ApplicationBuilder {
-	private console = {
-		error: (e: string, i?: any) => {
-			console.log(chalk.bgRed("ERROR") + " " + chalk.bold(e))
-			if (i) console.log(chalk.gray(i))
+import ServerExecutableBuilder from "~/app_modules/server"
+
+type ApplicationBuilderPostBuildFn = (buildPath: string, electronVersion: string, platform: string, arch: string) => Promise<boolean>
+type ApplicationWebpackConfig = { [I in "main" | "renderer" | "splashscreen"]: webpack.Configuration }
+class ApplicationBuilder extends Helper{
+
+	private _onBuild: packager.onCompleteFn[] = [
+		(buildPath, electronVersion, platform, arch, callback) => {
+			ApplicationBuilder.console.info(`starting post build for '${platform}-${arch}'`)
+			callback()
 		},
-		warning: (e: string) => console.log(chalk.bgYellow("WARN") + " " + chalk.bold(e)),
-		done: (e: string) => console.log(chalk.bgGreen("DONE") + " " + chalk.bold(e)),
-		log: (e: string) => console.log(e),
+	]
+	private _webpackConfig: ApplicationWebpackConfig
+	private _buildConfig: packager.Options
+
+	constructor(webpackConfig: ApplicationWebpackConfig, buildConfig: packager.Options) {
+		super()
+		this._webpackConfig = webpackConfig
+		this._buildConfig = buildConfig
 	}
 
-	private log(process: string, data: any, color: string = "yellow", compact: boolean = false) {
-		let log = ""
-		let strip = false
-		let flatData = () => data
-			.toString()
-			.split(/\r?\n/)
-			.forEach(line => {
-				if (compact) log += line
-				else log += chalk[color].bold("║    ") + line + "\n"
-			}
-			)
-
-		let consoleLog = () => {
-			if (compact) console.log(chalk[color](`${process} >>> `), log)
-			else {
-				console.log(
-					chalk[color].bold(`╓── ${process} ${new Array((25 - process.length) + 1).join("─")}\n`) +
-					log +
-					chalk[color].bold(`╙${new Array(30).join("─")}\n`)
-				)
-			}
-		}
-
-		try {
-			if (typeof data === "object") {
-				data.toString({
-					colors: true,
-					chunks: false,
-				}).split(/\r?\n/).forEach(line => {
-					log += chalk[color].bold("║    ") + line + "\n"
-				})
-			}
-			else flatData()
-		} catch (error) {
-			strip = true
-		}
-
-		if (strip) {
-			log = ""
-			flatData()
-
-			if (/[0-9A-z]+/.test(log)) consoleLog()
-		} else consoleLog()
-	}
-
-	private pack(config: webpack.Configuration){
-		return new Promise((resolve, reject) => {
-			webpack(config, (err, stats) => {
-				if (err) reject(err.stack || err)
-				else if (stats.hasErrors()) {
-					let err = ""
-					this.log("Webpack " + <string>config.name, stats)
-					reject(err)
-				}
-				else {
-					resolve(stats.toString({
-						chunks: false,
-						colors: true
-					}))
-				}
-			})
-		})
-	}
-
-	private async bundleServer(appPaths, platform){
-		console.log("Building Server")
-		try {
-			await this.pack(serverConfig)
-			for (const key in appPaths) {
-				await compile(Object.assign(server.pack, {
-					output: path.resolve(appPaths[key], "resources", server.pack.output),
-					target: platform
-				}))
-			}
-		} catch (e) {
-			this.console.error("Server build failed because", e)
-			throw "Server build failure"
-		}
-	}
-
-	private async bundleApp(){
+	public async bundleApp(){
 		try {
 			let appPaths: string| string[]
-			try {
-				this.console.log("starting packager")
-				appPaths = await packager(buildConfig)
-				this.console.done(`Time to Pack other things`)
-			} catch (err) {
-				this.console.error(chalk.yellow("`electron-packager`"), err)
-				throw "Electron packager failed"
-			}
-			await this.bundleServer(appPaths, buildConfig.platform)
+			ApplicationBuilder.console.log("starting packager")
+			this._buildConfig.afterPrune = this._onBuild
+			appPaths = await packager(this._buildConfig)
+			ApplicationBuilder.console.done(`Build Complete`)
+			ApplicationBuilder.log("Output", appPaths, "gray")
 			return true
 		} catch (err) {
-			this.console.error("App Bundling failed", err)
+			ApplicationBuilder.console.error(chalk.yellow("`electron-packager`"), err)
 			throw "Electron packager failed"
 		}
 		return false
@@ -129,10 +53,10 @@ class ApplicationBuilder {
 	public build(){
 		try {
 			console.log(chalk.yellow.bold("Building ..."))
-
+			
 			del.sync(["dist/*", "bin/*", "!.gitkeep",])
 
-			const tasks = ["main", "renderer", "splashscreen",]
+			const tasks: (keyof ApplicationWebpackConfig)[] = ["main", "renderer", "splashscreen",]
 			const m = new Multispinner(tasks, {
 				preText: "building",
 				postText: "process"
@@ -143,41 +67,56 @@ class ApplicationBuilder {
 			m.on("success", () => {
 				process.stdout.write("\x1B[2J\x1B[0f")
 				console.log(`\n\n${results}`)
-				this.console.done(`take it away ${chalk.yellow("`electron-packager`")}`)
+				ApplicationBuilder.console.done(`take it away ${chalk.yellow("`electron-packager`")}`)
 				this.bundleApp()
 			})
 
-			this.pack(mainConfig).then(result => {
-				results += result + "\n\n"
-				m.success("main")
-			}).catch(err => {
-				m.error("main")
-				this.console.error("failed to build main process", err)
-				process.exit(1)
-			})
-
-			this.pack(rendererConfig).then(result => {
-				results += result + "\n\n"
-				m.success("renderer")
-			}).catch(err => {
-				m.error("renderer")
-				this.console.error("failed to build renderer process", err)
-				process.exit(1)
-			})
-
-			this.pack(splashscreenConfig).then(result => {
-				results += result + "\n\n"
-				m.success("splashscreen")
-			}).catch(err => {
-				m.error("splashscreen")
-				this.console.error("failed to build splashscreen process", err)
-				process.exit(1)
+			tasks.forEach(task => {
+				ApplicationBuilder.pack(this._webpackConfig[task])
+					.then(result => {
+						results += result + "\n\n"
+						m.success(task)
+					})
+					.catch(err => {
+						m.error(task)
+						ApplicationBuilder.console.error(`failed to build ${task} process`, err)
+						process.exit(1)
+					})
 			})
 		} catch (error) {
-			this.console.error("Build Failed", error)
+			ApplicationBuilder.console.error("Build Failed", error)
 		}
+	}
+
+	public onBuild(fn: ApplicationBuilderPostBuildFn): void{
+		this._onBuild.push(async (buildPath, electronVersion, platform, arch, callback) => {
+			try {
+				if(["linux", "win32", ].includes(platform)) buildPath = path.resolve(buildPath, "../..")
+				// TODO: resolve path for mac
+				else buildPath = path.resolve(buildPath, "..")
+				await fn(buildPath, electronVersion, platform, arch)
+				callback()
+			} catch (error) {
+				ApplicationBuilder.console.error(`Postbuild Failed for '${platform}-${arch}'`, error)
+				process.exit(1)
+			}
+		})
 	}
 }
 
-let builder = new ApplicationBuilder()
+let builder = new ApplicationBuilder(
+	{
+		main: mainConfig,
+		renderer: rendererConfig,
+		splashscreen: splashscreenConfig
+	},
+	buildConfig
+)
+
+builder.onBuild(async (buildPath, electronVersion, platform, arch) => {
+	let serverBuilder = new ServerExecutableBuilder(buildPath, platform)
+	await serverBuilder.build()
+	return true
+})
+
 builder.build()

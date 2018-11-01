@@ -8,93 +8,50 @@ import webpack from "webpack"
 import WebpackDevServer from "webpack-dev-server"
 import webpackHotMiddleware from "webpack-hot-middleware"
 
-import { resolve } from "~build/webpack.base"
 import mainConfig from "~build/electron/webpack.main"
 import rendererConfig from "~build/electron/webpack.renderer"
 import splashscreenConfig from "~build/electron/webpack.splashscreen"
+import BuildHelper from "~build/helper"
 
-type DevServerKeys = "renderer" | "splashScreen"
-class DevServer {
-	private electronProcess: ChildProcess | undefined
-	private manualRestart: boolean = false
-	private hotMiddlewares: { [I in DevServerKeys]: webpackHotMiddleware.EventStream }
-	private compilers: { [I in DevServerKeys]: webpack.Compiler }
-	private console = {
-		error: (e: string, i?: any) => {
-			console.log(chalk.bgRed("ERROR") + " " + chalk.bold(e))
-			if (i) console.log(chalk.gray(i))
-		},
-		warning: (e: string) => console.log(chalk.bgYellow("WARN") + " " + chalk.bold(e)),
-		done: (e: string) => console.log(chalk.bgGreen("DONE") + " " + chalk.bold(e)),
-		log: (e: string) => console.log(e),
-	}
+type DevServerKeys = "renderer" | "splashscreen"
+class DevServer extends BuildHelper{
+	private _electronProcess: ChildProcess | undefined
+	private _manualRestart: boolean = false
+	private _hotMiddlewares: { [I in DevServerKeys]: webpackHotMiddleware.EventStream| null }
+	private _compilers: { [I in DevServerKeys]: webpack.Compiler|null }
+	private _otherConfigs: { [I in DevServerKeys]: { config: webpack.Configuration, port: number } }
+	private _mainConfig: webpack.Configuration
 
-	private log(process: string, data: any, color: string = "yellow", compact: boolean = false){
-		let log = ""
-		let strip = false
-		let flatData = () => data
-			.toString()
-			.split(/\r?\n/)
-			.forEach(line => {
-				if(compact) log += line
-				else log += chalk[color].bold("║    ") + line + "\n" }
-			)
-
-		let consoleLog = () => {
-			if(compact) console.log(chalk[color](`${process} >>> `), log)
-			else {
-				console.log(
-					chalk[color].bold(`╓── ${process} ${new Array((25 - process.length) + 1).join("─")}\n`) +
-					log +
-					chalk[color].bold(`╙${new Array(30).join("─")}\n`)
-				)
-			}
-		}
-
+	constructor(
+		mainConfig: webpack.Configuration,
+		otherConfig: { [I in DevServerKeys]: { config: webpack.Configuration, port: number } },
+	){
+		super()
 		try {
-			if (typeof data === "object") {
-				data.toString({
-					colors: true,
-					chunks: false,
-				}).split(/\r?\n/).forEach(line => {
-					log += chalk[color].bold("║    ") + line + "\n"
-				})
+			this._mainConfig = mainConfig
+			this._otherConfigs = otherConfig
+			
+			this._compilers = {
+				renderer: null,
+				splashscreen: null,
 			}
-			else flatData()
-		} catch (error) {
-			strip = true
-		}
-
-		if(strip){
-			log = ""
-			flatData()
-
-			if (/[0-9A-z]+/.test(log)) consoleLog()
-		} else consoleLog()
-	}
-
-	constructor(){
-		try {
-			(<webpack.Entry>rendererConfig.entry).renderer = [resolve("build/dev-client"),].concat((<webpack.Entry>rendererConfig.entry).renderer);
-			(<webpack.Entry>splashscreenConfig.entry).splashscreen = [resolve("build/dev-client"),].concat((<webpack.Entry>splashscreenConfig.entry).splashscreen)
-
-			this.compilers = {
-				renderer: webpack(rendererConfig),
-				splashScreen: webpack(splashscreenConfig),
+			this._hotMiddlewares = {
+				renderer: null,
+				splashscreen: null,
 			}
-
-			this.hotMiddlewares = {
-				renderer: webpackHotMiddleware(this.compilers.renderer, {
-					log: false,
-					heartbeat: 2500
-				}),
-				splashScreen: webpackHotMiddleware(this.compilers.splashScreen, {
-					log: false,
-					heartbeat: 2500
-				}),
+			for (const name in this._otherConfigs) {
+				if (this._otherConfigs.hasOwnProperty(name)) {
+					const element = this._otherConfigs[name]
+					(<webpack.Entry>this._otherConfigs[name].entry).renderer = [DevServer.resolve("build/dev-client"),].concat((<webpack.Entry>this._otherConfigs[name].entry)[name])
+					this._compilers[name] = webpack(this._otherConfigs[name])
+					this._hotMiddlewares[name] = webpackHotMiddleware(this._compilers[name], {
+						log: false,
+						heartbeat: 2500
+					})
+				}
 			}
 		} catch (error) {
-			this.console.error("DevServer", error)
+			DevServer.console.error("DevServer", error)
 			throw error
 		}
 	}
@@ -107,18 +64,18 @@ class DevServer {
 		try {
 			await Promise.all([ this.startRenderer(), this.startMain(), ])
 			this.startElectron()
-		} catch (error) { this.console.error("DevServer Start", error) }
+		} catch (error) { DevServer.console.error("DevServer Start", error) }
 	}
 
 	private startMain() {
 		return new Promise((res, rej) => {
 			try {
-				(<webpack.Entry>mainConfig.entry).main = [resolve("src/electron/index.dev.js"),].concat((<webpack.Entry>mainConfig.entry).main)
+				(<webpack.Entry>this._mainConfig.entry).main = [DevServer.resolve("src/electron/index.dev.js"),].concat((<webpack.Entry>this._mainConfig.entry).main)
 
 				const compiler = webpack(mainConfig)
 				compiler.plugin("watch-run", (compilation, done) => {
-					this.log("Main Process", chalk.white.bold("compiling..."))
-					this.hotMiddlewares.renderer.publish({ action: "compiling" })
+					DevServer.log("Main Process", chalk.white.bold("compiling..."));
+					(<webpackHotMiddleware.EventStream>this._hotMiddlewares.renderer).publish({ action: "compiling" })
 					done()
 				})
 
@@ -127,20 +84,20 @@ class DevServer {
 						console.log(err)
 						return
 					}
-					this.log("Main Process", stats)
+					DevServer.log("Main Process", stats)
 
-					if (this.electronProcess && this.electronProcess.kill) {
-						this.manualRestart = true
-						process.kill(this.electronProcess.pid)
-						this.electronProcess = undefined
+					if (this._electronProcess && this._electronProcess.kill) {
+						this._manualRestart = true
+						process.kill(this._electronProcess.pid)
+						this._electronProcess = undefined
 						this.startElectron()
 
-						setTimeout(() => { this.manualRestart = false }, 5000)
+						setTimeout(() => { this._manualRestart = false }, 5000)
 					}
 					res()
 				})
 			} catch (error) {
-				this.console.error("Main Promise", error)
+				DevServer.console.error("Main Promise", error)
 			}
 		})
 	}
@@ -148,26 +105,24 @@ class DevServer {
 	private startRenderer() {
 		let reload = (conf: DevServerKeys , compilation) => {
 			compilation.plugin("html-webpack-plugin-after-emit", (data, cb) => {
-				this.hotMiddlewares[conf].publish({ action: "reload" })
+				(<webpackHotMiddleware.EventStream>this._hotMiddlewares[conf]).publish({ action: "reload" })
 				if (typeof cb === "function") cb()
 			})
 		}
 
 		return new Promise((res, rej) => {
 			try {
-				this.compilers.splashScreen.plugin("compilation", compilation => reload("splashScreen", compilation))
-				this.compilers.renderer.plugin("compilation", compilation => reload("renderer", compilation))
-				
-				this.compilers.splashScreen.plugin("done", stats => { this.log("Splash Screen Process", stats) })
-				this.compilers.renderer.plugin("done", stats => { this.log("Renderer Process", stats) })
-				
-				const splashscreenServer = this.createDevServer("splashScreen", res)
-				const server = this.createDevServer("renderer" , res)
-				
-				server.listen(9080)
-				splashscreenServer.listen(9081)
+				const servers: object = {}
+				for (const name in this._compilers) {
+					if (this._compilers.hasOwnProperty(name)) {
+						(<webpack.Compiler>this._compilers[<DevServerKeys>name]).plugin("compilation", compilation => reload("splashscreen", compilation));
+						(<webpack.Compiler>this._compilers[<DevServerKeys>name]).plugin("done", stats => { DevServer.log(`${name} Process`, stats) })
+						servers[<DevServerKeys>name] = this.createDevServer(<DevServerKeys>name, res);
+						(<WebpackDevServer>servers[<DevServerKeys>name]).listen(this._otherConfigs[name].port)
+					}
+				}
 			} catch (error) {
-				this.console.error("Renderer Promise", error)
+				DevServer.console.error("Renderer Promise", error)
 				throw error
 			}
 		})
@@ -176,40 +131,46 @@ class DevServer {
 	private createDevServer(conf: DevServerKeys , res: (value?: {} | PromiseLike<{}> | undefined) => void) {
 		try {
 			let that = this
-			let devServer = new WebpackDevServer(this.compilers[conf], {
-				contentBase: resolve("/"),
+			let devServer = new WebpackDevServer(<webpack.Compiler>this._compilers[conf], {
+				contentBase: DevServer.resolve("/"),
 				quiet: true,
 				// @ts-ignore
 				before(app, ctx) {
-					app.use(that.hotMiddlewares[conf])
+					app.use(that._hotMiddlewares[conf])
 					ctx.middleware.waitUntilValid(() => { res() })
 				}
 			})
 			return devServer
 		} catch (error) {
-			this.console.error("Create Dev Server", error)
+			DevServer.console.error("Create Dev Server", error)
 		}
 	}
 
 	private startElectron() {
 		try {
-			this.electronProcess = spawn(electron.toString(), ["--inspect=5858", resolve("dist/electron/main.js"), ])
+			this._electronProcess = spawn(electron.toString(), ["--inspect=5858", DevServer.resolve("dist/electron/main.js"), ])
 	
-			this.electronProcess.stdout.on("data", data => { this.log("Electron", data, "blue", true) })
-			this.electronProcess.stderr.on("data", data => { this.log("Electron", data, "red") })
+			this._electronProcess.stdout.on("data", data => { DevServer.log("Electron", data, "blue", true) })
+			this._electronProcess.stderr.on("data", data => { DevServer.log("Electron", data, "red") })
 			
-			this.electronProcess.on("close", () => {
-				if (!this.manualRestart){
-					this.console.done("Live Server Exited")
+			this._electronProcess.on("close", () => {
+				if (!this._manualRestart){
+					DevServer.console.done("Live Server Exited")
 					process.exit()
 				}
 			})
 		} catch (error) {
-			this.console.error("Electron Promise", error)
+			DevServer.console.error("Electron Promise", error)
 			throw error
 		}
 	}
 }
 
-const devServer = new DevServer()
+const devServer = new DevServer(
+	mainConfig,
+	{
+		renderer: { config: rendererConfig, port: 9080 },
+		splashscreen: { config: splashscreenConfig, port: 9081 }
+	}
+)
 devServer.start()

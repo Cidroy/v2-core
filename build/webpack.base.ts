@@ -5,10 +5,9 @@ import vueLoaderConfig from "~config/vue-loader"
 import config from "~config/index"
 import * as utils from "~config/utils"
 import webpack from "webpack"
+import BuildHelper from "~build/helper"
 
-export function resolve(dir) {
-	return path.join(__dirname, "..", dir)
-}
+export const resolve = BuildHelper.resolve
 
 let RESOLVE_PATHS = [
 	resolve("src"),
