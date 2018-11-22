@@ -41,9 +41,8 @@ class DevServer extends BuildHelper{
 			}
 			for (const name in this._otherConfigs) {
 				if (this._otherConfigs.hasOwnProperty(name)) {
-					const element = this._otherConfigs[name]
-					(<webpack.Entry>this._otherConfigs[name].entry).renderer = [DevServer.resolve("build/dev-client"),].concat((<webpack.Entry>this._otherConfigs[name].entry)[name])
-					this._compilers[name] = webpack(this._otherConfigs[name])
+					(<webpack.Entry>this._otherConfigs[name].config.entry).renderer = [DevServer.resolve("build/dev-client"),].concat((<webpack.Entry>this._otherConfigs[name].config.entry)[name])
+					this._compilers[name] = webpack(this._otherConfigs[name].config)
 					this._hotMiddlewares[name] = webpackHotMiddleware(this._compilers[name], {
 						log: false,
 						heartbeat: 2500
