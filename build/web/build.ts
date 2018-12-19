@@ -4,6 +4,7 @@ import config from "~config/index"
 import webpackConfigProd from "~build/webpack.prod"
 import webpackMerge from "webpack-merge"
 import { WebBuilder } from "~build/web/WebBuilder"
+import { RESOLVE_PATHS } from "~build/webpack.base"
 
 let webpackConfig = webpackMerge(webpackConfigProd, {
 	module: {

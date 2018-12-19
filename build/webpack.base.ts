@@ -9,7 +9,7 @@ import BuildHelper from "~build/helper"
 
 export const resolve = BuildHelper.resolve
 
-let RESOLVE_PATHS = [
+export const RESOLVE_PATHS = [
 	resolve("src"),
 	resolve("typescript"),
 	resolve("classes"),
