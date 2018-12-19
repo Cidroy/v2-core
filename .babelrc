@@ -1,0 +1,47 @@
+{
+	"comments": false,
+	"env": {
+		"main": {
+			"presets": [
+				["@babel/env", { "targets": { "node": 10 } }]
+			]
+		},
+		"renderer": {
+			"presets": [
+				["@babel/env", { "modules": false }]
+			]
+		},
+		"web": {
+			"presets": [
+				["@babel/env", { "modules": false }]
+			]
+		},
+		"server": {
+			"presets": [
+				["@babel/env", { "targets": { "node": 10 } }]
+			]
+		}
+	},
+	"presets": [
+		"proposal-typescript",
+		"@babel/preset-typescript",
+		"@babel/env"
+	],
+	"plugins": [
+		[ "@babel/plugin-proposal-decorators", { "legacy": true } ],
+		[ "@babel/plugin-proposal-class-properties", { "loose": true } ],
+		"@babel/plugin-proposal-object-rest-spread",
+		"@babel/plugin-proposal-numeric-separator",
+		"@babel/plugin-proposal-optional-chaining",
+		"@babel/plugin-proposal-throw-expressions",
+		"@babel/plugin-proposal-nullish-coalescing-operator",
+		"@babel/plugin-proposal-logical-assignment-operators",
+		"@babel/plugin-proposal-function-bind",
+		"@babel/plugin-proposal-export-namespace-from",
+		[ "@babel/plugin-proposal-pipeline-operator", { "proposal": "minimal" } ],
+		"@babel/plugin-transform-exponentiation-operator",
+		"@babel/plugin-syntax-jsx",
+		"@babel/plugin-transform-runtime",
+		"syntax-dynamic-import"
+	]
+}
