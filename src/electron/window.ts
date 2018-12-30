@@ -45,10 +45,12 @@ class WindowSize implements IWindowSize {
 		else if(display instanceof WindowSize)
 			this.copy(display)
 		else {
-			this.width = <number>width
-			this.height = <number>height
-			this.x = display.bounds.x + (display.workArea.width - (width || 0)) / 2
-			this.y = display.bounds.y + (display.workArea.height - (height || 0)) / 2
+			width = width?width:0
+			height = height?height:0
+			this.width = width
+			this.height = height
+			this.x = display.bounds.x + (display.workArea.width - width) / 2
+			this.y = display.bounds.y + (display.workArea.height - height) / 2
 		}
 	}
 

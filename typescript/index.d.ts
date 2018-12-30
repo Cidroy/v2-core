@@ -10,7 +10,7 @@ declare module "*.json" {
 	export default value;
 }
 
-interface Point{
+declare interface Point{
 	x: number,
 	y: number,
 }
