@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
 		<v-app dark>
-			<v-navigation-drawer fixed :mini-variant="miniVariant" :clipped="clipped" v-model="drawer" app >
+			<v-navigation-drawer fixed :mini-variant="miniVariant" :clipped="true" v-model="drawer" app >
 				<v-list>
 					<v-list-tile router :to="item.to" :key="i" v-for="(item, i) in items" exact>
 						<v-list-tile-action>
@@ -14,13 +14,10 @@
 				</v-list>
 			</v-navigation-drawer>
 			<v-toolbar fixed app :clipped-left="clipped">
-				<v-toolbar-side-icon @click.native.stop="drawer = !drawer"></v-toolbar-side-icon>
-				<v-btn  icon @click.native.stop="miniVariant = !miniVariant"> <v-icon v-html="miniVariant ? 'chevron_right' : 'chevron_left'"/> </v-btn>
-				<v-btn icon @click.native.stop="clipped = !clipped" > <v-icon v-html="'web'"/> </v-btn>
-				<v-btn icon @click.native.stop="fixed = !fixed" > <v-icon v-html="'remove'"/> </v-btn>
+				<v-toolbar-side-icon @click.native.stop="miniVariant = !miniVariant"></v-toolbar-side-icon>
 				<v-toolbar-title v-text="title"></v-toolbar-title>
 				<v-spacer />
-				<v-btn icon @click.native.stop="rightDrawer = !rightDrawer" > <v-icon v-html="'menu'"/> </v-btn>
+				<app-exit-button />
 			</v-toolbar>
 			<v-content>
 				<v-container fluid fill-height>
