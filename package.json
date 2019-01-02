@@ -168,6 +168,7 @@
 		"express": "^4.16.4",
 		"fix-path": "^2.1.0",
 		"json5": "^2.1.0",
+		"mousetrap": "^1.6.2",
 		"npm-run": "^5.0.1",
 		"reflect-metadata": "^0.1.12",
 		"vue": "^2.5.17",

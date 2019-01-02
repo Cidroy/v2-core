@@ -43,7 +43,7 @@ class Application {
 	private defaultOptions: Electron.BrowserWindowConstructorOptions = {
 		frame: false,
 		show: false,
-		resizable: false,
+		resizable: true,
 	}
 
 	private store: Map<string, any> = new Map()

@@ -1,6 +1,7 @@
 <template>
 	<div id="app">
 		<v-app dark>
+			<dev-resizer :show="showDevResizer" />
 			<v-navigation-drawer fixed :mini-variant="miniVariant" :clipped="true" v-model="drawer" app >
 				<v-list>
 					<v-list-tile router :to="item.to" :key="i" v-for="(item, i) in items" exact>
@@ -38,7 +39,16 @@
 			</v-navigation-drawer>
 			<v-footer :fixed="fixed" app>
 				<v-spacer />
-				<span>&copy; 2018</span>
+				<span> 
+					<v-chip color="grey darken-4" :label="true" :disabled="true" text-color="white">Messages Left :
+      					
+    				</v-chip>
+				</span>
+				<span>
+					<v-chip color="grey darken-4" :label="true" :disabled="true" text-color="white">Device Status
+      					<v-icon right>fingerprint</v-icon>
+    				</v-chip>
+				</span>
 			</v-footer>
 		</v-app>
 	</div>
@@ -48,8 +58,11 @@
 import Vue from "vue"
 import appConfig from "@/app.config"
 import { Component } from "vue-property-decorator"
+import Keyboard from "mousetrap"
+import devResizer from "@/components/dev-resizer.vue"
 
 @Component({
+	components: { devResizer, },
 	page : {
 		// All subcomponent titles will be injected into this template.
 		titleTemplate(title) {
@@ -58,9 +71,15 @@ import { Component } from "vue-property-decorator"
 			return title ? `${title} | ${appConfig.title}` : appConfig.title
 		},
 	},
+	created(){
+		Keyboard.bind([ "command+p", "ctrl+p", ], () => {
+			this.showDevResizer = !this.showDevResizer
+		})
+	},
 })
 export default class Vuetify extends Vue{
 	clipped: boolean = false
+	showDevResizer: boolean = false
 	drawer: boolean = true
 	fixed: boolean = false
 	miniVariant: boolean = false
