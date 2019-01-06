@@ -8,7 +8,7 @@ export default [
 	},
 	{
 		path: "/m-registration",
-		name: "Registration",
+		name: "M-Registration",
 		component: () => lazyLoadView("/m-registration"),
 	},
 	{

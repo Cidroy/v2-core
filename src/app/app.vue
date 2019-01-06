@@ -1,6 +1,6 @@
 <template>
 <div id="app">
-	<v-app dark>
+	<v-app :dark="darkTheme">
 		<dev-resizer :show="showDevResizer" />
 		<!--v-navigation-drawer fixed :mini-variant="miniVariant" :clipped="true" v-model="drawer" app >
 				<v-list>
@@ -22,45 +22,23 @@
       </v-toolbar-->
 	  <!--drawer-->
 
+	
+
 		<v-navigation-drawer fixed :clipped="$vuetify.breakpoint.mdAndUp" app v-model="drawer">
-		<v-list dense>
-          <v-list-group v-for="item in dashList" v-model="item.active" :key="item.title" :prepend-icon="item.action" no-action>
-            <v-list-tile slot="activator">
-              <v-list-tile-content>
-                <v-list-tile-title>{{ item.title }}</v-list-tile-title>
-              </v-list-tile-content>
-            </v-list-tile>
-
-            <v-list-tile v-for="subItem in item.items" :key="subItem.title" @click="">
-              <v-list-tile-content>
-                <v-list-tile-title>{{ subItem.title }}</v-list-tile-title>
-              </v-list-tile-content>
-
-              <v-list-tile-action>
-                <v-icon>{{ subItem.action }}</v-icon>
-              </v-list-tile-action>
-            </v-list-tile>
-          </v-list-group>
-		</v-list>
-		</v-navigation-drawer>
-
-
-		<!--v-navigation-drawer fixed :clipped="$vuetify.breakpoint.mdAndUp" app v-model="drawer">
 			<v-list dense>
 				<template v-for="item in items">
-					<v-layout row v-if="item.heading" align-center :key="item.heading">
+					<v-layout row v-if="item.heading" align-center :key="item.heading" @click="$router.push({path: item.to})">
 						<v-flex xs6>
 							<v-subheader v-if="item.heading">{{ item.heading }}</v-subheader>
 						</v-flex>
 					</v-layout>
-					<v-list-group v-else-if="item.children" v-model="item.model" :key="item.text" :prepend-icon="item.model ? item.icon : item['icon-alt']"
-					 append-icon>
+					<v-list-group v-else-if="item.children" v-model="item.model" :key="item.text" :prepend-icon="item.model ? item.icon : item['icon-alt']" no-action>
 						<v-list-tile slot="activator">
 							<v-list-tile-content>
 								<v-list-tile-title>{{ item.text }}</v-list-tile-title>
 							</v-list-tile-content>
 						</v-list-tile>
-						<v-list-tile v-for="(child, i) in item.children" :key="i">
+						<v-list-tile v-for="(child, i) in item.children" :key="i" @click="$router.push({path: child.to})">
 							<v-list-tile-action v-if="child.icon">
 								<v-icon>{{ child.icon }}</v-icon>
 							</v-list-tile-action>
@@ -69,7 +47,7 @@
 							</v-list-tile-content>
 						</v-list-tile>
 					</v-list-group>
-					<v-list-tile v-else :key="item.text">
+					<v-list-tile v-else :key="item.text" @click="$router.push({path: item.to})">
 						<v-list-tile-action>
 							<v-icon>{{ item.icon }}</v-icon>
 						</v-list-tile-action>
@@ -79,7 +57,7 @@
 					</v-list-tile>
 				</template>
 			</v-list>
-		</v-navigation-drawer-->
+		</v-navigation-drawer>
 
 
 		<!--drawer end-->
@@ -128,13 +106,13 @@
 						<v-divider></v-divider>
 
 						<v-list>
-							<v-list-tile  v-for="(item, index) in profileList" :key="index" @click="">
+							<v-list-tile  v-for="(item, index) in profileList" :key="index">
 								<v-list-tile-title>{{ item.text }}</v-list-tile-title>
 							</v-list-tile>
 
 							<v-list-tile>
 								<v-list-tile-action>
-									<v-switch v-model="message" color="purple"></v-switch>
+									<v-switch v-model="darkTheme" color="orange"></v-switch>
 								</v-list-tile-action>
 								<v-list-tile-title>Dark</v-list-tile-title>
 							</v-list-tile>
@@ -145,22 +123,12 @@
 			<!--profile end -->
 		</v-toolbar>
 		<v-content>
-			<v-container fluid fill-height>
+			<v-container fluid style="overflow-y:scroll; min-height:calc(100vh - 100px); max-height:calc(100vh - 100px)">
 				<v-slide-y-transition mode="out-in">
 					<router-view :key="$route.fullPath" />
 				</v-slide-y-transition>
 			</v-container>
 		</v-content>
-		<v-navigation-drawer temporary fixed :right="right" v-model="rightDrawer" app>
-			<v-list>
-				<v-list-tile @click.native="right = !right">
-					<v-list-tile-action>
-						<v-icon light v-html="'compare_arrows'" />
-					</v-list-tile-action>
-					<v-list-tile-title>Switch drawer (click me)</v-list-tile-title>
-				</v-list-tile>
-			</v-list>
-		</v-navigation-drawer>
 		<v-footer dark :fixed="fixed" app>
 			<span class="pl-2"> &copy; GymKonnect 2019. All rights reserved.</span>
 			<v-spacer></v-spacer>
@@ -184,91 +152,84 @@
 <script lang="ts">
 import Vue from "vue"
 import appConfig from "@/app.config"
-import { Component } from "vue-property-decorator"
+import { Component, Watch } from "vue-property-decorator"
 import Keyboard from "mousetrap"
 import devResizer from "@/components/dev-resizer.vue"
+import { ThemeStore } from "@/state/theme"
 
 @Component({
-	components: {devResizer, },
-	page:{
-		// All subcomponent titles will be injected into this template.
-		titleTemplate(title) {
-		// @ts-ignore
-			title = typeof title === "function" ? title(this.$store) : title
-			return title ? `${title} | ${appConfig.title}` : appConfig.title
-		},
-	},
-	created(){
-		Keyboard.bind( [ "command+p", "ctrl+p", ], () => {
-			this.showDevResizer = !this.showDevResizer
-		})
-	},
+    components: { devResizer, },
+    page: {
+        // All subcomponent titles will be injected into this template.
+        titleTemplate(title) {
+            // @ts-ignore
+            title = typeof title === "function" ? title(this.$store) : title
+            return title ? `${title} | ${appConfig.title}` : appConfig.title
+        },
+    },
+    created() {
+        Keyboard.bind(["command+p", "ctrl+p",], () => {
+            this.showDevResizer = !this.showDevResizer
+        })
+    },
 })
 export default class Vuetify extends Vue {
-  menu: boolean = false;
-  message: boolean = false;
-  clipped: boolean = false;
-  showDevResizer: boolean = false;
-  drawer: boolean = false;
-  fixed: boolean = false;
-  miniVariant: boolean = false;
-  right: boolean = true;
-  rightDrawer: boolean = false;
-  title: string = "GymKonnect";
-  items: 
-  { icon: string, text: string, children: {icon: string, text: string, to: string}[], model: boolean, "icon-alt": string }[] |
-  { icon: string, heading: string, to?: string}[] |
-  { icon: string, text: string, to: string}[] | any
-  = [
-		{ icon: "apps", text: "Dashboard", to: "/", },
-		{ icon: "apps", text: "Members", children: [
-			{ icon: "apps", text: "List", to: "/", },
-			{ icon: "bubble_chart", text: "Registration", to: "/inspire", },
-			{ icon: "bubble_chart", text: "Renewal", to: "/inspire", },
-			{ icon: "bubble_chart", text: "Freezing", to: "/inspire", },
-			],
-			"icon-alt": "web",
-		},
-		{ icon: "bubble_chart", text: "Add Ons", to: "/inspire", },
-		{ icon: "bubble_chart", text: "Sales & Finance", to: "/inspire", },
-		{ icon: "bubble_chart", text: "HR", to: "/inspire", },
-		{ icon: "bubble_chart", text: "Settings", to: "/inspire", },
+    menu: boolean = false;
+    clipped: boolean = false;
+    showDevResizer: boolean = false;
+    drawer: boolean = false;
+    fixed: boolean = false;
+    miniVariant: boolean = false;
+    right: boolean = true;
+    rightDrawer: boolean = false;
+    title: string = "GymKonnect";
+    items:
+        { icon: string, text: string, children: { icon: string, text: string, to: string }[], model: boolean, "icon-alt": string }[] |
+        { icon: string, heading: string, to?: string }[] |
+        { icon: string, text: string, to: string }[] | any
+        = [
+            { icon: "apps", text: "Dashboard", to: "/", },
+            {
+                icon: "apps", text: "Members", children: [
+                    { icon: "apps", text: "List", to: "/", },
+                    { icon: "bubble_chart", text: "Registration", to: "/m-registration", },
+                    { icon: "bubble_chart", text: "Renewal", to: "/inspire", },
+                    { icon: "bubble_chart", text: "Freezing", to: "/inspire", },
+                ],
+                "icon-alt": "web",
+            },
+            { icon: "bubble_chart", text: "Add Ons", to: "/inspire", },
+            { icon: "bubble_chart", text: "Sales & Finance", to: "/inspire", },
+            { icon: "bubble_chart", text: "HR", to: "/inspire", },
+            { icon: "bubble_chart", text: "Settings", to: "/inspire", },
+        ];
+    profileList: { icon?: string, text: string }[] = [
+        { text: "My Account", },
+        { text: "Dummy", },
+        { text: "Logout", },
+        { text: "Exit", },
+    ];
+    dashbList: { text: string }[] = [
+        { text: "Dashboard", },
+    ];
+    dashList: { action: string, title: string, items?: { title: string, action?: string }[] }[] = [
+
+        {
+            action: "bubble_chart", title: "Members", items: [
+                { title: "List", action: "web" },
+                { title: "Registration" },
+                { title: "Renewal" },
+                { title: "Freezing" }
+            ]
+        },
+
+        {
+            action: "local_offer", title: "Add Ons"
+        }
 	];
-  	profileList: { icon ?: string, text: string }[] = [
-	  	{ text: "My Account", },
-	  	{ text: "Dummy", },
-	  	{ text: "Logout", },
-	  	{ text: "Exit", },
-	  ];
-	dashList: { action: string, title: string, items ?: { title: string }[] }[] = [
-          { action: "apps", title: "Dashboard", },
-          { action: "restaurant", title: "Dining", items: [
-              { title: "Breakfast & brunch" },
-              { title: "New American" },
-              { title: "Sushi" }
-            ]
-          },
-          { action: "school", title: "Education", items: [
-              { title: 'List Item' }
-            ]
-          },
-          { action: 'directions_run', title: 'Family', items: [
-              { title: 'List Item' }
-            ]
-          },
-          { action: 'healing', title: 'Health', items: [
-              { title: 'List Item' }
-            ]
-          },
-          { action: 'content_cut', title: 'Office', items: [
-              { title: 'List Item' }
-            ]
-          },
-          { action: 'local_offer', title: 'Promotions', items: [
-              { title: 'List Item' }
-            ]
-          }
-        ]
+	
+	darkTheme:boolean = ThemeStore.DARK_THEME
+	@Watch("darkTheme") toggleDarkTheme(){ ThemeStore.toggleDarkTheme() }
 }
 </script>
 
