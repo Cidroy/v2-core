@@ -7,6 +7,11 @@ export default [
 		component: () => lazyLoadView("/home"),
 	},
 	{
+		path: "/m-registration",
+		name: "Registration",
+		component: () => lazyLoadView("/m-registration"),
+	},
+	{
 		path: "/404",
 		name: "404",
 		component: require("@/pages/404").default,
