@@ -22,8 +22,6 @@
       </v-toolbar-->
 	  <!--drawer-->
 
-	
-
 		<v-navigation-drawer fixed :clipped="$vuetify.breakpoint.mdAndUp" app v-model="drawer">
 			<v-list dense>
 				<template v-for="item in items">
@@ -82,7 +80,7 @@
 			</v-btn>
 			<!--profile  -->
 			<div class="text-xs-center">
-				<v-menu v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-x>
+				<v-menu v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-x> 
 					<v-btn slot="activator" icon large>
 						<v-avatar color="orange darken-4" size="40">
 							<v-icon dark>account_circle</v-icon>
@@ -106,15 +104,18 @@
 						<v-divider></v-divider>
 
 						<v-list>
-							<v-list-tile  v-for="(item, index) in profileList" :key="index">
+							<v-list-tile  v-for="(item, index) in profileList" :key="index" @click="">
 								<v-list-tile-title>{{ item.text }}</v-list-tile-title>
 							</v-list-tile>
 
+							<v-divider></v-divider>
+
 							<v-list-tile>
-								<v-list-tile-action>
-									<v-switch v-model="darkTheme" color="orange"></v-switch>
-								</v-list-tile-action>
 								<v-list-tile-title>Dark</v-list-tile-title>
+								<v-list-tile-action>
+									<v-switch v-model="darkTheme" color="orange darken-4"></v-switch>
+								</v-list-tile-action>
+								
 							</v-list-tile>
 						</v-list>
 					</v-card>
@@ -198,10 +199,23 @@ export default class Vuetify extends Vue {
                 ],
                 "icon-alt": "web",
             },
-            { icon: "bubble_chart", text: "Add Ons", to: "/inspire", },
+            { 
+				icon: "bubble_chart", text: "Add Ons", children: [
+				{ icon: "apps", text: "One day", to: "/inspire", },
+            	{ icon: "bubble_chart", text: "Enquery", to: "/inspire", },
+				{ icon: "bubble_chart", text: "dummy", to: "/inspire", },
+				],
+				"icon-alt": "web",
+			},
             { icon: "bubble_chart", text: "Sales & Finance", to: "/inspire", },
             { icon: "bubble_chart", text: "HR", to: "/inspire", },
-            { icon: "bubble_chart", text: "Settings", to: "/inspire", },
+            { 
+				 icon: "web", text: "Settings", children: [
+				 { icon: "bubble_chart", text: "Edit", to: "/inspire", },
+            	 { icon: "bubble_chart", text: "Profile", to: "/inspire", },
+				 ],
+				 "icon-alt": "web",
+			}
         ];
     profileList: { icon?: string, text: string }[] = [
         { text: "My Account", },
@@ -209,25 +223,7 @@ export default class Vuetify extends Vue {
         { text: "Logout", },
         { text: "Exit", },
     ];
-    dashbList: { text: string }[] = [
-        { text: "Dashboard", },
-    ];
-    dashList: { action: string, title: string, items?: { title: string, action?: string }[] }[] = [
-
-        {
-            action: "bubble_chart", title: "Members", items: [
-                { title: "List", action: "web" },
-                { title: "Registration" },
-                { title: "Renewal" },
-                { title: "Freezing" }
-            ]
-        },
-
-        {
-            action: "local_offer", title: "Add Ons"
-        }
-	];
-	
+    
 	darkTheme:boolean = ThemeStore.DARK_THEME
 	@Watch("darkTheme") toggleDarkTheme(){ ThemeStore.toggleDarkTheme() }
 }
