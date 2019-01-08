@@ -43,7 +43,7 @@ class Application {
 	private defaultOptions: Electron.BrowserWindowConstructorOptions = {
 		frame: false,
 		show: false,
-		resizable: false,
+		resizable: true,
 	}
 
 	private store: Map<string, any> = new Map()
@@ -92,7 +92,7 @@ class Application {
 				Console.info("Main window set to `main` settings")
 				this.options.main = <Electron.BrowserWindowConstructorOptions>{
 					...this.defaultOptions,
-					...new WindowSize(display, display.size.width, display.size.height),
+					...new WindowSize(display, display.workArea.width, display.workArea.height),
 				}
 			}
 

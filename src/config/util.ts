@@ -1,4 +1,4 @@
-const isNotInstalled = () => true
+const isNotInstalled = () => false
 
 type  ILanguage =
 				  "en-US"
