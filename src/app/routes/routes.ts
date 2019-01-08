@@ -7,9 +7,24 @@ export default [
 		component: () => lazyLoadView("/home"),
 	},
 	{
+		path: "/m-list",
+		name: "M-List",
+		component: () => lazyLoadView("/m-list"),
+	},
+	{
 		path: "/m-registration",
 		name: "M-Registration",
 		component: () => lazyLoadView("/m-registration"),
+	},
+	{
+		path: "/m-renewal",
+		name: "M-Renewal",
+		component: () => lazyLoadView("/m-renewal"),
+	},
+	{
+		path: "/m-freeze",
+		name: "M-Freeze",
+		component: () => lazyLoadView("/m-freeze"),
 	},
 	{
 		path: "/404",

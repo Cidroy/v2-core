@@ -191,23 +191,24 @@ export default class Vuetify extends Vue {
         = [
             { icon: "apps", text: "Dashboard", to: "/", },
             {
-                icon: "apps", text: "Members", children: [
-                    { icon: "apps", text: "List", to: "/", },
-                    { icon: "bubble_chart", text: "Registration", to: "/m-registration", },
-                    { icon: "bubble_chart", text: "Renewal", to: "/inspire", },
-                    { icon: "bubble_chart", text: "Freezing", to: "/inspire", },
+                icon: "people", text: "Members", children: [
+                    { icon: "view_list", text: "List", to: "/m-list", },
+                    { icon: "group_add", text: "Registration", to: "/m-registration", },
+                    { icon: "autorenew", text: "Renewal", to: "/m-renewal", },
+                    { icon: "timer_off", text: "Freezing", to: "/m-freeze", },
                 ],
-                "icon-alt": "web",
+                "icon-alt": "people",
             },
             { 
-				icon: "bubble_chart", text: "Add Ons", children: [
-				{ icon: "apps", text: "One day", to: "/inspire", },
-            	{ icon: "bubble_chart", text: "Enquery", to: "/inspire", },
-				{ icon: "bubble_chart", text: "dummy", to: "/inspire", },
+				icon: "library_add", text: "Add Ons", children: [
+				{ icon: "assignment_ind", text: "Registrations", to: "/inspire", },
+            	{ icon: "bubble_chart", text: "Bookings", to: "/inspire", },
+				{ icon: "bubble_chart", text: "Enquiry", to: "/inspire", },
 				],
-				"icon-alt": "web",
+				"icon-alt": "library_add",
 			},
-            { icon: "bubble_chart", text: "Sales & Finance", to: "/inspire", },
+			{ icon: "bubble_chart", text: "Sales & Finance", to: "/inspire", },
+			{ icon: "bubble_chart", text: "Reports", to: "/inspire", },
             { icon: "bubble_chart", text: "HR", to: "/inspire", },
             { 
 				 icon: "web", text: "Settings", children: [
