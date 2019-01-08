@@ -22,6 +22,7 @@
 		"allowUnreachableCode": true, /* Do not report errors on unreachable code. */
 		"resolveJsonModule": true,
 		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
 		"typeRoots": [
 			"./typescript",
 			"./src/typescript",

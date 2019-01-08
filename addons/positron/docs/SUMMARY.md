@@ -7,4 +7,7 @@
 	* [Build](project/build.md)
 	* [Deploy](project/deploy.md)
 
+* Design
+	* [Models](code/model.md)
+
 * API

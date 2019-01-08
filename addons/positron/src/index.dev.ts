@@ -1,3 +1,4 @@
+import "reflect-metadata"
 // This file is only used in development mode
 
 // Set environment for development
