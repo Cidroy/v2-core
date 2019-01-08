@@ -35,7 +35,7 @@ module.exports = {
 		"brace-style": ["error", "stroustrup", { "allowSingleLine": true }],
 		"comma-dangle": ["error", { "functions": "never" }, "always-multiline"],
 		"comma-spacing": ["error", { "before": false, "after": true }],
-		"no-invalid-this": "error",
+		"no-invalid-this": "off",
 		"no-undefined": "error",
 		"no-fallthrough": "error",
 		"class-methods-use-this": 0,

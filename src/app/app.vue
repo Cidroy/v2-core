@@ -104,7 +104,7 @@
 						<v-divider></v-divider>
 
 						<v-list>
-							<v-list-tile  v-for="(item, index) in profileList" :key="index" @click="">
+							<v-list-tile  v-for="(item, index) in profileList" :key="index">
 								<v-list-tile-title>{{ item.text }}</v-list-tile-title>
 							</v-list-tile>
 
@@ -159,73 +159,73 @@ import devResizer from "@/components/dev-resizer.vue"
 import { ThemeStore } from "@/state/theme"
 
 @Component({
-    components: { devResizer, },
-    page: {
-        // All subcomponent titles will be injected into this template.
-        titleTemplate(title) {
-            // @ts-ignore
-            title = typeof title === "function" ? title(this.$store) : title
-            return title ? `${title} | ${appConfig.title}` : appConfig.title
-        },
-    },
-    created() {
-        Keyboard.bind(["command+p", "ctrl+p",], () => {
-            this.showDevResizer = !this.showDevResizer
-        })
-    },
+	components: { devResizer, },
+	page: {
+		// All subcomponent titles will be injected into this template.
+		titleTemplate(title) {
+			// @ts-ignore
+			title = typeof title === "function" ? title(this.$store) : title
+			return title ? `${title} | ${appConfig.title}` : appConfig.title
+		},
+	},
+	created() {
+		Keyboard.bind([ "command+p", "ctrl+p", ], () => {
+			this.showDevResizer = !this.showDevResizer
+		})
+	},
 })
 export default class Vuetify extends Vue {
-    menu: boolean = false;
-    clipped: boolean = false;
-    showDevResizer: boolean = false;
-    drawer: boolean = false;
-    fixed: boolean = false;
-    miniVariant: boolean = false;
-    right: boolean = true;
-    rightDrawer: boolean = false;
-    title: string = "GymKonnect";
-    items:
-        { icon: string, text: string, children: { icon: string, text: string, to: string }[], model: boolean, "icon-alt": string }[] |
-        { icon: string, heading: string, to?: string }[] |
-        { icon: string, text: string, to: string }[] | any
-        = [
-            { icon: "apps", text: "Dashboard", to: "/", },
-            {
-                icon: "apps", text: "Members", children: [
-                    { icon: "apps", text: "List", to: "/", },
-                    { icon: "bubble_chart", text: "Registration", to: "/m-registration", },
-                    { icon: "bubble_chart", text: "Renewal", to: "/inspire", },
-                    { icon: "bubble_chart", text: "Freezing", to: "/inspire", },
-                ],
-                "icon-alt": "web",
-            },
-            { 
-				icon: "bubble_chart", text: "Add Ons", children: [
-				{ icon: "apps", text: "One day", to: "/inspire", },
-            	{ icon: "bubble_chart", text: "Enquery", to: "/inspire", },
-				{ icon: "bubble_chart", text: "dummy", to: "/inspire", },
+	menu: boolean = false;
+	clipped: boolean = false;
+	showDevResizer: boolean = false;
+	drawer: boolean = false;
+	fixed: boolean = false;
+	miniVariant: boolean = false;
+	right: boolean = true;
+	rightDrawer: boolean = false;
+	title: string = "GymKonnect";
+	items:
+		{ icon: string, text: string, children: { icon: string, text: string, to: string }[], model: boolean, "icon-alt": string }[] |
+		{ icon: string, heading: string, to?: string }[] |
+		{ icon: string, text: string, to: string }[] | any
+		= [
+			{ icon: "apps", text: "Dashboard", to: "/", },
+			{
+				icon: "apps", text: "Members", children: [
+					{ icon: "apps", text: "List", to: "/", },
+					{ icon: "bubble_chart", text: "Registration", to: "/m-registration", },
+					{ icon: "bubble_chart", text: "Renewal", to: "/inspire", },
+					{ icon: "bubble_chart", text: "Freezing", to: "/inspire", },
 				],
 				"icon-alt": "web",
 			},
-            { icon: "bubble_chart", text: "Sales & Finance", to: "/inspire", },
-            { icon: "bubble_chart", text: "HR", to: "/inspire", },
-            { 
-				 icon: "web", text: "Settings", children: [
-				 { icon: "bubble_chart", text: "Edit", to: "/inspire", },
-            	 { icon: "bubble_chart", text: "Profile", to: "/inspire", },
-				 ],
-				 "icon-alt": "web",
-			}
-        ];
-    profileList: { icon?: string, text: string }[] = [
-        { text: "My Account", },
-        { text: "Dummy", },
-        { text: "Logout", },
-        { text: "Exit", },
-    ];
-    
-	darkTheme:boolean = ThemeStore.DARK_THEME
-	@Watch("darkTheme") toggleDarkTheme(){ ThemeStore.toggleDarkTheme() }
+			{
+				icon: "bubble_chart", text: "Add Ons", children: [
+					{ icon: "apps", text: "One day", to: "/inspire", },
+					{ icon: "bubble_chart", text: "Enquery", to: "/inspire", },
+					{ icon: "bubble_chart", text: "dummy", to: "/inspire", },
+				],
+				"icon-alt": "web",
+			},
+			{ icon: "bubble_chart", text: "Sales & Finance", to: "/inspire", },
+			{ icon: "bubble_chart", text: "HR", to: "/inspire", },
+			{
+				icon: "web", text: "Settings", children: [
+					{ icon: "bubble_chart", text: "Edit", to: "/inspire", },
+					{ icon: "bubble_chart", text: "Profile", to: "/inspire", },
+				],
+				"icon-alt": "web",
+			},
+		];
+	profileList: { icon?: string, text: string }[] = [
+		{ text: "My Account", },
+		{ text: "Dummy", },
+		{ text: "Logout", },
+		{ text: "Exit", },
+	];
+
+	darkTheme: boolean = ThemeStore.DARK_THEME
+	@Watch("darkTheme") toggleDarkTheme() { ThemeStore.toggleDarkTheme() }
 }
 </script>
 

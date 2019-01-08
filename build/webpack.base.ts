@@ -61,7 +61,7 @@ const baseConfig: webpack.Configuration = {
 				include: RESOLVE_PATHS,
 			},
 			{
-				test: /\.(jsx?|vue)$/,
+				test: /\.(jsx?)$/,
 				loader: "eslint-loader",
 				enforce: "pre",
 				exclude: /node_modules/,

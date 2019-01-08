@@ -27,11 +27,6 @@ import { Component, Prop, Inject } from "vue-property-decorator"
 	},
 })
 export default class E404Page extends Vue{
-	@Prop({ default: "", type: String, }) resource: string
-
-	constructor(){
-		super()
-		this.resource = ""
-	}
+	@Prop({ default: "", type: String, }) resource!: string
 }
 </script>
