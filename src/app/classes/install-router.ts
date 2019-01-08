@@ -1,7 +1,7 @@
 import lazyLoadView from "@/utils/lazy-load-view"
 import { ILanguage } from "@/i18n"
 import { SoftwareMode } from "@classes/enum/software-mode"
-import { SupportedBiometricDevice } from "@classes/enum/supported-devices"
+import { SupportedBiometricDevice } from "@classes/enum/supported-biometric-devices"
 
 export interface IRoute {
 	path: string

@@ -175,57 +175,58 @@ import { ThemeStore } from "@/state/theme"
 	},
 })
 export default class Vuetify extends Vue {
-	menu: boolean = false;
-	clipped: boolean = false;
-	showDevResizer: boolean = false;
-	drawer: boolean = false;
-	fixed: boolean = false;
-	miniVariant: boolean = false;
-	right: boolean = true;
-	rightDrawer: boolean = false;
-	title: string = "GymKonnect";
-	items:
-		{ icon: string, text: string, children: { icon: string, text: string, to: string }[], model: boolean, "icon-alt": string }[] |
-		{ icon: string, heading: string, to?: string }[] |
-		{ icon: string, text: string, to: string }[] | any
-		= [
-			{ icon: "apps", text: "Dashboard", to: "/", },
-			{
-				icon: "apps", text: "Members", children: [
-					{ icon: "apps", text: "List", to: "/", },
-					{ icon: "bubble_chart", text: "Registration", to: "/m-registration", },
-					{ icon: "bubble_chart", text: "Renewal", to: "/inspire", },
-					{ icon: "bubble_chart", text: "Freezing", to: "/inspire", },
+    menu: boolean = false;
+    clipped: boolean = false;
+    showDevResizer: boolean = false;
+    drawer: boolean = false;
+    fixed: boolean = false;
+    miniVariant: boolean = false;
+    right: boolean = true;
+    rightDrawer: boolean = false;
+    title: string = "GymKonnect";
+    items:
+        { icon: string, text: string, children: { icon: string, text: string, to: string }[], model: boolean, "icon-alt": string }[] |
+        { icon: string, heading: string, to?: string }[] |
+        { icon: string, text: string, to: string }[] | any
+        = [
+            { icon: "apps", text: "Dashboard", to: "/", },
+            {
+                icon: "people", text: "Members", children: [
+                    { icon: "view_list", text: "List", to: "/m-list", },
+                    { icon: "group_add", text: "Registration", to: "/m-registration", },
+                    { icon: "autorenew", text: "Renewal", to: "/m-renewal", },
+                    { icon: "timer_off", text: "Freezing", to: "/m-freeze", },
+                ],
+                "icon-alt": "people",
+            },
+            { 
+				icon: "library_add", text: "Add Ons", children: [
+				{ icon: "assignment_ind", text: "Registrations", to: "/inspire", },
+            	{ icon: "bubble_chart", text: "Bookings", to: "/inspire", },
+				{ icon: "bubble_chart", text: "Enquiry", to: "/inspire", },
 				],
-				"icon-alt": "web",
-			},
-			{
-				icon: "bubble_chart", text: "Add Ons", children: [
-					{ icon: "apps", text: "One day", to: "/inspire", },
-					{ icon: "bubble_chart", text: "Enquery", to: "/inspire", },
-					{ icon: "bubble_chart", text: "dummy", to: "/inspire", },
-				],
-				"icon-alt": "web",
+				"icon-alt": "library_add",
 			},
 			{ icon: "bubble_chart", text: "Sales & Finance", to: "/inspire", },
-			{ icon: "bubble_chart", text: "HR", to: "/inspire", },
-			{
-				icon: "web", text: "Settings", children: [
-					{ icon: "bubble_chart", text: "Edit", to: "/inspire", },
-					{ icon: "bubble_chart", text: "Profile", to: "/inspire", },
-				],
-				"icon-alt": "web",
-			},
-		];
-	profileList: { icon?: string, text: string }[] = [
-		{ text: "My Account", },
-		{ text: "Dummy", },
-		{ text: "Logout", },
-		{ text: "Exit", },
-	];
-
-	darkTheme: boolean = ThemeStore.DARK_THEME
-	@Watch("darkTheme") toggleDarkTheme() { ThemeStore.toggleDarkTheme() }
+			{ icon: "bubble_chart", text: "Reports", to: "/inspire", },
+            { icon: "bubble_chart", text: "HR", to: "/inspire", },
+            { 
+				 icon: "web", text: "Settings", children: [
+				 { icon: "bubble_chart", text: "Edit", to: "/inspire", },
+            	 { icon: "bubble_chart", text: "Profile", to: "/inspire", },
+				 ],
+				 "icon-alt": "web",
+			}
+        ];
+    profileList: { icon?: string, text: string }[] = [
+        { text: "My Account", },
+        { text: "Dummy", },
+        { text: "Logout", },
+        { text: "Exit", },
+    ];
+    
+	darkTheme:boolean = ThemeStore.DARK_THEME
+	@Watch("darkTheme") toggleDarkTheme(){ ThemeStore.toggleDarkTheme() }
 }
 </script>
 

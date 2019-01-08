@@ -5,7 +5,7 @@ import { resolve } from "~build/webpack.base"
 
 export const RESOLVE = (src: string) => path.resolve(__dirname, "..", src)
 
-const RESOLVE_PATHS = [
+export const RESOLVE_PATHS = [
 	RESOLVE(""),
 	RESOLVE("src"),
 	RESOLVE("test"),
@@ -79,13 +79,6 @@ const baseConfig: webpack.Configuration = {
 	},
 	module: {
 		rules: [
-			{
-				test: /\.((j|t)sx?)$/,
-				use: "strip-debug-block",
-				enforce: "pre",
-				exclude: /node_modules/,
-				include: RESOLVE_PATHS,
-			},
 			{
 				test: /\.js$/,
 				loader: "eslint-loader",
