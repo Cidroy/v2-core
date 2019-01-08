@@ -1,2 +1,3 @@
 static/icons/*
 docs/_book
+src/db/connection.dev.ts

@@ -93,7 +93,7 @@ class MAIN {
 
 	/**
 	 *move the installer to next stage from current stage
-	 * TODO : Essential Logic
+	 * TODO: Essential Logic
 	 * @static
 	 * @param {Stage} currentStage
 	 * @memberof MAIN

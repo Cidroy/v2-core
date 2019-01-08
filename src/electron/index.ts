@@ -49,7 +49,7 @@ class Application {
 	private store: Map<string, any> = new Map()
 
 	private async initializeStorage() {
-		// TODO : Get settings from server
+		// TODO: Get settings from server
 		let data = {}
 		this.store = new Map(Object.entries(data))
 	}
