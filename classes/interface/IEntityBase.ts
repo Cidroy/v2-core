@@ -7,7 +7,7 @@
 export interface IModification{
 	modifiedAt: Date,
 	modifier: string,
-	modification: JSON,
+	modification: string[],
 }
 
 /**

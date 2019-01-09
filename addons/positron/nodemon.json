@@ -4,5 +4,5 @@
 		"ts": "ts-node -r tsconfig-paths/register "
 	},
 	"delay": 1000,
-	"exec": "clear && ts-node -r tsconfig-paths/register {{filename}}"
+	"exec": "ts-node -r tsconfig-paths/register {{filename}}"
 }
