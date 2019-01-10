@@ -37,6 +37,8 @@
 			"@@/*": [ "src/*" ],
 			"@positron/*": [ "addons/positron/src/*" ],
 			"~positron/*": [ "addons/positron/*" ],
+			"@neutron/*": [ "addons/neutron/src/*" ],
+			"~neutron/*": [ "addons/neutron/*" ],
 			"~/*": [ "*" ],
 			"~addons/*": [ "addons/*" ],
 			"~build/*": [ "build/*" ],
