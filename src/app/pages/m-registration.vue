@@ -1,7 +1,9 @@
 <template>
 	<Layout>
-		<h1 class="text-md-center">Member Registration</h1>
-
+		<h1 class="text-md-center">
+			Member Registration
+			<v-btn outline fixed right> <v-icon >print</v-icon> </v-btn>
+		</h1>
 		<v-stepper v-model="e1">
 			<v-stepper-header>
 				<v-stepper-step :rules="[() => true]" editable :complete="e1 > 1" step="1">Personal Details </v-stepper-step>
@@ -15,23 +17,24 @@
 
 			<v-stepper-items>
 				<v-stepper-content step="1">
-					<v-card class="mb-5" color="transparent" height="400px">
-							<v-radio-group label="Registration Type" v-model="row" row>
+					<v-card class="mb-5" color="transparent" height="500px">
+						<v-radio-group label="Registration Type" v-model="row" row>
       							<v-radio label="Solo" value="radio-1"></v-radio>
      							<v-radio label="Couple" value="radio-2"></v-radio>
 								<v-radio label="Group" value="radio-3"></v-radio>
     						</v-radio-group>
+
 						<v-layout row wrap>
 							<v-flex xs9>
 								<v-layout row wrap>
 									<v-flex xs12 lg4 class="px-1">
-										<v-text-field v-model="firstname" :rules="nameRules" :counter="15" placeholder="First Name" required></v-text-field>
+										<v-text-field v-model="firstname" :rules="nameRules" :counter="15" label="First Name" required></v-text-field>
 									</v-flex>
 									<v-flex xs12 lg4 class="px-1">
-										<v-text-field  :counter="15" placeholder="Middle Name"></v-text-field>
+										<v-text-field  :counter="15" label="Middle Name"></v-text-field>
 									</v-flex>
 									<v-flex xs12 lg4 class="px-1">
-										<v-text-field  :counter="15" placeholder="Last Name"></v-text-field>
+										<v-text-field  :counter="15" label="Last Name"></v-text-field>
 									</v-flex>
 
 									<v-flex xs12 lg6>
@@ -47,39 +50,69 @@
 											<v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
 										</v-menu>
 									</v-flex>
- 
+									<v-flex xs12 lg6 class="pr-2">
+									 <v-combobox :items="items" label="Occupation"></v-combobox>
+									</v-flex>
+									<v-flex xs12 lg6 class="pl-2">
+									<v-select :items="Category" label="Category"></v-select>
+									</v-flex>
+									<v-flex xs12 lg6 class="pr-2">
+									 <v-select :items="idProof" label="ID Proof"></v-select>
+									</v-flex>
+									<v-flex xs12 lg6 class="pl-2">
+									<v-text-field  :counter="15" label="ID Number"></v-text-field>
+									</v-flex>
+									<v-flex xs12 lg8 class="pr-2">
+									<v-textarea	name="input-7-1" label="residential Address"></v-textarea>
+									</v-flex>
+									<v-flex xs12 lg4 class="pl-2">
+									 <v-select :items="bodyType" label="Body Type"></v-select>
+									</v-flex>
+								
 									<v-spacer></v-spacer>
 								</v-layout>
 							</v-flex>
-							<v-flex xs3></v-flex>
+							<v-flex xs3 class="pa-4">
+							<v-card>
+								<v-img :src="cards[0].src" height="200px" />
+								 <v-btn block> <v-icon>add</v-icon> Add Photo</v-btn>
+							</v-card>
+
+								
+
+							</v-flex>
 						</v-layout>
-
-
 					</v-card>
-					<v-btn @click="e1 = 2">
-						NEXT
-					</v-btn>
-					<v-btn flat>Cancel</v-btn>
+					<div class="right">
+						<v-btn flat>Cancel</v-btn>
+						<v-btn @click="e1 = 2">
+							NEXT
+						</v-btn>
+					</div>
 				</v-stepper-content>
 
 				<v-stepper-content step="2">
 					<v-card class="mb-5" color="transparent" height="400px"></v-card>
 
+					<div class="right">
+					<v-btn flat>Cancel</v-btn>
 					<v-btn @click="e1 = 3">
 						NEXT
 					</v-btn>
+					</div>
 
-					<v-btn flat>Cancel</v-btn>
 				</v-stepper-content>
 
 				<v-stepper-content step="3">
 					<v-card class="mb-5" color="transparent" height="400px"></v-card>
 
+					<div class="right">
+					<v-btn flat>Cancel</v-btn>
 					<v-btn @click="e1 = 4">
 						NEXT
 					</v-btn>
+					</div>
 
-					<v-btn flat>Cancel</v-btn>
 				</v-stepper-content>
 
 				<v-stepper-content step="4">
@@ -157,7 +190,6 @@
 						</v-card>	
 					</v-dialog>
 
-					<v-btn flat>Cancel</v-btn>
 				</v-stepper-content>
 			</v-stepper-items>
 		</v-stepper>
@@ -206,6 +238,33 @@ export default class Home extends Vue{
 	loader= null
 	loading= false
 	dialog= false
+	 
+    items = [
+          'Programming',
+          'Design',
+          'Vue',
+          'Vuetify'
+		]
+	Category = [
+          'student',
+          'Senior Citizen',
+          'Professionals',
+          'Buisness Man'
+		]
+	idProof = [
+          'Aadhaar Card',
+          'Passport',
+          'License',
+          'Pan Card'
+		]
+	bodyType = [
+          'endomorph',
+          'ectomorph',
+          'mesomorph'
+		]
+	cards = [
+        { src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 10 }
+      ]
 	
 	@Watch("date")
 	onDateChanged(){
