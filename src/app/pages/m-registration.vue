@@ -2,7 +2,7 @@
 	<Layout>
 		<h1 class="text-md-center">
 			Member Registration
-			<v-btn outline fixed right> <v-icon >print</v-icon> </v-btn>
+			<v-btn outline absolute right> <v-icon >print</v-icon> </v-btn>
 		</h1>
 		<v-stepper v-model="e1">
 			<v-stepper-header>
@@ -63,7 +63,7 @@
 									<v-text-field  :counter="15" label="ID Number"></v-text-field>
 									</v-flex>
 									<v-flex xs12 lg8 class="pr-2">
-									<v-textarea	name="input-7-1" label="residential Address"></v-textarea>
+									<v-textarea	name="input-7-1" label="Residential Address"></v-textarea>
 									</v-flex>
 									<v-flex xs12 lg4 class="pl-2">
 									 <v-select :items="bodyType" label="Body Type"></v-select>
@@ -73,12 +73,10 @@
 								</v-layout>
 							</v-flex>
 							<v-flex xs3 class="pa-4">
-							<v-card>
-								<v-img :src="cards[0].src" height="200px" />
-								 <v-btn block> <v-icon>add</v-icon> Add Photo</v-btn>
-							</v-card>
-
-								
+								<v-card>
+									<v-img :src="cards[0].src" height="200px" />
+									<v-btn block> <v-icon>add</v-icon> Add Photo</v-btn>
+								</v-card>
 
 							</v-flex>
 						</v-layout>
@@ -92,7 +90,9 @@
 				</v-stepper-content>
 
 				<v-stepper-content step="2">
-					<v-card class="mb-5" color="transparent" height="400px"></v-card>
+					<v-card class="mb-5" color="transparent" height="400px">
+						<h3 class="text-md-center">Contact Details</h3>
+					</v-card>
 
 					<div class="right">
 					<v-btn flat>Cancel</v-btn>
