@@ -10,7 +10,7 @@
 				<v-divider></v-divider>
 				<v-stepper-step editable :complete="e1 > 3" step="3">Members Plan</v-stepper-step>
 				<v-divider></v-divider>
-				<v-stepper-step editable step="4">Members Plan</v-stepper-step>
+				<v-stepper-step editable step="4">Final Step</v-stepper-step>
 			</v-stepper-header>
 
 			<v-stepper-items>
@@ -83,11 +83,79 @@
 				</v-stepper-content>
 
 				<v-stepper-content step="4">
-					<v-card class="mb-5" color="transparent" height="400px"></v-card>
+					<v-card class="mb-5" color="transparent" height="400px">
+						<v-layout row wrap>
+							
+							<v-flex xs1>
+								<v-subheader>Member ID</v-subheader>
+							</v-flex>
+							<v-flex xs4>
+								<v-text-field label="Enter or Generate ID" single-line solo></v-text-field>
+							</v-flex>
+							<v-flex xs2>
+								<v-btn :loading="loading" :disabled="loading" color="secondary" @click="loader = 'loading'">Generate</v-btn>
+							</v-flex>	
 
-					<v-btn @click="e1 = 1">
-						NEXT
-					</v-btn>
+							<v-flex xs12 lg6 class="pa-1">
+								<v-combobox v-model="select" :items="purposes" label="Purpose of Joining Gym" multiple chips hint="Maximum 3 choices" persistent-hint clearable= 'false' deletable-chips= 'true'></v-combobox>
+							</v-flex>
+							<v-spacer></v-spacer>
+							<v-flex xs5 md5 class="pa-1 pt-3">
+								<v-menu ref="menu4" :close-on-content-click="false" v-model="menu4" :nudge-right="40" lazy transition="scale-transition" offset-y full-width>
+									<v-text-field slot="activator" v-model="dateFormatted" label="Date of Joining" hint="DD/MM/YYYY" persistent-hint @blur="date = parseDate(dateFormatted)"></v-text-field>
+									<v-date-picker v-model="date" no-title @input="menu4 = false"></v-date-picker>
+								</v-menu>
+							</v-flex>
+							
+							<v-flex xs12 class="pt-5">
+								<span class="title font-weight-regular">How did you hear of us?</span>
+								<v-layout align-start row>
+									<v-checkbox v-model="selected" label="Family/Friends" value="Family/Friends"></v-checkbox>
+									<v-checkbox v-model="selected" label="Advertisement" value="Advertisement"></v-checkbox>
+									<v-checkbox v-model="selected" label="Family/Friends" value="Family/Friends"></v-checkbox>
+									<v-checkbox v-model="selected" label="Advertisement" value="Advertisement"></v-checkbox>
+									<v-checkbox v-model="selected" label="Family/Friends" value="Family/Friends"></v-checkbox>
+									<v-checkbox v-model="selected" label="Advertisement" value="Advertisement"></v-checkbox>
+								</v-layout>
+							</v-flex>	
+
+							<v-flex xs12>
+								<v-layout align-end justify-start reverse fill-height>
+									<v-checkbox v-model="checkbox">
+										<div slot="label">
+											I agree to Gym
+											<v-tooltip bottom>
+												<a slot="activator" target="_blank" href="" @click.stop>Rules & Regulations</a>
+												Opens in new window
+											</v-tooltip>
+											followed by
+											<v-tooltip bottom>
+												<a slot="activator" target="_blank" href="" @click.stop>Terms & Conditions.</a>
+												Opens in new window
+											</v-tooltip>
+										</div>
+									</v-checkbox>
+								</v-layout>
+							</v-flex>	
+						</v-layout>
+					</v-card>
+
+					<v-dialog v-model="dialog" persistent max-width="500px">	
+						<v-btn slot="activator" color="orange darken-4" class="mb-2">Submit</v-btn>
+						<v-card>
+							<v-toolbar card dark color="orange darken-4">
+								<v-toolbar-title>Choose Wisely</v-toolbar-title>
+							</v-toolbar>
+							<v-card-text>
+								<v-header>Do you want to Proceed for payments?</v-header>
+							</v-card-text>		
+							<v-card-actions>
+								<v-spacer></v-spacer>
+								<v-btn color="orange darken-4" @click="dialog = false">Yes</v-btn>
+								<v-btn color="orange darken-4" @click="dialog = false">No</v-btn>
+							</v-card-actions>
+						</v-card>	
+					</v-dialog>
 
 					<v-btn flat>Cancel</v-btn>
 				</v-stepper-content>
@@ -101,6 +169,7 @@ import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
 import SystemInformation from "@/components/system-information.vue"
 import { Component, Vue, Watch } from "vue-property-decorator"
+import { watch } from 'fs';
 
 @Component({
 	components: { Layout, SystemInformation, },
@@ -121,10 +190,33 @@ export default class Home extends Vue{
 	date= new Date().toISOString().substr(0, 10)
 	dateFormatted= this.formatDate(this.date)
 	menu1= false
+	menu4= false
+	select= []
+    purposes= [
+        'General Fitness',
+        'Lose Fat',
+        'Gain Muscle',
+		'Tone Up',
+		'Sports Oriented',
+		'Lifestyle',
+		'Transform',
+		'Specialized Training'
+	]
+	selected= []
+	loader= null
+	loading= false
+	dialog= false
 	
 	@Watch("date")
 	onDateChanged(){
 		this.dateFormatted = this.formatDate(this.date)
+	}
+
+	@Watch("select")
+	onSelectMax(val){
+		if (val.length > 3) {
+          this.$nextTick(() => this.select.pop())
+        }
 	}
 
 	get getDateFormatted(){
