@@ -9,8 +9,8 @@ export class Modifications implements IModification{
 	public modifiedAt!: Date
 	@GQL.Field(type => String)
 	public modifier!: string
-	@GQL.Field(type => String)
-	public modification!: JSON
+	@GQL.Field(type => [ String, ])
+	public modification!: string[]
 }
 
 @GQL.ObjectType()
@@ -25,8 +25,7 @@ export default class Base extends DB.BaseEntity implements IEntityBase{
 	public active : boolean = true
 
 	@GQL.Field(type => Date, { description: "Created at" })
-	@DB.Column("timestamp with time zone")
-	@DB.CreateDateColumn()
+	@DB.Column("datetime")
 	public createdAt!: Date
 
 	@GQL.Field(type => String, { description: "Author of Entity" })
@@ -38,8 +37,7 @@ export default class Base extends DB.BaseEntity implements IEntityBase{
 	public modifications: IModification[] = []
 
 	@GQL.Field(type => Date, { description: "Last modification Date", nullable: true })
-	@DB.Column("time with time zone", { nullable: true })
-	@DB.UpdateDateColumn()
+	@DB.Column("datetime", { nullable: true })
 	public lastModifiedAt?: Date
 
 	@GQL.Field(type => String, { description: "Last Modifier", nullable: true })
@@ -49,6 +47,18 @@ export default class Base extends DB.BaseEntity implements IEntityBase{
 	@DB.BeforeInsert()
 	public beforeInsert(){
 		this.author = POSITRON.User.id
+		this.createdAt = new Date()
+	}
+
+	@DB.BeforeUpdate()
+	public beforeUpdate(){
+		this.lastModifier = POSITRON.User.id
+		this.lastModifiedAt = new Date()
+		this.modifications.push({
+			modifier: this.lastModifier,
+			modifiedAt: this.lastModifiedAt,
+			modification: []
+		})
 	}
 
 	// TODO: implement object-diff to store the difference

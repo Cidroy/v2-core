@@ -30,6 +30,8 @@ class Positron{
 	
 		let server = app.listen(config.config.port, () => {
 			this.log.okay("SERVER READY")
+			this.log.info(`REST: http://localhost:${config.config.port}`)
+			this.log.info(`GQL : http://localhost:${config.config.port}/gql`)
 		})
 	
 		return server
