@@ -1,9 +1,19 @@
 <template>
 	<Layout>
-		<h1 class="text-md-center">
-			Member Registration
-			<v-btn outline fixed right> <v-icon >print</v-icon> </v-btn>
-		</h1>
+		<v-layout row>
+			<v-flex xs12 md7>
+				<h1 class="text-md-right text-xs-center"> Member Registration </h1>
+			</v-flex>
+			<v-flex xs12 md5>
+				<v-layout justify-end>
+					<v-tooltip left>
+						<v-btn outline slot="activator"><v-icon >print</v-icon></v-btn>
+						<span>Print Blank Form</span> 
+					</v-tooltip> 
+
+				</v-layout>
+			</v-flex>
+		</v-layout>
 		<v-stepper v-model="e1">
 			<v-stepper-header>
 				<v-stepper-step :rules="[() => true]" editable :complete="e1 > 1" step="1">Personal Details </v-stepper-step>
@@ -173,22 +183,25 @@
 						</v-layout>
 					</v-card>
 
-					<v-dialog v-model="dialog" persistent max-width="500px">	
-						<v-btn slot="activator" color="orange darken-4" class="mb-2">Submit</v-btn>
-						<v-card>
-							<v-toolbar card dark color="orange darken-4">
-								<v-toolbar-title>Choose Wisely</v-toolbar-title>
-							</v-toolbar>
-							<v-card-text>
-								<v-header>Do you want to Proceed for payments?</v-header>
-							</v-card-text>		
-							<v-card-actions>
-								<v-spacer></v-spacer>
-								<v-btn color="orange darken-4" @click="dialog = false">Yes</v-btn>
-								<v-btn color="orange darken-4" @click="dialog = false">No</v-btn>
-							</v-card-actions>
-						</v-card>	
-					</v-dialog>
+					<div class="right">
+						<v-btn flat>Cancel</v-btn>
+						<v-dialog v-model="dialog" persistent max-width="500px">	
+							<v-btn slot="activator" color="orange darken-4" class="mb-2">Submit</v-btn>
+							<v-card>
+								<v-toolbar card dark color="orange darken-4">
+									<v-toolbar-title>Choose Wisely</v-toolbar-title>
+								</v-toolbar>
+								<v-card-text>
+									<v-header>Do you want to Proceed for payments?</v-header>
+								</v-card-text>		
+								<v-card-actions>
+									<v-spacer></v-spacer>
+									<v-btn color="orange darken-4" @click="dialog = false">Yes</v-btn>
+									<v-btn color="orange darken-4" @click="dialog = false">No</v-btn>
+								</v-card-actions>
+							</v-card>	
+						</v-dialog>
+					</div>
 
 				</v-stepper-content>
 			</v-stepper-items>
