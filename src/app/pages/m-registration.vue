@@ -140,7 +140,7 @@
 							</v-flex>	
 
 							<v-flex xs12 lg6 class="pa-1">
-								<v-combobox v-model="select" :items="purposes" label="Purpose of Joining Gym" multiple chips hint="Maximum 3 choices" persistent-hint clearable= 'false' deletable-chips= 'true'></v-combobox>
+								<v-combobox v-model="select" :items="purposes" label="Purpose of Joining Gym" multiple chips hint="Maximum 3 choices" persistent-hint clearable deletable-chips></v-combobox>
 							</v-flex>
 							<v-spacer></v-spacer>
 							<v-flex xs5 md5 class="pa-1 pt-3">
@@ -155,10 +155,10 @@
 								<v-layout align-start row>
 									<v-checkbox v-model="selected" label="Family/Friends" value="Family/Friends"></v-checkbox>
 									<v-checkbox v-model="selected" label="Advertisement" value="Advertisement"></v-checkbox>
-									<v-checkbox v-model="selected" label="Family/Friends" value="Family/Friends"></v-checkbox>
-									<v-checkbox v-model="selected" label="Advertisement" value="Advertisement"></v-checkbox>
-									<v-checkbox v-model="selected" label="Family/Friends" value="Family/Friends"></v-checkbox>
-									<v-checkbox v-model="selected" label="Advertisement" value="Advertisement"></v-checkbox>
+									<v-checkbox v-model="selected" label="Walk-In" value="Walk-In"></v-checkbox>
+									<v-checkbox v-model="selected" label="Internet" value="Internet"></v-checkbox>
+									<v-checkbox v-model="selected" label="Recommendation" value="Recommendation"></v-checkbox>
+									<v-checkbox v-model="selected" label="Telephonic" value="Telephonic"></v-checkbox>
 								</v-layout>
 							</v-flex>	
 
@@ -168,12 +168,12 @@
 										<div slot="label">
 											I agree to Gym
 											<v-tooltip bottom>
-												<a slot="activator" target="_blank" href="" @click.stop>Rules & Regulations</a>
+												<a slot="activator" @click.stop>Rules & Regulations</a>
 												Opens in new window
 											</v-tooltip>
 											followed by
 											<v-tooltip bottom>
-												<a slot="activator" target="_blank" href="" @click.stop>Terms & Conditions.</a>
+												<a slot="activator" @click.stop>Terms & Conditions.</a>
 												Opens in new window
 											</v-tooltip>
 										</div>
