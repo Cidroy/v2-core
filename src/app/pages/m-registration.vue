@@ -149,7 +149,28 @@
 				</v-stepper-content>
 
 				<v-stepper-content step="3">
-					<v-card class="mb-5" color="transparent" height="400px"></v-card>
+					<v-card class="mb-2" color="transparent" height="400px">
+						<h3>Type Of Membership</h3>
+							<v-layout row wrap>
+								<v-checkbox class="ml-4" label="Gold" ></v-checkbox>
+								<v-checkbox label="Platinum" ></v-checkbox>
+							</v-layout>
+						<h3>Membership Duration</h3>
+							<v-layout row wrap>
+								<v-checkbox class="ml-4" label="Monthly" ></v-checkbox>
+								<v-checkbox label="Quaterly" ></v-checkbox>
+								<v-checkbox label="Half-Yearly" ></v-checkbox>
+								<v-checkbox label="Yearly" ></v-checkbox>
+							</v-layout>
+						<h3>Preferable Time Slot:</h3>
+							<v-radio-group v-model="radios" :mandatory="false">
+								<v-layout row wrap>
+									<v-radio class="ml-4 mt-1" label="Peak Hours" value="radio-7"></v-radio>
+									<v-radio class="ml-4 mt-1" label="Off-Peak Hours" value="radio-8"></v-radio>
+								</v-layout>
+							</v-radio-group>
+							<v-checkbox class="ml-4" label="Apply for personal training program" ></v-checkbox>
+					</v-card>
 
 					<div class="right">
 					<v-btn flat>Cancel</v-btn>
@@ -292,7 +313,8 @@ export default class Home extends Vue{
 	]
 	selected= []
 	loader= null
-	
+	radios = 'radio-7'
+	test = 'Monthly'
 	loading= false
 	dialog= false
 	 
