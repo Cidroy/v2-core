@@ -7,6 +7,7 @@ import connectDatabase from "@positron/db"
 import { Logger } from "@positron/lib/CONSOLE"
 import { Connection } from "typeorm"
 import GQL from "@positron/graphql"
+import { Neutron } from "@neutron/NEUTRON"
 
 declare const module: any
 class Positron{
@@ -58,6 +59,8 @@ class Positron{
 
 	constructor(){
 		this.log = new Logger("p-main")
+		this.log.info("new instance")
+		let neutron = new Neutron()
 	}
 }
 

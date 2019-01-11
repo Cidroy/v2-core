@@ -13,18 +13,16 @@ export const RESOLVE_PATHS = [
 	resolve("build"),
 	resolve("classes"),
 	resolve("test"),
-
-	resolve("addons/neutron"),
 ]
 
 const baseConfig: webpack.Configuration = {
-	name: "positron-base",
+	name: "neutron-base",
 	target: "node",
 	entry: {
 		index: RESOLVE("src/index.ts"),
 	},
 	output: {
-		path: resolve("dist/positron"),
+		path: resolve("dist/neutron"),
 		filename: "[name].js"
 	},
 	optimization: {
@@ -70,9 +68,7 @@ const baseConfig: webpack.Configuration = {
 			"~": resolve(""),
 			"@typescript": resolve("typescript"),
 			"@classes": resolve("classes"),
-			"@positron": RESOLVE("src"),
-
-			"@neutron": resolve("addons/neutron/src"),
+			"@neutron": RESOLVE("src"),
 		}
 	},
 	resolveLoader: {

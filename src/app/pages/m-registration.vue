@@ -100,8 +100,43 @@
 				</v-stepper-content>
 
 				<v-stepper-content step="2">
-					<v-card class="mb-5" color="transparent" height="400px">
-						<h3 class="text-md-center">Contact Details</h3>
+					<v-card class="mb-2" color="transparent" height="400px">
+						<h2 class="text-md-center">Contact Details</h2>
+						<v-layout row wrap>
+							
+							<v-flex xs12 lg5 class="pr-2">
+								<v-text-field v-model="phone" :rules="phoneRules" label="Phone Number" mask="phone" required></v-text-field>
+							</v-flex>
+							<v-flex xs12 lg5 class="pl-2">
+								<v-text-field label="Whatsapp Number" mask="phone"></v-text-field>
+							</v-flex>
+							<v-flex xs12 lg5 class="pr-2">
+								<v-text-field v-model="email" :rules="emailRules" label="Email address" type="email"></v-text-field>
+							</v-flex>
+							<v-flex xs12 lg5 class="pl-2">
+								<v-checkbox label="Same As Phone Number" ></v-checkbox>
+							</v-flex>
+							<v-flex xs12 lg12>
+								<v-card class="mb-2 mt-4" color="transparent" height="100px">
+									<h3>Incase Of Emergency</h3>
+									<v-layout row wrap>
+										<v-flex xs12 lg5 class="pr-2">
+											<v-text-field label="Contact Name"></v-text-field>
+										</v-flex>
+										<v-flex xs12 lg5 class="pl-2">
+											<v-text-field label="Contact Number" mask="phone"></v-text-field>
+										</v-flex>
+									</v-layout>
+								</v-card>
+							</v-flex>
+							<v-flex xs12 lg5 class="pr-2">
+								<v-text-field label="Office Number" mask="phone"></v-text-field>
+							</v-flex>
+							<v-flex xs12 lg5 class="pl-2">
+								<v-text-field label="Home Number" mask="phone"></v-text-field>
+							</v-flex>
+					
+						</v-layout>
 					</v-card>
 
 					<div class="right">
@@ -226,6 +261,14 @@ import { watch } from 'fs';
 export default class Home extends Vue{
 	valid: boolean = false
 	firstname= ""
+	email= ""
+	phone= ""
+	phoneRules = [
+		v => !!v || "Number is required",
+	]
+	emailRules = [
+		 v => (v || '').match(/@/) || 'Please enter a valid email',
+	 ]
 	nameRules= [
 		v => !!v || "Name is required",
 		v => v.length <= 30 || "Name must be less than 30 characters",
@@ -249,6 +292,7 @@ export default class Home extends Vue{
 	]
 	selected= []
 	loader= null
+	
 	loading= false
 	dialog= false
 	 
