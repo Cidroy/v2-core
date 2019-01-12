@@ -28,7 +28,7 @@
 			<v-stepper-items>
 				<v-stepper-content step="1">
 					<v-card class="mb-5" color="transparent" height="500px">
-						<v-radio-group label="Registration Type" v-model="row" row>
+						<v-radio-group label="Registration Type" v-model="radioGroup1" row>
       							<v-radio label="Solo" value="radio-1"></v-radio>
      							<v-radio label="Couple" value="radio-2"></v-radio>
 								<v-radio label="Group" value="radio-3"></v-radio>
@@ -48,7 +48,7 @@
 									</v-flex>
 
 									<v-flex xs12 lg6>
-										<v-radio-group label="Gender" v-model="row" row>
+										<v-radio-group label="Gender" v-model="radioGroup2" row>
       										<v-radio label="Male" value="radio-4"></v-radio>
      										<v-radio label="Female" value="radio-5"></v-radio>
 											<v-radio label="Others" value="radio-6"></v-radio>
@@ -277,6 +277,8 @@ export default class Home extends Vue{
 	e1= 0
 	date= new Date().toISOString().substr(0, 10)
 	dateFormatted= this.formatDate(this.date)
+	radioGroup1= 1
+	radioGroup2= 1
 	menu1= false
 	menu4= false
 	select= []
