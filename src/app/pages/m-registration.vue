@@ -27,24 +27,46 @@
 
 			<v-stepper-items>
 				<v-stepper-content step="1">
-					<v-card class="mb-5" color="transparent" height="500px">
-						<v-radio-group label="Registration Type" v-model="radioGroup1" row>
-      							<v-radio label="Solo" value="radio-1"></v-radio>
-     							<v-radio label="Couple" value="radio-2"></v-radio>
-								<v-radio label="Group" value="radio-3"></v-radio>
-    						</v-radio-group>
-
+					<v-card class="mb-2" color="transparent" height="500px">
 						<v-layout row wrap>
+							<v-flex xs6>
+								<v-radio-group label="Registration Type" v-model="radioGroup1" row>
+      								<v-radio label="Solo" value="radio-1"></v-radio>
+     								<v-radio label="Couple" value="radio-2"></v-radio>
+									<v-radio label="Group" value="radio-3"></v-radio>
+    							</v-radio-group>
+							</v-flex>
+							<v-spacer></v-spacer>
+							<v-flex xs3>
+								<v-dialog v-model="dialog" persistent max-width="500px">
+									<v-btn outline slot="activator" color="orange darken-4">Import from Enquiry</v-btn>
+									<v-card>
+										<v-toolbar card dark color="orange darken-4">
+											<v-toolbar-title>Import Details from Enquiry</v-toolbar-title>
+										</v-toolbar>
+										<v-card-text>
+											<v-header>Search by Mobile No.</v-header>
+											<v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
+										</v-card-text>		
+										<v-card-actions>
+											<v-spacer></v-spacer>
+											<v-btn color="orange darken-4" @click="dialog = false">Cancel</v-btn>
+											<v-btn color="orange darken-4" @click="dialog = false">Submit</v-btn>
+										</v-card-actions>
+									</v-card>
+								</v-dialog>	
+							</v-flex>
+
 							<v-flex xs9>
 								<v-layout row wrap>
 									<v-flex xs12 lg4 class="px-1">
-										<v-text-field v-model="firstname" :rules="nameRules" :counter="15" label="First Name" required></v-text-field>
+										<v-text-field v-model="firstname" :rules="nameRules" counter maxlength="15" label="First Name" required></v-text-field>
 									</v-flex>
 									<v-flex xs12 lg4 class="px-1">
-										<v-text-field  :counter="15" label="Middle Name"></v-text-field>
+										<v-text-field counter maxlength="15" label="Middle Name"></v-text-field>
 									</v-flex>
 									<v-flex xs12 lg4 class="px-1">
-										<v-text-field  :counter="15" label="Last Name"></v-text-field>
+										<v-text-field counter maxlength="15" label="Last Name"></v-text-field>
 									</v-flex>
 
 									<v-flex xs12 lg6>
@@ -56,7 +78,7 @@
 									</v-flex>
 									<v-flex xs12 lg6>
 										<v-menu ref="menu1" :close-on-content-click="false" v-model="menu1" :nudge-right="40" lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
-											<v-text-field slot="activator" v-model="dateFormatted" placeholder="Date of Birth" hint="DD/MM/YYYY format" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)"></v-text-field>
+											<v-text-field slot="activator" v-model="dateFormatted" label="Date of Birth" placeholder="Date of Birth" hint="DD/MM/YYYY format" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)"></v-text-field>
 											<v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
 										</v-menu>
 									</v-flex>
@@ -70,7 +92,7 @@
 									 <v-select :items="idProof" label="ID Proof"></v-select>
 									</v-flex>
 									<v-flex xs12 lg6 class="pl-2">
-									<v-text-field  :counter="15" label="ID Number"></v-text-field>
+									<v-text-field counter maxlength="16" label="ID Number"></v-text-field>
 									</v-flex>
 									<v-flex xs12 lg8 class="pr-2">
 									<v-textarea	name="input-7-1" label="Residential Address"></v-textarea>
@@ -92,7 +114,7 @@
 						</v-layout>
 					</v-card>
 					<div class="right">
-						<v-btn flat>Cancel</v-btn>
+						<v-btn flat click="$refs.form.reset()">Cancel</v-btn>
 						<v-btn @click="e1 = 2">
 							NEXT
 						</v-btn>
@@ -101,25 +123,32 @@
 
 				<v-stepper-content step="2">
 					<v-card class="mb-2" color="transparent" height="400px">
-						<h2 class="text-md-center">Contact Details</h2>
 						<v-layout row wrap>
-							
-							<v-flex xs12 lg5 class="pr-2">
+							<v-flex xs3 lg4 class="pr-2">
 								<v-text-field v-model="phone" :rules="phoneRules" label="Phone Number" mask="phone" required></v-text-field>
 							</v-flex>
-							<v-flex xs12 lg5 class="pl-2">
+							<v-flex xs3 lg4 class="pl-2">
 								<v-text-field label="Whatsapp Number" mask="phone"></v-text-field>
 							</v-flex>
-							<v-flex xs12 lg5 class="pr-2">
-								<v-text-field v-model="email" :rules="emailRules" label="Email address" type="email"></v-text-field>
-							</v-flex>
-							<v-flex xs12 lg5 class="pl-2">
+							<v-flex xs3 lg4>
 								<v-checkbox label="Same As Phone Number" ></v-checkbox>
 							</v-flex>
+
+							<v-flex xs3 lg4 class="pr-2">
+								<v-text-field label="Home Number" mask="phone"></v-text-field>
+							</v-flex>
+							<v-flex xs3 lg4 class="pl-2">
+								<v-text-field label="Office Number" mask="phone"></v-text-field>
+							</v-flex>				
+							
+							<v-flex xs6 lg6>
+								<v-text-field v-model="email" :rules="emailRules" label="Email address" type="email"></v-text-field>
+							</v-flex>
+							
 							<v-flex xs12 lg12>
-								<v-card class="mb-2 mt-4" color="transparent" height="100px">
-									<h3>Incase Of Emergency</h3>
-									<v-layout row wrap>
+								<v-card class="mb-2 mt-4 pa-2" height="100px" elevation="0">
+									<h3 class="pl-4">Incase Of Emergency</h3>
+									<v-layout row wrap class="pl-4">
 										<v-flex xs12 lg5 class="pr-2">
 											<v-text-field label="Contact Name"></v-text-field>
 										</v-flex>
@@ -129,13 +158,6 @@
 									</v-layout>
 								</v-card>
 							</v-flex>
-							<v-flex xs12 lg5 class="pr-2">
-								<v-text-field label="Office Number" mask="phone"></v-text-field>
-							</v-flex>
-							<v-flex xs12 lg5 class="pl-2">
-								<v-text-field label="Home Number" mask="phone"></v-text-field>
-							</v-flex>
-					
 						</v-layout>
 					</v-card>
 
@@ -151,10 +173,11 @@
 				<v-stepper-content step="3">
 					<v-card class="mb-2" color="transparent" height="400px">
 						<h3>Type Of Membership</h3>
-							<v-layout row wrap>
+							<v-layout row wrap xs6>
 								<v-checkbox class="ml-4" label="Gold" ></v-checkbox>
 								<v-checkbox label="Platinum" ></v-checkbox>
 							</v-layout>
+							<v-divider></v-divider>
 						<h3>Membership Duration</h3>
 							<v-layout row wrap>
 								<v-checkbox class="ml-4" label="Monthly" ></v-checkbox>
@@ -162,6 +185,7 @@
 								<v-checkbox label="Half-Yearly" ></v-checkbox>
 								<v-checkbox label="Yearly" ></v-checkbox>
 							</v-layout>
+							<v-divider></v-divider>
 						<h3>Preferable Time Slot:</h3>
 							<v-radio-group v-model="radios" :mandatory="false">
 								<v-layout row wrap>
@@ -169,7 +193,8 @@
 									<v-radio class="ml-4 mt-1" label="Off-Peak Hours" value="radio-8"></v-radio>
 								</v-layout>
 							</v-radio-group>
-							<v-checkbox class="ml-4" label="Apply for personal training program" ></v-checkbox>
+							<v-divider></v-divider>
+							<v-checkbox class="ml-4" label="Apply for Personal Training Program" value="PT"></v-checkbox>
 					</v-card>
 
 					<div class="right">
@@ -182,7 +207,7 @@
 				</v-stepper-content>
 
 				<v-stepper-content step="4">
-					<v-card class="mb-5" color="transparent" height="400px">
+					<v-card class="mb-2" color="transparent" height="400px">
 						<v-layout row wrap>
 							
 							<v-flex xs1>
