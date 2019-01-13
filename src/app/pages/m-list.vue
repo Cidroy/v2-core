@@ -115,7 +115,7 @@ export default class Home extends Vue {
 		return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
 	}
 
-	@Watch("dialog ")
+	@Watch("dialog")
 	onDialogChange(val) {
 		val || this.close()
 	}
