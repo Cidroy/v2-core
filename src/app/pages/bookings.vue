@@ -60,7 +60,7 @@
 							<div class="right pr-2">
 								<v-btn flat>Cancel</v-btn>
 								<v-btn @click="snackbar = true" color="orange darken-4" class="mb-2">Submit</v-btn>
-								<v-snackbar v-model="snackbar" :bottom="y === 'bottom'">Freezing has been Initiated!
+								<v-snackbar v-model="snackbar" :bottom="y === 'bottom'">Booking Done!
 									<v-btn color="orange darken-4" flat @click="snackbar = false">Close</v-btn>
 								</v-snackbar>
 							</div>
@@ -115,6 +115,10 @@ export default class Home extends Vue{
 	emailRules = [
 		v => (v || '').match(/@/) || 'Please enter a valid email',
 	]
-
+	snackbar= false
+    y= 'top'
+	mode= ''
+	timeout= 6000
+	
 }
 </script>
