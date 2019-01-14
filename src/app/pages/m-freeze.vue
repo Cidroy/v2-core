@@ -2,7 +2,7 @@
 	<Layout>
 		<h1 class="text-md-center">Member Freezing</h1>
 		
-		<v-card height="550px">
+		<v-card>
 			<v-layout class="pt-4" row wrap>
 				<v-flex xs2>
 					<v-subheader class="title">Mobile No</v-subheader>
@@ -10,41 +10,41 @@
 				<v-flex xs4>
 					<v-text-field label="Enter Mobile No" single-line solo></v-text-field>
 				</v-flex>
+				<v-spacer></v-spacer>
+				<v-flex xs3 class="pr-4">
+					<v-text-field prepend-icon="fas fa-id-badge" value="7384" label="Member ID" readonly ></v-text-field>
+				</v-flex>
 			</v-layout>
 			<v-divider></v-divider>
 
 			<v-layout class="pl-4 pt-2" row wrap>
 				<v-flex xs6>
-					<v-text-field value="John Doe" label="Name" readonly ></v-text-field>
-				</v-flex>
-				<v-spacer></v-spacer>
-				<v-flex xs3 class="pr-4">
-					<v-text-field value="7384" label="Member ID" readonly ></v-text-field>
+					<v-text-field prepend-icon="fas fa-user" value="John Doe" label="Name" readonly ></v-text-field>
 				</v-flex>
 			</v-layout>
 
-			<h4 class="title pl-4 pt-2">Current Status</h4>
+			<h4 prepend-icon="fas fa-info-circle" class="title pl-4 pt-2">Current Status</h4>
 			<v-layout row wrap class="pl-4 pt-2">
 				<v-flex xs3>
-					<v-text-field value="Gold Solo" label="Current Program" readonly ></v-text-field>
+					<v-text-field prepend-icon="fas fa-info-circle" value="Gold Solo" label="Current Program" readonly ></v-text-field>
 				</v-flex>
 				<v-flex xs3 class="pl-4">
-					<v-text-field value="Yearly" label="Current Package" readonly ></v-text-field>
+					<v-text-field prepend-icon="fas fa-calendar-alt" value="Yearly" label="Current Package" readonly ></v-text-field>
 				</v-flex>
 				<v-flex xs3 class="pl-4">
-					<v-text-field value="21/12/2018" label="Package Start Date" readonly ></v-text-field>
+					<v-text-field prepend-icon="event" value="21/12/2018" label="Package Start Date" readonly ></v-text-field>
 				</v-flex>
 				<v-flex xs3 class="pl-4 pr-4">
-					<v-text-field value="20/12/2019" label="Package End Date" readonly ></v-text-field>
+					<v-text-field prepend-icon="event" value="20/12/2019" label="Package End Date" readonly ></v-text-field>
 				</v-flex>
 			</v-layout>
 			
 			<v-layout row wrap class="pl-4 pt-2">
 				<v-flex xs3>
-					<v-text-field value="40 days" label="No. of Days Freezing Eligible" readonly ></v-text-field>
+					<v-text-field prepend-icon="fas fa-hourglass-start" value="40 days" label="No. of Days Freezing Eligible" readonly ></v-text-field>
 				</v-flex>
 				<v-flex xs3 class="pl-4">
-					<v-text-field value="5 days" label="No. of Days Freezing Used" readonly ></v-text-field>
+					<v-text-field prepend-icon="fas fa-hourglass-half" value="5 days" label="No. of Days Freezing Used" readonly ></v-text-field>
 				</v-flex>
 			</v-layout>
 			<v-divider></v-divider>
@@ -63,12 +63,14 @@
 					<v-menu ref="freeze2" :close-on-content-click="false" v-model="freeze2" :nudge-right="40" lazy transition="scale-transition"
 						offset-y full-width>
 						<v-text-field slot="activator" v-model="dateFormatted" label="Freezing End Date" hint="DD/MM/YYYY"
-						persistent-hint @blur="date = parseDate(dateFormatted)"></v-text-field>
+						persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)"></v-text-field>
 						<v-date-picker v-model="date" no-title @input="menu4 = false"></v-date-picker>
 					</v-menu>
 				</v-flex>	
 			</v-layout>
+		</v-card>
 
+		<v-card width="100%" height="50px">
 			<div class="right pr-2">
 				<v-btn flat>Cancel</v-btn>
 				<v-btn @click="snackbar = true" color="orange darken-4" class="mb-2">Submit</v-btn>
