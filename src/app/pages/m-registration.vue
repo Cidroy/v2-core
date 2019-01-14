@@ -190,7 +190,7 @@
 						<v-radio-group v-model="radios" :mandatory="false">
 							<v-layout row wrap>
 								<v-radio class="ml-4 mt-1" label="Peak Hours" value="radio-7"></v-radio>
-								<v-radio class="ml-4 mt-1" label="Off-Peak Hours" value="radio-8"></v-radio>
+								<v-radio class="ml-4" label="Off-Peak Hours" value="radio-8"></v-radio>
 							</v-layout>
 						</v-radio-group>
 						<v-divider></v-divider>
