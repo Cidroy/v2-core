@@ -28,7 +28,7 @@ export default class AppConfig {
 
 	public static async Save() {
 		if (AppConfig.cache === undefined) AppConfig.Initialize()
-		writeFileSync(AppConfig.file, json5.stringify(AppConfig.cache))
+		writeFileSync(AppConfig.file, json5.stringify(AppConfig.cache, null, 1))
 	}
 
 	public static async Get<T>(name: string, defaults?: T): Promise<T> {
@@ -41,6 +41,7 @@ export default class AppConfig {
 	public static async Set<T>(name: string, value: T): Promise<boolean> {
 		if (AppConfig.cache === undefined) AppConfig.Initialize();
 		(<{}>AppConfig.cache)[name] = value
+		await AppConfig.Save()
 		return true
 	}
 

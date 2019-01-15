@@ -9,11 +9,11 @@ export default class BiometricDevices {
 	protected static log: Logger = new Logger("biometric-device")
 
 	private static config: {
-		defaultBiometricDevice: string,
+		defaultBiometricDevice: string| null,
 		biometricDevices: { [K: string]: BiometricDeviceOptions & { DeviceType: SupportedBiometricDevice } }
 	}
 		= {
-			defaultBiometricDevice: "none",
+			defaultBiometricDevice: null,
 			biometricDevices: {}
 		}
 
@@ -22,7 +22,7 @@ export default class BiometricDevices {
 	}
 
 	public static async Initialize() {
-		await AppConfig.Get(BiometricDevices.Namespace)
+		BiometricDevices.config = await AppConfig.Get(BiometricDevices.Namespace)
 	}
 
 	private static async SaveDeviceConfig() {
@@ -34,15 +34,16 @@ export default class BiometricDevices {
 		}
 	}
 
-	public static async AddBiometricDevice(type: SupportedBiometricDevice, options: BiometricDeviceOptions): Promise<string> {
+	public static async AddBiometricDevice(id: string| null, type: SupportedBiometricDevice, options: BiometricDeviceOptions): Promise<string> {
 		try {
+			BiometricDevices.log.verbose({ InstanceList, type })
 			let test = new InstanceList[type](options)
 			await test.Initialize()
 			BiometricDevices.log.info(`${type} successfully connected`)
-			let id = uuid()
-			BiometricDevices.config.biometricDevices[id] = { ...options, DeviceType: type }
+			if(!id) id = uuid()
+			BiometricDevices.config.biometricDevices[<string>id] = { ...options, DeviceType: type }
 			await BiometricDevices.SaveDeviceConfig()
-			return id
+			return <string>id
 		} catch (error) {
 			BiometricDevices.log.error(error)
 			throw "Unable to add new biometric device. Check your config options and try again."
@@ -51,6 +52,7 @@ export default class BiometricDevices {
 
 	public static async EditBiometricDevice(id: string, newOptions: BiometricDeviceOptions): Promise<boolean> {
 		try {
+			BiometricDevices.log.verbose({ id, newOptions, })
 			if (!BiometricDevices.config.biometricDevices.hasOwnProperty(id)) throw "Invalid biometric device ID"
 			let options = BiometricDevices.config.biometricDevices[id]
 			let test = new InstanceList[options.DeviceType](newOptions)
@@ -69,6 +71,7 @@ export default class BiometricDevices {
 		try {
 			if (!BiometricDevices.config.biometricDevices.hasOwnProperty(id)) throw "Invalid biometric device ID"
 			delete BiometricDevices.config.biometricDevices[id]
+			if(BiometricDevices.config.defaultBiometricDevice === id) BiometricDevices.config.defaultBiometricDevice = null
 			await BiometricDevices.SaveDeviceConfig()
 			return true
 		} catch (error) {
@@ -79,6 +82,7 @@ export default class BiometricDevices {
 
 	public static async SetAsDefaultBiometricDevice(id: string): Promise<boolean> {
 		try {
+			BiometricDevices.log.verbose({ id, biometricDevices: BiometricDevices.config.biometricDevices, })
 			if (!BiometricDevices.config.biometricDevices.hasOwnProperty(id)) throw "Invalid biometric device ID"
 			BiometricDevices.config.defaultBiometricDevice = id
 			await BiometricDevices.SaveDeviceConfig()
@@ -90,6 +94,8 @@ export default class BiometricDevices {
 	}
 
 	public static async GetBiometricDevices() { return BiometricDevices.config.biometricDevices }
+
+	public static async GetDefaultBiometricDeviceID() { return BiometricDevices.config.defaultBiometricDevice }
 
 	public static async BiometricDevice(id: string): Promise<TBiometricDevice> {
 		try {
