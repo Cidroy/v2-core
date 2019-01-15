@@ -2,5 +2,7 @@ import "reflect-metadata"
 
 import { Neutron } from "@neutron/NEUTRON"
 
-let positron = new Neutron()
-positron.main()
+let neutron = new Neutron()
+neutron.startServer()
+
+// neutron.test()

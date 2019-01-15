@@ -1,7 +1,7 @@
 import * as TGQL from "type-graphql"
 import OptionsResolver from "@positron/resolvers/options"
 import ClientResolver from "@positron/resolvers/user"
-import POSITRON from "@positron/lib/positron"
+import { Permission } from "@classes/Permission"
 
 export default class GQL{
 	private static Resolvers = [
@@ -22,5 +22,5 @@ export default class GQL{
 	}
 
 	// FIXME: type checks are incorrect
-	private static authChecker: TGQL.AuthChecker<string> = ({ root, args, context, info }, roles) => POSITRON.Permission(<any>roles)
+	private static authChecker: TGQL.AuthChecker<string> = ({ root, args, context, info }, roles) => Permission(<any>roles)
 }
