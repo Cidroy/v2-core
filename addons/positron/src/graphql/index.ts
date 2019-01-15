@@ -1,12 +1,20 @@
 import * as TGQL from "type-graphql"
 import OptionsResolver from "@positron/resolvers/options"
-import ClientResolver from "@positron/resolvers/user"
+import ClientResolver from "@positron/resolvers/client"
 import POSITRON from "@positron/lib/positron"
+import UserResolver from "@positron/resolvers/user"
+import TransactionResolver from "@positron/resolvers/transaction"
+import FreezeRulesResolver from "@positron/resolvers/FreezeRules"
+import FreezeResolver from "@positron/resolvers/freezes"
 
 export default class GQL{
 	private static Resolvers = [
 		OptionsResolver,
 		ClientResolver,
+		UserResolver,
+		TransactionResolver,
+		FreezeRulesResolver,
+		FreezeResolver,
 	]
 
 	public static async Schema(){
