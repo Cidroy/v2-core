@@ -3,6 +3,7 @@ import Controllers from "@positron/controllers"
 import { APIAuthentication } from "@positron/lib/api-authentication"
 
 import config from "../config"
+import { Logger } from "@classes/CONSOLE"
 
 @API.ServerSettings({
 	rootDir: __dirname,
@@ -11,6 +12,17 @@ import config from "../config"
 	port: config.config.port
 })
 export class Server extends API.ServerLoader{
+	private log = new Logger("positron/api")
+
+	public $onMountingMiddlewares(){
+		this.log.verbose("mounting middleware")
+		let bodyParser = require("body-parser")
+
+		this
+			.use(bodyParser.json())
+			.use(bodyParser.urlencoded({ extended: true }))
+	}
+
 	public addControllersList(list: { [K: string]: any }){
 		for (const endpoint in list) {
 			if (list.hasOwnProperty(endpoint)) {
