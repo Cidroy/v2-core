@@ -27,6 +27,21 @@ export default [
 		component: () => lazyLoadView("/m-freeze"),
 	},
 	{
+		path: "/registrations",
+		name: "Registrations",
+		component: () => lazyLoadView("/registrations"),
+	},
+	{
+		path: "/bookings",
+		name: "Bookings",
+		component: () => lazyLoadView("/bookings"),
+	},
+	{
+		path: "/enquiry",
+		name: "Enquiry",
+		component: () => lazyLoadView("/enquiry"),
+	},
+	{
 		path: "/404",
 		name: "404",
 		component: require("@/pages/404").default,

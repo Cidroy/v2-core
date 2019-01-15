@@ -1,5 +1,5 @@
 import { createConnection, ConnectionOptions } from "typeorm"
-import { Logger } from "@positron/lib/CONSOLE"
+import { Logger } from "@classes/CONSOLE"
 import entities from "@positron/db/entities"
 import migrations from "@positron/db/migrations"
 

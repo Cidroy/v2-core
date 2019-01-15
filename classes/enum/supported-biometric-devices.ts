@@ -1,4 +1,3 @@
-export enum SupportedBiometricDevice {
-	ZKTECO_K40 = "ZKTECO-K40",
-	ZKTECO_K60 = "ZKTECO-K60"
-}
+import { SupportedBiometricDevice as SBD } from "@neutron/supported-biometric-devices"
+
+export let SupportedBiometricDevice = SBD
