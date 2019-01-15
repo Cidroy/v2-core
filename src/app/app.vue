@@ -189,7 +189,7 @@ export default class Vuetify extends Vue {
         { icon: string, heading: string, to?: string }[] |
         { icon: string, text: string, to: string }[] | any
         = [
-            { icon: "apps", text: "Dashboard", to: "/", },
+            { icon: "dashboard", text: "Dashboard", to: "/", },
             {
                 icon: "people", text: "Members", children: [
                     { icon: "view_list", text: "List", to: "/m-list", },
@@ -201,21 +201,21 @@ export default class Vuetify extends Vue {
             },
             { 
 				icon: "library_add", text: "Add Ons", children: [
-				{ icon: "assignment_ind", text: "Registrations", to: "/inspire", },
-            	{ icon: "bubble_chart", text: "Bookings", to: "/inspire", },
-				{ icon: "bubble_chart", text: "Enquiry", to: "/inspire", },
+				{ icon: "assignment_ind", text: "Registrations", to: "/registrations", },
+            	{ icon: "event", text: "Bookings", to: "/bookings", },
+				{ icon: "forum", text: "Enquiry", to: "/enquiry", },
 				],
 				"icon-alt": "library_add",
 			},
-			{ icon: "bubble_chart", text: "Sales & Finance", to: "/inspire", },
-			{ icon: "bubble_chart", text: "Reports", to: "/inspire", },
+			{ icon: "timeline", text: "Sales & Finance", to: "/inspire", },
+			{ icon: "assessment", text: "Reports", to: "/inspire", },
             { icon: "bubble_chart", text: "HR", to: "/inspire", },
             { 
-				 icon: "web", text: "Settings", children: [
-				 { icon: "bubble_chart", text: "Edit", to: "/inspire", },
-            	 { icon: "bubble_chart", text: "Profile", to: "/inspire", },
-				 ],
-				 "icon-alt": "web",
+				icon: "settings", text: "Settings", children: [
+				{ icon: "bubble_chart", text: "Edit", to: "/inspire", },
+            	{ icon: "bubble_chart", text: "Profile", to: "/inspire", },
+				],
+				"icon-alt": "settings",
 			}
         ];
     profileList: { icon?: string, text: string }[] = [
