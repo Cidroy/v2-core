@@ -33,4 +33,19 @@ export class Server extends API.ServerLoader{
 	}
 
 	public get controllersList(){ return Controllers }
+
+	constructor(args: { verbose: boolean }){
+		super()
+		let debug = args.verbose ? args.verbose : false
+		this.log.verbose({ debug })
+		this.setSettings({
+			debug,
+			logger: {
+				debug,
+				logRequest: debug,
+				disableRoutesSummary: !debug,
+				format: debug ? `${this.log.prefix}%[%d{[yyyy-MM-dd hh:mm:ss,SSS}] %p%] %m`: "-"
+			}
+		})
+	}
 }

@@ -3,9 +3,9 @@ import { Logger } from "@classes/CONSOLE"
 import entities from "@positron/db/entities"
 import migrations from "@positron/db/migrations"
 
-const log = new Logger("db")
+const log = new Logger("positron/db")
 
-export default async () => {
+export default async (args: { verbose: boolean }) => {
 	let config: ConnectionOptions
 	if (process.env.NODE_ENV == "development") {
 		try {
@@ -39,6 +39,7 @@ export default async () => {
 			...config,
 			...entitiesAndMigrations,
 			name: "default",
+			logging: args.verbose,
 		})
 	} catch (error) {
 		log.error("typeorm connection failed.", error)

@@ -14,6 +14,10 @@ export class Positron {
 
 	private server: Server
 
+	private config = {
+		verbose: false
+	}
+
 	public get Server(){ return this.server }
 
 	private async startServer() {
@@ -35,7 +39,9 @@ export class Positron {
 			this.log.okay("main()")
 			await AppConfig.Initialize()
 			this.log.okay("app-config ready")
-			const connection = await connectDatabase()
+			const connection = await connectDatabase({
+				verbose: this.config.verbose
+			})
 			this.log.okay("db connected")
 			await this.startServer()
 			if (module && module.hot) {
@@ -51,12 +57,16 @@ export class Positron {
 		}
 	}
 	public static Neutron: Neutron
-	constructor() {
-		this.log = new Logger("p-main")
+	constructor(args: any) {
+		this.log = new Logger("positron/core")
 		this.log.info("new instance")
-		this.server = new Server()
-		Positron.Neutron = new Neutron()
+		this.log.info({ args })
+		this.config.verbose = args.verbose?args.verbose: this.config.verbose
+		
+		Logger.Verbose = this.config.verbose
 
+		this.server = new Server(this.config)
+		Positron.Neutron = new Neutron(this.config)
 		this.server.addControllersList(Positron.Neutron.Server.controllersList)
 	}
 }
