@@ -31,9 +31,9 @@ export class Neutron extends BiometricDevices{
 		}
 	}
 	
-	constructor() {
+	constructor(args: any) {
 		super()
-		this.log = new Logger("n-main")
+		this.log = new Logger("neutron/core")
 		this.log.info("new instance")
 		this.server = new Server()
 	}

@@ -4,7 +4,7 @@ import electron from "electron-util"
 import * as util from "@@/config/util"
 import { Window, WindowSize } from "@electron/window"
 import { Global } from "@@/typescript/global"
-import { Logger } from "@electron/CONSOLE"
+import { Logger } from "@classes/CONSOLE"
 
 const Console = new Logger("electron")
 
