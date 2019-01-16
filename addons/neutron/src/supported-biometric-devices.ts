@@ -7,8 +7,11 @@ export type ZKTEco_K60_WDMSOptions = ZKTEco_K40_WDMSOptions
 
 export type BiometricDeviceOptions = ZKTEco_K40_WDMSOptions | ZKTEco_K60_WDMSOptions
 
-export type TBiometricDevice = typeof ZKTEco_K40_WDMS
+export type TBiometricDevices = typeof ZKTEco_K40_WDMS
 							 | typeof ZKTEco_K60_WDMS
+
+export type TBiometricDevice = ZKTEco_K40_WDMS
+							 | ZKTEco_K60_WDMS
 
 export enum SupportedBiometricDevice {
 	ZKTECO_K40_WDMS = "ZKTECO-K40-WDMS",
@@ -16,7 +19,7 @@ export enum SupportedBiometricDevice {
 }
 
 export const InstanceList: {
-	[K in SupportedBiometricDevice]: TBiometricDevice
+	[K in SupportedBiometricDevice]: TBiometricDevices
 } = {
 	[SupportedBiometricDevice.ZKTECO_K40_WDMS]: ZKTEco_K40_WDMS,
 	[SupportedBiometricDevice.ZKTECO_K60_WDMS]: ZKTEco_K60_WDMS,

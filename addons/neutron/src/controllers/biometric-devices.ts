@@ -4,9 +4,9 @@ import { ISuccess, IError } from "@classes/interface/IResponse"
 import BiometricDevices from "@neutron/lib/biometric"
 import { Logger } from "@classes/CONSOLE"
 
-@API.Controller("/devices")
-export class BiometricDeviceController{
-	private log = new Logger("api/biometric-device")
+@API.Controller("/biometric-devices")
+export class BiometricDevicesController{
+	private log = new Logger("api/biometric-devices")
 
 	@API.Authenticated({ "neutron/biometric-device": "device|add" })
 	@API.Post("/add")
@@ -19,7 +19,7 @@ export class BiometricDeviceController{
 			if(id===undefined) id = null
 			this.log.verbose({ type, options, })
 			await BiometricDevices.Initialize()
-			let device = await BiometricDevices.AddBiometricDevice(id, type, options)
+			let device = await BiometricDevices.Add(id, type, options)
 			return {
 				type: "success",
 				device,
@@ -41,7 +41,7 @@ export class BiometricDeviceController{
 	): Promise<ISuccess | IError>{
 		try {
 			await BiometricDevices.Initialize()
-			await BiometricDevices.EditBiometricDevice(id, newOptions)
+			await BiometricDevices.Edit(id, newOptions)
 			return { type: "success", }
 		} catch (error) {
 			return {
@@ -59,7 +59,7 @@ export class BiometricDeviceController{
 	): Promise<ISuccess | IError>{
 		try {
 			await BiometricDevices.Initialize()
-			await BiometricDevices.DeleteBiometricDevice(id)
+			await BiometricDevices.Delete(id)
 			return { type: "success", }
 		} catch (error) {
 			return {
@@ -77,7 +77,7 @@ export class BiometricDeviceController{
 	): Promise<ISuccess | IError>{
 		try {
 			await BiometricDevices.Initialize()
-			await BiometricDevices.SetAsDefaultBiometricDevice(id)
+			await BiometricDevices.SetAsDefault(id)
 			return { type: "success", }
 		} catch (error) {
 			return {
@@ -95,7 +95,7 @@ export class BiometricDeviceController{
 	): Promise<({ device: any } & ISuccess) | IError> {
 		try {
 			await BiometricDevices.Initialize()
-			let devices = await BiometricDevices.GetBiometricDevices()
+			let devices = await BiometricDevices.Devices()
 			if(!devices.hasOwnProperty(id)) throw "Invalid device ID"
 			return {
 				type: "success",
@@ -117,7 +117,7 @@ export class BiometricDeviceController{
 			await BiometricDevices.Initialize()
 			return {
 				type: "success",
-				devices: await BiometricDevices.GetBiometricDevices()
+				devices: await BiometricDevices.Devices()
 			}
 		} catch (error) {
 			return {
@@ -133,12 +133,12 @@ export class BiometricDeviceController{
 	public async default(): Promise<( { device: any, id: string } & ISuccess) | IError>{
 		try {
 			await BiometricDevices.Initialize()
-			let id = await BiometricDevices.GetDefaultBiometricDeviceID()
+			let id = await BiometricDevices.DefaultDeviceID()
 			if(id===null) throw "No default biometric device set."
 			return {
 				type: "success",
 				id,
-				device: (await BiometricDevices.GetBiometricDevices())[id]
+				device: (await BiometricDevices.Devices())[id]
 			}
 		} catch (error) {
 			return {

@@ -200,8 +200,9 @@ export default class ZKTEco_K40_WDMS implements IBiometric{
 			jar: true
 		}
 		try {
-			await request(_options)
+			let response = await request(_options)
 			this.log.info("user freeze OKAY", id)
+			this.log.verbose(response)
 			return true
 		} catch (error) {
 			this.log.error(error)
@@ -222,8 +223,9 @@ export default class ZKTEco_K40_WDMS implements IBiometric{
 			jar: true
 		}
 		try {
-			await request(_options)
+			let response = await request(_options)
 			this.log.info("user unfreeze OKAY", id)
+			this.log.verbose(response)
 			return true
 		} catch (error) {
 			this.log.error(error)
@@ -244,8 +246,9 @@ export default class ZKTEco_K40_WDMS implements IBiometric{
 			jar: true
 		}
 		try {
-			await request(_options)
+			let response = await request(_options)
 			this.log.info("scan fingerprint OKAY", id)
+			this.log.verbose(response)
 			return true
 		} catch (error) {
 			this.log.error(error)
