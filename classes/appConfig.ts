@@ -28,7 +28,7 @@ export default class AppConfig {
 
 	public static async Save() {
 		if (AppConfig.cache === undefined) AppConfig.Initialize()
-		writeFileSync(AppConfig.file, json5.stringify(AppConfig.cache, null, 1))
+		writeFileSync(AppConfig.file, json5.stringify(AppConfig.cache, null, 4))
 	}
 
 	public static async Get<T>(name: string, defaults?: T): Promise<T> {

@@ -12,6 +12,7 @@ export class Neutron extends BiometricDevices{
 	public get Server(){ return this.server }
 
 	private async _startExpressServer() {
+		this.log.verbose("starting server")
 		await this.server.start()
 	}
 

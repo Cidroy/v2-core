@@ -45,7 +45,7 @@ export default class BiometricDevices {
 			await test.Initialize()
 			BiometricDevices.log.info(`${type} successfully connected`)
 			if (!id) id = uuid()
-			BiometricDevices.config.biometricDevices[<string>id] = { ...options, DeviceType: type }
+			BiometricDevices.config.biometricDevices[<string>id] = { ...options, DeviceType: type, id }
 			await BiometricDevices.SaveConfig()
 			return <string>id
 		} catch (error) {
@@ -281,6 +281,7 @@ export default class BiometricDevices {
 	 * @memberof BiometricDevices
 	 */
 	public static async RemoveMemberZone(id: string | null, memberId: string, zoneName: string): Promise<boolean> {
+		this.log.verbose("remove member zone")
 		if (!BiometricDevices.Zones.hasOwnProperty(zoneName)) throw "Zone name does not exists"
 		if (id === null) id = BiometricDevices.DefaultDeviceID
 		else
