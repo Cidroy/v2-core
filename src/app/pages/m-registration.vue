@@ -3,6 +3,11 @@
 		<v-layout row>
 			<v-flex xs12 md7>
 				<h1 class="text-md-right text-xs-center"> Member Registration </h1>
+				<v-radio-group prepend-icon="people" label="Registration Type" v-model="radioGroup1" row>
+					<v-radio label="Solo" value="radio-1"></v-radio>
+					<v-radio label="Couple" value="radio-2"></v-radio>
+					<v-radio label="Group" value="radio-3"></v-radio>
+				</v-radio-group>
 			</v-flex>
 			<v-flex xs12 md5>
 				<v-layout justify-end>
@@ -34,13 +39,6 @@
 
 							<v-flex xs9>
 								<v-layout row wrap>
-									<v-flex xs12>
-										<v-radio-group prepend-icon="people" label="Registration Type" v-model="radioGroup1" row>
-											<v-radio label="Solo" value="radio-1"></v-radio>
-											<v-radio label="Couple" value="radio-2"></v-radio>
-											<v-radio label="Group" value="radio-3"></v-radio>
-										</v-radio-group>
-									</v-flex>
 									<v-flex xs12 lg4 class="px-1">
 										<v-text-field prepend-icon="fas fa-user" v-model="firstname" :rules="nameRules" counter maxlength="15" label="First Name"
 										 required></v-text-field>
@@ -328,7 +326,7 @@ export default class Home extends Vue {
 	e1 = 0
 	date = new Date().toISOString().substr(0, 10)
 	dateFormatted = this.formatDate(this.date)
-	radioGroup1 = 1
+	radioGroup1 = 'radio-1'
 	radioGroup2 = 1
 	menu1 = false
 	menu4 = false

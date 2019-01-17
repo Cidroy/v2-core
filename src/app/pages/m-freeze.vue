@@ -1,8 +1,8 @@
 <template>
 	<Layout>
-		<h1 class="text-md-center">Member Freezing</h1>
+		<h1 class="text-md-center pb-2">Member Freezing</h1>
 		
-		<v-card>
+		<v-card color="#303030">
 			<v-layout class="pt-4" row wrap>
 				<v-flex xs2>
 					<v-subheader class="title">Mobile No</v-subheader>
@@ -23,7 +23,7 @@
 				</v-flex>
 			</v-layout>
 
-			<h4 prepend-icon="fas fa-info-circle" class="title pl-4 pt-2">Current Status</h4>
+			<h4 class="title pl-4 pt-2">Current Status</h4>
 			<v-layout row wrap class="pl-4 pt-2">
 				<v-flex xs3>
 					<v-text-field prepend-icon="fas fa-info-circle" value="Gold Solo" label="Current Program" readonly ></v-text-field>
@@ -66,12 +66,15 @@
 						persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)"></v-text-field>
 						<v-date-picker v-model="date" no-title @input="menu4 = false"></v-date-picker>
 					</v-menu>
+				</v-flex>
+				<v-flex xs3 class="pl-4">
+					<v-text-field prepend-icon="fas fa-calendar-minus" value="10 days" label="Freezing Period" readonly ></v-text-field>
 				</v-flex>	
 			</v-layout>
 		</v-card>
 
-		<v-card width="100%" height="50px">
-			<div class="right pr-2">
+		<v-card width="100%" height="50px" color="#303030">
+			<div class="right pr-2"> 
 				<v-btn flat>Cancel</v-btn>
 				<v-btn @click="snackbar = true" color="orange darken-4" class="mb-2">Submit</v-btn>
 				<v-snackbar v-model="snackbar" :bottom="y === 'bottom'">Freezing has been Initiated!
