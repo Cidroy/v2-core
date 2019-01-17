@@ -1,19 +1,19 @@
-import IBiometric, { BiometricMemberDetails } from "@neutron/lib/IBiometric"
+import IBiometric, { BiometricMemberDetails, BIOMETRIC_DEVICE_MODE, BIOMETRIC_DEVICE_CHECK_TYPE } from "@neutron/lib/IBiometric"
 import { BiometricPreLoginFailed, BiometricLoginFailed, BiometricUserAddFailed, BiometricUserDeleteFailed, BiometricUserFreezeFailed, BiometricUserUnfreezeFailed, BiometricScanFPFailed } from "@neutron/lib/errors"
 import { Logger } from "@classes/CONSOLE"
 import { SupportedBiometricDevice } from "@neutron/supported-biometric-devices"
 import { WDMSConnectionConfig } from "@neutron/biometric-devices/zkteco/misc"
+import BiometricDevices from "@neutron/lib/biometric"
 const request = require("request-promise-native").defaults({ simple: false })
 
 export const DefaultWDMS: WDMSConnectionConfig = {
 	ssl: false,
 	host: "localhost",
 	port: 8081,
-	Zones: {
-		Freezed: "2",
-		Unfreezed: "2",
-	},
-	DeviceName: "default"
+	DeviceName: "default",
+	id: "default",
+	zone: Object.keys(BiometricDevices.Zones)[0],
+	checkType: BIOMETRIC_DEVICE_CHECK_TYPE.CHECK_IN,
 }
 
 /**
@@ -23,48 +23,51 @@ export const DefaultWDMS: WDMSConnectionConfig = {
  * @class ZKteco_K40
  * @implements {IBiometric}
  */
-export default class ZKTEco_K40_WDMS implements IBiometric{
+export default class ZKTEco_K40_WDMS implements IBiometric {
 	protected log: Logger
 	private ready: boolean = false
-	
+	private _id: string
+
 	private static defaults: {
-		company: string;
+		company: number;
 		department: string;
 		privilage: number;
 		accessGroup: number;
 	} = {
-		company: "1",
-		department: "1",
-		privilage: 0,
-		accessGroup: 1,
-	}
+			company: BiometricDevices.Zones.Unfreezed || 0,
+			department: "1",
+			privilage: 0,
+			accessGroup: 1,
+		}
 
 	public defaults: {
-		company: string;
+		company: number;
 		department: string;
 		privilage: number;
 		accessGroup: number;
 	} = {
-		company: ZKTEco_K40_WDMS.defaults.company,
-		department: ZKTEco_K40_WDMS.defaults.department,
-		privilage: ZKTEco_K40_WDMS.defaults.privilage,
-		accessGroup: ZKTEco_K40_WDMS.defaults.accessGroup,
-	}
+			company: ZKTEco_K40_WDMS.defaults.company,
+			department: ZKTEco_K40_WDMS.defaults.department,
+			privilage: ZKTEco_K40_WDMS.defaults.privilage,
+			accessGroup: ZKTEco_K40_WDMS.defaults.accessGroup,
+		}
 
 	private _port: number
 	private _host: string
 	private _ssl: boolean
-	private _freezedZone: string
-	private _unfreezedZone: string
 	private _deviceName: string
-	
-	private get wdmsURL() { return `http${this._ssl ? "s" : ""}://${this._host}${this._port?":":""}${this._port}/iclock` }
-	
+	private _zone: string
+	private _checkType: BIOMETRIC_DEVICE_CHECK_TYPE
+
+	private get wdmsURL() { return `http${this._ssl ? "s" : ""}://${this._host}${this._port ? ":" : ""}${this._port}/iclock` }
+
 	public get DeviceName() { return this._deviceName }
-	
+
 	public get DeviceType() { return SupportedBiometricDevice.ZKTECO_K40_WDMS }
-	
-	public get DeviceDetails(){
+
+	public get ID() { return this._id }
+
+	public get DeviceDetails() {
 		return {}
 	}
 
@@ -72,7 +75,7 @@ export default class ZKTEco_K40_WDMS implements IBiometric{
 		this.log.info("initialized OKAY")
 		return true
 	}
-	
+
 	private async PreLogin(): Promise<boolean> {
 		let _options = {
 			method: "GET",
@@ -134,7 +137,7 @@ export default class ZKTEco_K40_WDMS implements IBiometric{
 			},
 			form: {
 				PIN: badgeNumber,
-				company: details.company ? details.company : this.defaults.company,
+				company: (details.company ? details.company : this.defaults.company).toString(),
 				DeptID: details.department ? details.department : this.defaults.department,
 				EName: details.name,
 				Password: "",
@@ -188,10 +191,11 @@ export default class ZKTEco_K40_WDMS implements IBiometric{
 	}
 
 	public async FreezeMember(id: string): Promise<boolean> {
+		if (!BiometricDevices.Zones.Freezed) throw "'Freezed' Zone needs to be added"
 		let _options = {
 			method: "POST",
 			url: `${this.wdmsURL}/data/employee/`,
-			qs: { action: "mvToDev", SN: this._freezedZone },
+			qs: { action: "mvToDev", SN: BiometricDevices.Zones.Freezed.toString() },
 			headers: {
 				"Cache-Control": "no-cache",
 				"Content-Type": "application/x-www-form-urlencoded"
@@ -211,10 +215,11 @@ export default class ZKTEco_K40_WDMS implements IBiometric{
 	}
 
 	public async UnfreezeMember(id: string): Promise<boolean> {
+		if (!BiometricDevices.Zones.Unfreezed) throw "'Unfreezed' Zone needs to be added"
 		let _options = {
 			method: "POST",
 			url: `${this.wdmsURL}/data/employee/`,
-			qs: { action: "mvToDev", SN: this._unfreezedZone },
+			qs: { action: "mvToDev", SN: BiometricDevices.Zones.Unfreezed.toString() },
 			headers: {
 				"Cache-Control": "no-cache",
 				"Content-Type": "application/x-www-form-urlencoded"
@@ -256,25 +261,93 @@ export default class ZKTEco_K40_WDMS implements IBiometric{
 		}
 	}
 
-	constructor(wdms: WDMSConnectionConfig){
+	public async AddMemberZone(id: string, zoneName: string): Promise<boolean> {
+		if (!BiometricDevices.Zones.hasOwnProperty(zoneName)) throw "Zone name does not exists"
+		let zoneID = BiometricDevices.Zones[zoneName]
+		// FIXME:
+		return true
+	}
+
+	public async MoveMemberZone(id: string, zoneName: string): Promise<boolean> {
+		if (!BiometricDevices.Zones.hasOwnProperty(zoneName)) throw "Zone name does not exists"
+		let zoneID = BiometricDevices.Zones[zoneName]
+		// FIXME:
+		return true
+	}
+
+	public async RemoveMemberZone(id: string, zoneName: string): Promise<boolean> {
+		if (!BiometricDevices.Zones.hasOwnProperty(zoneName)) throw "Zone name does not exists"
+		let zoneID = BiometricDevices.Zones[zoneName]
+		// FIXME:
+		return true
+	}
+
+	public async SetZone(zoneName: string): Promise<boolean> {
+		if (!BiometricDevices.Zones.hasOwnProperty(zoneName)) throw "Zone name does not exists"
+		let zoneID = BiometricDevices.Zones[zoneName]
+		// FIXME: set zone for this device
+		this._zone = zoneName
+		return true
+	}
+
+	public async AddZone(zoneName: string, options?: { id?: number }): Promise<number> {
+		try {
+			let id: number = 0
+			if (options) {
+				if (options.id) id = options.id - 1
+			}
+			id = id === 0 ? Object.values(BiometricDevices.Zones).sort().reverse()[0] || 0 : id
+			++id
+			// FIXME: add zone rest api
+			return id
+		} catch (error) {
+			this.log.error(error)
+			throw new Error("Unable to add Zone")
+		}
+	}
+
+	public async EditZone(zoneName: string, options?: any): Promise<boolean> {
+		// FIXME: add zone editing logic here
+		throw new Error("Method not implemented.")
+	}
+
+	public async DeleteZone(zoneName: string): Promise<boolean> {
+		let zoneId = BiometricDevices.Zones[zoneName]
+		// FIXME: add delete zone logic here
+		throw new Error("Method not implemented.")
+	}
+
+	public get Zone(): string | null { return this._zone ? this._zone : null }
+
+	public get Mode() {
+		return BiometricDevices.DefaultDeviceID === this._id ?
+			BIOMETRIC_DEVICE_MODE.MASTER :
+			BIOMETRIC_DEVICE_MODE.SLAVE
+	}
+
+	public get CheckType() { return this._checkType }
+
+	constructor(wdms: WDMSConnectionConfig) {
 		this._deviceName = wdms.DeviceName
 		this.log = new Logger(`${this.DeviceName}@zkteco-k40-wdms`)
 		try {
+			this._id = wdms.id
 			this._ssl = wdms.ssl
 			this._host = wdms.host
 			this._port = wdms.port
-			this._freezedZone = wdms.Zones.Freezed //2
-			this._unfreezedZone = wdms.Zones.Unfreezed //1
-			
+			this._zone = wdms.zone
+			this._checkType = wdms.checkType
+
 		} catch (error) {
 			this.log.error(error)
 			this.log.log("Incorrect Config to connect with ZKTEco K40 over WDMS")
 
+			this._id = DefaultWDMS.id
 			this._ssl = DefaultWDMS.ssl
 			this._host = DefaultWDMS.host
 			this._port = DefaultWDMS.port
-			this._freezedZone = DefaultWDMS.Zones.Freezed //2
-			this._unfreezedZone = DefaultWDMS.Zones.Unfreezed //1
+			this._zone = DefaultWDMS.zone
+			this._checkType = wdms.checkType
 		}
 	}
 }

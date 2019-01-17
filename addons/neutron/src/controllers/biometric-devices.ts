@@ -133,8 +133,7 @@ export class BiometricDevicesController{
 	public async default(): Promise<( { device: any, id: string } & ISuccess) | IError>{
 		try {
 			await BiometricDevices.Initialize()
-			let id = await BiometricDevices.DefaultDeviceID()
-			if(id===null) throw "No default biometric device set."
+			let id = BiometricDevices.DefaultDeviceID
 			return {
 				type: "success",
 				id,
