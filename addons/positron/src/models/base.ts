@@ -2,6 +2,7 @@ import { IModification, IEntityBase } from "@classes/interface/IEntityBase"
 import * as GQL from "type-graphql"
 import * as DB from "typeorm"
 import POSITRON from "@positron/lib/positron"
+import uuid from "uuid/v1"
 
 @GQL.ObjectType()
 export class Modifications implements IModification{
@@ -17,7 +18,6 @@ export class Modifications implements IModification{
 export default class Base extends DB.BaseEntity implements IEntityBase{
 	@GQL.Field(type => String, { description: "Entity Id" })
 	@DB.PrimaryGeneratedColumn("uuid")
-	@DB.PrimaryColumn("uuid")
 	public id !: string
 
 	@GQL.Field(type => Boolean, { description: "Entity exists" })

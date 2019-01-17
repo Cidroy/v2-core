@@ -1,0 +1,323 @@
+{
+	"info": {
+		"_postman_id": "aa4f9632-58ab-4e56-9c03-97d672f5dcb7",
+		"name": "Positron",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "biometric",
+			"description": null,
+			"item": [
+				{
+					"name": "supported-device",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "",
+									"value": "",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:9101/biometric-devices/supported",
+							"host": [
+								"localhost"
+							],
+							"port": "9101",
+							"path": [
+								"biometric-devices",
+								"supported"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"alpha\",\n\t\"type\": \"ZKTECO-K40-WDMS\",\n\t\"options\": {\n\t\t\"ssl\": false,\n\t\t\"host\": \"localhost\",\n\t\t\"port\": 8081,\n\t\t\"Zones\": {\n\t\t\t\"Freezed\": \"2\",\n\t\t\t\"Unfreezed\": \"1\"\n\t\t},\n\t\t\"DeviceName\": \"Entry\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "localhost:9101/biometric-devices/add",
+							"host": [
+								"localhost"
+							],
+							"port": "9101",
+							"path": [
+								"biometric-devices",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "edit",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"alpha\",\n\t\"options\": {\n\t\t\"ssl\": false,\n\t\t\"host\": \"localhost\",\n\t\t\"port\": 8081,\n\t\t\"Zones\": {\n\t\t\t\"Freezed\": \"2\",\n\t\t\t\"Unfreezed\": \"1\"\n\t\t},\n\t\t\"DeviceName\": \"Entry\"\n\t}\n}"
+						},
+						"url": {
+							"raw": "localhost:9101/biometric-devices/edit",
+							"host": [
+								"localhost"
+							],
+							"port": "9101",
+							"path": [
+								"biometric-devices",
+								"edit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "set-default",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"alpha\"\n}"
+						},
+						"url": {
+							"raw": "localhost:9101/biometric-devices/set-default",
+							"host": [
+								"localhost"
+							],
+							"port": "9101",
+							"path": [
+								"biometric-devices",
+								"set-default"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "all",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:9101/biometric-devices/all",
+							"host": [
+								"localhost"
+							],
+							"port": "9101",
+							"path": [
+								"biometric-devices",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "default",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:9101/biometric-devices/default",
+							"host": [
+								"localhost"
+							],
+							"port": "9101",
+							"path": [
+								"biometric-devices",
+								"default"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"alpha\"\n}"
+						},
+						"url": {
+							"raw": "localhost:9101/biometric-devices/delete",
+							"host": [
+								"localhost"
+							],
+							"port": "9101",
+							"path": [
+								"biometric-devices",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "view",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"alpha\"\n}"
+						},
+						"url": {
+							"raw": "localhost:9101/biometric-devices/view",
+							"host": [
+								"localhost"
+							],
+							"port": "9101",
+							"path": [
+								"biometric-devices",
+								"view"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "credentials-add",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"alpha\",\n\t\"username\": \"admin\",\n\t\"password\": \"admin\"\n}"
+						},
+						"url": {
+							"raw": "localhost:9101/biometric-device/credentials/add",
+							"host": [
+								"localhost"
+							],
+							"port": "9101",
+							"path": [
+								"biometric-device",
+								"credentials",
+								"add"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "member",
+			"description": null,
+			"item": [
+				{
+					"name": "freeze",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"id\": \"173\"\n}"
+						},
+						"url": {
+							"raw": "localhost:9101/biometric-device/member/freeze",
+							"host": [
+								"localhost"
+							],
+							"port": "9101",
+							"path": [
+								"biometric-device",
+								"member",
+								"freeze"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Home",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:9101",
+					"host": [
+						"localhost"
+					],
+					"port": "9101"
+				}
+			},
+			"response": []
+		}
+	]
+}

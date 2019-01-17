@@ -1,31 +1,27 @@
-import express from "express"
-import config from "../config"
-import { Logger } from "@neutron/lib/CONSOLE"
+import { Logger } from "@classes/CONSOLE"
+import { Server } from "@neutron/server"
+import BiometricDevices from "@neutron/lib/biometric"
 
 declare const module: any
-export class Neutron {
-	private log: Logger
+export class Neutron extends BiometricDevices{
+	protected log: Logger
+	protected Namespace = "neutron/core"
 
-	private async startServer() {
-		let app = express()
-		app.get("/", (req, res) => {
-			res.send({ success: "false" })
-		})
-		let server = app.listen(config.config.port, () => {
-			this.log.okay("NEUTRON SERVER READY")
-			this.log.info(`REST: http://localhost:${config.config.port}`)
-		})
-		return server
+	private server: Server
+
+	public get Server(){ return this.server }
+
+	private async _startExpressServer() {
+		await this.server.start()
 	}
 
-	public async main() {
+	public async startServer() {
 		try {
 			this.log.okay("main()")
-			let server = await this.startServer()
+			await this._startExpressServer()
 			if (module.hot) {
 				module.hot.accept()
 				module.hot.dispose(() => {
-					server.close()
 					this.log.info("reloading")
 				})
 			}
@@ -35,8 +31,10 @@ export class Neutron {
 		}
 	}
 	
-	constructor() {
-		this.log = new Logger("n-main")
+	constructor(args: any) {
+		super()
+		this.log = new Logger("neutron/core")
 		this.log.info("new instance")
+		this.server = new Server()
 	}
 }

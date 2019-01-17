@@ -7,5 +7,6 @@ export interface ISuccess extends IResponse {
 }
 export interface IError extends IResponse {
 	type: "error"
-	message: string
+	message: string,
+	trace ?: any
 }

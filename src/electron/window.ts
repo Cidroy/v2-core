@@ -2,7 +2,7 @@ import { BrowserWindow } from "electron"
 import * as TS from "@rubix-code/typeserializer"
 import electronUpdate from "@rubix-code/electron-update-window-options"
 import { readonly } from "core-decorators"
-import { Logger } from "@electron/CONSOLE"
+import { Logger } from "@classes/CONSOLE"
 
 const Console = new Logger("electron")
 
