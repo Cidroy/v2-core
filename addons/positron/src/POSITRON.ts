@@ -11,6 +11,7 @@ export declare const module: any
 
 export class Positron {
 	private log: Logger
+	protected Namespace = "positron/core"
 
 	private server: Server
 
@@ -21,19 +22,24 @@ export class Positron {
 	public get Server(){ return this.server }
 
 	private async startServer() {
+		this.log.verbose("creating gql schema")
 		let apollo = new ApolloServer({
 			schema: await GQL.Schema(),
 			playground: true
 		})
+		this.log.verbose("adding gql")
 		apollo.applyMiddleware({
 			path: "/gql",
 			app: this.server.expressApp,
 		})
+		this.log.verbose("starting server")
 		await this.server.start()
 		this.log.okay("SERVER READY")
 		this.log.info(`REST: http://localhost:${config.config.port}`)
 		this.log.info(`GQL : http://localhost:${config.config.port}/gql`)
 	}
+
+	// FIXME: allow non db configed connection for db config over REST API
 	public async main() {
 		try {
 			this.log.okay("main()")
@@ -56,13 +62,15 @@ export class Positron {
 			this.log.error("server failed to start.", error)
 		}
 	}
+
 	public static Neutron: Neutron
+
 	constructor(args: any) {
-		this.log = new Logger("positron/core")
+		this.log = new Logger(this.Namespace)
 		this.log.info("new instance")
 		this.log.info({ args })
 		this.config.verbose = args.verbose?args.verbose: this.config.verbose
-		
+		// FIXME: auto verbose
 		Logger.Verbose = this.config.verbose
 
 		this.server = new Server(this.config)

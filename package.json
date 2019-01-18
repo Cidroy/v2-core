@@ -13,7 +13,7 @@
 		"start:positron": "npm run build:positron && node dist/positron/index.js",
 		"docs:neutron": "cd addons/neutron/docs && gitbook serve",
 		"dev:neutron-webpack": "ts-node -r tsconfig-paths/register addons/neutron/build/dev.ts",
-		"dev:neutron": "nodemon --config addons/neutron/nodemon.json addons/neutron/src/index.dev.ts -- ",
+		"dev:neutron": "nodemon --verbose --config addons/neutron/nodemon.json addons/neutron/src/index.dev.ts -- --verbose",
 		"build:neutron": "ts-node -r tsconfig-paths/register addons/neutron/build/build.ts",
 		"start:neutron": "npm run build:neutron && node dist/neutron/index.js",
 		"dev:web": "ts-node -r tsconfig-paths/register build/web/dev.ts",

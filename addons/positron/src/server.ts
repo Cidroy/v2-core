@@ -1,6 +1,6 @@
 import * as API from "@tsed/common"
 import Controllers from "@positron/controllers"
-import { APIAuthentication } from "@positron/lib/api-authentication"
+import path from "path"
 
 import config from "../config"
 import { Logger } from "@classes/CONSOLE"
@@ -9,7 +9,9 @@ import { Logger } from "@classes/CONSOLE"
 	rootDir: __dirname,
 	acceptMimes: [ "application/json", ],
 	mount: Controllers,
-	port: config.config.port
+	port: config.config.port,
+	componentsScan: [],
+	uploadDir: path.resolve(__dirname , "/assets"),
 })
 export class Server extends API.ServerLoader{
 	private log = new Logger("positron/api")
