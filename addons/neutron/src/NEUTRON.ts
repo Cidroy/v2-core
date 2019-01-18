@@ -1,6 +1,8 @@
+import config from "../config"
 import { Logger } from "@classes/CONSOLE"
 import { Server } from "@neutron/server"
 import BiometricDevices from "@neutron/lib/biometric"
+import AppConfig from "@classes/appConfig"
 
 declare const module: any
 export class Neutron extends BiometricDevices{
@@ -9,17 +11,20 @@ export class Neutron extends BiometricDevices{
 
 	private server: Server
 
-	public get Server(){ return this.server }
-
-	private async _startExpressServer() {
-		this.log.verbose("starting server")
-		await this.server.start()
+	private config = {
+		verbose: false
 	}
+
+	public get Server(){ return this.server }
 
 	public async startServer() {
 		try {
-			this.log.okay("main()")
-			await this._startExpressServer()
+			await AppConfig.Initialize()
+			this.log.okay("app-config ready")
+			this.log.verbose("starting server")
+			await this.server.start()
+			this.log.okay("SERVER READY")
+			this.log.info(`REST: http://localhost:${config.config.port}`)
 			if (module.hot) {
 				module.hot.accept()
 				module.hot.dispose(() => {
@@ -34,8 +39,13 @@ export class Neutron extends BiometricDevices{
 	
 	constructor(args: any) {
 		super()
-		this.log = new Logger("neutron/core")
+		this.log = new Logger(this.Namespace)
 		this.log.info("new instance")
-		this.server = new Server()
+		this.log.info({ args })
+		this.config.verbose = args.verbose ? args.verbose : this.config.verbose
+		// FIXME: auto verbose
+		Logger.Verbose = this.config.verbose
+
+		this.server = new Server(this.config)
 	}
 }

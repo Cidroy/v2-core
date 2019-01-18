@@ -27,6 +27,7 @@ export default class BiometricDevices {
 
 	public static async Initialize() {
 		BiometricDevices.config = await AppConfig.Get(BiometricDevices.Namespace, BiometricDevices.config)
+		BiometricDevices.log.verbose("initialized", BiometricDevices.config)
 	}
 
 	private static async SaveConfig() {
@@ -56,7 +57,7 @@ export default class BiometricDevices {
 
 	public static async Edit(id: string, newOptions: BiometricDeviceOptions): Promise<boolean> {
 		try {
-			BiometricDevices.log.verbose({ id, newOptions, })
+			BiometricDevices.log.verbose("try edit device ",{ id, newOptions, })
 			if (!BiometricDevices.config.biometricDevices.hasOwnProperty(id)) throw "Invalid biometric device ID"
 			let options = BiometricDevices.config.biometricDevices[id]
 			let test = new InstanceList[options.DeviceType](newOptions)
@@ -73,6 +74,7 @@ export default class BiometricDevices {
 
 	public static async Delete(id: string): Promise<boolean> {
 		try {
+			BiometricDevices.log.verbose("try delete device ", id)
 			if (!BiometricDevices.config.biometricDevices.hasOwnProperty(id)) throw "Invalid biometric device ID"
 			delete BiometricDevices.config.biometricDevices[id]
 			if (BiometricDevices.config.defaultBiometricDevice === id) BiometricDevices.config.defaultBiometricDevice = null
@@ -87,7 +89,7 @@ export default class BiometricDevices {
 
 	public static async SetAsDefault(id: string): Promise<boolean> {
 		try {
-			BiometricDevices.log.verbose({ id, biometricDevices: BiometricDevices.config.biometricDevices, })
+			BiometricDevices.log.verbose("try set default device ", { id, biometricDevices: BiometricDevices.config.biometricDevices, })
 			if (!BiometricDevices.config.biometricDevices.hasOwnProperty(id)) throw "Invalid biometric device ID"
 			BiometricDevices.config.defaultBiometricDevice = id
 			await BiometricDevices.SaveConfig()
@@ -107,6 +109,7 @@ export default class BiometricDevices {
 
 	public static async Device(id: string) {
 		try {
+			BiometricDevices.log.verbose(`select device by id = ${id}`)
 			if (!BiometricDevices.config.biometricDevices.hasOwnProperty(id)) throw "Invalid biometric device ID"
 			if (BiometricDevices.cache.biometricDevices.has(id)) return <TBiometricDevice>BiometricDevices.cache.biometricDevices.get(id)
 			let options = BiometricDevices.config.biometricDevices[id]
@@ -135,6 +138,7 @@ export default class BiometricDevices {
 	}
 
 	public static GetCredentials(id: string): { username: string, password: string } {
+		BiometricDevices.log.verbose("try get credentials for device ", id)
 		if (!BiometricDevices.config.biometricDevices.hasOwnProperty(id)) throw "Invalid biometric device ID"
 		if (!BiometricDevices.config.credentials.hasOwnProperty(id)) throw "This Biometric does not have any credentials."
 		return BiometricDevices.config.credentials[id]
@@ -210,6 +214,7 @@ export default class BiometricDevices {
 	 * @memberof BiometricDevices
 	 */
 	public static async SetZone(id: string, zoneName: string): Promise<boolean> {
+		BiometricDevices.log.verbose(`try set zone of device ${id} to zone ${zoneName}`)
 		if (!BiometricDevices.Zones.hasOwnProperty(zoneName)) throw "Zone name does not exists"
 		if (!BiometricDevices.config.biometricDevices.hasOwnProperty(id)) throw "Invalid biometric device ID"
 		let device = await BiometricDevices.Device(id)
@@ -233,6 +238,7 @@ export default class BiometricDevices {
 	 * @memberof BiometricDevices
 	 */
 	public static async AddMemberZone(id: string | null, memberId: string, zoneName: string): Promise<boolean> {
+		BiometricDevices.log.verbose(`try add member zone`, { id, memberId, zoneName })
 		if (!BiometricDevices.Zones.hasOwnProperty(zoneName)) throw "Zone name does not exists"
 		if (id === null) id = BiometricDevices.DefaultDeviceID
 		else
@@ -257,6 +263,7 @@ export default class BiometricDevices {
 	 * @memberof BiometricDevices
 	 */
 	public static async MoveMemberZone(id: string | null, memberId: string, zoneName: string): Promise<boolean> {
+		BiometricDevices.log.verbose(`try move member zone`, { id, memberId, zoneName })
 		if (!BiometricDevices.Zones.hasOwnProperty(zoneName)) throw "Zone name does not exists"
 		if (id === null) id = BiometricDevices.DefaultDeviceID
 		else
@@ -281,7 +288,7 @@ export default class BiometricDevices {
 	 * @memberof BiometricDevices
 	 */
 	public static async RemoveMemberZone(id: string | null, memberId: string, zoneName: string): Promise<boolean> {
-		this.log.verbose("remove member zone")
+		BiometricDevices.log.verbose(`try add member zone`, { id, memberId, zoneName })
 		if (!BiometricDevices.Zones.hasOwnProperty(zoneName)) throw "Zone name does not exists"
 		if (id === null) id = BiometricDevices.DefaultDeviceID
 		else

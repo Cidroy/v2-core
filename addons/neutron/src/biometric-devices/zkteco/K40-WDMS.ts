@@ -12,7 +12,7 @@ export const DefaultWDMS: WDMSConnectionConfig = {
 	port: 8081,
 	DeviceName: "default",
 	id: "default",
-	zone: Object.keys(BiometricDevices.Zones)[0],
+	zone: Object.keys(BiometricDevices.Zones)[0] || "Unfreezed",
 	checkType: BIOMETRIC_DEVICE_CHECK_TYPE.CHECK_IN,
 }
 
@@ -347,7 +347,7 @@ export default class ZKTEco_K40_WDMS implements IBiometric {
 			this._host = DefaultWDMS.host
 			this._port = DefaultWDMS.port
 			this._zone = DefaultWDMS.zone
-			this._checkType = wdms.checkType
+			this._checkType = DefaultWDMS.checkType
 		}
 	}
 }
