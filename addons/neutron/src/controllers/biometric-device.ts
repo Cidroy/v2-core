@@ -2,7 +2,6 @@ import * as API from "@tsed/common"
 import BiometricDevices from "@neutron/lib/biometric"
 import { Logger } from "@classes/CONSOLE"
 import { ISuccess, IError } from "@classes/interface/IResponse"
-import { TBiometricDevice } from "@neutron/supported-biometric-devices"
 
 @API.Controller("/biometric-device")
 export class BiometricDeviceController{
