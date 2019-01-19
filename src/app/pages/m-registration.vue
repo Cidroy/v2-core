@@ -327,7 +327,7 @@ export default class Home extends Vue {
 	date = new Date().toISOString().substr(0, 10)
 	dateFormatted = this.formatDate(this.date)
 	radioGroup1 = 'radio-1'
-	radioGroup2 = 1
+	radioGroup2 = "radio-4"
 	menu1 = false
 	menu4 = false
 	select = []
