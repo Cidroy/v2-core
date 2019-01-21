@@ -4,6 +4,6 @@
 		"ts": "ts-node -r tsconfig-paths/register "
 	},
 	"watch": [ "addons/neutron/src" ],
-	"delay": 1000,
+	"delay": 0,
 	"exec": "ts-node -r tsconfig-paths/register {{filename}}"
 }

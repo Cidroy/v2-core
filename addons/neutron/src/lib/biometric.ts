@@ -2,6 +2,7 @@ import { Logger } from "@classes/CONSOLE"
 import { SupportedBiometricDevice, BiometricDeviceOptions, InstanceList, TBiometricDevices, TBiometricDevice } from "@neutron/supported-biometric-devices"
 import AppConfig from "@classes/appConfig"
 import uuid from "uuid/v4"
+import { TBiometricMemberDetails, TBiometricDetails } from "@neutron/lib/IBiometric"
 
 export default class BiometricDevices {
 	protected static Namespace = "neutron/biometric-devices"
@@ -237,13 +238,13 @@ export default class BiometricDevices {
 	 * @returns {Promise<boolean>} true if success
 	 * @memberof BiometricDevices
 	 */
-	public static async AddMemberZone(id: string | null, memberId: string, zoneName: string): Promise<boolean> {
-		BiometricDevices.log.verbose(`try add member zone`, { id, memberId, zoneName })
+	public static async AddMemberZone(deviceId: string | null, memberId: string, zoneName: string): Promise<boolean> {
+		BiometricDevices.log.verbose(`try add member zone`, { deviceId, memberId, zoneName })
 		if (!BiometricDevices.Zones.hasOwnProperty(zoneName)) throw "Zone name does not exists"
-		if (id === null) id = BiometricDevices.DefaultDeviceID
+		if (deviceId === null) deviceId = BiometricDevices.DefaultDeviceID
 		else
-			if (!BiometricDevices.config.biometricDevices.hasOwnProperty(id)) throw "Invalid biometric device ID"
-		let device = await BiometricDevices.Device(id)
+			if (!BiometricDevices.config.biometricDevices.hasOwnProperty(deviceId)) throw "Invalid biometric device ID"
+		let device = await BiometricDevices.Device(deviceId)
 		await BiometricDevices._Login(device)
 		return await device.AddMemberZone(memberId, zoneName)
 	}
@@ -288,7 +289,7 @@ export default class BiometricDevices {
 	 * @memberof BiometricDevices
 	 */
 	public static async RemoveMemberZone(id: string | null, memberId: string, zoneName: string): Promise<boolean> {
-		BiometricDevices.log.verbose(`try add member zone`, { id, memberId, zoneName })
+		BiometricDevices.log.verbose(`try remove member zone`, { id, memberId, zoneName })
 		if (!BiometricDevices.Zones.hasOwnProperty(zoneName)) throw "Zone name does not exists"
 		if (id === null) id = BiometricDevices.DefaultDeviceID
 		else
@@ -296,6 +297,204 @@ export default class BiometricDevices {
 		let device = await BiometricDevices.Device(id)
 		await BiometricDevices._Login(device)
 		return await device.RemoveMemberZone(memberId, zoneName)
+	}
+
+	/**
+	 * Add member to device
+	 *
+	 * @static
+	 * @param {(string| null)} deviceId OPTIONAL.
+	 *
+	 * device id
+	 *
+	 * defaults to default device
+	 * @param {string} badgeNumber badge number
+	 * @param {TBiometricMemberDetails} details member details
+	 * @returns {Promise<boolean>} true if success
+	 * @memberof BiometricDevices
+	 */
+	public static async Addmember(deviceId: string| null, badgeNumber: string, details: TBiometricMemberDetails): Promise<boolean>{
+		BiometricDevices.log.verbose("try add member", { deviceId, badgeNumber, details })
+		if (deviceId === null) deviceId = BiometricDevices.DefaultDeviceID
+		else
+			if (!BiometricDevices.config.biometricDevices.hasOwnProperty(deviceId)) throw "Invalid biometric device ID"
+
+		let device = await BiometricDevices.Device(deviceId)
+		await BiometricDevices._Login(device)
+		await device.AddMember(badgeNumber, details)
+		return true
+	}
+	/**
+	 *delete member
+	*
+	* @static
+	* @param {(string| null)} deviceId OPTIONAL
+	* device ID
+	* defaults to default device
+	* @param {string} memberId Member Id
+	* @returns {Promise<boolean>} true if success
+	* @memberof BiometricDevices
+	*/
+public static async DeleteMember(deviceId: string| null, memberId: string): Promise<boolean>{
+		BiometricDevices.log.verbose("try delete member", { memberId })
+		if (deviceId === null) deviceId = BiometricDevices.DefaultDeviceID
+		else
+			if (!BiometricDevices.config.biometricDevices.hasOwnProperty(deviceId)) throw "Invalid biometric device ID"
+
+		let device = await BiometricDevices.Device(deviceId)
+		await BiometricDevices._Login(device)
+		await device.DeleteMember(memberId)
+		return true
+	}
+	/**
+	*Member Freeze
+	*
+	* @static
+	* @param {(string| null)} deviceId OPTIONAL
+	* device ID
+	* defaults to default device
+	* @param {string} memberId Member Id
+	* @returns {Promise<boolean>} true if success
+	* @memberof BiometricDevices
+	*/
+	public static async FreezeMember(deviceId: string| null, memberId: string): Promise<boolean>{
+		BiometricDevices.log.verbose("try freezing member", { memberId })
+		if (deviceId === null) deviceId = BiometricDevices.DefaultDeviceID
+		else
+			if (!BiometricDevices.config.biometricDevices.hasOwnProperty(deviceId)) throw "Invalid biometric device ID"
+
+		let device = await BiometricDevices.Device(deviceId)
+		await BiometricDevices._Login(device)
+		await device.FreezeMember(memberId)
+		return true
+	}
+	/**
+	*Member Unfreeze
+	*
+	* @static
+	* @param {(string| null)} deviceId OPTIONAL
+	* device ID
+	* defaults to default device
+	* @param {string} memberId Member Id
+	* @returns {Promise<boolean>} true if success
+	* @memberof BiometricDevices
+	*/
+	public static async UnfreezeMember(deviceId: string| null, memberId: string): Promise<boolean>{
+		BiometricDevices.log.verbose("try unfreezing member", { memberId })
+		if (deviceId === null) deviceId = BiometricDevices.DefaultDeviceID
+		else
+			if (!BiometricDevices.config.biometricDevices.hasOwnProperty(deviceId)) throw "Invalid biometric device ID"
+
+		let device = await BiometricDevices.Device(deviceId)
+		await BiometricDevices._Login(device)
+		await device.UnfreezeMember(memberId)
+		return true
+	}
+	/**
+	*Member Unfreeze
+	*
+	* @static
+	* @param {(string| null)} deviceId OPTIONAL
+	* device ID
+	* defaults to default device
+	* @param {string} memberId Member Id
+	* @returns {Promise<boolean>} true if success
+	* @memberof BiometricDevices
+	*/
+	public static async ScanFingerprint(deviceId: string| null, memberId: string): Promise<boolean>{
+		BiometricDevices.log.verbose("try Sacnning fingerprint", { memberId })
+		if (deviceId === null) deviceId = BiometricDevices.DefaultDeviceID
+		else
+			if (!BiometricDevices.config.biometricDevices.hasOwnProperty(deviceId)) throw "Invalid biometric device ID"
+
+		let device = await BiometricDevices.Device(deviceId)
+		await BiometricDevices._Login(device)
+		await device.ScanFingerprint(memberId)
+		return true
+	}
+
+	/**
+	 * Scan for devies with configuration
+	 *
+	 * @static
+	 * @param {SupportedBiometricDevice} type device type
+	 * @param {BiometricDeviceOptions} option device options
+	 * @param {{ username: string, password: string }} credentials device credentials
+	 * @returns {Promise<{ [I: string]: string }>} device list
+	 * @memberof BiometricDevices
+	 */
+	public static async ScanForDevices(
+		type: SupportedBiometricDevice,
+		option: BiometricDeviceOptions,
+		credentials: { username: string, password: string }
+	): Promise<{ [I: string]: TBiometricDetails }>{
+		try {
+			BiometricDevices.log.verbose("scan for biometric device of type", type)
+			let device = new InstanceList[type](option)
+			await device.Initialize()
+			await device.Login(credentials.username, credentials.password)
+			return await device.ScanDevices()
+		} catch (error) {
+			BiometricDevices.log.error(error)
+			throw "Unable to Scan for devices"
+		}
+	}
+	/**
+	 * Get Status for all the devices
+	 *
+	 * @static
+	 * @returns {Promise<{ [name: string]: TBiometricDetails }>}
+	 * @memberof BiometricDevices
+	 */
+	public static async StatusAll(): Promise<{ [name: string]: TBiometricDetails }>{
+		try {
+			BiometricDevices.log.verbose("get all device status")
+			let device = await BiometricDevices.Device(BiometricDevices.DefaultDeviceID)
+			await device.Initialize()
+			await BiometricDevices._Login(device)
+			let status:{ [name: string]: TBiometricDetails } = {}
+			let [ devices, statuses, ] = await Promise.all([
+				BiometricDevices.Devices(),
+				device.StatusAll(),
+			])
+			for (const name in devices) {
+				if (devices.hasOwnProperty(name)) {
+					const d = devices[name]
+					if(statuses.hasOwnProperty(d.serial))
+						status[name] = statuses[d.serial]
+				}
+			}
+			return status
+		} catch (error) {
+			BiometricDevices.log.error(error)
+			throw "Unable to Scan for devices"
+		}
+	}
+	/**
+	 * List zones list
+	 *
+	 * @static
+	 * @param {SupportedBiometricDevice} type
+	 * @param {BiometricDeviceOptions} option
+	 * @param {{ username: string, password: string }} credentials
+	 * @returns {Promise<{ [I: string]: string }>}
+	 * @memberof BiometricDevices
+	 */
+	public static async listZones(
+		type: SupportedBiometricDevice,
+		option: BiometricDeviceOptions,
+		credentials: { username: string, password: string }
+	): Promise<{ [I: string]: string }>{
+		try {
+			BiometricDevices.log.verbose("list of zones", type)
+			let device = new InstanceList[type](option)
+			await device.Initialize()
+			await device.Login(credentials.username, credentials.password)
+			return await device.listZones()
+		} catch (error) {
+			BiometricDevices.log.error(error)
+			throw "Unable to Scan for devices"
+		}
 	}
 
 }
