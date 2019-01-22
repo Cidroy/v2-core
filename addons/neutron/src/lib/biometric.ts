@@ -5,10 +5,30 @@ import uuid from "uuid/v4"
 import { TBiometricMemberDetails, TBiometricDetails } from "@neutron/lib/IBiometric"
 
 export default class BiometricDevices {
+	/**
+	 * Logging namespace
+	 *
+	 * @protected
+	 * @static
+	 * @memberof BiometricDevices
+	 */
 	protected static Namespace = "neutron/biometric-devices"
 
 	protected static log: Logger = new Logger("biometric-device")
 
+	/**
+	 * default config for all devices
+	 *
+	 * @private
+	 * @static
+	 * @type {({
+	 * 		defaultBiometricDevice: string | null,
+	 * 		biometricDevices: { [I: string]: BiometricDeviceOptions & { DeviceType: SupportedBiometricDevice } },
+	 * 		credentials: { [I: string]: { username: string, password: string, } },
+	 * 		zones: { [I: string]: number },
+	 * 	})}
+	 * @memberof BiometricDevices
+	 */
 	private static config: {
 		defaultBiometricDevice: string | null,
 		biometricDevices: { [I: string]: BiometricDeviceOptions & { DeviceType: SupportedBiometricDevice } },
@@ -22,15 +42,35 @@ export default class BiometricDevices {
 			zones: {},
 		}
 
+	/**
+	 * device cache
+	 *
+	 * @private
+	 * @static
+	 * @memberof BiometricDevices
+	 */
 	private static cache = {
-		biometricDevices: new Map<string, TBiometricDevice>(),
+		biometricDevices: new Map<string, TBiometricDevice>(), // name, device
 	}
 
+	/**
+	 * Initialize device configs
+	 *
+	 * @static
+	 * @memberof BiometricDevices
+	 */
 	public static async Initialize() {
 		BiometricDevices.config = await AppConfig.Get(BiometricDevices.Namespace, BiometricDevices.config)
 		BiometricDevices.log.verbose("initialized", BiometricDevices.config)
 	}
 
+	/**
+	 * Save config
+	 *
+	 * @private
+	 * @static
+	 * @memberof BiometricDevices
+	 */
 	private static async SaveConfig() {
 		try {
 			await AppConfig.Set(BiometricDevices.Namespace, BiometricDevices.config)
@@ -40,9 +80,19 @@ export default class BiometricDevices {
 		}
 	}
 
+	/**
+	 * Add Device
+	 *
+	 * @static
+	 * @param {(string | null)} id device id
+	 * @param {SupportedBiometricDevice} type device type
+	 * @param {BiometricDeviceOptions} options device options
+	 * @returns {Promise<string>} response
+	 * @memberof BiometricDevices
+	 */
 	public static async Add(id: string | null, type: SupportedBiometricDevice, options: BiometricDeviceOptions): Promise<string> {
 		try {
-			BiometricDevices.log.verbose({ InstanceList, type })
+			BiometricDevices.log.verbose("Add Device", { InstanceList, type })
 			let test = new InstanceList[type](options)
 			await test.Initialize()
 			BiometricDevices.log.info(`${type} successfully connected`)
@@ -56,6 +106,15 @@ export default class BiometricDevices {
 		}
 	}
 
+	/**
+	 * Edit Device
+	 *
+	 * @static
+	 * @param {string} id device id
+	 * @param {BiometricDeviceOptions} newOptions device options
+	 * @returns {Promise<boolean>} response
+	 * @memberof BiometricDevices
+	 */
 	public static async Edit(id: string, newOptions: BiometricDeviceOptions): Promise<boolean> {
 		try {
 			BiometricDevices.log.verbose("try edit device ",{ id, newOptions, })
@@ -73,6 +132,14 @@ export default class BiometricDevices {
 		}
 	}
 
+	/**
+	 * Delete Device
+	 *
+	 * @static
+	 * @param {string} id device id
+	 * @returns {Promise<boolean>} response
+	 * @memberof BiometricDevices
+	 */
 	public static async Delete(id: string): Promise<boolean> {
 		try {
 			BiometricDevices.log.verbose("try delete device ", id)
@@ -88,6 +155,14 @@ export default class BiometricDevices {
 		}
 	}
 
+	/**
+	 * Set device as default / master
+	 *
+	 * @static
+	 * @param {string} id device id
+	 * @returns {Promise<boolean>} response
+	 * @memberof BiometricDevices
+	 */
 	public static async SetAsDefault(id: string): Promise<boolean> {
 		try {
 			BiometricDevices.log.verbose("try set default device ", { id, biometricDevices: BiometricDevices.config.biometricDevices, })
@@ -101,13 +176,36 @@ export default class BiometricDevices {
 		}
 	}
 
+	/**
+	 * Devices list
+	 *
+	 * @static
+	 * @returns response
+	 * @memberof BiometricDevices
+	 */
 	public static async Devices() { return BiometricDevices.config.biometricDevices }
 
+	/**
+	 * Default/Master Device ID
+	 *
+	 * @readonly
+	 * @static
+	 * @type {string}
+	 * @memberof BiometricDevices
+	 */
 	public static get DefaultDeviceID(): string {
 		if (BiometricDevices.config.defaultBiometricDevice === null) throw "No default biometric device set."
 		return BiometricDevices.config.defaultBiometricDevice
 	}
 
+	/**
+	 * Get Device
+	 *
+	 * @static
+	 * @param {string} id device id
+	 * @returns
+	 * @memberof BiometricDevices
+	 */
 	public static async Device(id: string) {
 		try {
 			BiometricDevices.log.verbose(`select device by id = ${id}`)
@@ -124,6 +222,16 @@ export default class BiometricDevices {
 		}
 	}
 
+	/**
+	 * Save Credentials
+	 *
+	 * @static
+	 * @param {string} id device id
+	 * @param {string} username username
+	 * @param {string} password password
+	 * @returns {Promise<boolean>} response
+	 * @memberof BiometricDevices
+	 */
 	public static async SaveCredentials(id: string, username: string, password: string): Promise<boolean> {
 		try {
 			let device = await BiometricDevices.Device(id)
@@ -138,6 +246,14 @@ export default class BiometricDevices {
 		}
 	}
 
+	/**
+	 * Get credentials for device
+	 *
+	 * @static
+	 * @param {string} id device id
+	 * @returns {{ username: string, password: string }} credentials
+	 * @memberof BiometricDevices
+	 */
 	public static GetCredentials(id: string): { username: string, password: string } {
 		BiometricDevices.log.verbose("try get credentials for device ", id)
 		if (!BiometricDevices.config.biometricDevices.hasOwnProperty(id)) throw "Invalid biometric device ID"
@@ -480,7 +596,7 @@ public static async DeleteMember(deviceId: string| null, memberId: string): Prom
 	 * @returns {Promise<{ [I: string]: string }>}
 	 * @memberof BiometricDevices
 	 */
-	public static async listZones(
+	public static async listZonesFromDevice(
 		type: SupportedBiometricDevice,
 		option: BiometricDeviceOptions,
 		credentials: { username: string, password: string }
@@ -496,5 +612,7 @@ public static async DeleteMember(deviceId: string| null, memberId: string): Prom
 			throw "Unable to Scan for devices"
 		}
 	}
+
+	public static async listZones(){ return BiometricDevices.Zones }
 
 }
