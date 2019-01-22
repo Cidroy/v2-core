@@ -15,6 +15,7 @@
 		"dev:neutron-webpack": "ts-node -r tsconfig-paths/register addons/neutron/build/dev.ts",
 		"dev:neutron": "nodemon --verbose --config addons/neutron/nodemon.json addons/neutron/src/index.dev.ts -- --verbose",
 		"build:neutron": "ts-node -r tsconfig-paths/register addons/neutron/build/build.ts",
+		"release:neutron": "ts-node -r tsconfig-paths/register build/addons/neutron.ts",
 		"start:neutron": "npm run build:neutron && node dist/neutron/index.js",
 		"dev:web": "ts-node -r tsconfig-paths/register build/web/dev.ts",
 		"build:web": "ts-node -r tsconfig-paths/register build/web/build.ts",
