@@ -1,6 +1,6 @@
 import { ApolloServer } from "apollo-server-express"
 import config from "../config"
-import connectDatabase from "@positron/db"
+import { Database } from "@positron/db"
 import { Logger } from "@classes/CONSOLE"
 import GQL from "@positron/graphql"
 import { Neutron } from "@neutron/NEUTRON"
@@ -22,38 +22,44 @@ export class Positron {
 	public get Server(){ return this.server }
 
 	private async startServer() {
-		this.log.verbose("creating gql schema")
-		let apollo = new ApolloServer({
-			schema: await GQL.Schema(),
-			playground: true
-		})
-		this.log.verbose("adding gql")
-		apollo.applyMiddleware({
-			path: "/gql",
-			app: this.server.expressApp,
-		})
+		if(Database.Connected){
+			this.log.verbose("creating gql schema")
+			let apollo = new ApolloServer({
+				schema: await GQL.Schema(),
+				playground: true
+			})
+			this.log.verbose("adding gql")
+			apollo.applyMiddleware({
+				path: "/gql",
+				app: this.server.expressApp,
+			})
+		}
 		this.log.verbose("starting server")
 		await this.server.start()
 		this.log.okay("SERVER READY")
 		this.log.info(`REST: http://localhost:${config.config.port}`)
-		this.log.info(`GQL : http://localhost:${config.config.port}/gql`)
+		if (Database.Connected) this.log.info(`GQL : http://localhost:${config.config.port}/gql`)
 	}
 
-	// FIXME: allow non db configed connection for db config over REST API
 	public async main() {
 		try {
 			this.log.okay("main()")
 			await AppConfig.Initialize()
 			this.log.okay("app-config ready")
-			const connection = await connectDatabase({
-				verbose: this.config.verbose
-			})
-			this.log.okay("db connected")
+			try {
+				await Database.Initialize()
+				const connection = await Database.Connect({
+					verbose: this.config.verbose
+				})
+				this.log.okay("db connected")
+			} catch (error) {
+				this.log.error(error)
+				this.log.info("Will Start server without database. Functions are limited")
+			}
 			await this.startServer()
 			if (module && module.hot) {
 				module.hot.accept()
 				module.hot.dispose(() => {
-					connection.close()
 					this.log.info("reloading")
 				})
 			}
@@ -70,7 +76,6 @@ export class Positron {
 		this.log.info("new instance")
 		this.log.info({ args })
 		this.config.verbose = args.verbose?args.verbose: this.config.verbose
-		// FIXME: auto verbose
 		Logger.Verbose = this.config.verbose
 
 		this.server = new Server(this.config)
