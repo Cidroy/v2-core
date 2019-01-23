@@ -9,16 +9,30 @@ import BiometricDevices from "@neutron/lib/biometric"
 import { DEVICE_STATE } from "@neutron/lib/device-state"
 const request = require("request-promise-native").defaults({ simple: false })
 
+function dataParser(html: string) {
+	const regex = /data\s*=\s*\[([\s\S\n]*)?\];/gm
+	html = (regex.exec(html) || ["[]",])[0]
+		.replace(/data\s*=\s*\[/, "[")
+		.replace("];", "]")
+		.replace(/getStateStr/g, "")
+		.replace(/getLogLink/g, "null")
+		.replace(/\(/g, "")
+		.replace(/\)/g, "")
+	let unmapped = JSON.parse(html)
+	return { unmapped, html }
+}
+
 export const DefaultWDMS: WDMSConnectionConfig = {
 	ssl: false,
 	host: "localhost",
 	port: 8081,
 	DeviceName: "default",
 	id: "default",
-	zone: Object.keys(BiometricDevices.Zones)[0] || "Unfreezed",
+	zoneName: Object.keys(BiometricDevices.Zones)[0] || "Unfreezed",
 	checkType: BIOMETRIC_DEVICE_CHECK_TYPE.CHECK_IN,
 	serial: "none",
-	IP: "0.0.0.0"
+	ip: "0.0.0.0",
+	deptID: "1",
 }
 
 /**
@@ -36,24 +50,20 @@ export default class ZKTEco_K40_WDMS implements IBiometric {
 
 	private static defaults: {
 		company: number;
-		department: string;
 		privilage: number;
 		accessGroup: number;
 	} = {
 			get company(){ return BiometricDevices.Zones.Unfreezed || 0 },
-			department: "1",
 			privilage: 0,
 			accessGroup: 1,
 		}
 
 	public defaults: {
 		company: number;
-		department: string;
 		privilage: number;
 		accessGroup: number;
 	} = {
 			company: ZKTEco_K40_WDMS.defaults.company,
-			department: ZKTEco_K40_WDMS.defaults.department,
 			privilage: ZKTEco_K40_WDMS.defaults.privilage,
 			accessGroup: ZKTEco_K40_WDMS.defaults.accessGroup,
 		}
@@ -65,6 +75,8 @@ export default class ZKTEco_K40_WDMS implements IBiometric {
 	private _zone: string
 	private _checkType: BIOMETRIC_DEVICE_CHECK_TYPE
 	private _serial: string
+	private _deptID: string
+	private _departmentList: any = null
 
 	private get wdmsURL() { return `http${this._ssl ? "s" : ""}://${this._host}${this._port ? ":" : ""}${this._port}/iclock` }
 
@@ -77,7 +89,19 @@ export default class ZKTEco_K40_WDMS implements IBiometric {
 	public get IP(){return this._IP}
 
 	public get DeviceDetails() {
-		return {}
+		return {
+			id: this._id,
+			DeviceType: this.DeviceType,
+			ssl: this._ssl,
+			host: this._host,
+			port: this._port,
+			DeviceName: this._deviceName,
+			zoneName: <string>this.Zone,
+			checkType: this._checkType,
+			serial: this._serial ,
+			ip: this._IP,
+			deptID: this._deptID,
+		}
 	}
 
 	private static DetailsParser = (html: string) => {
@@ -90,15 +114,8 @@ export default class ZKTEco_K40_WDMS implements IBiometric {
 			DEVICE_STATE.ERROR,
 			DEVICE_STATE.PUSH_COMM_KEY_ERR,
 		]
-		const regex = /data\s*=\s*\[([\s\S\n]*)?\];/gm
-		html = ( regex.exec(html) || ["[]",] )[0]
-			.replace(/data\s*=\s*\[/, "[")
-			.replace("];", "]")
-			.replace(/getStateStr/g, "")
-			.replace(/getLogLink/g, "null")
-			.replace(/\(/g, "")
-			.replace(/\)/g, "")
-		let unmapped = JSON.parse(html)
+		let unmapped
+		({ unmapped, html } = dataParser(html))
 		let devices : { [serial: string]: TBiometricDetails }
 		 = {}
 		unmapped.forEach(detail => {
@@ -128,6 +145,54 @@ export default class ZKTEco_K40_WDMS implements IBiometric {
 	public async Initialize(): Promise<boolean> {
 		this.log.info("initialized OKAY")
 		return true
+	}
+
+	/**
+	 * Add this device to WDMS with current config
+	 *
+	 * @param {BIOMETRIC_DEVICE_MODE} mode operation mode
+	 * @returns {Promise<boolean>} response
+	 * @memberof ZKTEco_K40_WDMS
+	 */
+	public async AddDevice(mode: BIOMETRIC_DEVICE_MODE): Promise<boolean> {
+		try {
+			if(this.Zone===null) throw "Zone Name is required"
+			let depts = await this.GetDepartments()
+			this._deptID = (
+				(Object.values(depts).find((e: any) => e.zoneName === this.Zone) || { id: 0 }).id
+				|| this._deptID
+				|| 1
+			).toString()
+			let _options = {
+				method: "POST",
+				url: `${this.wdmsURL}/data/iclock/${this._serial}/`,
+				headers: {
+					"Cache-Control": "no-cache",
+					"Content-Type": "application/x-www-form-urlencoded",
+				},
+				form: {
+					SN: this._serial,
+					Alias: this._IP,
+					company: BiometricDevices.ZoneID(this.Zone) ,
+					DeptID: this._deptID ,
+					UpdateDB: mode === BIOMETRIC_DEVICE_MODE.MASTER ? "1111111111" :"1110000000",
+					TZAdj: "330",
+					IsSupportWC: "0",
+					AutoSyncWC: "0",
+					IsFacial: "0",
+					AlertEmail: ""
+				},
+				jar: true,
+			}
+			this.log.verbose("try adding device", _options)
+			let response = await request(_options)
+			this.log.info("device add OKAY", this._serial, this._IP)
+			this.log.verbose(response)
+			return true
+		} catch (error) {
+			this.log.error(error)
+			throw new Error("Unable to add device")
+		}
 	}
 
 	private async PreLogin(): Promise<boolean> {
@@ -194,7 +259,7 @@ export default class ZKTEco_K40_WDMS implements IBiometric {
 			form: {
 				PIN: badgeNumber,
 				company: (details.company ? details.company : this.defaults.company).toString(),
-				DeptID: details.department ? details.department : this.defaults.department,
+				DeptID: details.department ? details.department : this._deptID,
 				EName: details.name,
 				Password: "",
 				Card: "",
@@ -224,7 +289,7 @@ export default class ZKTEco_K40_WDMS implements IBiometric {
 			throw BiometricUserAddFailed
 		}
 	}
-
+	
 	public async DeleteMember(id: string): Promise<boolean> {
 		let _options = {
 			method: "POST",
@@ -346,7 +411,7 @@ export default class ZKTEco_K40_WDMS implements IBiometric {
 			return true
 		} catch (error) {
 			this.log.error(error)
-			throw BiometricScanFPFailed
+			throw new Error("Unable to add zone to member")
 		}
 	}
 	
@@ -372,7 +437,7 @@ export default class ZKTEco_K40_WDMS implements IBiometric {
 			return true
 		} catch (error) {
 			this.log.error(error)
-			throw BiometricUserUnfreezeFailed
+			throw new Error("Unable to move member")
 		}
 	}
 
@@ -497,6 +562,33 @@ export default class ZKTEco_K40_WDMS implements IBiometric {
 		}
 	}
 
+	public async GetDepartments(): Promise<{ [id: string]: { id: number, name: string, zoneName: string } }>{
+		if (this._departmentList) return this._departmentList
+		let _options = {
+			method: "GET",
+			jar: true,
+			url: `${this.wdmsURL}/data/department/`,
+		}
+		try {
+			this.log.verbose(`try get departments`)
+			let response = await request(_options)
+			let { unmapped } = dataParser(response)
+			let depts: { [id: string]: { id: number, name: string, zoneName: string } } = {}
+			unmapped.forEach(dept => {
+				depts[dept[0]] = {
+					id: dept[0],
+					name: dept[1],
+					zoneName: dept[2],
+				}
+			})
+			this._departmentList = depts
+			return depts
+		} catch (error) {
+			this.log.error(error)
+			throw "Unable to get depts"
+		}
+	}
+
 	public async ScanDevices(){
 		return await this.GetStatusAll("scan devices")
 	}
@@ -521,10 +613,11 @@ export default class ZKTEco_K40_WDMS implements IBiometric {
 			this._ssl = wdms.ssl
 			this._host = wdms.host
 			this._port = wdms.port
-			this._zone = wdms.zone
+			this._zone = wdms.zoneName
 			this._checkType = wdms.checkType
 			this._serial = wdms.serial
-			this._IP = wdms.IP
+			this._IP = wdms.ip
+			this._deptID = wdms.deptID
 
 		} catch (error) {
 			this.log.error(error)
@@ -534,10 +627,11 @@ export default class ZKTEco_K40_WDMS implements IBiometric {
 			this._ssl = DefaultWDMS.ssl
 			this._host = DefaultWDMS.host
 			this._port = DefaultWDMS.port
-			this._zone = DefaultWDMS.zone
+			this._zone = DefaultWDMS.zoneName
 			this._checkType = DefaultWDMS.checkType
 			this._serial = DefaultWDMS.serial
-			this._IP = DefaultWDMS.IP
+			this._IP = DefaultWDMS.ip
+			this._deptID = DefaultWDMS.deptID
 		}
 	}
 }
