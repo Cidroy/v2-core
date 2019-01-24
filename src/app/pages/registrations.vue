@@ -7,7 +7,7 @@
       			<v-tab v-for="(name, key) in tabsList" :key="key" ripple>{{ name }}</v-tab>
       	
 				<v-tab-item key="a">
-        			<v-card height="780px" color="#303030">
+        			<v-card height="730px" color="transparent">
 						<v-layout class="pt-2" row wrap>
 							<v-flex class="pl-2 ml-2" xs12>
 								<v-radio-group row label="Personal Traning Type: " v-model="radioTop1" :mandatory="false">
@@ -109,7 +109,7 @@
 							</v-flex>
 						</v-layout>
 
-						<v-card width="100%" height="50px" color="#303030">
+						<v-card width="100%" height="50px" color="transparent">
 							<div class="right pr-2"> 
 								<v-btn flat>Cancel</v-btn>
 								<v-btn @click="snackbar1 = true" color="orange darken-4" class="mb-2">Submit</v-btn>
@@ -122,7 +122,7 @@
 				</v-tab-item>
       
 				<v-tab-item key="b">
-					<v-card color="#303030">
+					<v-card color="transparent" height="730px">
 						<v-layout row wrap>
 							<v-flex class="pl-2 ml-2" xs12>
 								<v-radio-group row label="One-Day Type: " v-model="radioTop2" :mandatory="false">
@@ -222,7 +222,7 @@
 							</v-flex>	
 						</v-layout>	
 
-						<v-card width="100%" height="50px" color="#303030">
+						<v-card width="100%" height="50px" color="transparent">
 							<div class="right pr-2">
 								<v-btn flat>Cancel</v-btn>
 								<v-btn @click="snackbar2 = true" color="orange darken-4" class="mb-2">Submit</v-btn>
@@ -235,7 +235,7 @@
 				</v-tab-item>
       
 	  			<v-tab-item key="c">
-        			<v-card height="450px" color="#303030">
+        			<v-card height="440px" color="transparent">
 						<v-layout class="pt-4" row wrap>
 							<v-flex xs2>
 								<v-subheader class="title">Mobile No</v-subheader>
@@ -299,7 +299,7 @@
 						</v-layout>
 					</v-card>
 
-					<v-card width="100%" height="50px" color="#303030">
+					<v-card width="100%" height="50px" color="transparent">
 						<div class="right pr-2"> 
 							<v-btn flat>Cancel</v-btn>
 							<v-btn @click="snackbar3 = true" color="orange darken-4" class="mb-2">Submit</v-btn>
