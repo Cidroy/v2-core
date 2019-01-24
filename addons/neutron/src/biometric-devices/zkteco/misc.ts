@@ -6,6 +6,9 @@ export type WDMSConnectionConfig = {
 	port: number
 	DeviceName: string,
 	id: string,
-	zone: string,
-	checkType: BIOMETRIC_DEVICE_CHECK_TYPE
+	zoneName: string,
+	checkType: BIOMETRIC_DEVICE_CHECK_TYPE,
+	serial: string,
+	ip: string,
+	deptID: string,
 }

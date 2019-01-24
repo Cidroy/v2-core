@@ -28,13 +28,21 @@ export default class AppConfig {
 
 	public static async Save() {
 		if (AppConfig.cache === undefined) AppConfig.Initialize()
+		AppConfig.log.verbose("save")
 		writeFileSync(AppConfig.file, json5.stringify(AppConfig.cache, null, 4))
 	}
 
 	public static async Get<T>(name: string, defaults?: T): Promise<T> {
 		if (AppConfig.cache === undefined) AppConfig.Initialize()
-		if ((<{}>AppConfig.cache).hasOwnProperty(name)) return <T>(<{}>AppConfig.cache)[name]
-		else if (defaults !== undefined) return defaults
+		AppConfig.log.verbose(`get ${name}`)
+		if ((<{}>AppConfig.cache).hasOwnProperty(name)){
+			AppConfig.log.verbose("used cache")
+			return <T>(<{}>AppConfig.cache)[name]
+		}
+		else if (defaults !== undefined){
+			AppConfig.log.verbose("used default")
+			return defaults
+		}
 		else throw `Unable to fetch AppConfig for ${name}`
 	}
 

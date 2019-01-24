@@ -1,4 +1,5 @@
 import { SupportedBiometricDevice } from "@neutron/supported-biometric-devices"
+import { DEVICE_STATE } from "@neutron/lib/device-state"
 
 export enum BIOMETRIC_DEVICE_MODE{
 	MASTER = "MASTER",
@@ -13,7 +14,7 @@ export enum BIOMETRIC_DEVICE_CHECK_TYPE{
 /**
  * User details required for biometric integration
  */
-export type BiometricMemberDetails = {
+export type TBiometricMemberDetails = {
 	name: string
 	gender ?: string
 	birthday ?: Date
@@ -27,9 +28,30 @@ export type BiometricMemberDetails = {
 	accessGroup ?: number
 }
 
+export type TBiometricDetails = {
+	serial: string,
+	ip: string,
+	state: DEVICE_STATE,
+	name: string,
+	zoneId: number,
+	zoneName: string,
+	[J: string]: any,
+}
+
 /**
  * Base Interface for all Biometric Device API
  *
+ * TODO: implement static ``requires`` so that frontend knows what is needed by this device type
+ * ```ts
+	interface IBiometricOptions{
+		credentials: true // if needs login credentials
+		...
+	}
+	public static get REQUIRES(){
+		let req: IBiometricOptions
+		return req
+	}
+ ```
  * @export
  * @interface IBiometric
  */
@@ -40,7 +62,6 @@ export default interface IBiometric{
 	 * @static
 	 * @type {{
 	 * 		company: number
-	 * 		department: string
 	 * 		privilage : number
 	 * 		accessGroup : number
 	 * 	}}
@@ -48,7 +69,6 @@ export default interface IBiometric{
 	 */
 	defaults: {
 		company: number
-		department: string
 		privilage : number
 		accessGroup : number
 	}
@@ -102,10 +122,18 @@ export default interface IBiometric{
 	 */
 	readonly CheckType: BIOMETRIC_DEVICE_CHECK_TYPE
 	/**
+	 * returns IP of the device
+	 *@readonly
+	 * @type {string}
+	 * @memberof IBiometric
+	 */
+	readonly IP: string
+	/**
 	 * Initialize the device
 	 * @returns {Promise<boolean>}
 	 * @memberof IBiometric
 	 */
+	
 	Initialize(): Promise<boolean>
 	/**
 	 * Login for device access
@@ -119,11 +147,11 @@ export default interface IBiometric{
 	/**
 	 * Add member to device
 	 * @param {string} id unique id
-	 * @param {BiometricMemberDetails} details user info
+	 * @param {TBiometricMemberDetails} details user info
 	 * @returns {Promise<boolean>} resolves true if successfull
 	 * @memberof IBiometric
 	 */
-	AddMember(id: string, details: BiometricMemberDetails): Promise<boolean>
+	AddMember(id: string, details: TBiometricMemberDetails): Promise<boolean>
 	/**
 	 * Permanently Delete a user
 	 * @param {string} id user id
@@ -208,4 +236,17 @@ export default interface IBiometric{
 	 * @memberof IBiometric
 	 */
 	DeleteZone(zoneName: string): Promise<boolean>
+	/**
+	 * Scan for other devices
+	 * @returns {Promise<{ [I: string]: string }>}
+	 * @memberof IBiometric
+	 */
+	ScanDevices(): Promise<{ [serial: string]: TBiometricDetails }>
+	/**
+	 * Get Status of all registered biometric devices
+	 *
+	 * @returns {Promise<{ [I: string]: TBiometricDetails }>}
+	 * @memberof IBiometric
+	 */
+	StatusAll(): Promise<{ [serial: string]: TBiometricDetails }>
 }

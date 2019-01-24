@@ -3,6 +3,6 @@
 	"execMap": {
 		"ts": "ts-node -r tsconfig-paths/register "
 	},
-	"delay": 1000,
+	"delay": 0,
 	"exec": "ts-node -r tsconfig-paths/register {{filename}}"
 }
