@@ -1,0 +1,4 @@
+export enum INSTALL_STEP{
+	DATABASE = "DATABASE",
+	NONE = "NONE",
+}

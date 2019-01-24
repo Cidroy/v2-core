@@ -71,4 +71,16 @@ export default class DatabaseController{
 			return { type: "error", message: error.toString() }
 		}
 	}
+
+	@API.Authenticated({ "positron/core": "database|sync" })
+	@API.Post("/sync")
+	public async sync(): Promise<ISuccess | IError>{
+		try {
+			this.log.verbose("try database sync")
+			await Database.Synchronize()
+			return { type: "success" }
+		} catch (error) {
+			return { type: "error", message: error.toString() }
+		}
+	}
 }

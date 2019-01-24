@@ -1,0 +1,14 @@
+{
+  "name": "positron",
+  "version": "0.0.1",
+  "description": "Positron",
+  "main": "src/index.ts",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rinzler D. Vicky",
+  "license": "MIT"
+}

@@ -6,17 +6,40 @@ import GQL from "@positron/graphql"
 import { Neutron } from "@neutron/NEUTRON"
 import AppConfig from "@classes/appConfig"
 import { Server } from "@positron/server"
+import { INSTALL_STEP } from "@positron/lib/misc"
+import { version } from "~positron/package.json"
 
 export declare const module: any
 
 export class Positron {
+	// TODO: detect user
+	public static User = {
+		id: "gymkonnect"
+	}
+
+	public static InstallationState(): { installed: boolean, step: INSTALL_STEP }{
+		let installed = true
+		let step = INSTALL_STEP.NONE
+
+		try {
+			step = INSTALL_STEP.DATABASE; if(!Database.Installed) throw ""
+
+			step = INSTALL_STEP.NONE
+			return { installed, step }
+		} catch (error) {
+			installed = false
+			return { installed, step }
+		}
+	}
+
 	private log: Logger
 	protected Namespace = "positron/core"
 
 	private server: Server
 
 	private config = {
-		verbose: false
+		verbose: false,
+		version,
 	}
 
 	public get Server(){ return this.server }
@@ -41,16 +64,23 @@ export class Positron {
 		if (Database.Connected) this.log.info(`GQL : http://localhost:${config.config.port}/gql`)
 	}
 
+	private async stopServer(){
+		this.log.verbose("stop server")
+		await Promise.all([
+			this.server.httpServer.close(),
+			this.server.httpsServer.close(),
+		])
+		this.log.verbose("stopped server")
+	}
+
 	public async main() {
 		try {
 			this.log.okay("main()")
-			await AppConfig.Initialize()
-			this.log.okay("app-config ready")
+			await this.Initialize()
+			this.log.verbose("initialized")
 			try {
 				await Database.Initialize()
-				const connection = await Database.Connect({
-					verbose: this.config.verbose
-				})
+				const connection = await Database.Connect()
 				this.log.okay("db connected")
 			} catch (error) {
 				this.log.error(error)
@@ -67,6 +97,25 @@ export class Positron {
 		catch (error) {
 			this.log.error("server failed to start.", error)
 		}
+	}
+
+	public async destroy(){
+		try {
+			this.log.verbose("destroy")
+			await Promise.all([
+				Database.Destroy(),
+				this.stopServer(),
+			])
+		} catch (error) {
+			this.log.error("Destructor failed")
+			this.log.error(error)
+		}
+	}
+
+	public async Initialize(){
+		await AppConfig.Initialize()
+		this.config = await AppConfig.Get(this.Namespace, this.config)
+		this.log.info("app-config ready")
 	}
 
 	public static Neutron: Neutron

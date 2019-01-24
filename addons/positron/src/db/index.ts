@@ -5,29 +5,37 @@ import migrations from "@positron/db/migrations"
 import AppConfig from "@classes/appConfig"
 import { TDatabaseConnectionOptions } from "@positron/db/misc"
 
-const log = new Logger("positron/db")
+let config: {
+	databaseOptions: TDatabaseConnectionOptions | null,
+		prefix: string,
+	} = {
+	databaseOptions: null,
+		prefix: "p_"
+}
+
+let cache: {
+	connection: Connection | null
+} = {
+	connection: null
+}
 
 export class Database {
 	private static Namespace = "positron/database"
-	protected static log: Logger = new Logger("databse")
+	protected static log: Logger = new Logger("database")
 
-	private static config: {
-		connection: TDatabaseConnectionOptions | null,
-		prefix: string,
-	} = {
-		connection: null,
-		prefix: "p_"
-	}
-
-	private static cache: {
-		connection: Connection | null
-	} = {
-		connection: null
-	}
+	private static get config(){ return config }
+	private static set config(value){ config = value }
+	private static get cache(){ return cache }
+	private static set cache(value){ cache = value }
 
 	public static get Connected(){
 		if(Database.cache.connection) return Database.cache.connection.isConnected
 		else return false
+	}
+
+	public static get Installed(){
+		Database.log.verbose({ Connected: Database.Connected , options: Database.config.databaseOptions })
+		return Database.Connected && Database.config.databaseOptions
 	}
 
 	public static async Initialize(){
@@ -39,6 +47,7 @@ export class Database {
 		try {
 			await AppConfig.Set(Database.Namespace, Database.config)
 			Database.log.verbose("saving config")
+			return true
 		} catch (error) {
 			Database.log.error(error)
 			throw "unable to save neutron config"
@@ -55,16 +64,21 @@ export class Database {
 			})
 			if(!connection.isConnected) throw "Databse Connection Failed"
 			Database.log.verbose("connected")
-			Database.config.connection = options
-			await Database.SaveConfig()
+			await connection.close()
+			Database.config.databaseOptions = options
+			await Promise.all([
+				Database.Connect(),
+				Database.SaveConfig(),
+			])
+			return true
 		} catch (error) {
 			Database.log.error(error)
 			throw error
 		}
 	}
 
-	public static async Connect(args: { verbose: boolean }){
-		let config = Database.config.connection
+	public static async Connect(){
+		let config = Database.config.databaseOptions
 		try {
 			if(!config) throw "Please set database connection"
 
@@ -73,20 +87,43 @@ export class Database {
 				migrations,
 			}
 
-			log.info("attempting db connection.")
+			Database.log.info("attempting db connection.")
 
 			Database.cache.connection = await createConnection({
 				...config,
 				...entitiesAndMigrations,
 				name: "default",
-				logging: args.verbose,
+				logging: Logger.Verbose,
 			})
 
 			return Database.cache.connection
 		} catch (error) {
-			log.error("typeorm connection failed.", error)
-			log.info(config)
+			Database.log.error("typeorm connection failed.", error)
+			Database.log.info(config)
 			throw "DB failed to connect"
 		}
+	}
+
+	/**
+	 * Synchronize database with all the entities and models
+	 *
+	 * @static
+	 * @memberof Database
+	 */
+	public static async Synchronize(){
+		Database.log.verbose("attempt synchronize")
+		Database.log.verbose([ Database.cache, Database.config, ])
+		try {
+			if(!Database.cache.connection) throw "No Database connection to synchronize"
+			await Database.cache.connection.synchronize()
+		} catch (error) {
+			Database.log.error(error)
+			throw "Database synchronization failed"
+		}
+	}
+
+	public static async Destroy(){
+		if (!Database.cache.connection) return
+		await Database.cache.connection.close()
 	}
 }
