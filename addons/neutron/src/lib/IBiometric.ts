@@ -62,7 +62,6 @@ export default interface IBiometric{
 	 * @static
 	 * @type {{
 	 * 		company: number
-	 * 		department: string
 	 * 		privilage : number
 	 * 		accessGroup : number
 	 * 	}}
@@ -70,7 +69,6 @@ export default interface IBiometric{
 	 */
 	defaults: {
 		company: number
-		department: string
 		privilage : number
 		accessGroup : number
 	}

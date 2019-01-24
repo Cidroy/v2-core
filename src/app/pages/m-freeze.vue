@@ -2,7 +2,7 @@
 	<Layout>
 		<h1 class="text-md-center pb-2">Member Freezing</h1>
 		
-		<v-card color="#303030">
+		<v-card color="transparent" height="600px">
 			<v-layout class="pt-4" row wrap>
 				<v-flex xs2>
 					<v-subheader class="title">Mobile No</v-subheader>
@@ -73,7 +73,7 @@
 			</v-layout>
 		</v-card>
 
-		<v-card width="100%" height="50px" color="#303030">
+		<v-card width="100%" height="50px" color="transparent">
 			<div class="right pr-2"> 
 				<v-btn flat>Cancel</v-btn>
 				<v-btn @click="snackbar = true" color="orange darken-4" class="mb-2">Submit</v-btn>

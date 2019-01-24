@@ -2,7 +2,7 @@ import { Logger } from "@classes/CONSOLE"
 import { SupportedBiometricDevice, BiometricDeviceOptions, InstanceList, TBiometricDevices, TBiometricDevice } from "@neutron/supported-biometric-devices"
 import AppConfig from "@classes/appConfig"
 import uuid from "uuid/v4"
-import { TBiometricMemberDetails, TBiometricDetails } from "@neutron/lib/IBiometric"
+import { TBiometricMemberDetails, TBiometricDetails, BIOMETRIC_DEVICE_MODE } from "@neutron/lib/IBiometric"
 
 export default class BiometricDevices {
 	/**
@@ -87,17 +87,27 @@ export default class BiometricDevices {
 	 * @param {(string | null)} id device id
 	 * @param {SupportedBiometricDevice} type device type
 	 * @param {BiometricDeviceOptions} options device options
-	 * @returns {Promise<string>} response
+	 * @param {BIOMETRIC_DEVICE_MODE} mode device operation mode
+	 * @param {boolean} saveOnly save only
+	 * To make only neutron save the device and not pass it on
+	 * @returns {Promise<string>} device id
 	 * @memberof BiometricDevices
 	 */
-	public static async Add(id: string | null, type: SupportedBiometricDevice, options: BiometricDeviceOptions): Promise<string> {
+	public static async Add(id: string | null, type: SupportedBiometricDevice, options: BiometricDeviceOptions, mode: BIOMETRIC_DEVICE_MODE, credentials: {username: string, password: string} , saveOnly: boolean = false): Promise<string> {
 		try {
 			BiometricDevices.log.verbose("Add Device", { InstanceList, type })
 			let test = new InstanceList[type](options)
 			await test.Initialize()
 			BiometricDevices.log.info(`${type} successfully connected`)
 			if (!id) id = uuid()
-			BiometricDevices.config.biometricDevices[<string>id] = { ...options, DeviceType: type, id }
+			BiometricDevices.config.biometricDevices[id] = { ...options, DeviceType: type, id }
+			if(!saveOnly){
+				await test.Login(credentials.username, credentials.password)
+				await test.AddDevice(mode)
+				let options = await test.DeviceDetails
+				BiometricDevices.config.biometricDevices[id] = options
+			}
+			if(mode === BIOMETRIC_DEVICE_MODE.MASTER) await BiometricDevices.SetAsDefault(id)
 			await BiometricDevices.SaveConfig()
 			return <string>id
 		} catch (error) {
@@ -273,7 +283,28 @@ export default class BiometricDevices {
 		await device.Login(username, password)
 	}
 
+	/**
+	 * List all Zones
+	 * MAP<zoneName, zoneiD>
+	 * @readonly
+	 * @static
+	 * @memberof BiometricDevices
+	 */
 	public static get Zones() { return BiometricDevices.config.zones }
+
+	/**
+	 * Get Zone ID for Zone name
+	 *
+	 * @static
+	 * @param {string} zoneName
+	 * @returns
+	 * @memberof BiometricDevices
+	 */
+	public static ZoneID(zoneName: string){
+		if (!BiometricDevices.config.zones.hasOwnProperty(zoneName))
+			throw "Invalid Zone Name"
+		return BiometricDevices.config.zones[zoneName]
+	}
 
 	/**
 	 * Add Zone using master device
@@ -282,10 +313,24 @@ export default class BiometricDevices {
 	 * @returns {Promise<number>} Zone ID
 	 * @memberof BiometricDevices
 	 */
-	public static async AddZone(zoneName: string): Promise<number> {
+	public static async AddZone(zoneName: string): Promise<number>
+	public static async AddZone(zoneName: string, id: string): Promise<number>
+	public static async AddZone(zoneName: string, id: null, type: SupportedBiometricDevice, options: BiometricDeviceOptions, credentials: { username: string, password: string }): Promise<number>
+	public static async AddZone(zoneName: string, id?: string| null, type?: SupportedBiometricDevice, options?: BiometricDeviceOptions, credentials?: { username: string, password: string } ): Promise<number> {
 		if (BiometricDevices.Zones.hasOwnProperty(zoneName)) throw "Zone name already exists"
-		let device = await BiometricDevices.Device(BiometricDevices.DefaultDeviceID)
-		await BiometricDevices._Login(device)
+		let device: TBiometricDevice
+		if (type){
+			if(!options) throw "Connection Options is needed"
+			if(!credentials) throw "credentials is needed"
+			device = new InstanceList[type](options)
+			await device.Login(credentials.username, credentials.password)
+		}
+		else {
+			id = id? id: BiometricDevices.DefaultDeviceID
+			device = await BiometricDevices.Device(id)
+			await BiometricDevices._Login(device)
+		}
+		await device.Initialize()
 		let zoneID = await device.AddZone(zoneName)
 		BiometricDevices.config.zones[zoneName] = zoneID
 		await BiometricDevices.SaveConfig()

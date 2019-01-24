@@ -3,7 +3,7 @@ import { SupportedBiometricDevice, BiometricDeviceOptions } from "@neutron/suppo
 import { ISuccess, IError } from "@classes/interface/IResponse"
 import BiometricDevices from "@neutron/lib/biometric"
 import { Logger } from "@classes/CONSOLE"
-import { TBiometricDetails } from "@neutron/lib/IBiometric"
+import { TBiometricDetails, BIOMETRIC_DEVICE_MODE } from "@neutron/lib/IBiometric"
 
 /**
  * Controller for Higher order device interaction
@@ -28,19 +28,26 @@ export class BiometricDevicesController{
 	@API.Authenticated({ "neutron/biometric-device": "device|add" })
 	@API.Post("/add")
 	public async add(
-		@API.BodyParams("id") id: string| null| undefined,
-		@API.BodyParams("type") type: SupportedBiometricDevice,
-		@API.BodyParams("options") options: BiometricDeviceOptions,
+		@API.BodyParams("id") id?: string | null,
+		@API.BodyParams("type") type?: SupportedBiometricDevice,
+		@API.BodyParams("options") options?: BiometricDeviceOptions,
+		@API.BodyParams("mode") mode?: BIOMETRIC_DEVICE_MODE,
+		@API.BodyParams("credentials") credentials?: { username: string, password: string, },
+		@API.BodyParams("saveOnly") saveOnly?: boolean,
 	): Promise<({ device: string } & ISuccess) | IError>{
 		try {
+			this.log.verbose("add device", { id, type, options, saveOnly, mode, })
+			if(!type) throw "Device Type is needed"
+			if(!options) throw "Device Options is needed"
 			if(id===undefined) id = null
-			this.log.verbose({ type, options, })
+			if(saveOnly===undefined) saveOnly = false
+			if(mode===undefined) mode = BIOMETRIC_DEVICE_MODE.SLAVE
+			if(!credentials) credentials = { username: "", password: "", }
+
 			await BiometricDevices.Initialize()
-			let device = await BiometricDevices.Add(id, type, options)
-			return {
-				type: "success",
-				device,
-			}
+			let device = await BiometricDevices.Add(id, type, options, mode, credentials, saveOnly)
+			await BiometricDevices.SaveCredentials(device, credentials.username, credentials.password)
+			return { type: "success", device, }
 		} catch (error) {
 			return {
 				type: "error",
@@ -277,7 +284,7 @@ export class BiometricDevicesController{
 	 * @memberof BiometricDevicesController
 	 */
 	@API.Authenticated({ "neutron/biometric-device": "status|all" })
-	@API.Post("/device/status/all")
+	@API.Post("/status/all")
 	public async StatusAll(): Promise<({ devices: { [I: string]: TBiometricDetails } } & ISuccess) | IError> {
 		try {
 			this.log.verbose("all device status")
@@ -309,11 +316,18 @@ export class BiometricDevicesController{
 	@API.Post("/add/zone")
 	public async AddZone(
 		@API.BodyParams("zoneName") zoneName: string,
+		@API.BodyParams("id") id?: string,
+		@API.BodyParams("type") type?: SupportedBiometricDevice,
+		@API.BodyParams("options") options?: BiometricDeviceOptions,
+		@API.BodyParams("credentials") credentials?: { username: string, password: string, } ,
 	): Promise<( { zoneId: number, zoneName: string } & ISuccess)| IError> {
 		try {
 			this.log.verbose("adding zone ", zoneName)
 			await BiometricDevices.Initialize()
-			let zoneId = await BiometricDevices.AddZone(zoneName)
+			let zoneId: number
+			if(id) zoneId = await BiometricDevices.AddZone(zoneName, id)
+			else if (type && options && credentials) zoneId = await BiometricDevices.AddZone(zoneName, null, type, options, credentials)
+			else zoneId = await BiometricDevices.AddZone(zoneName)
 			return {
 				type: "success",
 				zoneId,
