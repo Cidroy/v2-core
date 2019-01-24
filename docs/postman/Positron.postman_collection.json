@@ -1,8 +1,7 @@
 {
 	"info": {
+		"_postman_id": "af35fa3a-9f09-4f47-a612-d6498a3b5a74",
 		"name": "Positron",
-		"_postman_id": "c0051d9d-7ccd-4edc-9ab0-643be42fe9ab",
-		"description": "",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -35,8 +34,7 @@
 								"biometric-devices",
 								"supported"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -64,8 +62,7 @@
 								"biometric-devices",
 								"add"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -93,8 +90,7 @@
 								"biometric-devices",
 								"edit"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -122,8 +118,7 @@
 								"biometric-devices",
 								"set-default"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -151,8 +146,7 @@
 								"biometric-devices",
 								"all"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -180,8 +174,7 @@
 								"biometric-devices",
 								"default"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -209,8 +202,7 @@
 								"biometric-devices",
 								"delete"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -238,8 +230,7 @@
 								"biometric-devices",
 								"view"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -268,8 +259,7 @@
 								"credentials",
 								"add"
 							]
-						},
-						"description": null
+						}
 					},
 					"response": []
 				},
@@ -299,8 +289,7 @@
 								"zones",
 								"list"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -328,8 +317,7 @@
 								"biometric-devices",
 								"scan"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -358,8 +346,7 @@
 								"zones",
 								"device-list"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -388,8 +375,7 @@
 								"add",
 								"zone"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -418,8 +404,7 @@
 								"add",
 								"zone"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -433,7 +418,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "localhost:9101/biometric-devices/status/all",
 							"host": [
@@ -445,8 +433,7 @@
 								"status",
 								"all"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -475,8 +462,7 @@
 								"delete",
 								"zone"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				}
@@ -511,8 +497,7 @@
 								"member",
 								"freeze"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -541,8 +526,7 @@
 								"member",
 								"add"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -571,8 +555,7 @@
 								"member",
 								"unfreeze"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -601,8 +584,7 @@
 								"member",
 								"scan-fingerprint"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -632,8 +614,7 @@
 								"add",
 								"zone"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -663,8 +644,7 @@
 								"move",
 								"zone"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -693,8 +673,7 @@
 								"member",
 								"delete"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				}
@@ -729,8 +708,7 @@
 								"delete",
 								"zone"
 							]
-						},
-						"description": ""
+						}
 					},
 					"response": []
 				},
@@ -744,7 +722,10 @@
 								"value": "application/json"
 							}
 						],
-						"body": {},
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
 						"url": {
 							"raw": "localhost:9101/biometric-device/status/all",
 							"host": [
@@ -756,8 +737,177 @@
 								"status",
 								"all"
 							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "database",
+			"description": null,
+			"item": [
+				{
+					"name": "supported",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}"
 						},
-						"description": ""
+						"url": {
+							"raw": "localhost:9101/database/supported",
+							"host": [
+								"localhost"
+							],
+							"port": "9101",
+							"path": [
+								"database",
+								"supported"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add-connection",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"root\",\n\t\"password\": \"alpha123\",\n\t\"database\": \"gk_v2_positron\"\n}"
+						},
+						"url": {
+							"raw": "localhost:9101/database/set",
+							"host": [
+								"localhost"
+							],
+							"port": "9101",
+							"path": [
+								"database",
+								"set"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "sync",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:9101/database/sync",
+							"host": [
+								"localhost"
+							],
+							"port": "9101",
+							"path": [
+								"database",
+								"sync"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "install",
+			"description": null,
+			"item": [
+				{
+					"name": "status",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"root\",\n\t\"password\": \"alpha123\",\n\t\"database\": \"gk_v2_positron\"\n}"
+						},
+						"url": {
+							"raw": "localhost:9101/install/status",
+							"host": [
+								"localhost"
+							],
+							"port": "9101",
+							"path": [
+								"install",
+								"status"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "restart",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"root\",\n\t\"password\": \"alpha123\",\n\t\"database\": \"gk_v2_positron\"\n}"
+						},
+						"url": {
+							"raw": "localhost:9101/install/restart",
+							"host": [
+								"localhost"
+							],
+							"port": "9101",
+							"path": [
+								"install",
+								"restart"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "shutdown",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"root\",\n\t\"password\": \"alpha123\",\n\t\"database\": \"gk_v2_positron\"\n}"
+						},
+						"url": {
+							"raw": "localhost:9101/install/shutdown",
+							"host": [
+								"localhost"
+							],
+							"port": "9101",
+							"path": [
+								"install",
+								"shutdown"
+							]
+						}
 					},
 					"response": []
 				}
@@ -778,8 +928,7 @@
 						"localhost"
 					],
 					"port": "9101"
-				},
-				"description": null
+				}
 			},
 			"response": []
 		},
@@ -801,8 +950,7 @@
 					"path": [
 						"test"
 					]
-				},
-				"description": ""
+				}
 			},
 			"response": []
 		}
