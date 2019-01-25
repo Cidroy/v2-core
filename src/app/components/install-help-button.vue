@@ -17,8 +17,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue"
-import { Component } from "vue-property-decorator"
+import { Component, Vue } from "vue-property-decorator"
 import { ipcRenderer } from "electron"
 import { InstallerStore } from "@/state/install-modules/install"
 

@@ -1,4 +1,4 @@
-import Vue from "vue"
+import { default as Vue } from "vue"
 import Vuetify from "vuetify"
 
 import { theme } from "@@/config/theme"
@@ -9,5 +9,5 @@ import "vuetify/dist/vuetify.min.css"
 Vue.use(Vuetify, { theme })
 
 const app = new Vue({
-	render: h => h(App),
+	render: h => h(<any>App),
 }).$mount("#app")

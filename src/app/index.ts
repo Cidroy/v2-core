@@ -1,4 +1,4 @@
-import Vue from "vue"
+import { default as Vue } from "vue"
 import Vuetify from "vuetify"
 import Axios from "axios"
 

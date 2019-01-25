@@ -1,4 +1,4 @@
-import Vue from "vue"
+import { default as Vue } from "vue"
 import VueI18n from "vue-i18n"
 import axios from "axios"
 import * as util from "@@/config/util"

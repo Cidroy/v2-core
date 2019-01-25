@@ -115,11 +115,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue"
+import { Component, Vue } from "vue-property-decorator"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
 import SystemInformation from "@/components/system-information.vue"
-import { Component } from "vue-property-decorator"
 
 @Component({
 	components: { Layout, SystemInformation, },
