@@ -42,6 +42,11 @@ export default [
 		component: () => lazyLoadView("/enquiry"),
 	},
 	{
+		path: "/payment",
+		name: "HR",
+		component: () => lazyLoadView("/payment"),
+	},
+	{
 		path: "/404",
 		name: "404",
 		component: require("@/pages/404").default,

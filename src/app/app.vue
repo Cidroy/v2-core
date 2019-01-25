@@ -176,7 +176,7 @@
 			</span>
 			<span>
 				<v-chip color="grey darken-4" :label="true" :disabled="true" text-color="white">Device Status
-					<v-icon right>fingerprint</v-icon>
+					<v-icon color="red" right>fingerprint</v-icon>
 				</v-chip>
 			</span>
 		</v-footer>
@@ -244,7 +244,7 @@ export default class Vuetify extends Vue {
 			},
 			{ icon: "timeline", text: "Sales & Finance", to: "/inspire", },
 			{ icon: "assessment", text: "Reports", to: "/inspire", },
-            { icon: "bubble_chart", text: "HR", to: "/inspire", },
+            { icon: "bubble_chart", text: "HR", to: "/payment", },
             { 
 				icon: "settings", text: "Settings", children: [
 				{ icon: "bubble_chart", text: "Edit", to: "/inspire", },
