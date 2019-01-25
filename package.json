@@ -11,6 +11,7 @@
 		"dev:positron": "nodemon --verbose --config addons/positron/nodemon.json addons/positron/src/index.dev.ts -- --verbose",
 		"build:positron": "ts-node -r tsconfig-paths/register addons/positron/build/build.ts",
 		"start:positron": "npm run build:positron && node dist/positron/index.js",
+		"release:positron": "ts-node -r tsconfig-paths/register build/addons/positron.ts",
 		"docs:neutron": "cd addons/neutron/docs && gitbook serve",
 		"dev:neutron-webpack": "ts-node -r tsconfig-paths/register addons/neutron/build/dev.ts",
 		"dev:neutron": "nodemon --verbose --config addons/neutron/nodemon.json addons/neutron/src/index.dev.ts -- --verbose",
