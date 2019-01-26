@@ -55,12 +55,29 @@
 					</v-list-tile>
 				</template>
 			</v-list>
+
+			<v-bottom-nav :value="true" absolute color="transparent">
+      			<v-btn color="orange darken-4" flat>
+					<span>Help</span>
+					<v-icon>help</v-icon>
+      			</v-btn>
+
+      			<v-btn color="orange darken-4" flat>
+					<span>About</span>
+        			<v-icon>info</v-icon>
+      			</v-btn>
+
+      			<v-btn color="orange darken-4" flat>
+					<span>Check Update</span>
+					<v-icon>update</v-icon>
+				</v-btn>
+    		</v-bottom-nav>	
 		</v-navigation-drawer>
 
 
 		<!--drawer end-->
 		<v-toolbar color="orange darken-4" dark app :clipped-left="$vuetify.breakpoint.mdAndUp" fixed>
-			<span class="hidden-sm-and-down" style="width: 65px">GymKonnect</span>
+			<span class="hidden-sm-and-down title font-weight-black" style="width: 190px">GYM KONNECT</span>
 			<v-toolbar-title style="width: 100px" class="ml-0 pl-3">
 				<v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
 			</v-toolbar-title>
@@ -70,14 +87,31 @@
 			<v-btn icon>
 				<v-icon>apps</v-icon>
 			</v-btn>
-			<v-btn icon large>
-				<v-badge color="indigo" overlap>
-					<span slot="badge">3</span>
-					<v-avatar color="orange darken-4" size="40">
-						<v-icon dark>notifications</v-icon>
-					</v-avatar>
-				</v-badge>
-			</v-btn>
+			<v-menu v-model="menuNotify" :close-on-content-click="true" offset-y>
+				<v-btn icon large slot="activator" dark>
+					<v-badge color="indigo" overlap>
+						<span slot="badge">3</span>
+						<v-avatar color="orange darken-4" size="40">
+							<v-icon dark>notifications</v-icon>
+						</v-avatar>
+					</v-badge>
+				</v-btn>
+				<v-list three-line>
+					<template v-for="(noti, index) in notis">
+						<v-subheader v-if="noti.header" :key="noti.header"> {{ noti.header }} </v-subheader>
+						<v-divider v-else-if="noti.divider" :inset="noti.inset" :key="index" ></v-divider>
+     					<v-list-tile v-else :key="noti.title" avatar>
+							<v-list-tile-avatar><img :src="noti.avatar"></v-list-tile-avatar>
+
+								<v-list-tile-content>
+									<v-list-tile-title v-html="noti.title"></v-list-tile-title>
+									<v-list-tile-sub-title v-html="noti.subtitle"></v-list-tile-sub-title>
+								</v-list-tile-content>
+						</v-list-tile>
+					</template>
+				</v-list>
+			</v-menu>
+			
 			<!--profile  -->
 			<div class="text-xs-center">
 				<v-menu v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-x> 
@@ -142,7 +176,7 @@
 			</span>
 			<span>
 				<v-chip color="grey darken-4" :label="true" :disabled="true" text-color="white">Device Status
-					<v-icon right>fingerprint</v-icon>
+					<v-icon color="red" right>fingerprint</v-icon>
 				</v-chip>
 			</span>
 		</v-footer>
@@ -175,7 +209,8 @@ import { ThemeStore } from "@/state/theme"
 	},
 })
 export default class Vuetify extends Vue {
-    menu: boolean = false;
+	menu: boolean = false;
+	menuNotify: boolean = false;
     clipped: boolean = false;
     showDevResizer: boolean = false;
     drawer: boolean = false;
@@ -183,7 +218,7 @@ export default class Vuetify extends Vue {
     miniVariant: boolean = false;
     right: boolean = true;
     rightDrawer: boolean = false;
-    title: string = "GymKonnect";
+	title: string = "GymKonnect";
     items:
         { icon: string, text: string, children: { icon: string, text: string, to: string }[], model: boolean, "icon-alt": string }[] |
         { icon: string, heading: string, to?: string }[] |
@@ -209,7 +244,7 @@ export default class Vuetify extends Vue {
 			},
 			{ icon: "timeline", text: "Sales & Finance", to: "/inspire", },
 			{ icon: "assessment", text: "Reports", to: "/inspire", },
-            { icon: "bubble_chart", text: "HR", to: "/inspire", },
+            { icon: "bubble_chart", text: "HR", to: "/payment", },
             { 
 				icon: "settings", text: "Settings", children: [
 				{ icon: "bubble_chart", text: "Edit", to: "/inspire", },
@@ -225,6 +260,39 @@ export default class Vuetify extends Vue {
         { text: "Exit", },
     ];
     
+	notis: ({ avatar?: string, title?: string, subtitle?: string } | { divider: boolean, inset: boolean }) [] =[
+          
+          {
+            avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
+            title: 'Brunch this weekend?',
+            subtitle: "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
+          },
+          { divider: true, inset: true },
+          {
+            avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
+            title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
+            subtitle: "<span class='text--primary'>to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend."
+          },
+          { divider: true, inset: true },
+          {
+            avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
+            title: 'Oui oui',
+            subtitle: "<span class='text--primary'>Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?"
+          },
+          { divider: true, inset: true },
+          {
+            avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
+            title: 'Birthday gift',
+            subtitle: "<span class='text--primary'>Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?"
+          },
+          { divider: true, inset: true },
+          {
+            avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
+            title: 'Recipe to try',
+            subtitle: "<span class='text--primary'>Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos."
+          }
+	];
+		
 	darkTheme:boolean = ThemeStore.DARK_THEME
 	@Watch("darkTheme") toggleDarkTheme(){ ThemeStore.toggleDarkTheme() }
 }
