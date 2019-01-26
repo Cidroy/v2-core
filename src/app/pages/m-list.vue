@@ -3,61 +3,44 @@
 		<h1 class="text-md-center">Members List</h1>
 		<div>
     		<v-toolbar flat>
-      			<v-toolbar-title>Full List</v-toolbar-title>
-				<v-divider class="mx-2" inset vertical></v-divider>
+      			<v-flex lg2 mt-3>
+					<v-overflow-btn :items="dropdown_font" label="Lists" target="#dropdown-example"></v-overflow-btn>
+				</v-flex>
+				<v-flex lg4 mt-2>
+					<v-text-field prepend-icon="search" label="Search" class="hidden-sm-and-down pt-2" />
+				</v-flex>
 				<v-spacer></v-spacer>
+				<v-btn >Send Email</v-btn>
+				<v-btn >Send MSG</v-btn>
 				
-				<v-dialog v-model="dialog" max-width="500px">
-					<v-btn slot="activator" color="primary" dark class="mb-2">Add Member</v-btn>
-					<v-card>
-						<v-card-title>
-							<span class="headline">{{ formTitle }}</span>
-						</v-card-title>
-						<v-card-text>
-							<v-container grid-list-md>
-								<v-layout wrap>
-									<v-flex xs12 sm6 md4>
-										<v-text-field v-model="editedItem.name" label="Dessert name"></v-text-field>
-									</v-flex>
-									<v-flex xs12 sm6 md4>
-										<v-text-field v-model="editedItem.calories" label="Calories"></v-text-field>
-									</v-flex>
-									<v-flex xs12 sm6 md4>
-										<v-text-field v-model="editedItem.fat" label="Fat (g)"></v-text-field>
-									</v-flex>
-									<v-flex xs12 sm6 md4>
-										<v-text-field v-model="editedItem.carbs" label="Carbs (g)"></v-text-field>
-									</v-flex>
-									<v-flex xs12 sm6 md4>
-										<v-text-field v-model="editedItem.protein" label="Protein (g)"></v-text-field>
-									</v-flex>
-								</v-layout>
-							</v-container>
-						</v-card-text>
-						<v-card-actions>
-							<v-spacer></v-spacer>
-							<v-btn color="blue darken-1" flat @click="close">Cancel</v-btn>
-							<v-btn color="blue darken-1" flat @click="save">Save</v-btn>
-						</v-card-actions>
-					</v-card>
-				</v-dialog>
     		</v-toolbar>
 			
-			<v-data-table :headers="headers" :items="desserts" class="elevation-1">
+			<v-data-table v-model="selected" :headers="headers" :items="desserts" item-key="id" select-all class="elevation-1">
 				<template slot="items" slot-scope="props">
-					<td>{{ props.item.name }}</td>
-					<td class="text-xs-right">{{ props.item.calories }}</td>
-					<td class="text-xs-right">{{ props.item.fat }}</td>
-					<td class="text-xs-right">{{ props.item.carbs }}</td>
-					<td class="text-xs-right">{{ props.item.protein }}</td>
-					<td class="justify-center layout px-0">
-						<v-icon small class="mr-2" @click="editItem(props.item)">edit</v-icon>
-						<v-icon small @click="deleteItem(props.item)">delete</v-icon>
-					</td>
+					<tr @click="props.expanded = !props.expanded">
+					<td><v-checkbox v-model="props.selected" primary hide-details></v-checkbox></td>
+					<td>{{ props.item.id }}</td>
+					<td class="text-xs-right">{{ props.item.name }}</td>
+					<td class="text-xs-right">{{ props.item.enrolstat }}</td>
+					<td class="text-xs-right">{{ props.item.mbrstat }}</td>
+					<td class="text-xs-right">{{ props.item.mobno }}</td>
+					<td class="text-xs-right">{{ props.item.duedat }}</td>
+					</tr>
 				</template>
-				<template slot="no-data">
-					<v-btn color="primary" @click="initialize">Reset</v-btn>
+				<template slot="expand" slot-scope="props">
+					<v-card flat>
+						<v-layout  row wrap>
+							<v-btn @click="pushProfile" >View Profile</v-btn>
+							<v-spacer :data="props"/>
+							<v-btn >Send MSG</v-btn>
+							<v-btn >Send Email</v-btn>
+							<v-btn >Block</v-btn>
+							<v-btn >Enroll</v-btn>
+							<v-btn >Freeze</v-btn>
+						</v-layout>
+					</v-card>
 				</template>
+				
 			</v-data-table>
 		</div>		  
 	</Layout>
@@ -75,152 +58,125 @@ import { Component, Watch, Vue } from "vue-property-decorator"
 		title: "Home",
 		meta: [{ name: "description", content: appConfig.description, },],
 	},
-	created() {
-		this.initialize()
-	},
+	
 })
 export default class Home extends Vue {
-	dialog = false
+	dropdown_font = ['Arial', 'Calibri', 'Courier', 'Verdana']
+	pushProfile() {
+				// @ts-ignore
+                this.$router.push('/profile');
+            }
 	headers = [
 		{
-			text: 'Dessert (100g serving)',
+			text: 'ID',
 			align: 'left',
-			sortable: false,
-			value: 'name'
+			value: 'id'
 		},
-		{ text: 'Calories', value: 'calories' },
-		{ text: 'Fat (g)', value: 'fat' },
-		{ text: 'Carbs (g)', value: 'carbs' },
-		{ text: 'Protein (g)', value: 'protein' },
-		{ text: 'Actions', value: 'name', sortable: false }
+		{ text: 'Name', value: 'name' },
+		{ text: 'Enorll Status', value: 'enrolstat', sortable: false },
+		{ text: 'Membership Status', value: 'mbrstat', sortable: false },
+		{ text: 'Mobile No.', value: 'mobno', sortable: false },
+		{ text: 'Due Date', value: 'duedat'}
 	]
-	desserts: any[] = []
+	selected= []
+	
 	editedIndex = -1
-	editedItem = {
-		name: '',
-		calories: 0,
-		fat: 0,
-		carbs: 0,
-		protein: 0
-	}
+	expand: boolean = false
+	
 	defaultItem = {
+		id: 0,
 		name: '',
-		calories: 0,
-		fat: 0,
-		carbs: 0,
-		protein: 0
+		enrolstat: 0,
+		mbrstat: 0,
+		mobno: 0,
+		duedat: ''
 	}
 
-	get formTitle() {
-		return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
-	}
-
-	@Watch("dialog")
-	onDialogChange(val) {
-		val || this.close()
-	}
-
-	initialize() {
-		this.desserts = [
+	desserts = [
 			{
-				name: 'Frozen Yogurt',
-				calories: 159,
-				fat: 6.0,
-				carbs: 24,
-				protein: 4.0
+				id: 1,
+				name: 'spiderman',
+				enrolstat: 6.0,
+				mbrstat: 24,
+				mobno: 4.0,
+				duedat: '12/2/19'
 			},
 			{
-				name: 'Ice cream sandwich',
-				calories: 237,
-				fat: 9.0,
-				carbs: 37,
-				protein: 4.3
+				id: 2,
+				name: 'aquaman',
+				enrolstat: 9.0,
+				mbrstat: 37,
+				mobno: 4.3,
+				duedat: '12/2/19'
 			},
 			{
-				name: 'Eclair',
-				calories: 262,
-				fat: 16.0,
-				carbs: 23,
-				protein: 6.0
+				id: 3,
+				name: 'superman',
+				enrolstat: 16.0,
+				mbrstat: 23,
+				mobno: 6.0,
+				duedat: '12/2/19'
 			},
 			{
-				name: 'Cupcake',
-				calories: 305,
-				fat: 3.7,
-				carbs: 67,
-				protein: 4.3
+				id: 4,
+				name: 'hitman',
+				enrolstat: 3.7,
+				mbrstat: 67,
+				mobno: 4.3,
+				duedat: '12/2/19'
 			},
 			{
-				name: 'Gingerbread',
-				calories: 356,
-				fat: 16.0,
-				carbs: 49,
-				protein: 3.9
+				id: 5,
+				name: 'saktiman',
+				enrolstat: 16.0,
+				mbrstat: 49,
+				mobno: 3.9,
+				duedat: '12/2/19'
 			},
 			{
-				name: 'Jelly bean',
-				calories: 375,
-				fat: 0.0,
-				carbs: 94,
-				protein: 0.0
+				id: 6,
+				name: 'heman',
+				enrolstat: 0.0,
+				mbrstat: 94,
+				mobno: 0.0,
+				duedat: '12/2/19'
 			},
 			{
-				name: 'Lollipop',
-				calories: 392,
-				fat: 0.2,
-				carbs: 98,
-				protein: 0
+				id: 7,
+				name: 'ironman',
+				enrolstat: 0.2,
+				mbrstat: 98,
+				mobno: 0,
+				duedat: '12/2/19'
 			},
 			{
-				name: 'Honeycomb',
-				calories: 408,
-				fat: 3.2,
-				carbs: 87,
-				protein: 6.5
+				id: 8,
+				name: 'batman',
+				enrolstat: 3.2,
+				mbrstat: 87,
+				mobno: 6.5,
+				duedat: '12/2/19'
 			},
 			{
-				name: 'Donut',
-				calories: 452,
-				fat: 25.0,
-				carbs: 51,
-				protein: 4.9
+				id: 9,
+				name: 'wonder woman',
+				enrolstat: 25.0,
+				mbrstat: 51,
+				mobno: 4.9,
+				duedat: '12/2/19'
 			},
 			{
-				name: 'KitKat',
-				calories: 518,
-				fat: 26.0,
-				carbs: 65,
-				protein: 7
+				id: 10,
+				name: 'SINGHAM',
+				enrolstat: 26.0,
+				mbrstat: 65,
+				mobno: 7,
+				duedat: '12/2/19'
 			}
 		]
 	}
 
-	editItem(item) {
-		this.editedIndex = this.desserts.indexOf(item)
-		this.editedItem = Object.assign({}, item)
-		this.dialog = true
-	}
 
-	deleteItem(item) {
-		const index = this.desserts.indexOf(item)
-		confirm('Are you sure you want to delete this item?') && this.desserts.splice(index, 1)
-	}
+	
 
-	close() {
-		this.dialog = false
-		setTimeout(() => {
-			this.editedItem = Object.assign({}, this.defaultItem)
-			this.editedIndex = -1
-		}, 300)
-	}
-
-	save() {
-		if (this.editedIndex > -1) {
-			Object.assign(this.desserts[this.editedIndex], this.editedItem)
-		} else {
-			this.desserts.push(this.editedItem)
-		}
-		this.close()
-	}
-}
 </script>
