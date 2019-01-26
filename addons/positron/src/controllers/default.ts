@@ -1,6 +1,6 @@
 import * as API from "@tsed/common"
 import { ISuccess } from "@classes/interface/IResponse"
-import { version } from "~positron/package.json"
+import { version } from "@positron/../package.local.json"
 import { ROOT } from "@positron/paths"
 
 @API.Controller("/")
