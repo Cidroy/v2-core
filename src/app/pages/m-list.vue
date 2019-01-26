@@ -30,8 +30,8 @@
 				<template slot="expand" slot-scope="props">
 					<v-card flat>
 						<v-layout  row wrap>
-							<v-btn @click="pushProfile" >View Profile</v-btn>
 							<v-spacer :data="props"/>
+							<v-btn to="/profile" >View Profile</v-btn>
 							<v-btn >Send MSG</v-btn>
 							<v-btn >Send Email</v-btn>
 							<v-btn >Block</v-btn>
@@ -62,10 +62,6 @@ import { Component, Watch, Vue } from "vue-property-decorator"
 })
 export default class Home extends Vue {
 	dropdown_font = ['Arial', 'Calibri', 'Courier', 'Verdana']
-	pushProfile() {
-				// @ts-ignore
-                this.$router.push('/profile');
-            }
 	headers = [
 		{
 			text: 'ID',
