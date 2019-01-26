@@ -1,4 +1,4 @@
-import Vue from "vue"
+import { default as Vue } from "vue"
 
 import "@/components"
 import "@/components/install"
@@ -14,5 +14,5 @@ const app = new Vue({
 	router,
 	store,
 	i18n: vI18n,
-	render: h => h(App),
+	render: h => h(<any>App),
 }).$mount("#app")

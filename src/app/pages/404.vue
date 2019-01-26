@@ -15,9 +15,8 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue"
+import { Component, Prop, Inject, Vue } from "vue-property-decorator"
 import Layout from "@/layouts/main.vue"
-import { Component, Prop, Inject } from "vue-property-decorator"
 
 @Component({
 	components : { Layout, },
