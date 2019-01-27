@@ -57,19 +57,19 @@
 			</v-list>
 
 			<v-bottom-nav :value="true" absolute color="transparent">
-      			<v-btn color="orange darken-4" flat>
+      			<v-btn color="orange darken-4" flat  to="/help">
 					<span>Help</span>
 					<v-icon>help</v-icon>
       			</v-btn>
 
-      			<v-btn color="orange darken-4" flat>
+      			<v-btn color="orange darken-4" flat to="/about">
 					<span>About</span>
         			<v-icon>info</v-icon>
       			</v-btn>
 
-      			<v-btn color="orange darken-4" flat>
-					<span>Check Update</span>
-					<v-icon>update</v-icon>
+				<v-btn color="orange darken-4" flat>
+					<span>Settings</span>
+					<v-icon>settings_applications</v-icon>
 				</v-btn>
     		</v-bottom-nav>	
 		</v-navigation-drawer>
@@ -219,6 +219,7 @@ export default class Vuetify extends Vue {
     right: boolean = true;
     rightDrawer: boolean = false;
 	title: string = "GymKonnect";
+
     items:
         { icon: string, text: string, children: { icon: string, text: string, to: string }[], model: boolean, "icon-alt": string }[] |
         { icon: string, heading: string, to?: string }[] |
