@@ -185,9 +185,8 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue"
 import appConfig from "@/app.config"
-import { Component, Watch } from "vue-property-decorator"
+import { Component, Watch, Vue } from "vue-property-decorator"
 import Keyboard from "mousetrap"
 import devResizer from "@/components/dev-resizer.vue"
 import { ThemeStore } from "@/state/theme"

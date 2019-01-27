@@ -1,8 +1,9 @@
 /**
  * TODO: build release system for the rest
  */
-import ServerExecutableBuilder from "~addons/neutron"
 import { resolve } from "../webpack.base"
+import NeutronBinaryBuilder from "~addons/neutron"
+import os from "os"
 
-let neutronBuilder  = new ServerExecutableBuilder(resolve("bin"), "linux")
+let neutronBuilder = new NeutronBinaryBuilder(resolve("bin"), os.platform())
 neutronBuilder.build()

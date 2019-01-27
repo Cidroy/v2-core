@@ -5,8 +5,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue"
-import { Component } from "vue-property-decorator"
+import { Component, Vue } from "vue-property-decorator"
 import { ipcMain, ipcRenderer, remote } from "electron"
 import { MAIN } from "@/classes/setup"
 

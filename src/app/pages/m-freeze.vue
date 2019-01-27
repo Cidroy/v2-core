@@ -68,7 +68,7 @@
 					</v-menu>
 				</v-flex>
 				<v-flex xs3 class="pl-4">
-					<v-text-field prepend-icon="fas fa-calendar-minus" value="10 days" label="Freezing Period" readonly ></v-text-field>
+					<v-text-field prepend-icon="fas fa-calendar-minus" value="10 days" label="Freezing Period" readonly :rules="freezingPeriod" ></v-text-field>
 				</v-flex>	
 			</v-layout>
 		</v-card>
@@ -107,7 +107,10 @@ export default class Home extends Vue{
 	snackbar= false
     y= 'top'
 	mode= ''
-    timeout= 6000
+	timeout= 6000
+	freezingPeriod=[
+        
+	]
 
 	@Watch("date")
 	onDateChanged() {

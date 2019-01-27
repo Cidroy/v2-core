@@ -276,8 +276,8 @@
 								</v-card-text>
 								<v-card-actions>
 									<v-spacer></v-spacer>
-									<v-btn color="orange darken-4" @click="dialog = false">N0</v-btn>
-									<v-btn color="orange darken-4" @click="dialog = false">Yes</v-btn>
+									<v-btn color="orange darken-4" @click="dialog = false" to="/payment">Yes</v-btn>
+									<v-btn color="orange darken-4" @click="dialog = false">No</v-btn>
 								</v-card-actions>
 							</v-card>
 						</v-dialog>

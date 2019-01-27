@@ -1,6 +1,4 @@
-import path from "path"
-// @ts-ignore
-import _package from "~/package"
+import _package from "~/package.json"
 import electronPackager from "electron-packager"
 import { resolve } from "~build/webpack.base"
 

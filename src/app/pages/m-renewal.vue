@@ -22,7 +22,7 @@
 					<v-subheader class="title">Mobile No</v-subheader>
 				</v-flex>
 				<v-flex xs4>
-					<v-text-field label="Enter Mobile No" single-line solo></v-text-field>
+					<v-text-field label="Enter Mobile No" v-model="phone" :rules="phoneRules"  mask="phone"></v-text-field>
 				</v-flex>
 				<v-spacer></v-spacer>
 				<v-flex xs3 class="pr-4">
@@ -226,7 +226,9 @@ export default class Home extends Vue {
 	phone = ""
 	phoneRules = [
 		v => !!v || "Number is required",
+		v => v.length <= 10
 	]
+	
 	emailRules = [
 		v => (v || '').match(/@/) || 'Please enter a valid email',
 	]
