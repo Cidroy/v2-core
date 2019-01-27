@@ -23,52 +23,54 @@
 
 			<v-layout class="pl-4" row wrap>
 				<v-flex xs6 class="pr-4">
-					<v-text-field prepend-icon="fas fa-user" value="Package Name" label="Payment Purpose" readonly ></v-text-field>
+					<v-text-field prepend-icon="fas fa-info-circle" value="Package Name" label="Payment Purpose" readonly ></v-text-field>
 				</v-flex>
 				<v-flex xs6 class="pr-4">
-					<v-text-field prepend-icon="fas fa-user" value="Package Duration" label="Payment Duration" readonly ></v-text-field>
+					<v-text-field prepend-icon="fas fa-calendar-alt" value="Package Duration" label="Payment Duration" readonly ></v-text-field>
 				</v-flex>
 
 				<v-flex xs12>
-					<v-subheader class="title">Amount Breakdown:</v-subheader>
+					<v-subheader class="title">Amount Breakdown</v-subheader>
 				</v-flex>
 			</v-layout>
 
-			<v-layout row wrap class="pl-4">
-				<v-flex class="mt-2" xs1>
-        			<v-subheader>Sub-Total</v-subheader>
-      			</v-flex>
-				<v-flex xs1>
-					<v-text-field value="2580.00" prefix="₹"></v-text-field>
-				</v-flex>
-			</v-layout>
+			<v-card>
+				<v-layout row wrap class="pl-4">
+					<v-flex class="mt-2" xs2>
+						<v-subheader class="body-2">Sub-Total</v-subheader>
+					</v-flex>
+					<v-flex xs2>
+						<v-text-field value="2580.00" prefix="₹"></v-text-field>
+					</v-flex>
+				</v-layout>
 
-			<v-layout row wrap class="pl-4">
-				<v-flex class="mt-2" xs1>
-        			<v-subheader>Select Offer</v-subheader>
-      			</v-flex>
-				<v-flex xs2>
-					
-				</v-flex>
-			</v-layout>
+				<v-layout row wrap class="pl-4">
+					<v-flex class="mt-2" xs2>
+						<v-subheader class="body-2">Select Offer</v-subheader>
+					</v-flex>
+					<v-flex xs2>
+						
+					</v-flex>
+				</v-layout>
 
-			<v-layout row wrap class="pl-4">
-				<v-flex class="mt-2" xs1>
-        			<v-subheader>Discount</v-subheader>
-      			</v-flex>
-				<v-flex xs1>
-					<v-text-field prefix="₹"></v-text-field>
-				</v-flex>
-			</v-layout>
+				<v-layout row wrap class="pl-4">
+					<v-flex class="mt-2" xs2>
+						<v-subheader class="body-2">Discount Amount</v-subheader>
+					</v-flex>
+					<v-flex xs2>
+						<v-text-field prefix="₹"></v-text-field>
+					</v-flex>
+				</v-layout>
 
-			<v-layout row wrap class="pl-4">
-				<v-flex class="mt-2" xs2>
-        			<v-subheader class="cpation">Total Amount</v-subheader>
-      			</v-flex>
-				<v-flex xs2>
-					<v-text-field value="2080.00" prefix="₹"></v-text-field>
-				</v-flex>
-			</v-layout>
+				<v-layout row wrap class="pl-4">
+					<v-flex class="mt-2" xs2>
+						<v-subheader class="subheading">Total Amount</v-subheader>
+					</v-flex>
+					<v-flex xs2>
+						<v-text-field value="2080.00" prefix="₹"></v-text-field>
+					</v-flex>
+				</v-layout>
+			</v-card>	
 		</v-card>	
 	</Layout>
 </template>

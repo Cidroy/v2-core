@@ -88,26 +88,26 @@
 								</v-layout>
 							</v-flex>
 							<v-flex xs3 class="pa-4">
-								<v-dialog v-model="importDialog" persistent>
+								<v-dialog v-model="importDialog" persistent width="400px">
 									<v-btn outline block slot="activator" color="orange darken-4">Import from Enquiry</v-btn>
 									<v-card>
-										<v-toolbar card dark color="orange darken-4">
+										<v-toolbar height="50px" card dark color="orange darken-4">
 											<v-toolbar-title>Import Details from Enquiry</v-toolbar-title>
 										</v-toolbar>
 										<v-card-text>
-											<label class="title">Search by Mobile No.</label>
+											<label class="title">Search by Mobile No./Name</label>
 											<v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
 										</v-card-text>
 										<v-card-actions>
 											<v-spacer></v-spacer>
-											<v-btn color="orange darken-4" @click="importDialog = false">Cancel</v-btn>
+											<v-btn color="transparent" @click="importDialog = false">Cancel</v-btn>
 											<v-btn color="orange darken-4" @click="importDialog = false">Submit</v-btn>
 										</v-card-actions>
 									</v-card>
 								</v-dialog>
 								<v-card>
 									<v-img :src="cards[0].src" height="200px" />
-									<v-btn block>
+									<v-btn block color="orange darken-4">
 										<v-icon>add</v-icon> Add Photo
 									</v-btn>
 								</v-card>
@@ -117,12 +117,12 @@
 					</v-card>
 					<div class="right">
 						<v-btn flat click="$refs.form.reset()">Cancel</v-btn>
-						<v-btn @click="e1 = 2"> NEXT </v-btn>
+						<v-btn color="orange darken-4" @click="e1 = 2"> NEXT </v-btn>
 					</div>
 				</v-stepper-content>
 
 				<v-stepper-content step="2">
-					<v-card class="mb-2" color="transparent" height="400px">
+					<v-card class="mb-2" color="transparent" height="380px">
 						<v-layout row wrap>
 							<v-flex xs3 lg4 class="pr-2">
 								<v-text-field prepend-icon="fas fa-mobile-alt" v-model="phone" :rules="phoneRules" label="Mobile Number" mask="phone" required></v-text-field>
@@ -131,7 +131,7 @@
 								<v-text-field prepend-icon="fab fa-whatsapp" label="Whatsapp Number" mask="phone"></v-text-field>
 							</v-flex>
 							<v-flex xs3 lg4>
-								<v-checkbox label="Same As Phone Number"></v-checkbox>
+								<v-checkbox label="Not Same As Phone Number"></v-checkbox>
 							</v-flex>
 
 							<v-flex xs3 lg4 class="pr-2">
@@ -163,41 +163,41 @@
 
 					<div class="right">
 						<v-btn flat>Cancel</v-btn>
-						<v-btn @click="e1 = 3"> NEXT </v-btn>
+						<v-btn color="orange darken-4" @click="e1 = 3"> NEXT </v-btn>
 					</div>
 
 				</v-stepper-content>
 
 				<v-stepper-content step="3">
-					<v-card class="mb-2" color="transparent" height="400px">
+					<v-card class="mb-2" color="transparent" height="320px">
 						<h3>Type Of Membership</h3>
 						<v-layout row wrap xs6>
-							<v-checkbox class="ml-4" label="Gold"></v-checkbox>
-							<v-checkbox label="Platinum"></v-checkbox>
+							<v-checkbox v-model="CBTypeMem" class="ml-4" label="Gold" value="Gold"></v-checkbox>
+							<v-checkbox v-model="CBTypeMem" label="Platinum" value="Platinum"></v-checkbox>
 						</v-layout>
 						<v-divider></v-divider>
-						<h3>Membership Duration</h3>
+						<h3 class="pt-2">Membership Duration</h3>
 						<v-layout row wrap>
-							<v-checkbox class="ml-4" label="Monthly"></v-checkbox>
-							<v-checkbox label="Quaterly"></v-checkbox>
-							<v-checkbox label="Half-Yearly"></v-checkbox>
-							<v-checkbox label="Yearly"></v-checkbox>
+							<v-checkbox v-model="CBMemDuration" class="ml-4" label="Monthly" value="Monthly"></v-checkbox>
+							<v-checkbox v-model="CBMemDuration" label="Quaterly" value="Quaterly"></v-checkbox>
+							<v-checkbox v-model="CBMemDuration" label="Half-Yearly" value="Half-Yearly"></v-checkbox>
+							<v-checkbox v-model="CBMemDuration" label="Yearly" value="Yearly"></v-checkbox>
 						</v-layout>
 						<v-divider></v-divider>
-						<h3>Preferable Time Slot:</h3>
+						<h3 class="pt-2">Preferable Time Slot:</h3>
 						<v-radio-group v-model="radios" :mandatory="false">
 							<v-layout row wrap>
 								<v-radio class="ml-4 mt-1" label="Peak Hours" value="radio-7"></v-radio>
 								<v-radio class="ml-4" label="Off-Peak Hours" value="radio-8"></v-radio>
 							</v-layout>
 						</v-radio-group>
-						<v-divider></v-divider>
-						<v-checkbox class="ml-4" label="Apply for Personal Training Program" value="PT"></v-checkbox>
+						<!--v-divider></v-divider>
+						<v-checkbox class="ml-4" label="Apply for Personal Training Program" value="PT"></v-checkbox-->
 					</v-card>
 
 					<div class="right">
 						<v-btn flat>Cancel</v-btn>
-						<v-btn @click="e1 = 4"> NEXT </v-btn>
+						<v-btn color="orange darken-4" @click="e1 = 4"> NEXT </v-btn>
 					</div>
 
 				</v-stepper-content>
@@ -206,8 +206,8 @@
 					<v-card class="mb-2" color="transparent" height="400px">
 						<v-layout row wrap>
 
-							<v-flex xs1>
-								<v-subheader>Member ID</v-subheader>
+							<v-flex xs2>
+								<v-subheader class="title">Member ID</v-subheader>
 							</v-flex>
 							<v-flex xs4>
 								<v-text-field label="Enter or Generate ID" single-line solo></v-text-field>
@@ -309,6 +309,8 @@ export default class Home extends Vue {
 	checkbox = []
 	search = ""
 	selected = null
+	CBTypeMem = null
+	CBMemDuration = null
 	firstname = ""
 	email = ""
 	phone = ""
@@ -348,10 +350,10 @@ export default class Home extends Vue {
 	dialog = false
 
 	items = [
-		'Programming',
-		'Design',
-		'Vue',
-		'Vuetify'
+		'Teacher',
+		'Engineer',
+		'Doctor',
+		'Student'
 	]
 	Category = [
 		'student',
@@ -363,7 +365,8 @@ export default class Home extends Vue {
 		'Aadhaar Card',
 		'Passport',
 		'License',
-		'Pan Card'
+		'Pan Card',
+		'Voter ID'
 	]
 	bodyType = [
 		'endomorph',
