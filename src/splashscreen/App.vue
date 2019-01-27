@@ -1,24 +1,30 @@
 <template>
 	<v-app dark>
-		<v-container class="pa-0" fill-height fluid>
-			<v-layout fill-height>
-				<v-card class="flex px-3">
-					<v-img :src="logo" height="100%" class="white--text app-splashscreen-logo" />
-				</v-card>
-			</v-layout>
-		</v-container>
+		<v-layout align-center justify-space-between row wrap fill-height>
+			<v-flex xs12> <loading style="bottom: 0px;" /> </v-flex>
+			<v-flex xs12>
+				<v-img :src="logo" class="white--text" contain max-height="100" />
+				<h3 class="text-xs-center">GymKonnect</h3>
+			</v-flex>
+			<v-flex xs12> <loading style="bottom:0px" /> </v-flex>
+		</v-layout>
 	</v-app>
 </template>
 
 <script lang="ts">
 // @ts-ignore
-import logo from "@/assets/images/logo.png"
+import logo from "@/assets/images/splash-logo.png"
 import { Component, Vue } from "vue-property-decorator"
+import Loading from "./Loading.vue"
 
-@Component({})
+@Component({
+	components: { Loading, },
+})
 export default class SplashcreenPage extends Vue{
-		message: string = "welcome"
 		logo = logo
+		get message(){
+			return "Welcome"
+		}
 }
 </script>
 

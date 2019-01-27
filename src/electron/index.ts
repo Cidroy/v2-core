@@ -156,12 +156,30 @@ class Application {
 	constructor() {
 		app.on("window-all-closed", this.onExit)
 	}
+
+	public SingleInstance(){
+		Console.log("try single instance")
+		let onlyInstance = app.requestSingleInstanceLock()
+
+		if(!onlyInstance){
+			Console.log("quitting because we are instance 2. There is no place for 2nd place in this world")
+			app.quit()
+		} else {
+			app.on("second-instance", (event, argv,  workingDirectory) => {
+				Console.verbose("second-instance", { argv, workingDirectory })
+				if(this.windows.main._.isMinimized())
+					this.windows.main._.restore()
+				this.windows.main._.focus()
+			})
+		}
+	}
 }
 
 try {
 	Console.okay("Core Thread Started")
 	const App = new Application()
 	Console.okay("Core App Started")
+	App.SingleInstance()
 	App.initialize()
 } catch (error) {
 	Console.error("Core Thread Failed", error)
