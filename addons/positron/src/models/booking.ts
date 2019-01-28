@@ -22,15 +22,15 @@ export default class Booking extends Base implements IBooking {
 	@DB.Column("date")
 	public end!: Date
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public bookingPackage?: string
 
-	@GQL.Field(type => [String,])
+	@GQL.Field(type => [String,], { nullable: true })
 	@DB.Column("simple-array", {nullable: true })
 	public bookingAddons?: string[]
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public payment?: string
 

@@ -17,6 +17,7 @@ import Occupation from "@positron/models/occupation"
 import Organization from "@positron/models/organization"
 import PriceList from "@positron/models/priceList"
 import SlotBlock from "@positron/models/slotBlock"
+import GymPurpose from "@positron/models/gymPurpose"
 
 export default [
 	Client,
@@ -36,4 +37,5 @@ export default [
 	Organization,
 	PriceList,
 	SlotBlock,
+	GymPurpose,
 ]

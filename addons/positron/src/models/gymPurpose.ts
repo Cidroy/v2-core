@@ -1,17 +1,17 @@
 import * as DB from "typeorm"
 import Base from "./base"
 import * as GQL from "type-graphql"
-import IGymBodyType from "@classes/interface/IGymBodyType"
+import IGymPurpose from "@classes/interface/IGymPurpose"
 
 @DB.Entity()
 @GQL.ObjectType()
-export default class GymBodyType extends Base implements IGymBodyType {
+export default class GymPurpose extends Base implements IGymPurpose {
 	@GQL.Field(type => String)
 	@DB.Column("varchar")
 	public name!: string
 
-	@GQL.Field(type => String,{nullable:true})
-	@DB.Column("varchar" , {nullable : true})
+	@GQL.Field(type => String, { nullable: true })
+	@DB.Column("varchar", { nullable: true })
 	public description?: string
 
 }

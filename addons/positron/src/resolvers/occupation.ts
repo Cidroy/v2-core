@@ -3,6 +3,12 @@ import Occupation from "@positron/models/occupation"
 
 @GQL.Resolver(of => Occupation)
 export default class OccupationResolver {
+
+	@GQL.Query(returns => [Occupation,])
+	public async occupations() {
+		return Occupation.find()
+	}
+
 	@GQL.Mutation(returns => Occupation)
 	public async addOccupation(
 		@GQL.Arg("name") name: string,

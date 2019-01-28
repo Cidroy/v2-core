@@ -46,24 +46,24 @@ export default class User extends Base implements ICustomer{
 	@DB.Column("varchar", { length: 30 })
 	public mobile!: string
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { length: 30, nullable: true })
 	public whatsapp?: string
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { length: 30, nullable: true })
 	public officePhone?: string
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	@Validate.IsEmail()
 	public email?: string
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public address?: string
 
-	@GQL.Field(type => Date)
+	@GQL.Field(type => Date, { nullable: true })
 	@DB.Column("date", { nullable: true })
 	public dob?: Date
 
@@ -74,11 +74,11 @@ export default class User extends Base implements ICustomer{
 	})
 	public gender!: GENDER
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public enquiryInitial?: string
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public enquiryRecent?: string
 
@@ -86,47 +86,47 @@ export default class User extends Base implements ICustomer{
 	@DB.Column("date")
 	public doj!: Date
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public healthJoining?: string
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public healthCurrent?: string
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public referredBy?: string
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public referredOther?: string
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public transferFrom?: string
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public transferTo?: string
 
-	@GQL.Field(type => Number)
+	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
 	public balance?: number
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public transaction?: string
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public diet?: string
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public personalTraining?: number
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public counselling?: string
 

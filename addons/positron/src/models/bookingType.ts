@@ -14,7 +14,7 @@ export default class BookingType extends Base implements IBookingType {
 	@DB.Column("varchar")
 	public name! : string
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public description?: string | undefined
 

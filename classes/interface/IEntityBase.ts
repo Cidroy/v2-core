@@ -17,7 +17,7 @@ export interface IModification{
  * @interface IEntityBase
  */
 export interface IEntityBase{
-	id: string
+	id: number
 	createdAt: Date,
 	author: string,
 	modifications: IModification[],

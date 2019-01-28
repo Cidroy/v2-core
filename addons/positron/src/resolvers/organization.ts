@@ -3,6 +3,12 @@ import Organization from "@positron/models/organization"
 
 @GQL.Resolver(of => Organization)
 export default class OrganizationResolver {
+
+	@GQL.Query(returns => [Organization,])
+	public async organizations() {
+		return Organization.find()
+	}
+
 	@GQL.Mutation(returns => Organization)
 	public async addOrganization(
 		@GQL.Arg("name") name: string,

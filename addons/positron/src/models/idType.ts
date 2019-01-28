@@ -10,7 +10,7 @@ export default class IDType extends Base implements IIDType {
 	@DB.Column("varchar")
 	public name!: string
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public description?: string
 

@@ -3,6 +3,12 @@ import BookingType from "@positron/models/bookingType"
 
 @GQL.Resolver(of => BookingType)
 export default class BookingTypeResolver{
+
+	@GQL.Query(returns => [BookingType,])
+	public async bookingType() {
+		return BookingType.find()
+	}
+	
 	@GQL.Mutation(returns => BookingType)
 	public async addBookingType(
 		@GQL.Arg("user") user : string,

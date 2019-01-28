@@ -3,6 +3,12 @@ import Booking from "@positron/models/booking"
 
 @GQL.Resolver(of => Booking)
 export default class BookingResolver {
+
+	@GQL.Query(returns => [Booking,])
+	public async bookings() {
+		return Booking.find()
+	}
+
 	@GQL.Mutation(returns => Booking)
 	public async addBooking(
 		@GQL.Arg("user") user: string,

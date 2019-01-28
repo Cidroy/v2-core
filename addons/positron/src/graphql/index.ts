@@ -16,6 +16,7 @@ import OccupationResolver from "@positron/resolvers/occupation"
 import OrganizationResolver from "@positron/resolvers/organization"
 import PriceListResolver from "@positron/resolvers/priceList"
 import SlotBlockResolver from "@positron/resolvers/slotBlock"
+import GymPurposeResolver from "@positron/resolvers/gymPurpose"
 
 export default class GQL{
 	private static Resolvers = [
@@ -35,6 +36,7 @@ export default class GQL{
 		OrganizationResolver,
 		PriceListResolver,
 		SlotBlockResolver,
+		GymPurposeResolver,
 	]
 
 	public static async Schema(){
