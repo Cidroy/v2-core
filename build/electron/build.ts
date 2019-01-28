@@ -18,9 +18,9 @@ let applicationBuilder = new ElectronBuilder(
 )
 
 applicationBuilder.onBuild(async (buildPath, electronVersion, platform, arch) => {
-	let positronBuilder = new PositronBinaryBuilder(buildPath, platform)
-	await positronBuilder.build()
-	return true
+ 	let positronBuilder = new PositronBinaryBuilder(buildPath, platform)
+ 	await positronBuilder.build()
+ 	return true
 })
 
 applicationBuilder.build()

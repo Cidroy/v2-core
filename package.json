@@ -196,6 +196,7 @@
 		"mysql": "^2.16.0",
 		"npm-run": "^5.0.1",
 		"reflect-metadata": "^0.1.12",
+		"request": "^2.88.0",
 		"request-promise-native": "^1.0.5",
 		"safesql": "^2.0.1",
 		"simple-crypto-js": "^2.0.2",

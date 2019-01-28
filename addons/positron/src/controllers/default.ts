@@ -8,12 +8,13 @@ export default class DefaultController{
 
 	@API.Get("/")
 	@API.Post("/")
-	public async defaultRoute(): Promise<{ message: string, version: string, cwd: string } & ISuccess>{
+	public async defaultRoute(): Promise<{ message: string, version: string, cwd: string, pid: number } & ISuccess>{
 		return {
 			type: "success",
 			message: "Positron is stable",
 			version,
 			cwd: ROOT,
+			pid: process.pid
 		}
 	}
 }
