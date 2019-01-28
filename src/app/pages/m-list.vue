@@ -2,17 +2,16 @@
 	<Layout>
 		<h1 class="text-md-center">Members List</h1>
 		<div>
-    		<v-toolbar flat>
+    		<v-toolbar dark flat>
       			<v-flex lg2 mt-3>
-					<v-overflow-btn :items="dropdown_font" label="Lists" target="#dropdown-example"></v-overflow-btn>
-				</v-flex>
-				<v-flex lg4 mt-2>
-					<v-text-field prepend-icon="search" label="Search" class="hidden-sm-and-down pt-2" />
+					<v-overflow-btn :items="dropdown_font" label="All" target="#dropdown-example"></v-overflow-btn>
 				</v-flex>
 				<v-spacer></v-spacer>
-				<v-btn >Send Email</v-btn>
-				<v-btn >Send MSG</v-btn>
-				
+				<v-flex lg3 mt-2 pr-4>
+					<v-text-field v-model="search" single-line hide-details append-icon="search" label="Search" class="hidden-sm-and-down pt-2" />
+				</v-flex>
+				<v-btn dark color="orange darken-4">Send SMS</v-btn>
+				<v-btn dark color="orange darken-4">Send Email</v-btn>
     		</v-toolbar>
 			
 			<v-data-table v-model="selected" :headers="headers" :items="desserts" item-key="id" select-all class="elevation-1">
@@ -30,13 +29,11 @@
 				<template slot="expand" slot-scope="props">
 					<v-card flat>
 						<v-layout  row wrap>
-							<v-btn @click="pushProfile" >View Profile</v-btn>
 							<v-spacer :data="props"/>
-							<v-btn >Send MSG</v-btn>
-							<v-btn >Send Email</v-btn>
-							<v-btn >Block</v-btn>
-							<v-btn >Enroll</v-btn>
-							<v-btn >Freeze</v-btn>
+							<v-btn dark color="deep-purple darken-4" @click="pushProfile" >View Profile</v-btn>
+							<v-btn dark>Block</v-btn>
+							<v-btn dark>Enroll</v-btn>
+							<v-btn dark>Freeze</v-btn>
 						</v-layout>
 					</v-card>
 				</template>
@@ -61,7 +58,7 @@ import { Component, Watch, Vue } from "vue-property-decorator"
 	
 })
 export default class Home extends Vue {
-	dropdown_font = ['Arial', 'Calibri', 'Courier', 'Verdana']
+	dropdown_font = ['All','Recent', 'Renewal', 'Not Enrolled', 'Gold']
 	pushProfile() {
 				// @ts-ignore
                 this.$router.push('/profile');
@@ -79,7 +76,7 @@ export default class Home extends Vue {
 		{ text: 'Due Date', value: 'duedat'}
 	]
 	selected= []
-	
+	search = ""
 	editedIndex = -1
 	expand: boolean = false
 	
