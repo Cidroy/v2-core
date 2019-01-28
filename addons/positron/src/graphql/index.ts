@@ -6,6 +6,16 @@ import TransactionResolver from "@positron/resolvers/transaction"
 import FreezeRulesResolver from "@positron/resolvers/FreezeRules"
 import FreezeResolver from "@positron/resolvers/freezes"
 import { Permission } from "@classes/Permission"
+import GymBodyTypeResolver from "@positron/resolvers/gymBodyType"
+import BookingResolver from "@positron/resolvers/booking"
+import BookingAddonResolver from "@positron/resolvers/bookingAddon"
+import BookingTypeResolver from "@positron/resolvers/bookingType"
+import CategoryResolver from "@positron/resolvers/category"
+import IDTypeResolver from "@positron/resolvers/idType"
+import OccupationResolver from "@positron/resolvers/occupation"
+import OrganizationResolver from "@positron/resolvers/organization"
+import PriceListResolver from "@positron/resolvers/priceList"
+import SlotBlockResolver from "@positron/resolvers/slotBlock"
 
 export default class GQL{
 	private static Resolvers = [
@@ -15,6 +25,16 @@ export default class GQL{
 		TransactionResolver,
 		FreezeRulesResolver,
 		FreezeResolver,
+		GymBodyTypeResolver,
+		BookingResolver,
+		BookingAddonResolver,
+		BookingTypeResolver,
+		CategoryResolver,
+		IDTypeResolver,
+		OccupationResolver,
+		OrganizationResolver,
+		PriceListResolver,
+		SlotBlockResolver,
 	]
 
 	public static async Schema(){
