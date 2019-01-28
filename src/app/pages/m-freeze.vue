@@ -54,21 +54,20 @@
 				<v-flex xs3 class="mb-2">
 					<v-menu ref="freeze1" :close-on-content-click="false" v-model="freeze1" :nudge-right="40" lazy transition="scale-transition"
 					offset-y full-width max-width="290px" min-width="290px">
-						<v-text-field slot="activator" v-model="dateFormatted" label="Freezing Start Date"
-						hint="DD/MM/YYYY format" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)"></v-text-field>
-						<v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
+						<v-text-field slot="activator" v-model="startDateFormatted" label="Freezing Start Date"
+						hint="DD/MM/YYYY format" persistent-hint prepend-icon="event" @blur="startDate = parseDate(startDateFormatted)"></v-text-field>
+						<v-date-picker v-model="startDate" no-title @input="freeze1 = false" :min="minStartDate"></v-date-picker>
 					</v-menu>
 				</v-flex>
 				<v-flex xs3 class="pl-4 mb-2">
 					<v-menu ref="freeze2" :close-on-content-click="false" v-model="freeze2" :nudge-right="40" lazy transition="scale-transition"
 						offset-y full-width>
-						<v-text-field slot="activator" v-model="dateFormatted" label="Freezing End Date" hint="DD/MM/YYYY"
-						persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)"></v-text-field>
-						<v-date-picker v-model="date" no-title @input="menu4 = false"></v-date-picker>
+						<v-text-field slot="activator" v-model="endDateFormatted" label="Freezing End Date" hint="DD/MM/YYYY" persistent-hint prepend-icon="event" @blur="date = parseDate(endDateFormatted)"></v-text-field>
+						<v-date-picker  v-model="endDate" no-title @input="freeze2 = false"  :min="minEndDate"></v-date-picker>
 					</v-menu>
 				</v-flex>
 				<v-flex xs3 class="pl-4">
-					<v-text-field prepend-icon="fas fa-calendar-minus" value="10 days" label="Freezing Period" readonly :rules="freezingPeriod" ></v-text-field>
+					<v-text-field prepend-icon="fas fa-calendar-minus" :value="period" label="Freezing Period" readonly :rules="freezingPeriod" ></v-text-field>
 				</v-flex>	
 			</v-layout>
 		</v-card>
@@ -86,6 +85,7 @@
 </template>
 
 <script lang="ts">
+import moment from "moment"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
 import SystemInformation from "@/components/system-information.vue"
@@ -98,27 +98,60 @@ import { watch } from 'fs';
 		title: "Home",
 		meta: [ { name: "description", content: appConfig.description, }, ],
 	},
+	created(){
+		this.endDate = this.minEndDate
+	}
 })
-export default class Home extends Vue{
+export default class MemberFreezePage extends Vue{
 	freeze1 = false
 	freeze2 = false
-	date = new Date().toISOString().substr(0, 10)
-	dateFormatted = this.formatDate(this.date)
+	minPeriod =5
+	startDate = new Date().toISOString().substr(0, 10)
+	minStartDate = new Date().toISOString().substr(0, 10)
+	startDateFormatted = this.formatDate(this.startDate)
+	endDate = new Date().toISOString().substr(0, 10)
+	endDateFormatted = this.formatDate(this.endDate)
 	snackbar= false
     y= 'top'
 	mode= ''
 	timeout= 6000
-	freezingPeriod=[
-        
-	]
+	freezingPeriod=[]
 
-	@Watch("date")
-	onDateChanged() {
-		this.dateFormatted = this.formatDate(this.date)
+	get period(){
+		let a = moment(this.endDate)
+		let b = moment(this.startDate)
+		return a.diff(b, 'days')
 	}
 
-	get getDateFormatted() {
-		return this.formatDate(this.date)
+	get minEndDate(){
+		return moment(this.startDate).add(this.minPeriod + 1, "days").toISOString().substr(0, 10)
+	}
+
+	@Watch("minEndDate")
+	onMinEndDateChanged(newVal, oldVal){
+		this.endDate = moment.max(moment(this.endDate), moment(newVal)).add(1, "days").toISOString().substr(0, 10)
+	}
+
+	@Watch("minStartDate")
+	onMinStartDateChanged(newVal, oldVal){
+		this.startDate = moment.max(moment(this.startDate), moment(newVal)).add(1, "days").toISOString().substr(0, 10)
+	}
+
+	@Watch("startDate")
+	onStartDateChanged() {
+		this.startDateFormatted = this.formatDate(this.startDate)
+	}
+
+	@Watch("endDate")
+	onEndDateChanged() {
+		this.endDateFormatted = this.formatDate(this.endDate)
+	}
+
+	get getStartDateFormatted() {
+		return this.formatDate(this.startDate)
+	}
+	get getEndDateFormatted() {
+		return this.formatDate(this.endDate)
 	}
 
 	formatDate(date) {
