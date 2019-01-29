@@ -2,7 +2,7 @@
 // will be used very frequently. Components are registered using the
 // PascalCased version of their file name.
 
-import Vue from "vue"
+import { default as Vue } from "vue"
 import upperFirst from "lodash/upperFirst"
 import camelCase from "lodash/camelCase"
 

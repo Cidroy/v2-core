@@ -7,7 +7,7 @@ import { Neutron } from "@neutron/NEUTRON"
 import AppConfig from "@classes/appConfig"
 import { Server } from "@positron/server"
 import { INSTALL_STEP } from "@positron/lib/misc"
-import { version } from "~positron/package.json"
+import { version } from "@positron/../package.local.json"
 
 export declare const module: any
 

@@ -1,4 +1,4 @@
-import Vue from "vue"
+import { default as Vue } from "vue"
 import VueRouter from "vue-router"
 // https://github.com/declandewet/vue-meta
 import VueMeta from "vue-meta"

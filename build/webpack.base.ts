@@ -27,6 +27,7 @@ const baseConfig: webpack.Configuration = {
 	},
 	resolve: {
 		extensions: [
+			".mjs",
 			".js",
 			".jsx",
 			".vue",
@@ -70,6 +71,11 @@ const baseConfig: webpack.Configuration = {
 					formatter: require("eslint-friendly-formatter"),
 					emitWarning: !config.dev.showEslintErrorsInOverlay
 				}
+			},
+			{
+				test: /\.mjs$/,
+				include: /node_modules/,
+				type: "javascript/auto",
 			},
 			{
 				test: /\.vue$/,

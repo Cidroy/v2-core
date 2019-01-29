@@ -12,39 +12,39 @@
 				</v-flex>
 				<v-spacer></v-spacer>
 				<v-flex xs3 class="pr-4">
-					<v-text-field prepend-icon="fas fa-id-badge" value="7384" label="Member ID" readonly ></v-text-field>
+					<v-text-field box prepend-icon="fas fa-id-badge" value="7384" label="Member ID" readonly ></v-text-field>
 				</v-flex>
 			</v-layout>
 			<v-divider></v-divider>
 
 			<v-layout class="pl-4 pt-2" row wrap>
 				<v-flex xs6>
-					<v-text-field prepend-icon="fas fa-user" value="John Doe" label="Name" readonly ></v-text-field>
+					<v-text-field box prepend-icon="fas fa-user" value="John Doe" label="Name" readonly ></v-text-field>
 				</v-flex>
 			</v-layout>
 
 			<h4 class="title pl-4 pt-2">Current Status</h4>
 			<v-layout row wrap class="pl-4 pt-2">
 				<v-flex xs3>
-					<v-text-field prepend-icon="fas fa-info-circle" value="Gold Solo" label="Current Program" readonly ></v-text-field>
+					<v-text-field box prepend-icon="fas fa-info-circle" value="Gold Solo" label="Current Program" readonly ></v-text-field>
 				</v-flex>
 				<v-flex xs3 class="pl-4">
-					<v-text-field prepend-icon="fas fa-calendar-alt" value="Yearly" label="Current Package" readonly ></v-text-field>
+					<v-text-field box prepend-icon="fas fa-calendar-alt" value="Yearly" label="Current Package" readonly ></v-text-field>
 				</v-flex>
 				<v-flex xs3 class="pl-4">
-					<v-text-field prepend-icon="event" value="21/12/2018" label="Package Start Date" readonly ></v-text-field>
+					<v-text-field box prepend-icon="event" value="21/12/2018" label="Package Start Date" readonly ></v-text-field>
 				</v-flex>
 				<v-flex xs3 class="pl-4 pr-4">
-					<v-text-field prepend-icon="event" value="20/12/2019" label="Package End Date" readonly ></v-text-field>
+					<v-text-field box prepend-icon="event" value="20/12/2019" label="Package End Date" readonly ></v-text-field>
 				</v-flex>
 			</v-layout>
 			
 			<v-layout row wrap class="pl-4 pt-2">
 				<v-flex xs3>
-					<v-text-field prepend-icon="fas fa-hourglass-start" value="40 days" label="No. of Days Freezing Eligible" readonly ></v-text-field>
+					<v-text-field box prepend-icon="fas fa-hourglass-start" value="40 days" label="No. of Days Freezing Eligible" readonly ></v-text-field>
 				</v-flex>
 				<v-flex xs3 class="pl-4">
-					<v-text-field prepend-icon="fas fa-hourglass-half" value="5 days" label="No. of Days Freezing Used" readonly ></v-text-field>
+					<v-text-field box prepend-icon="fas fa-hourglass-half" value="5 days" label="No. of Days Freezing Used" readonly ></v-text-field>
 				</v-flex>
 			</v-layout>
 			<v-divider></v-divider>
@@ -67,16 +67,16 @@
 					</v-menu>
 				</v-flex>
 				<v-flex xs3 class="pl-4">
-					<v-text-field prepend-icon="fas fa-calendar-minus" :value="period" label="Freezing Period" readonly :rules="freezingPeriod" ></v-text-field>
+					<v-text-field box prepend-icon="fas fa-calendar-minus" :value="period" label="Freezing Period" readonly :rules="freezingPeriod" ></v-text-field>
 				</v-flex>	
 			</v-layout>
 		</v-card>
 
 		<v-card width="100%" height="50px" color="transparent">
 			<div class="right pr-2"> 
-				<v-btn flat>Cancel</v-btn>
-				<v-btn @click="snackbar = true" color="orange darken-4" class="mb-2">Submit</v-btn>
-				<v-snackbar v-model="snackbar" :bottom="y === 'bottom'">Freezing has been Initiated!
+				<v-btn dark>Cancel</v-btn>
+				<v-btn dark @click="snackbar = true" color="orange darken-4" class="mb-2">Submit</v-btn>
+				<v-snackbar v-model="snackbar" :bottom="y === 'bottom'" :right="x === 'right'">Freezing has been Initiated!
       				<v-btn color="orange darken-4" flat @click="snackbar = false">Close</v-btn>
     			</v-snackbar>
 			</div>
@@ -112,7 +112,8 @@ export default class MemberFreezePage extends Vue{
 	endDate = new Date().toISOString().substr(0, 10)
 	endDateFormatted = this.formatDate(this.endDate)
 	snackbar= false
-    y= 'top'
+    y= 'bottom'
+	x= 'right'
 	mode= ''
 	timeout= 6000
 	freezingPeriod=[]
