@@ -77,7 +77,7 @@
 			<div class="right pr-2"> 
 				<v-btn dark>Cancel</v-btn>
 				<v-btn dark @click="snackbar = true" color="orange darken-4" class="mb-2">Submit</v-btn>
-				<v-snackbar v-model="snackbar" :bottom="y === 'bottom'" :right="x === 'right'">Freezing has been Initiated!
+				<v-snackbar class="pt-5" v-model="snackbar" :top="y === 'top'" :right="x === 'right'">Freezing has been Initiated!
       				<v-btn color="orange darken-4" flat @click="snackbar = false">Close</v-btn>
     			</v-snackbar>
 			</div>
@@ -105,7 +105,7 @@ export default class Home extends Vue{
 	date = new Date().toISOString().substr(0, 10)
 	dateFormatted = this.formatDate(this.date)
 	snackbar= false
-    y= 'bottom'
+    y= 'top'
 	x= 'right'
 	mode= ''
 	timeout= 6000
