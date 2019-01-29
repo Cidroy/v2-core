@@ -6,7 +6,7 @@ import rendererConfig from "~build/electron/webpack.renderer"
 import splashscreenConfig from "~build/electron/webpack.splashscreen"
 
 import { ElectronBuilder } from "~build/electron/ElectronBuilder"
-import PositronExecutableBuilder from "~addons/positron"
+import PositronBinaryBuilder from "~addons/positron"
 
 let applicationBuilder = new ElectronBuilder(
 	{
@@ -18,9 +18,9 @@ let applicationBuilder = new ElectronBuilder(
 )
 
 applicationBuilder.onBuild(async (buildPath, electronVersion, platform, arch) => {
-	let positronBuilder = new PositronExecutableBuilder(buildPath, platform)
-	await positronBuilder.build()
-	return true
+ 	let positronBuilder = new PositronBinaryBuilder(buildPath, platform)
+ 	await positronBuilder.build()
+ 	return true
 })
 
 applicationBuilder.build()

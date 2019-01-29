@@ -1,20 +1,24 @@
 import { readFileSync, existsSync, writeFileSync } from "fs"
 import json5 from "json5"
 import { Logger } from "@classes/CONSOLE"
+import os from "os"
 
+let cache
 export default class AppConfig {
 	private static log = new Logger("app-config")
 
 	private static get file(): string {
 		if (process.env.NODE_ENV == "development") return "dist/appConfig.json5"
-		else return "W+.boson"
+		// TODO: filename based on project name
+		else return os.homedir() + "/gymkonnect.w+boson"
 	}
 
 	private static readonly defaultCache = {
-		lastModified: new Date()
+		lastModified: new Date(),
 	}
 
-	private static cache = AppConfig.defaultCache
+	private static get cache() { return cache || AppConfig.defaultCache }
+	private static set cache(value){ cache = value }
 
 	public static async Initialize(refresh: boolean = false) {
 		AppConfig.log.verbose("getting ready")
