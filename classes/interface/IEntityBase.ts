@@ -6,7 +6,7 @@
  */
 export interface IModification{
 	modifiedAt: Date,
-	modifier: string,
+	modifier: number,
 	modification: string[],
 }
 
@@ -19,8 +19,9 @@ export interface IModification{
 export interface IEntityBase{
 	id: number
 	createdAt: Date,
-	author: string,
+	author: number,
 	modifications: IModification[],
 	lastModifiedAt?: Date,
-	lastModifier?: string,
+	lastModifier?: number,
+	serverId? : string
 }

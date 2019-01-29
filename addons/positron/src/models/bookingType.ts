@@ -6,12 +6,9 @@ import IBookingType from "@classes/interface/IBookingType"
 @DB.Entity()
 @GQL.ObjectType()
 export default class BookingType extends Base implements IBookingType {
-	@GQL.Field(type => String)
-	@DB.Column("varchar")
-	public user! : string
 
 	@GQL.Field(type => String)
-	@DB.Column("varchar")
+	@DB.Column("varchar", { nullable: false, unique: true })
 	public name! : string
 
 	@GQL.Field(type => String, { nullable: true })
@@ -23,11 +20,11 @@ export default class BookingType extends Base implements IBookingType {
 	public slotDuration! : number
 
 	@GQL.Field(type => Date)
-	@DB.Column("date")
+	@DB.Column("datetime")
 	public slotStart! : Date
 
 	@GQL.Field(type => Date)
-	@DB.Column("date")
+	@DB.Column("datetime")
 	public slotEnd! : Date
 
 }

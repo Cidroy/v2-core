@@ -7,7 +7,7 @@ import IIDType from "@classes/interface/IIDType"
 @GQL.ObjectType()
 export default class IDType extends Base implements IIDType {
 	@GQL.Field(type => String)
-	@DB.Column("varchar")
+	@DB.Column("varchar", { nullable: false, unique: true })
 	public name!: string
 
 	@GQL.Field(type => String, { nullable: true })

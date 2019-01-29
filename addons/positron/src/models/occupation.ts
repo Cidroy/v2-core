@@ -7,7 +7,7 @@ import IOccupation from "@classes/interface/IOccupation"
 @GQL.ObjectType()
 export default class Occupation extends Base implements IOccupation {
 	@GQL.Field(type => String)
-	@DB.Column("varchar")
+	@DB.Column("varchar", { nullable: false, unique: true })
 	public name!: string
 
 	@GQL.Field(type => String, { nullable: true })

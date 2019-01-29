@@ -64,7 +64,7 @@ export default class Client extends Base implements IUser{
 	public gender!: GENDER
 
 	@GQL.Field(type => String)
-	@DB.Column("varchar", { length: 30 })
+	@DB.Column("varchar", { length: 30 ,nullable:false , unique: true})
 	public mobile!: string
 
 	@GQL.Field(type => String)

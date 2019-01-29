@@ -15,7 +15,7 @@ GQL.registerEnumType(GENDER, {
 @DB.Entity("user_data")
 export default class User extends Base implements ICustomer{
 	@GQL.Field(type => Number)
-	@DB.Column("integer")
+	@DB.Column("integer", {  unique: true })
 	public badgenumber!: number
 	
 	@GQL.Field(type => Number)

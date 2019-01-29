@@ -7,7 +7,7 @@ import IGymPurpose from "@classes/interface/IGymPurpose"
 @GQL.ObjectType()
 export default class GymPurpose extends Base implements IGymPurpose {
 	@GQL.Field(type => String)
-	@DB.Column("varchar")
+	@DB.Column("varchar", { nullable: false, unique: true })
 	public name!: string
 
 	@GQL.Field(type => String, { nullable: true })

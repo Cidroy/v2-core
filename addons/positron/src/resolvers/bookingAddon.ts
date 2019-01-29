@@ -12,7 +12,7 @@ export default class BookingAddonResolver {
 	@GQL.Mutation(returns => BookingAddon)
 	public async addBookingAddon(
 		@GQL.Arg("name") name: string,
-		@GQL.Arg("bookingType") bookingType: string,
+		@GQL.Arg("bookingType") bookingType: number,
 	) {
 		let bookingAddon = new BookingAddon()
 		bookingAddon.name = name

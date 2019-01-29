@@ -7,7 +7,7 @@ import IOrganization from "@classes/interface/IOrganization"
 @GQL.ObjectType()
 export default class Organization extends Base implements IOrganization {
 	@GQL.Field(type => String)
-	@DB.Column("varchar")
+	@DB.Column("varchar", { nullable: false, unique: true })
 	public name!: string
 
 	@GQL.Field(type => String, { nullable: true })

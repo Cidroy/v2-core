@@ -11,13 +11,13 @@ export default class PriceList extends Base implements IPriceList {
 	@DB.Column("varchar")
 	public typeName!: string
 
-	@GQL.Field(type => String)
-	@DB.Column("varchar")
-	public typeId!: string
+	@GQL.Field(type => Number)
+	@DB.Column("integer")
+	public typeId!: number
 
-	@GQL.Field(type => String)
-	@DB.Column("varchar")
-	public organization!: string
+	@GQL.Field(type => Number)
+	@DB.Column("integer")
+	public organization!: number
 
 	@GQL.Field(type => Number)
 	@DB.Column("integer")
