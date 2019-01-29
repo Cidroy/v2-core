@@ -47,7 +47,7 @@
 										<v-text-field counter maxlength="15" label="Middle Name"></v-text-field>
 									</v-flex>
 									<v-flex xs12 lg4 class="px-1">
-										<v-text-field counter maxlength="15" label="Last Name"></v-text-field>
+										<v-text-field counter maxlength="15" label="Last Name" required :rules="LastnameRules"></v-text-field>
 									</v-flex>
 
 									<v-flex xs12 lg6>
@@ -78,7 +78,8 @@
 										<v-text-field prepend-icon="fas fa-hashtag" counter maxlength="16" label="ID Number"></v-text-field>
 									</v-flex>
 									<v-flex xs12 lg8 class="pr-2">
-										<v-textarea prepend-icon="place" name="input-7-1" label="Residential Address"></v-textarea>
+										<v-textarea prepend-icon="place" name="input-7-1" label="Residential Address" v-model="residential" :rules="[
+              () => !!address || 'This field is required']"></v-textarea>
 									</v-flex>
 									<v-flex xs12 lg4 class="pl-2">
 										<v-select prepend-icon="accessibility" :items="bodyType" label="Body Type"></v-select>
@@ -311,9 +312,10 @@ import { watch } from 'fs';
 	page: {
 		title: "Home",
 		meta: [{ name: "description", content: appConfig.description, },],
-	},
+	},	
 })
 export default class Home extends Vue {
+	formHasErrors: boolean = false
 	valid: boolean = false
 	importDialog = false
 	checkbox = []
@@ -322,6 +324,7 @@ export default class Home extends Vue {
 	CBTypeMem = null
 	CBMemDuration = null
 	firstname = ""
+	residential = ""
 	email = ""
 	phone = ""
 	phoneRules = [
@@ -334,6 +337,10 @@ export default class Home extends Vue {
 		v => !!v || "Name is required",
 		v => v.length <= 30 || "Name must be less than 30 characters",
 	]
+	LastnameRules = [
+		v => !!v || "Name is required"
+	]
+
 	row = null
 	e1 = 0
 	date = new Date().toISOString().substr(0, 10)
@@ -412,6 +419,13 @@ export default class Home extends Vue {
 		if (!date) return null
 		const [day, month, year,] = date.split("/")
 		return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`
+	}
+	get form () {
+        return {
+          name: this.firstname,
+          residential: this.residential
+        }
+	    
 	}
 }
 </script>
