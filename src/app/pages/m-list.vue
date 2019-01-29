@@ -30,7 +30,7 @@
 					<v-card flat>
 						<v-layout  row wrap>
 							<v-spacer :data="props"/>
-							<v-btn dark color="deep-purple darken-4" @click="pushProfile" >View Profile</v-btn>
+							<v-btn dark color="deep-purple darken-4" to="/user-profile" >View Profile</v-btn>
 							<v-btn dark>Block</v-btn>
 							<v-btn dark>Enroll</v-btn>
 							<v-btn dark>Freeze</v-btn>
@@ -59,10 +59,6 @@ import { Component, Watch, Vue } from "vue-property-decorator"
 })
 export default class Home extends Vue {
 	dropdown_font = ['All','Recent', 'Renewal', 'Not Enrolled', 'Gold']
-	pushProfile() {
-				// @ts-ignore
-                this.$router.push('/profile');
-            }
 	headers = [
 		{
 			text: 'ID',

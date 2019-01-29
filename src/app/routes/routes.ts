@@ -42,9 +42,9 @@ export default [
 		component: () => lazyLoadView("/enquiry"),
 	},
 	{
-		path: "/profile",
-		name: "Profile",
-		component: () => lazyLoadView("/profile"),
+		path: "/user-profile",
+		name: "User-Profile",
+		component: () => lazyLoadView("/user-profile"),
 	},
 	{
 		path: "/payment",
