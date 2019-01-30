@@ -4,33 +4,41 @@
 			<v-card width="100%" color="transparent" height="500px">
 				<v-layout row wrap>
 					<v-flex xs4>
-				 <v-card>
-					<v-layout row wrap>
+						<v-card height="500px">
+							<v-layout row wrap>
+								<v-layout pt-2 class="justify-center">
 
-								<v-avatar  size="200">
-								<v-img :src="cards[0].src" height="200px" />
-								</v-avatar>
-								<v-spacer/>
-								<span  class=" title font-weight-black pl-2 pt-3" style="width: 190px">Kundan Singh</span>
-								<span  class=" title font-weight-black pl-2 pt-3" style="width: 190px">Status:</span>
-								<span  class=" title font-weight-black pl-2 pt-3" style="width: 190px">Phone:</span>
-								<span  class=" title font-weight-black pl-2 pt-3" style="width: 190px">Email:kundan785@gmail.com</span>
-								
-					
-					</v-layout>
-					
-								<v-btn>Send SMS</v-btn>
-								<v-btn>Send Email</v-btn>
-					
-				
-				 </v-card>
+										<v-avatar size="200">
+										<v-img :src="cards[0].src" height="200px" />
+										</v-avatar>
+								</v-layout>
+								<v-list>
+									<v-list-tile  v-for="(item, index) in profileList" :key="index">
+										<v-list-tile-title>{{ item.text }}</v-list-tile-title>
+									</v-list-tile>
+								</v-list>
+
+							</v-layout>
+
+							<v-layout  class="justify-center">
+							
+										<v-btn>Send SMS</v-btn>
+										<v-btn>Send Email</v-btn>
+							</v-layout>
+						
+						</v-card>
 					</v-flex>
 
 				<v-flex xs8>
-					<v-tabs v-model="active" color="transparent" dark slider-color="orange darken-4">
+					<v-tabs v-model="active" color="transparent" slider-color="orange darken-4">
       				<v-tab v-for="(name, key) in tabsList" :key="key" ripple>{{ name }}</v-tab>
 				
 						<v-tab-item key="a">
+							<v-card flat color="transparent" height="100px">
+							</v-card>
+						</v-tab-item>
+
+						<v-tab-item key="b">
 							<v-card flat color="transparent" height="100px">
 								<v-container style="max-width: 700px;">
 									<v-timeline dense clipped>
@@ -87,17 +95,17 @@
 							</v-card>
 						</v-tab-item>
 
-						<v-tab-item key="b">
-							<v-card flat color="transparent" height="100px">
-							</v-card>
-						</v-tab-item>
-
 						<v-tab-item key="c">
 							<v-card flat color="transparent" height="100px">
 							</v-card>
 						</v-tab-item>
 
 						<v-tab-item key="d">
+							<v-card flat color="transparent" height="100px">
+							</v-card>
+						</v-tab-item>
+
+						<v-tab-item key="e">
 							<v-card flat color="transparent" height="100px">
 							</v-card>
 						</v-tab-item>
@@ -126,11 +134,18 @@ import { Component, Watch, Vue } from "vue-property-decorator"
 export default class Home extends Vue{
 	active: number = 0
 	tabsList = {
+		e: "Overview",
 		a: "Activities",
 		b: "Transaction",
 		c: "Membership",
 		d: "Details",
 	}
+	 profileList: { icon?: string, text: string }[] = [
+        { text: "Name: Kundan Singh", },
+        { text: "Status:", },
+        { text: "Phone:", },
+		{ text: "Email: kundan785@gmail.com", },
+	];
 	cards = [
 		{ src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 }
 	]

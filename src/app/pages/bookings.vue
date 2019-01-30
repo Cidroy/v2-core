@@ -86,11 +86,8 @@
 
 						<v-card width="100%" height="50px" color="transparent">
 							<div class="right pr-2">
-								<v-btn flat>Cancel</v-btn>
-								<v-btn @click="snackbar1 = true" color="orange darken-4" class="mb-2">Submit</v-btn>
-								<v-snackbar v-model="snackbar1" :bottom="y === 'bottom'">SPA Booking Done!
-									<v-btn color="orange darken-4" flat @click="snackbar1 = false">Close</v-btn>
-								</v-snackbar>
+								<v-btn dark>Cancel</v-btn>
+								<v-btn dark color="orange darken-4" class="mb-2">Submit</v-btn>
 							</div>
 						</v-card>
         			</v-card>
@@ -208,8 +205,8 @@
 						
 						<v-card width="100%" height="50px" color="transparent">
 							<div class="right pr-2">
-								<v-btn flat>Cancel</v-btn>
-								<v-btn @click="snackbar2 = true" color="orange darken-4" class="mb-2">Submit</v-btn>
+								<v-btn dark>Cancel</v-btn>
+								<v-btn dark @click="snackbar2 = true" color="orange darken-4" class="mb-2">Submit</v-btn>
 								<v-snackbar v-model="snackbar2" :bottom="y === 'bottom'">Ground Booking Done!
 									<v-btn color="orange darken-4" flat @click="snackbar2 = false">Close</v-btn>
 								</v-snackbar>
