@@ -1,12 +1,16 @@
-import { app } from "electron"
+import { app, ipcMain } from "electron"
 import electron from "electron-util"
 
 import * as util from "@@/config/util"
 import { Window, WindowSize } from "@electron/window"
 import { Global } from "@@/typescript/global"
 import { Logger } from "@classes/CONSOLE"
+import AppConfig from "@classes/appConfig"
+import ParticleAccelerator from "@classes/ParticleAccelerator"
 
-const Console = new Logger("electron")
+const request = require("request-promise-native").defaults({ simple: false })
+
+const Console = new Logger("electron/main")
 
 /**
  * Set `__static` path to static files in production
@@ -46,12 +50,28 @@ class Application {
 		resizable: true,
 	}
 
-	private store: Map<string, any> = new Map()
+	private store = {
+		positron: {
+			host: "localhost",
+			port: 9101,
+			ssl: false,
+			mode: "master"
+		}
+	}
 
 	private async initializeStorage() {
+		await AppConfig.Initialize()
+		if(await AppConfig.Get("__dirname", null) === null){
+			let t = __dirname
+			t = t.substr(0, t.lastIndexOf("/resources"))
+			await Promise.all([
+				AppConfig.Set("__dirname", t),
+				AppConfig.Set("electron/ui", this.store),
+			])
+
+		}
 		// TODO: Get settings from server
-		let data = {}
-		this.store = new Map(Object.entries(data))
+		this.store = await AppConfig.Get("electron/ui", this.store)
 	}
 
 	private getDisplay(): Electron.Display| null {
@@ -59,8 +79,8 @@ class Application {
 			let screen = require("electron").screen.getAllDisplays()
 			let screenId: Point
 			let display: Electron.Display
-			screenId = this.store.has(ConfigName.Screen)
-				? this.store.get(ConfigName.Screen)
+			screenId = this.store.hasOwnProperty(ConfigName.Screen)
+				? this.store[ConfigName.Screen]
 				: { x: 0, y: 0 }
 			display = screen.find(i => i.bounds.x === screenId.x && i.bounds.y === screenId.y)
 				|| screen[0]
@@ -112,6 +132,8 @@ class Application {
 
 	private async onExit(event: Electron.Event) {
 		try {
+			await AppConfig.Set("electron/ui", this.store)
+			Console.verbose("saved", this.store)
 			Console.okay("Normal Exit")
 		} catch (error) {
 			Console.error("Abnormal Exit :", error)
@@ -120,7 +142,10 @@ class Application {
 	}
 
 	public async initialize(): Promise<void> {
-		await Promise.all([ electron.appReady, this.initializeStorage(), ])
+		await Promise.all([
+			electron.appReady,
+			this.initializeStorage(),
+		])
 		let display: Electron.Display | null = this.getDisplay()
 		if (!display) return
 		Console.okay("Display Data Ready")
@@ -130,11 +155,16 @@ class Application {
 		try {
 			await this.windows.splash.show()
 			Console.info("Showing Splashscreen")
-			await this.windows.main.show()
-			Console.info("Showing Mainscreen")
-			this.windows.splash.close()
-			Console.info("Closed Splashscreen")
-
+			if(await this.beforeMain()){
+				await this.windows.main.show()
+				Console.info("Showing Mainscreen")
+				this.windows.splash.close()
+				Console.info("Closed Splashscreen")
+			} else {
+				Console.info("unable to start application")
+				await this.windows.main.close()
+				Console.info("Closing Main UI. Refer Splash UI for Error")
+			}
 			Console.info(this.store)
 
 			this.windows.main._.on("moved", (event) => {
@@ -142,7 +172,7 @@ class Application {
 				try {
 					let options = this.windows.main._.getBounds()
 					let screen: Point = { x: options.x, y: options.y }
-					this.store.set(ConfigName.Screen, screen)
+					this.store[ConfigName.Screen] = screen
 				} catch (error) {
 					Console.error("Main window Move Handler Failed", error)
 				}
@@ -155,13 +185,101 @@ class Application {
 
 	constructor() {
 		app.on("window-all-closed", this.onExit)
+		ipcMain.on("kill-me", (event, args) => { process.kill(args) })
+	}
+
+	public SingleInstance(){
+		Console.log("try single instance")
+		let onlyInstance = app.requestSingleInstanceLock()
+
+		if(!onlyInstance){
+			Console.log("quitting because we are instance 2. There is no place for 2nd place in this world")
+			app.quit()
+		} else {
+			app.on("second-instance", (event, argv,  workingDirectory) => {
+				Console.verbose("second-instance", { argv, workingDirectory })
+				if(this.windows.main._.isMinimized())
+					this.windows.main._.restore()
+				this.windows.main._.focus()
+			})
+		}
+	}
+
+	private get POSITRON_URL() { return `http${this.store.positron.ssl ? "s" : ""}://${this.store.positron.host}:${this.store.positron.port}` }
+
+	private async beforeMain(){
+		const splashLog = (message: string) => this.windows.splash._.webContents.send("splash-log", message)
+		const splashError = (message: string, ...args) => this.windows.splash._.webContents.send("splash-error", message, args || null)
+
+		const isPositronActive = async (): Promise<boolean> => {
+			Console.verbose("check for positron")
+			let _options = {
+				method: "GET",
+				url: this.POSITRON_URL,
+				jar: true,
+				json: true,
+				followRedirect: true,
+				timeout: 10000
+			}
+			try {
+				let response = await request(_options)
+				console.log(response)
+				Console.log("positron is active")
+				return true
+			} catch (error) {
+				Console.error(error.toString())
+				return false
+			}
+		}
+
+		return new Promise(async (resolve, reject) => {
+			try {
+				splashLog("searching for positron particle")
+				let isPositron = await isPositronActive()
+				if (isPositron) {
+					splashLog("positron particle found")
+				} else {
+					splashLog("no positron particle found")
+					if(process.env.NODE_ENV === "development"){
+						splashLog("dev mode: spin up positron yourself")
+					} else if(this.store.positron.mode==="master") {
+						splashLog("spinning particle accelerator for positron")
+						let positron = await ParticleAccelerator.CreatePositron(splashLog)
+						if(!positron){
+							splashLog("particle accelerator could not make positron")
+							throw "Positron not found"
+						}
+						splashLog("searching for positron particle")
+						if(await isPositronActive()){
+							splashLog("positron particle detected!")
+						} else {
+							splashLog("unable to create positron particle")
+							splashError("positron creation failed")
+							positron.kill()
+							throw "no positron"
+						}
+					} else {
+						splashLog("Please start the Master PC")
+					}
+				}
+				resolve(true)
+				return true
+			} catch (error) {
+				Console.error(error)
+				splashError("something went wrong", error)
+				resolve(false)
+				return false
+			}
+		})
 	}
 }
 
 try {
+	Logger.Verbose = true
 	Console.okay("Core Thread Started")
 	const App = new Application()
 	Console.okay("Core App Started")
+	App.SingleInstance()
 	App.initialize()
 } catch (error) {
 	Console.error("Core Thread Failed", error)

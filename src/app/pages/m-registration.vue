@@ -47,7 +47,7 @@
 										<v-text-field counter maxlength="15" label="Middle Name"></v-text-field>
 									</v-flex>
 									<v-flex xs12 lg4 class="px-1">
-										<v-text-field counter maxlength="15" label="Last Name"></v-text-field>
+										<v-text-field counter maxlength="15" label="Last Name" required :rules="LastnameRules"></v-text-field>
 									</v-flex>
 
 									<v-flex xs12 lg6>
@@ -78,7 +78,8 @@
 										<v-text-field prepend-icon="fas fa-hashtag" counter maxlength="16" label="ID Number"></v-text-field>
 									</v-flex>
 									<v-flex xs12 lg8 class="pr-2">
-										<v-textarea prepend-icon="place" name="input-7-1" label="Residential Address"></v-textarea>
+										<v-textarea prepend-icon="place" name="input-7-1" label="Residential Address" v-model="residential" :rules="[
+              () => !!address || 'This field is required']"></v-textarea>
 									</v-flex>
 									<v-flex xs12 lg4 class="pl-2">
 										<v-select prepend-icon="accessibility" :items="bodyType" label="Body Type"></v-select>
@@ -107,7 +108,7 @@
 								</v-dialog>
 								<v-card>
 									<v-img :src="cards[0].src" height="200px" />
-									<v-btn block color="orange darken-4">
+									<v-btn block dark color="orange darken-4">
 										<v-icon>add</v-icon> Add Photo
 									</v-btn>
 								</v-card>
@@ -116,8 +117,8 @@
 						</v-layout>
 					</v-card>
 					<div class="right">
-						<v-btn flat click="$refs.form.reset()">Cancel</v-btn>
-						<v-btn color="orange darken-4" @click="e1 = 2"> NEXT </v-btn>
+						<v-btn dark click="$refs.form.reset()">Cancel</v-btn>
+						<v-btn dark color="orange darken-4" @click="e1 = 2"> NEXT </v-btn>
 					</div>
 				</v-stepper-content>
 
@@ -162,8 +163,8 @@
 					</v-card>
 
 					<div class="right">
-						<v-btn flat>Cancel</v-btn>
-						<v-btn color="orange darken-4" @click="e1 = 3"> NEXT </v-btn>
+						<v-btn dark>Cancel</v-btn>
+						<v-btn dark color="orange darken-4" @click="e1 = 3"> NEXT </v-btn>
 					</div>
 
 				</v-stepper-content>
@@ -196,41 +197,51 @@
 					</v-card>
 
 					<div class="right">
-						<v-btn flat>Cancel</v-btn>
-						<v-btn color="orange darken-4" @click="e1 = 4"> NEXT </v-btn>
+						<v-btn dark>Cancel</v-btn>
+						<v-btn dark color="orange darken-4" @click="e1 = 4"> NEXT </v-btn>
 					</div>
 
 				</v-stepper-content>
 
 				<v-stepper-content step="4">
-					<v-card class="mb-2" color="transparent" height="400px">
+					<v-card class="mb-2" color="transparent" height="480px">
 						<v-layout row wrap>
 
 							<v-flex xs2>
-								<v-subheader class="title">Member ID</v-subheader>
+								<v-subheader class="subheading">Member ID</v-subheader>
 							</v-flex>
 							<v-flex xs4>
 								<v-text-field label="Enter or Generate ID" single-line solo></v-text-field>
 							</v-flex>
 							<v-flex xs2>
-								<v-btn :loading="loading" :disabled="loading" color="secondary" @click="loader = 'loading'">Generate</v-btn>
+								<v-btn dark :loading="loading" :disabled="loading" color="secondary" @click="loader = 'loading'">Generate</v-btn>
 							</v-flex>
 
 							<v-flex xs12 lg6 class="pa-1">
-								<v-combobox v-model="select" :items="purposes" label="Purpose of Joining Gym" multiple chips hint="Maximum 3 choices"
+								<v-combobox prepend-icon="fas fa-star" v-model="select" :items="purposes" label="Purpose of Joining Gym" multiple chips hint="Maximum 3 choices"
 								 persistent-hint clearable deletable-chips></v-combobox>
 							</v-flex>
 							<v-spacer></v-spacer>
 							<v-flex xs5 md5 class="pa-1 pt-3">
 								<v-menu ref="menu4" :close-on-content-click="false" v-model="menu4" :nudge-right="40" lazy transition="scale-transition"
 								 offset-y full-width>
-									<v-text-field slot="activator" v-model="dateFormatted" label="Date of Joining" hint="DD/MM/YYYY"
+									<v-text-field slot="activator" v-model="dateFormatted" label="Date of Joining" prepend-icon="event" hint="DD/MM/YYYY"
 									 persistent-hint @blur="date = parseDate(dateFormatted)"></v-text-field>
 									<v-date-picker v-model="date" no-title @input="menu4 = false"></v-date-picker>
 								</v-menu>
 							</v-flex>
 
-							<v-flex xs12 class="pt-5">
+							<v-flex xs12 class="pt-5 pl-2">
+								<span class="title font-weight-regular">Allow Door Access</span>
+								<v-layout align-start row>
+									<v-checkbox label="Gym Mens Section" value="Gym Mens Section"></v-checkbox>
+									<v-checkbox label="Gym Ladies Section" value="Gym Ladies Section"></v-checkbox>
+									<v-checkbox label="Full Gym Section" value="Full Gym Section"></v-checkbox>
+									<v-checkbox label="SPA" value="SPA"></v-checkbox>
+								</v-layout>
+							</v-flex>
+
+							<v-flex xs12 class="pt-2 pl-2">
 								<span class="title font-weight-regular">How did you hear of us?</span>
 								<v-layout align-start row>
 									<v-checkbox v-model="selected" label="Family/Friends" value="Family/Friends"></v-checkbox>
@@ -242,7 +253,7 @@
 								</v-layout>
 							</v-flex>
 
-							<v-flex xs12>
+							<v-flex xs12 pl-2>
 								<v-layout align-end justify-start reverse fill-height>
 									<v-checkbox v-model="checkbox">
 										<div slot="label">
@@ -264,20 +275,20 @@
 					</v-card>
 
 					<div class="right">
-						<v-btn flat>Cancel</v-btn>
-						<v-dialog v-model="dialog" persistent max-width="500px">
-							<v-btn slot="activator" color="orange darken-4" class="mb-2">Submit</v-btn>
+						<v-btn dark>Cancel</v-btn>
+						<v-dialog v-model="dialog" persistent max-width="400px">
+							<v-btn dark slot="activator" color="orange darken-4" class="mb-2">Submit</v-btn>
 							<v-card>
-								<v-toolbar card dark color="orange darken-4">
-									<v-toolbar-title>Choose Wisely</v-toolbar-title>
+								<v-toolbar card dark color="orange darken-4" height="50px">
+									<v-toolbar-title>Alert!</v-toolbar-title>
 								</v-toolbar>
 								<v-card-text>
 									<label class="title">Do you want to Proceed for payments?</label>
 								</v-card-text>
 								<v-card-actions>
 									<v-spacer></v-spacer>
-									<v-btn color="orange darken-4" @click="dialog = false" to="/payment">Yes</v-btn>
-									<v-btn color="orange darken-4" @click="dialog = false">No</v-btn>
+									<v-btn dark color="orange darken-4" @click="dialog = false" to="/payment">Yes</v-btn>
+									<v-btn dark @click="dialog = false">No</v-btn>
 								</v-card-actions>
 							</v-card>
 						</v-dialog>
@@ -301,9 +312,10 @@ import { watch } from 'fs';
 	page: {
 		title: "Home",
 		meta: [{ name: "description", content: appConfig.description, },],
-	},
+	},	
 })
 export default class Home extends Vue {
+	formHasErrors: boolean = false
 	valid: boolean = false
 	importDialog = false
 	checkbox = []
@@ -312,6 +324,7 @@ export default class Home extends Vue {
 	CBTypeMem = null
 	CBMemDuration = null
 	firstname = ""
+	residential = ""
 	email = ""
 	phone = ""
 	phoneRules = [
@@ -324,6 +337,10 @@ export default class Home extends Vue {
 		v => !!v || "Name is required",
 		v => v.length <= 30 || "Name must be less than 30 characters",
 	]
+	LastnameRules = [
+		v => !!v || "Name is required"
+	]
+
 	row = null
 	e1 = 0
 	date = new Date().toISOString().substr(0, 10)
@@ -402,6 +419,13 @@ export default class Home extends Vue {
 		if (!date) return null
 		const [day, month, year,] = date.split("/")
 		return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`
+	}
+	get form () {
+        return {
+          name: this.firstname,
+          residential: this.residential
+        }
+	    
 	}
 }
 </script>

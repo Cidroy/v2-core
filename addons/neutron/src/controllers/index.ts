@@ -1,7 +1,7 @@
 import { BiometricDevicesController } from "@neutron/controllers/biometric-devices"
 import DefaultController from "@neutron/controllers/default"
 import { BiometricDeviceController } from "@neutron/controllers/biometric-device"
-import { TestController } from "@neutron/controllers/test"
+// import { TestController } from "@neutron/controllers/test"
 
 export default {
 	"/": [
@@ -29,6 +29,6 @@ export default {
 		 */
 		BiometricDevicesController,
 		BiometricDeviceController,
-		TestController,
+		// TestController,
 	]
 }

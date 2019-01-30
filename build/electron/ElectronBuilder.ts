@@ -49,7 +49,7 @@ export class ElectronBuilder extends Helper {
 	public build() {
 		try {
 			console.log(chalk.yellow.bold("Building ..."))
-			del.sync(["dist/*", "bin/*", "!.gitkeep",])
+			del.sync(["dist/*", "!.gitkeep",])
 			const tasks: (keyof ElectronWebpackConfig)[] = ["main", "renderer", "splashscreen",]
 			const m = new Multispinner(tasks, {
 				preText: "building",

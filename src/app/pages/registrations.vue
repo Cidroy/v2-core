@@ -7,7 +7,7 @@
       			<v-tab v-for="(name, key) in tabsList" :key="key" ripple>{{ name }}</v-tab>
       	
 				<v-tab-item key="a">
-        			<v-card height="730px" color="transparent">
+        			<v-card height="780px" color="transparent">
 						<v-layout class="pt-2" row wrap>
 							<v-flex class="pl-2 ml-2" xs12>
 								<v-radio-group row label="Personal Traning Type: " v-model="radioTop1" :mandatory="false">
@@ -25,23 +25,23 @@
 							</v-flex>
 							<v-spacer></v-spacer>
 							<v-flex xs3 class="pr-4">
-								<v-text-field prepend-icon="fas fa-id-badge" value="4656" label="Member ID" readonly ></v-text-field>
+								<v-text-field box prepend-icon="fas fa-id-badge" value="4656" label="Member ID" readonly ></v-text-field>
 							</v-flex>
 						</v-layout>
 						<v-divider></v-divider>
 						
 						<v-layout class="pl-4 pt-2" row wrap>
 							<v-flex xs6>
-								<v-text-field prepend-icon="fas fa-user" value="John Doe" label="Name" readonly ></v-text-field>
+								<v-text-field box prepend-icon="fas fa-user" value="John Doe" label="Name" readonly ></v-text-field>
 							</v-flex>
 						</v-layout>
 						
 						<v-layout class="pl-4" row wrap>
 							<v-flex class="pr-4" xs3>
-								<v-text-field prepend-icon="fas fa-info-circle" value="xxxx" label="Current Program" readonly ></v-text-field>
+								<v-text-field box prepend-icon="fas fa-info-circle" value="xxxx" label="Current Program" readonly ></v-text-field>
 							</v-flex>
 							<v-flex xs3>
-								<v-text-field prepend-icon="fas fa-calendar-alt" value="YYYY" label="Current Package" readonly ></v-text-field>
+								<v-text-field box prepend-icon="fas fa-calendar-alt" value="YYYY" label="Current Package" readonly ></v-text-field>
 							</v-flex>
 						</v-layout>
 						<v-divider></v-divider>
@@ -111,8 +111,8 @@
 
 						<v-card width="100%" height="50px" color="transparent">
 							<div class="right pr-2"> 
-								<v-btn flat>Cancel</v-btn>
-								<v-btn @click="snackbar1 = true" color="orange darken-4" class="mb-2">Submit</v-btn>
+								<v-btn dark>Cancel</v-btn>
+								<v-btn dark @click="snackbar1 = true" color="orange darken-4" class="mb-2" to="/payment">Submit</v-btn>
 								<v-snackbar v-model="snackbar1" :bottom="y === 'bottom'">Personal Traning Initiated!
 									<v-btn color="orange darken-4" flat @click="snackbar1 = false">Close</v-btn>
 								</v-snackbar>
@@ -122,7 +122,7 @@
 				</v-tab-item>
       
 				<v-tab-item key="b">
-					<v-card color="transparent" height="730px">
+					<v-card color="transparent" height="710px">
 						<v-layout row wrap>
 							<v-flex class="pl-2 ml-2" xs12>
 								<v-radio-group row label="One-Day Type: " v-model="radioTop2" :mandatory="false">
@@ -175,7 +175,7 @@
 								<v-text-field prepend-icon="fab fa-whatsapp" label="Whatsapp Number" mask="phone"></v-text-field>
 							</v-flex>
 							<v-flex xs3>
-								<v-checkbox label="Same As Phone Number"></v-checkbox>
+								<v-checkbox label="Not Same As Phone Number"></v-checkbox>
 							</v-flex>
 							
 							<v-flex xs6 class="pr-4">
@@ -186,9 +186,17 @@
 
 						<v-layout row wrap class="pl-4">
 							<v-flex xs12 class="pt-4">
-								<h4 class="title">One Day Plan</h4>
-							</v-flex>	
-							<v-flex xs3 class="pt-2">
+								<h4 class="title">Available Plans</h4>
+							</v-flex>
+
+							<v-flex>
+								<v-radio-group v-model="radioOneDay" row>
+									<v-radio label="1 Day" value="radio-1"></v-radio>
+									<v-radio label="6 Days" value="radio-2"></v-radio>
+									<v-radio label="12 Days" value="radio-3"></v-radio>
+								</v-radio-group>
+							</v-flex>		
+							<!-- <v-flex xs3 class="pt-2">
 								<v-menu ref="ODstart" :close-on-content-click="false" v-model="ODstart" :nudge-right="40" lazy transition="scale-transition"
 								offset-y full-width max-width="290px" min-width="290px">
 									<v-text-field slot="activator" v-model="dateFormatted" label="Start Date"
@@ -206,9 +214,9 @@
 							</v-flex>
 							<v-flex xs3 class="pl-4 pt-2">
 								<v-text-field prepend-icon="fas fa-calendar-minus" value="10 days" label="Total No. of Days" readonly ></v-text-field>
-							</v-flex>
+							</v-flex> -->
 
-							<v-flex xs12 class="pt-4">
+							<v-flex xs12 class="pt-2">
 								<h4 class="title">Preferable Time Slot</h4>
 							</v-flex>
 
@@ -224,8 +232,8 @@
 
 						<v-card width="100%" height="50px" color="transparent">
 							<div class="right pr-2">
-								<v-btn flat>Cancel</v-btn>
-								<v-btn @click="snackbar2 = true" color="orange darken-4" class="mb-2">Submit</v-btn>
+								<v-btn dark>Cancel</v-btn>
+								<v-btn dark @click="snackbar2 = true" color="orange darken-4" class="mb-2">Submit</v-btn>
 								<v-snackbar v-model="snackbar2" :bottom="y === 'bottom'">One-Day Registration Done!
 									<v-btn color="orange darken-4" flat @click="snackbar2 = false">Close</v-btn>
 								</v-snackbar>
@@ -301,8 +309,8 @@
 
 					<v-card width="100%" height="50px" color="transparent">
 						<div class="right pr-2"> 
-							<v-btn flat>Cancel</v-btn>
-							<v-btn @click="snackbar3 = true" color="orange darken-4" class="mb-2">Submit</v-btn>
+							<v-btn dark>Cancel</v-btn>
+							<v-btn dark @click="snackbar3 = true" color="orange darken-4" class="mb-2">Submit</v-btn>
 							<v-snackbar v-model="snackbar3" :bottom="y === 'bottom'">Fitness Counseling Booked!
 								<v-btn color="orange darken-4" flat @click="snackbar3 = false">Close</v-btn>
 							</v-snackbar>
@@ -349,6 +357,7 @@ export default class Home extends Vue{
 	radios1 = 'radio-1'
 	radios2 = 'radio-1'
 	radioTime = 'radio-1'
+	radioOneDay = 'radio-1'
 	radioGroup1 = 1
 	firstname = ""
 	nameRules = [
