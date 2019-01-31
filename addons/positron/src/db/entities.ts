@@ -18,6 +18,7 @@ import Organization from "@positron/models/organization"
 import PriceList from "@positron/models/priceList"
 import SlotBlock from "@positron/models/slotBlock"
 import GymPurpose from "@positron/models/gymPurpose"
+import GymUsers from "@positron/models/gymUsers"
 
 export default [
 	Address,
@@ -37,4 +38,5 @@ export default [
 	PriceList,
 	SlotBlock,
 	GymPurpose,
+	GymUsers,
 ]
