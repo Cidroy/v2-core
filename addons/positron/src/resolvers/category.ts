@@ -3,6 +3,12 @@ import Category from "@positron/models/category"
 
 @GQL.Resolver(of => Category)
 export default class CategoryResolver {
+
+	@GQL.Query(returns => [Category,])
+	public async categories() {
+		return Category.find()
+	}
+	
 	@GQL.Mutation(returns => Category)
 	public async addCategory(
 		@GQL.Arg("name") name: string,

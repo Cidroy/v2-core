@@ -3,6 +3,12 @@ import IDType from "@positron/models/idType"
 
 @GQL.Resolver(of => IDType)
 export default class IDTypeResolver {
+
+	@GQL.Query(returns => [IDType,])
+	public async IDTypes() {
+		return IDType.find()
+	}
+
 	@GQL.Mutation(returns => IDType)
 	public async addIDType(
 		@GQL.Arg("name") name: string,

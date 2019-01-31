@@ -7,10 +7,10 @@ import ICategory from "@classes/interface/ICategory"
 @GQL.ObjectType()
 export default class Category extends Base implements ICategory {
 	@GQL.Field(type => String)
-	@DB.Column("varchar")
+	@DB.Column("varchar",{ nullable: false, unique: true })
 	public name!: string
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public description?: string
 

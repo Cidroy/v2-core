@@ -33,94 +33,7 @@
 			</v-stepper-header>
 
 			<v-stepper-items>
-				<v-stepper-content step="1">
-					<v-card class="mb-2" color="transparent" height="500px">
-						<v-layout row wrap>
-
-							<v-flex xs9>
-								<v-layout row wrap>
-									<v-flex xs12 lg4 class="px-1">
-										<v-text-field prepend-icon="fas fa-user" v-model="firstname" :rules="nameRules" counter maxlength="15" label="First Name"
-										 required></v-text-field>
-									</v-flex>
-									<v-flex xs12 lg4 class="px-1">
-										<v-text-field counter maxlength="15" label="Middle Name"></v-text-field>
-									</v-flex>
-									<v-flex xs12 lg4 class="px-1">
-										<v-text-field counter maxlength="15" label="Last Name" required :rules="LastnameRules"></v-text-field>
-									</v-flex>
-
-									<v-flex xs12 lg6>
-										<v-radio-group prepend-icon="fas fa-transgender-alt" label="Gender" v-model="radioGroup2" row>
-											<v-radio label="Male" value="radio-4"></v-radio>
-											<v-radio label="Female" value="radio-5"></v-radio>
-											<v-radio label="Others" value="radio-6"></v-radio>
-										</v-radio-group>
-									</v-flex>
-									<v-flex xs12 lg6 class="mb-2">
-										<v-menu ref="menu1" :close-on-content-click="false" v-model="menu1" :nudge-right="40" lazy transition="scale-transition"
-										 offset-y full-width max-width="290px" min-width="290px">
-											<v-text-field slot="activator" v-model="dateFormatted" label="Date of Birth" placeholder="Date of Birth"
-											 hint="DD/MM/YYYY format" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)"></v-text-field>
-											<v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
-										</v-menu>
-									</v-flex>
-									<v-flex xs12 lg6 class="pr-2">
-										<v-combobox prepend-icon="work" :items="items" label="Occupation"></v-combobox>
-									</v-flex>
-									<v-flex xs12 lg6 class="pl-2">
-										<v-select prepend-icon="list" :items="Category" label="Category"></v-select>
-									</v-flex>
-									<v-flex xs12 lg6 class="pr-2">
-										<v-select prepend-icon="fas fa-id-card" :items="idProof" label="ID Proof"></v-select>
-									</v-flex>
-									<v-flex xs12 lg6 class="pl-2">
-										<v-text-field prepend-icon="fas fa-hashtag" counter maxlength="16" label="ID Number"></v-text-field>
-									</v-flex>
-									<v-flex xs12 lg8 class="pr-2">
-										<v-textarea prepend-icon="place" name="input-7-1" label="Residential Address" v-model="residential" :rules="[
-              () => !!address || 'This field is required']"></v-textarea>
-									</v-flex>
-									<v-flex xs12 lg4 class="pl-2">
-										<v-select prepend-icon="accessibility" :items="bodyType" label="Body Type"></v-select>
-									</v-flex>
-
-									<v-spacer></v-spacer>
-								</v-layout>
-							</v-flex>
-							<v-flex xs3 class="pa-4">
-								<v-dialog v-model="importDialog" persistent width="400px">
-									<v-btn outline block slot="activator" color="orange darken-4">Import from Enquiry</v-btn>
-									<v-card>
-										<v-toolbar height="50px" card dark color="orange darken-4">
-											<v-toolbar-title>Import Details from Enquiry</v-toolbar-title>
-										</v-toolbar>
-										<v-card-text>
-											<label class="title">Search by Mobile No./Name</label>
-											<v-text-field v-model="search" append-icon="search" label="Search" single-line hide-details></v-text-field>
-										</v-card-text>
-										<v-card-actions>
-											<v-spacer></v-spacer>
-											<v-btn color="transparent" @click="importDialog = false">Cancel</v-btn>
-											<v-btn color="orange darken-4" @click="importDialog = false">Submit</v-btn>
-										</v-card-actions>
-									</v-card>
-								</v-dialog>
-								<v-card>
-									<v-img :src="cards[0].src" height="200px" />
-									<v-btn block dark color="orange darken-4">
-										<v-icon>add</v-icon> Add Photo
-									</v-btn>
-								</v-card>
-
-							</v-flex>
-						</v-layout>
-					</v-card>
-					<div class="right">
-						<v-btn dark click="$refs.form.reset()">Cancel</v-btn>
-						<v-btn dark color="orange darken-4" @click="e1 = 2"> NEXT </v-btn>
-					</div>
-				</v-stepper-content>
+				<v-stepper-content step="1"> <step-one v-model="userData" @nextStep="step2" allowImportFromEnquiry/> </v-stepper-content>
 
 				<v-stepper-content step="2">
 					<v-card class="mb-2" color="transparent" height="380px">
@@ -305,16 +218,25 @@ import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
 import SystemInformation from "@/components/system-information.vue"
 import { Component, Vue, Watch } from "vue-property-decorator"
-import { watch } from 'fs';
+
+import stepOne from "@/components/m-registration/step-1.vue"
 
 @Component({
-	components: { Layout, SystemInformation, },
+	components: { Layout, SystemInformation, stepOne },
 	page: {
 		title: "Home",
 		meta: [{ name: "description", content: appConfig.description, },],
-	},	
+	},
 })
 export default class Home extends Vue {
+	userData = {
+		firstName : "",
+		middleName : "",
+		lastName : "",
+	}
+	@Watch("userData") onUserDataChange(newVal){ console.log(newVal) }
+
+	firstname =""
 	formHasErrors: boolean = false
 	valid: boolean = false
 	importDialog = false
@@ -323,7 +245,6 @@ export default class Home extends Vue {
 	selected = null
 	CBTypeMem = null
 	CBMemDuration = null
-	firstname = ""
 	residential = ""
 	email = ""
 	phone = ""
@@ -366,39 +287,6 @@ export default class Home extends Vue {
 	loading = false
 	dialog = false
 
-	items = [
-		'Teacher',
-		'Engineer',
-		'Doctor',
-		'Student'
-	]
-	Category = [
-		'student',
-		'Senior Citizen',
-		'Professionals',
-		'Buisness Man'
-	]
-	idProof = [
-		'Aadhaar Card',
-		'Passport',
-		'License',
-		'Pan Card',
-		'Voter ID'
-	]
-	bodyType = [
-		'endomorph',
-		'ectomorph',
-		'mesomorph'
-	]
-	cards = [
-		{ src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 10 }
-	]
-
-	@Watch("date")
-	onDateChanged() {
-		this.dateFormatted = this.formatDate(this.date)
-	}
-
 	@Watch("select")
 	onSelectMax(val) {
 		if (val.length > 3) {
@@ -420,12 +308,9 @@ export default class Home extends Vue {
 		const [day, month, year,] = date.split("/")
 		return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`
 	}
-	get form () {
-        return {
-          name: this.firstname,
-          residential: this.residential
-        }
-	    
+
+	step2(){
+		this.e1 = 2
 	}
 }
 </script>

@@ -6,32 +6,32 @@ import IBooking from "@classes/interface/IBooking"
 @DB.Entity()
 @GQL.ObjectType()
 export default class Booking extends Base implements IBooking {
-	@GQL.Field(type => String)
-	@DB.Column("varchar")
-	public user!: string
+	@GQL.Field(type => Number)
+	@DB.Column("integer")
+	public user!: number
 
-	@GQL.Field(type => String)
-	@DB.Column("varchar")
-	public bookingType!: string
+	@GQL.Field(type => Number)
+	@DB.Column("integer")
+	public bookingType!: number
 
 	@GQL.Field(type => Date)
 	@DB.Column("date")
 	public start!: Date
 
 	@GQL.Field(type => Date)
-	@DB.Column("date")
+	@DB.Column("datetime")
 	public end!: Date
 
-	@GQL.Field(type => String)
-	@DB.Column("varchar", { nullable: true })
-	public bookingPackage?: string
+	@GQL.Field(type => Number, { nullable: true })
+	@DB.Column("integer", { nullable: true })
+	public bookingPackage?: number
 
-	@GQL.Field(type => [String,])
+	@GQL.Field(type => [Number,], { nullable: true })
 	@DB.Column("simple-array", {nullable: true })
-	public bookingAddons?: string[]
+	public bookingAddons?: number[]
 
-	@GQL.Field(type => String)
-	@DB.Column("varchar", { nullable: true })
-	public payment?: string
+	@GQL.Field(type => Number, { nullable: true })
+	@DB.Column("integer", { nullable: true })
+	public payment?: number
 
 }

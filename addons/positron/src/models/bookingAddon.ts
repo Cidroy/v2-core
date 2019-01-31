@@ -7,11 +7,11 @@ import IBookingAddon from "@classes/interface/IBookingAddon"
 @GQL.ObjectType()
 export default class BookingAddon extends Base implements IBookingAddon {
 	@GQL.Field(type => String)
-	@DB.Column("varchar")
+	@DB.Column("varchar", { nullable: false, unique: true })
 	public name!: string
 
-	@GQL.Field(type => String)
-	@DB.Column("varchar")
-	public bookingType!: string
+	@GQL.Field(type => Number)
+	@DB.Column("integer")
+	public bookingType!: number
 
 }

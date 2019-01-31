@@ -3,6 +3,12 @@ import GymBodyType from "@positron/models/gymBodyType"
 
 @GQL.Resolver(of => GymBodyType)
 export default class GymBodyTypeResolver {
+
+	@GQL.Query(returns => [GymBodyType,])
+	public async gymBodyTypes() {
+		return GymBodyType.find()
+	}
+
 	@GQL.Mutation(returns => GymBodyType)
 	public async addGymBodyType(
 		@GQL.Arg("name") name: string,

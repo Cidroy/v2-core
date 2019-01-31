@@ -1,49 +1,54 @@
 import Base from "./base"
-import ICustomer from "@classes/interface/ICustomer"
-import {GENDER} from "@classes/enum/misc"
+import { GENDER } from "@classes/enum/misc"
 import * as GQL from "type-graphql"
 import * as DB from "typeorm"
 import * as Validate from "class-validator"
 import { mysql } from "safesql"
+import { IUser } from "@classes/interface/IUser"
+import { GraphQLObjectType } from "graphql"
+import Address from "./address"
 
 GQL.registerEnumType(GENDER, {
 	name: "GENDER",
 	description: "Gender of client"
 })
 
+@DB.Entity()
 @GQL.ObjectType()
-@DB.Entity("user_data")
-export default class User extends Base implements ICustomer{
-	@GQL.Field(type => Number)
-	@DB.Column("integer")
-	public badgenumber!: number
+export default class User extends Base implements IUser {
+	@GQL.Field(type => String)
+	@DB.Column("varchar", { nullable:true, unique: true })
+	public badgenumber?: string
+
+	@GQL.Field(type => [String,])
+	@DB.Column("simple-json", { nullable: true})
+	public wdmsId?: object
 	
-	@GQL.Field(type => Number)
-	@DB.Column("integer")
-	public wdmsId!: number
-
-	@GQL.Field(type => String)
-	@DB.Column("varchar")
-	public mode!: string
-
-	@GQL.Field(type => String)
-	@DB.Column("varchar")
-	public name!: string
-
-	@GQL.Field(type => String)
-	@DB.Column("varchar")
-	public idCard!: string
-
-	@GQL.Field(type => String)
-	@DB.Column("varchar")
-	public image!: string
-
-	@GQL.Field(type => String)
-	@DB.Column("varchar")
-	public occupation!: string
-
 	@GQL.Field(type => String)
 	@DB.Column("varchar", { length: 30 })
+	public firstName!: string
+
+	@GQL.Field(type => String)
+	@DB.Column("varchar", { length: 30, nullable: true  })
+	public middleName?: string
+	
+	@GQL.Field(type => String)
+	@DB.Column("varchar", { length: 30, nullable: true  })
+	public lastName?: string
+	
+	@GQL.Field(type => Date)
+	@DB.Column("date", {default : null})
+	public dob?: Date
+	
+	@GQL.Field(type => GENDER)
+	@DB.Column({
+		type: "enum",
+		enum: GENDER
+	})
+	public gender?: GENDER
+	
+	@GQL.Field(type => String)
+	@DB.Column("varchar", { length: 30, nullable: false, unique: true })
 	public mobile!: string
 
 	@GQL.Field(type => String)
@@ -55,96 +60,49 @@ export default class User extends Base implements ICustomer{
 	public officePhone?: string
 
 	@GQL.Field(type => String)
-	@DB.Column("varchar", { nullable: true })
+	@DB.Column("varchar", { length: 30, nullable: true })
+	public homeNumber?: string
+	
+	@GQL.Field(type => String)
+	@DB.Column("varchar", { default: null })
 	@Validate.IsEmail()
 	public email?: string
-
-	@GQL.Field(type => String)
-	@DB.Column("varchar", { nullable: true })
-	public address?: string
-
-	@GQL.Field(type => Date)
-	@DB.Column("date", { nullable: true })
-	public dob?: Date
-
-	@GQL.Field(type => GENDER)
-	@DB.Column({
-		type: "enum",
-		enum: GENDER
-	})
-	public gender!: GENDER
-
-	@GQL.Field(type => String)
-	@DB.Column("varchar", { nullable: true })
-	public enquiryInitial?: string
-
-	@GQL.Field(type => String)
-	@DB.Column("varchar", { nullable: true })
-	public enquiryRecent?: string
-
-	@GQL.Field(type => Date)
-	@DB.Column("date")
-	public doj!: Date
-
-	@GQL.Field(type => String)
-	@DB.Column("varchar", { nullable: true })
-	public healthJoining?: string
-
-	@GQL.Field(type => String)
-	@DB.Column("varchar", { nullable: true })
-	public healthCurrent?: string
-
-	@GQL.Field(type => String)
-	@DB.Column("varchar", { nullable: true })
-	public referredBy?: string
-
-	@GQL.Field(type => String)
-	@DB.Column("varchar", { nullable: true })
-	public referredOther?: string
-
-	@GQL.Field(type => String)
-	@DB.Column("varchar", { nullable: true })
-	public transferFrom?: string
-
-	@GQL.Field(type => String)
-	@DB.Column("varchar", { nullable: true })
-	public transferTo?: string
-
+	
+	@GQL.Field(type => Number)
+	@DB.OneToMany(type => Address, address => address.user)
+	@DB.Column("simple-array", { nullable: true })
+	public address?: number[]
+	
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })
-	public balance?: number
-
+	public IDType?: number
+	
 	@GQL.Field(type => String)
 	@DB.Column("varchar", { nullable: true })
-	public transaction?: string
-
+	public IDNumber?: string
+	
 	@GQL.Field(type => String)
 	@DB.Column("varchar", { nullable: true })
-	public diet?: string
-
+	public imagePath?: string
+	
+	@GQL.Field(type => Number)
+	@DB.Column("integer", { nullable: true })
+	public occupation?: number
+	
+	@GQL.Field(type => Number)
+	@DB.Column("integer", { nullable: true })
+	public organization?: number
+	
+	@GQL.Field(type => Number)
+	@DB.Column("integer", { nullable: true })
+	public category?: number
+	
 	@GQL.Field(type => String)
 	@DB.Column("varchar", { nullable: true })
-	public personalTraining?: number
-
+	public emergencyName?: string
+	
 	@GQL.Field(type => String)
 	@DB.Column("varchar", { nullable: true })
-	public counselling?: string
-
-	@GQL.Field(type => Date)
-	@DB.Column("time")
-	public preferredTime!: Date
-
-	public async beforeInsert(){
-		super.beforeInsert()
-		if(!this.badgenumber){
-			let sql = User.createQueryBuilder()
-				.select("MAX(`badgenumber`)", "badgenumber")
-				.getSql()
-			let result = await User.query(sql)
-			result = result[0]
-			if(!result.badgenumber) result.badgenumber = 0
-			++result.badgenumber
-			this.badgenumber = result.badgenumber
-		}
-	}
+	public emergencyNumber?: string
+	
 }

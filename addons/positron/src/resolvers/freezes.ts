@@ -3,15 +3,21 @@ import Freezes from "@positron/models/freezes"
 
 @GQL.Resolver(of => Freezes)
 export default class FreezeResolver{
+
+	@GQL.Query(returns => [Freezes,])
+	public async freezes() {
+		return Freezes.find()
+	}
+
 	@GQL.Mutation(returns => Freezes)
 	public async addFreeze(
-		@GQL.Arg("user") user : string,
+		@GQL.Arg("user") user : number,
 		@GQL.Arg("start") start: Date,
 		@GQL.Arg("count", { nullable: true }) count? : number,
 		@GQL.Arg("end", { nullable: true }) end? : Date,
-		@GQL.Arg("payment", { nullable: true }) payment? : string,
+		@GQL.Arg("payment", { nullable: true }) payment? : number,
 		@GQL.Arg("days", { nullable: true }) days? : number,
-		@GQL.Arg("transaction", { nullable: true }) transaction?: string,
+		@GQL.Arg("transaction", { nullable: true }) transaction?: number,
 	){
 		let freezes = new Freezes()
 		freezes.user = user

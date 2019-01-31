@@ -14,7 +14,7 @@ export declare const module: any
 export class Positron {
 	// TODO: detect user
 	public static User = {
-		id: "gymkonnect"
+		id: 1
 	}
 
 	public static InstallationState(): { installed: boolean, step: INSTALL_STEP }{

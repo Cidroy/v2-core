@@ -1,11 +1,12 @@
 import { IEntityBase } from "@classes/interface/IEntityBase"
 
 export default interface IBooking extends IEntityBase {
-	user : string,
-	bookingType : string,
+	user : number,
+	bookingType : number,
 	start : Date,
 	end : Date,
-	bookingPackage? : string,
-	bookingAddons? : string[],
-	payment? : string
+	bookingPackage? : number,
+	bookingAddons? : number[],
+	payment? : number
+	serverId ? : string
 }
