@@ -20,7 +20,6 @@ import SlotBlock from "@positron/models/slotBlock"
 import GymPurpose from "@positron/models/gymPurpose"
 
 export default [
-	Client,
 	Address,
 	Options,
 	User,
