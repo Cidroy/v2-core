@@ -64,10 +64,10 @@
 				<v-checkbox label="Half-Yearly"></v-checkbox>
 				<v-checkbox label="Yearly"></v-checkbox>
 			</v-layout>
-			<v-card width="100%" height="50px" color="#303030">
+			<v-card width="100%" height="50px" color="transparent">
 				<div class="right pr-2"> 
-					<v-btn flat>Cancel</v-btn>
-					<v-btn color="orange darken-4" class="mb-2">Submit</v-btn>
+					<v-btn dark>Cancel</v-btn>
+					<v-btn dark color="orange darken-4" class="mb-2">Submit</v-btn>
 				</div>
 			</v-card>
 		</v-card>

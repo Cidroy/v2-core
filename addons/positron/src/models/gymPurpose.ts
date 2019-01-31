@@ -1,11 +1,11 @@
 import * as DB from "typeorm"
 import Base from "./base"
 import * as GQL from "type-graphql"
-import IIDType from "@classes/interface/IIDType"
+import IGymPurpose from "@classes/interface/IGymPurpose"
 
 @DB.Entity()
 @GQL.ObjectType()
-export default class IDType extends Base implements IIDType {
+export default class GymPurpose extends Base implements IGymPurpose {
 	@GQL.Field(type => String)
 	@DB.Column("varchar", { nullable: false, unique: true })
 	public name!: string

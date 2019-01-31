@@ -14,38 +14,69 @@ export enum PASSWORD_PREFERENCE{
  * @extends {IEntityBase}
  */
 export interface IUser extends IEntityBase{
+	badgenumber?: string,
+	/**
+	 * Key: wdmsId
+	 * value:zone
+	 *
+	 * @type {JSON}
+	 * @memberof IUser
+	 */
+	wdmsIDs?: JSON,
 	firstName: string,
 	middleName?: string,
 	lastName?: string,
-	username: string,
-	password: string,
-	pin: string,
-	/**
-	 * Preferred method of password
-	 *
-	 * @type {PASSWORD_PREFERENCE}
-	 * @memberof IUser
-	 */
-	passwordPreference: PASSWORD_PREFERENCE,
 	/**
 	 * Date of Birth
 	 *
 	 * @type {Date}
 	 * @memberof IUser
 	 */
-	dob: Date,
-	gender: GENDER,
+	dob?: Date,
+	gender?: GENDER,
 	mobile: string,
-	whatsapp ?: string,
-	email ?: string,
+	whatsapp?: string,
+	officePhone?: string,
+	homeNumber?: string,
+	email?: string,
 	/**
 	 * References Address.id for primary address
 	 *
 	 * @type {string}
 	 * @memberof IUser
 	 */
-	address: string,
-
-	access: number,
-	permissions: object
+	address?: number[],
+	/**
+	 * References IDTypes.id for IDTypes
+	 *
+	 * @type {number}
+	 * @memberof IUser
+	 */
+	IDType?: number,
+	IDNumber?: string,
+	imagePath?: string,
+	/**
+	 * References occupations.id
+	 *
+	 * @type {number}
+	 * @memberof IUser
+	 */
+	occupation?: number,
+	/**
+	 * References organizations.id
+	 *
+	 * @type {number}
+	 * @memberof IUser
+	 */
+	organization?: number,
+	/**
+	 * References categories.id
+	 *
+	 * @type {number}
+	 * @memberof IUser
+	 */
+	category?: number,
+	emergencyName?: string,
+	emergencyNumber?: string
+	
 }

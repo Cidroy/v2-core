@@ -47,8 +47,13 @@ export default [
 		component: () => lazyLoadView("/user-profile"),
 	},
 	{
-		path: "/payment",
+		path: "/hr",
 		name: "HR",
+		component: () => lazyLoadView("/hr"),
+	},
+	{
+		path: "/payment",
+		name: "Sales & service",
 		component: () => lazyLoadView("/payment"),
 	},
 	{
