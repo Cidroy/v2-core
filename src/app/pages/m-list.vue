@@ -19,11 +19,11 @@
 					<tr @click="props.expanded = !props.expanded">
 					<td><v-checkbox v-model="props.selected" primary hide-details></v-checkbox></td>
 					<td>{{ props.item.id }}</td>
-					<td class="text-xs-right">{{ props.item.name }}</td>
-					<td class="text-xs-right">{{ props.item.enrolstat }}</td>
-					<td class="text-xs-right">{{ props.item.mbrstat }}</td>
-					<td class="text-xs-right">{{ props.item.mobno }}</td>
-					<td class="text-xs-right">{{ props.item.duedat }}</td>
+					<td>{{ props.item.name }}</td>
+					<td>{{ props.item.enrolstat }}</td>
+					<td>{{ props.item.mbrstat }}</td>
+					<td>{{ props.item.mobno }}</td>
+					<td>{{ props.item.duedat }}</td>
 					</tr>
 				</template>
 				<template slot="expand" slot-scope="props">

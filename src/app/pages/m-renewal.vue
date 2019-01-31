@@ -33,7 +33,7 @@
 				</v-flex>
 				<v-spacer></v-spacer>
 				<v-flex xs3 class="pr-4">
-					<v-text-field prepend-icon="fas fa-id-badge" value="7384" label="Member ID" readonly ></v-text-field>
+					<v-text-field box prepend-icon="fas fa-id-badge" value="7384" label="Member ID" readonly ></v-text-field>
 				</v-flex>
 			</v-layout>
 			<v-divider></v-divider>
