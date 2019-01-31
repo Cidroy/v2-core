@@ -130,7 +130,7 @@
 								</v-list-tile-avatar>
 
 								<v-list-tile-content>
-									<v-list-tile-title>K Karthik</v-list-tile-title>
+									<v-list-tile-title>Kundan Singh</v-list-tile-title>
 									<v-list-tile-sub-title>Admin</v-list-tile-sub-title>
 								</v-list-tile-content>
 							</v-list-tile>
@@ -257,7 +257,7 @@ export default class Vuetify extends Vue {
     profileList: { icon?: string, text: string, to?: string}[] = [
         { text: "My Account", to: "/inspire",},
         { text: "Dummy", to: "/inspire",},
-        { text: "Logout", to: "/inspire",},
+        { text: "Logout", to: "/login",},
         { text: "Exit", to: "/inspire",},
     ];
     
