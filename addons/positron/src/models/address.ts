@@ -4,7 +4,7 @@ import * as DB from "typeorm"
 import * as GQL from "type-graphql"
 
 import { ADDRESS_TYPE } from "@classes/enum/misc"
-import Client from "@positron/models/client"
+import User from "./user"
 
 GQL.registerEnumType(ADDRESS_TYPE,{
 	name: "ADDRESS_TYPE",
@@ -13,8 +13,8 @@ GQL.registerEnumType(ADDRESS_TYPE,{
 
 @DB.Entity()
 export default class Address extends Base implements IAddress{
-	@DB.ManyToOne(type => Client, client => client.address)
-	public client!: number
+	@DB.ManyToOne(type => User, user => user.address)
+	public user!: number
 
 	@DB.Column({
 		type: "enum",

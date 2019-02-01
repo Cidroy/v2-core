@@ -87,7 +87,8 @@
 			<v-btn icon>
 				<v-icon>apps</v-icon>
 			</v-btn>
-			<v-menu v-model="menuNotify" :close-on-content-click="true" offset-y>
+
+			<v-menu v-model="menuNotify" :close-on-content-click="true" :nudge-width="200" offset-y>
 				<v-btn icon large slot="activator" dark>
 					<v-badge color="indigo" overlap>
 						<span slot="badge">3</span>
@@ -114,7 +115,7 @@
 			
 			<!--profile  -->
 			<div class="text-xs-center">
-				<v-menu v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-x> 
+				<v-menu v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-y> 
 					<v-btn slot="activator" icon large>
 						<v-avatar color="orange darken-4" size="40">
 							<v-icon dark>account_circle</v-icon>
@@ -129,7 +130,7 @@
 								</v-list-tile-avatar>
 
 								<v-list-tile-content>
-									<v-list-tile-title>K Karthik</v-list-tile-title>
+									<v-list-tile-title>Kundan Singh</v-list-tile-title>
 									<v-list-tile-sub-title>Admin</v-list-tile-sub-title>
 								</v-list-tile-content>
 							</v-list-tile>
@@ -138,7 +139,7 @@
 						<v-divider></v-divider>
 
 						<v-list>
-							<v-list-tile  v-for="(item, index) in profileList" :key="index">
+							<v-list-tile  v-for="(item, index) in profileList" :key="index"  @click="$router.push({path: item.to})">
 								<v-list-tile-title>{{ item.text }}</v-list-tile-title>
 							</v-list-tile>
 
@@ -242,9 +243,9 @@ export default class Vuetify extends Vue {
 				],
 				"icon-alt": "library_add",
 			},
-			{ icon: "timeline", text: "Sales & Finance", to: "/inspire", },
+			{ icon: "timeline", text: "Sales & Finance", to: "/payment", },
 			{ icon: "assessment", text: "Reports", to: "/inspire", },
-            { icon: "bubble_chart", text: "HR", to: "/payment", },
+            { icon: "bubble_chart", text: "HR", to: "/hr", },
             { 
 				icon: "settings", text: "Settings", children: [
 				{ icon: "bubble_chart", text: "Edit", to: "/inspire", },
@@ -253,11 +254,11 @@ export default class Vuetify extends Vue {
 				"icon-alt": "settings",
 			}
         ];
-    profileList: { icon?: string, text: string }[] = [
-        { text: "My Account", },
-        { text: "Dummy", },
-        { text: "Logout", },
-        { text: "Exit", },
+    profileList: { icon?: string, text: string, to?: string}[] = [
+        { text: "My Account", to: "/inspire",},
+        { text: "Dummy", to: "/inspire",},
+        { text: "Logout", to: "/login",},
+        { text: "Exit", to: "/inspire",},
     ];
     
 	notis: ({ avatar?: string, title?: string, subtitle?: string } | { divider: boolean, inset: boolean }) [] =[
@@ -265,31 +266,31 @@ export default class Vuetify extends Vue {
           {
             avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
             title: 'Brunch this weekend?',
-            subtitle: "<span class='text--primary'>Ali Connors</span> &mdash; I'll be in your neighborhood doing errands this weekend. Do you want to hang out?"
+            subtitle: "<span class='text--primary'>Ali Connors</span> &mdash; Do you want to hang out?"
           },
           { divider: true, inset: true },
           {
             avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
             title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-            subtitle: "<span class='text--primary'>to Alex, Scott, Jennifer</span> &mdash; Wish I could come, but I'm out of town this weekend."
+            subtitle: "<span class='text--primary'>to Alex, Scott, Jennifer</span> &mdash; Wish I could come."
           },
           { divider: true, inset: true },
           {
             avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
             title: 'Oui oui',
-            subtitle: "<span class='text--primary'>Sandra Adams</span> &mdash; Do you have Paris recommendations? Have you ever been?"
+            subtitle: "<span class='text--primary'>Sandra Adams</span> &mdash; Do you have Paris recommendations?"
           },
           { divider: true, inset: true },
           {
             avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
             title: 'Birthday gift',
-            subtitle: "<span class='text--primary'>Trevor Hansen</span> &mdash; Have any ideas about what we should get Heidi for her birthday?"
+            subtitle: "<span class='text--primary'>Trevor Hansen</span> &mdash; Have any ideas?"
           },
           { divider: true, inset: true },
           {
             avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
             title: 'Recipe to try',
-            subtitle: "<span class='text--primary'>Britta Holt</span> &mdash; We should eat this: Grate, Squash, Corn, and tomatillo Tacos."
+            subtitle: "<span class='text--primary'>Britta Holt</span> &mdash; We should eat this"
           }
 	];
 		

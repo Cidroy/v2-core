@@ -19,18 +19,18 @@
 					<tr @click="props.expanded = !props.expanded">
 					<td><v-checkbox v-model="props.selected" primary hide-details></v-checkbox></td>
 					<td>{{ props.item.id }}</td>
-					<td class="text-xs-right">{{ props.item.name }}</td>
-					<td class="text-xs-right">{{ props.item.enrolstat }}</td>
-					<td class="text-xs-right">{{ props.item.mbrstat }}</td>
-					<td class="text-xs-right">{{ props.item.mobno }}</td>
-					<td class="text-xs-right">{{ props.item.duedat }}</td>
+					<td>{{ props.item.name }}</td>
+					<td>{{ props.item.enrolstat }}</td>
+					<td>{{ props.item.mbrstat }}</td>
+					<td>{{ props.item.mobno }}</td>
+					<td>{{ props.item.duedat }}</td>
 					</tr>
 				</template>
 				<template slot="expand" slot-scope="props">
 					<v-card flat>
 						<v-layout  row wrap>
 							<v-spacer :data="props"/>
-							<v-btn dark color="deep-purple darken-4" @click="pushProfile" >View Profile</v-btn>
+							<v-btn dark color="deep-purple darken-4" to="/user-profile" >View Profile</v-btn>
 							<v-btn dark>Block</v-btn>
 							<v-btn dark>Enroll</v-btn>
 							<v-btn dark>Freeze</v-btn>
@@ -59,10 +59,6 @@ import { Component, Watch, Vue } from "vue-property-decorator"
 })
 export default class Home extends Vue {
 	dropdown_font = ['All','Recent', 'Renewal', 'Not Enrolled', 'Gold']
-	pushProfile() {
-				// @ts-ignore
-                this.$router.push('/profile');
-            }
 	headers = [
 		{
 			text: 'ID',

@@ -6,7 +6,7 @@ import * as GQL from "type-graphql"
 @DB.Entity()
 export default class Options extends Base{
 	@GQL.Field(type => String)
-	@DB.Column("varchar")
+	@DB.Column("varchar", { nullable: false, unique: true })
 	public name !: string
 
 	@GQL.Field(type => String)

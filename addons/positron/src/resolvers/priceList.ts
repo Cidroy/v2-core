@@ -3,11 +3,17 @@ import PriceList from "@positron/models/priceList"
 
 @GQL.Resolver(of => PriceList)
 export default class PriceListResolver {
+
+	@GQL.Query(returns => [PriceList,])
+	public async priceList() {
+		return PriceList.find()
+	}
+	
 	@GQL.Mutation(returns => PriceList)
 	public async addPrice(
 		@GQL.Arg("typeName") typeName: string,
-		@GQL.Arg("typeId") typeId: string,
-		@GQL.Arg("organization") organization: string,
+		@GQL.Arg("typeId") typeId: number,
+		@GQL.Arg("organization") organization: number,
 		@GQL.Arg("price") price: number,
 	) {
 		let priceList = new PriceList()

@@ -33,7 +33,7 @@
 				</v-flex>
 				<v-spacer></v-spacer>
 				<v-flex xs3 class="pr-4">
-					<v-text-field prepend-icon="fas fa-id-badge" value="7384" label="Member ID" readonly ></v-text-field>
+					<v-text-field box prepend-icon="fas fa-id-badge" value="7384" label="Member ID" readonly ></v-text-field>
 				</v-flex>
 			</v-layout>
 			<v-divider></v-divider>
@@ -41,70 +41,9 @@
 			<v-expansion-panel focusable>
 				<v-expansion-panel-content>
 					<div slot="header" class="title">Personal Details</div>
-					<v-card>
-						<v-layout class="pl-4" row wrap>	
-							<v-flex xs9>
-								<v-layout row wrap>
-									<v-flex xs12 lg4 class="pr-1">
-										<v-text-field prepend-icon="fas fa-user" v-model="firstname" :rules="nameRules" counter maxlength="15" label="First Name"
-										 required></v-text-field>
-									</v-flex>
-									<v-flex xs12 lg4 class="px-1">
-										<v-text-field counter maxlength="15" label="Middle Name"></v-text-field>
-									</v-flex>
-									<v-flex xs12 lg4 class="px-1">
-										<v-text-field counter maxlength="15" label="Last Name"></v-text-field>
-									</v-flex>
-
-									<v-flex xs12 lg6>
-										<v-radio-group prepend-icon="fas fa-transgender-alt" label="Gender" v-model="radioGroup2" row>
-											<v-radio label="Male" value="radio-4"></v-radio>
-											<v-radio label="Female" value="radio-5"></v-radio>
-											<v-radio label="Others" value="radio-6"></v-radio>
-										</v-radio-group>
-									</v-flex>
-									<v-flex xs12 lg6 class="mb-2">
-										<v-menu ref="menu1" :close-on-content-click="false" v-model="menu1" :nudge-right="40" lazy transition="scale-transition"
-										 offset-y full-width max-width="290px" min-width="290px">
-											<v-text-field slot="activator" v-model="dateFormatted" label="Date of Birth" placeholder="Date of Birth"
-											 hint="DD/MM/YYYY format" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)"></v-text-field>
-											<v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
-										</v-menu>
-									</v-flex>
-									<v-flex xs12 lg6 class="pr-2">
-										<v-combobox prepend-icon="work" :items="items" label="Occupation"></v-combobox>
-									</v-flex>
-									<v-flex xs12 lg6 class="pl-2">
-										<v-select prepend-icon="list" :items="Category" label="Category"></v-select>
-									</v-flex>
-									<v-flex xs12 lg6 class="pr-2">
-										<v-select prepend-icon="fas fa-id-card" :items="idProof" label="ID Proof"></v-select>
-									</v-flex>
-									<v-flex xs12 lg6 class="pl-2">
-										<v-text-field prepend-icon="fas fa-hashtag" counter maxlength="16" label="ID Number"></v-text-field>
-									</v-flex>
-									<v-flex xs12 lg8 class="pr-2">
-										<v-textarea prepend-icon="place" name="input-7-1" label="Residential Address"></v-textarea>
-									</v-flex>
-									<v-flex xs12 lg4 class="pl-2">
-										<v-select prepend-icon="accessibility" :items="bodyType" label="Body Type"></v-select>
-									</v-flex>
-
-									<v-spacer></v-spacer>
-								</v-layout>
-							</v-flex>
-							<v-flex xs3 class="pa-4">
-								<v-card>
-									<v-img :src="cards[0].src" height="200px" />
-									<v-btn dark block>Change Photo</v-btn>
-								</v-card>
-							</v-flex>
-						</v-layout>
-						<div class="right">
-							<v-btn dark click="$refs.form.reset()">Cancel</v-btn>
-							<v-btn color="orange darken-4" dark> NEXT </v-btn>
-						</div>
-					</v-card>	
+					<v-card class="px-2">
+						<step-one v-model="userData" Readonly/>
+					</v-card>
 				</v-expansion-panel-content>
 
 				<v-expansion-panel-content>
@@ -230,15 +169,23 @@ import Layout from "@/layouts/main.vue"
 import SystemInformation from "@/components/system-information.vue"
 import { Component, Vue, Watch } from "vue-property-decorator"
 import { watch } from 'fs';
+import stepOne from "@/components/m-registration/step-1.vue"
 
 @Component({
-	components: { Layout, SystemInformation, },
+	components: { Layout, SystemInformation, stepOne, },
 	page: {
 		title: "Home",
 		meta: [{ name: "description", content: appConfig.description, },],
 	},
 })
 export default class Home extends Vue {
+
+	userData = {
+		firstName : "",
+		middleName : "",
+		lastName : "",
+	}
+
 	valid: boolean = false
 	importDialog = false
 	checkbox = []

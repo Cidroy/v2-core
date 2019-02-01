@@ -42,13 +42,18 @@ export default [
 		component: () => lazyLoadView("/enquiry"),
 	},
 	{
-		path: "/profile",
-		name: "Profile",
-		component: () => lazyLoadView("/profile"),
+		path: "/user-profile",
+		name: "User-Profile",
+		component: () => lazyLoadView("/user-profile"),
+	},
+	{
+		path: "/hr",
+		name: "HR",
+		component: () => lazyLoadView("/hr"),
 	},
 	{
 		path: "/payment",
-		name: "HR",
+		name: "Sales & service",
 		component: () => lazyLoadView("/payment"),
 	},
 	{
@@ -60,6 +65,11 @@ export default [
 		path: "/about",
 		name: "About",
 		component: () => lazyLoadView("/about"),
+	},
+	{
+		path: "/login",
+		name: "Login",
+		component: () => lazyLoadView("/login"),
 	},
 	{
 		path: "/404",
