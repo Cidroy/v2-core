@@ -133,9 +133,8 @@ import AppConfig from "@classes/appConfig"
 export default class Home extends Vue{
 	async test(){
 		console.log("done")
-		let source  = await AppConfig.Get("__dirname", "") + "/resources/docs/typo.html"
-		let destination = AppConfig.DataFolder + "/reports/typo.pdf"
-		console.log(await Printer.requestPrintPDF(source, destination))
+		let dest = await Printer.renderAndPrintPDF("receipt", "receipt-1012", { name: "rinzler" })
+		console.log(dest)
 	}
 }
 </script>
