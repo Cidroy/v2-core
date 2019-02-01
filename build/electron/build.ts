@@ -7,6 +7,7 @@ import splashscreenConfig from "~build/electron/webpack.splashscreen"
 
 import { ElectronBuilder } from "~build/electron/ElectronBuilder"
 import PositronBinaryBuilder from "~addons/positron"
+import PrinterTemplateBuilder from "~/addons/printer"
 
 let applicationBuilder = new ElectronBuilder(
 	{
@@ -17,9 +18,15 @@ let applicationBuilder = new ElectronBuilder(
 	buildConfig
 )
 
+// applicationBuilder.onBuild(async (buildPath, electronVersion, platform, arch) => {
+//  	let positronBuilder = new PositronBinaryBuilder(buildPath, platform)
+//  	await positronBuilder.build()
+//  	return true
+// })
+
 applicationBuilder.onBuild(async (buildPath, electronVersion, platform, arch) => {
- 	let positronBuilder = new PositronBinaryBuilder(buildPath, platform)
- 	await positronBuilder.build()
+	let printerTemplateBuilder = new PrinterTemplateBuilder(buildPath, platform)
+	await printerTemplateBuilder.build()
  	return true
 })
 

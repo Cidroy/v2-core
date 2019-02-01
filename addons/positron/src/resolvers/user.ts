@@ -4,6 +4,12 @@ import User from "@positron/models/user"
 
 @GQL.Resolver(of => User)
 export default class UserResolver{
+	
+	@GQL.Query(returns => [User,])
+	public async user() {
+		return User.find()
+	}
+
 	@GQL.Mutation(returns => User)
 	public async addUser(
 		

@@ -32,19 +32,26 @@ export default interface IGymUsers extends IEntityBase {
 	healthJoining?: number,
 	healthCurrent?: number,
 	/**
-	 * References gym_user.id
+	 * References admin_user.id
 	 *
 	 * @type {number}
 	 * @memberof IGymUsers
 	 */
-	referredBy?: number,
+	referredByAdmin?: number,
 	/**
 	 * References gym_user.id
 	 *
 	 * @type {number}
 	 * @memberof IGymUsers
 	 */
-	referredTo?: number,
+	referredByUser?: number,
+	/**
+	 * References gym_user.id
+	 *
+	 * @type {number}
+	 * @memberof IGymUsers
+	 */
+	referredTo?: number[],
 	referredOther?: string,
 	/**
 	 * References gym_user.id
@@ -63,15 +70,15 @@ export default interface IGymUsers extends IEntityBase {
 	balance?: number,
 	transaction?: number,
 	diet?: number,
-	personal_training?: number,
+	personalTraining?: number,
 	counselling?: number,
 	/**
 	 * References availableTime.id
 	 *
-	 * @type {number}
+	 * @type {Date}
 	 * @memberof IGymUsers
 	 */
-	preferredTime?: number,
+	preferredTime?: Date,
 	/**
 	 * References agreement.id
 	 *
@@ -79,5 +86,5 @@ export default interface IGymUsers extends IEntityBase {
 	 * @memberof IGymUsers
 	 */
 	agreement?: number
-	// doj?: Date
+	doj?: Date
 }
