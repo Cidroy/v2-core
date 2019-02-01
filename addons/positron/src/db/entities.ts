@@ -18,6 +18,14 @@ import Organization from "@positron/models/organization"
 import PriceList from "@positron/models/priceList"
 import SlotBlock from "@positron/models/slotBlock"
 import GymPurpose from "@positron/models/gymPurpose"
+import GymUsers from "@positron/models/gymUsers"
+import GymProgramme from "@positron/models/gymProgramme"
+import MembershipType from "@positron/models/membershipType"
+import GymPackage from "@positron/models/gymPackage"
+import CounsellorType from "@positron/models/counsellorType"
+import TrainerType from "@positron/models/trainerType"
+import GymUserMode from "@positron/models/gymUserMode"
+import PaymentMode from "@positron/models/paymentMode"
 
 export default [
 	Address,
@@ -37,4 +45,12 @@ export default [
 	PriceList,
 	SlotBlock,
 	GymPurpose,
+	GymUsers,
+	GymProgramme,
+	MembershipType,
+	GymPackage,
+	CounsellorType,
+	TrainerType,
+	GymUserMode,
+	PaymentMode,
 ]
