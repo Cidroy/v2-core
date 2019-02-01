@@ -1,5 +1,6 @@
 <template>
 	<Layout>
+		<v-btn @click.native.stop="test">Test</v-btn>
 		<v-layout row wrap justify-center id="wrapper">
 			<v-flex xs12 md6 class="text-xs-center centered">
 				<img id="logo" max-width="100%" max-height="100px" class="logo" src="~@/assets/images/logo.png" alt="Vuetifyjs">
@@ -119,6 +120,8 @@ import { Component, Vue } from "vue-property-decorator"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
 import SystemInformation from "@/components/system-information.vue"
+import Printer from "@electron/printer"
+import AppConfig from "@classes/appConfig"
 
 @Component({
 	components: { Layout, SystemInformation, },
@@ -127,5 +130,12 @@ import SystemInformation from "@/components/system-information.vue"
 		meta: [ { name: "description", content: appConfig.description, }, ],
 	},
 })
-export default class Home extends Vue{}
+export default class Home extends Vue{
+	async test(){
+		console.log("done")
+		let source  = await AppConfig.Get("__dirname", "") + "/resources/docs/typo.html"
+		let destination = AppConfig.DataFolder + "/reports/typo.pdf"
+		console.log(await Printer.requestPrintPDF(source, destination))
+	}
+}
 </script>
