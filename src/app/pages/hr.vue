@@ -22,9 +22,6 @@
 												</v-btn>
 												<v-toolbar-title>Trainer Registration</v-toolbar-title>
 												<v-spacer></v-spacer>
-												<v-toolbar-items>
-													<v-btn dark flat @click="dialog = false">Save</v-btn>
-												</v-toolbar-items>
 											</v-toolbar>
 
 											<v-card>
@@ -49,18 +46,81 @@
 																	<v-radio label="Others" value="radio-6"></v-radio>
 																</v-radio-group>
 															</v-flex>	
+
+															<v-flex xs12 lg6 class="mb-2">
+																<v-menu :close-on-content-click="false" v-model="dobMenu" :nudge-right="40" lazy transition="scale-transition"
+																offset-y full-width max-width="290px" min-width="290px">
+																	<v-text-field slot="activator" v-model="dobFormattedDate" label="Date of Birth" placeholder="Date of Birth" hint="DD/MM/YYYY format" persistent-hint prepend-icon="event" @blur="dob = parseDate(dobFormattedDate)"/>
+																	<v-date-picker v-model="dob" no-title @input="dobMenu = false" :max=" new Date().toISOString().substr(0, 10)" />
+																</v-menu>
+															</v-flex>
+
+															<v-flex xs3 lg4 class="pl-4">
+																<v-text-field prepend-icon="fas fa-mobile-alt" v-model="phone" :rules="phoneRules" label="Mobile Number" mask="phone" required></v-text-field>
+															</v-flex>
+															<v-flex xs3 lg4 class="pl-2">
+																<v-text-field prepend-icon="fab fa-whatsapp" label="Whatsapp Number" mask="phone"></v-text-field>
+															</v-flex>
+															<v-flex xs3 lg4>
+																<v-checkbox label="Not Same As Phone Number"></v-checkbox>
+															</v-flex>
+															<v-flex xs3 lg6 class="pl-4">
+																<v-text-field prepend-icon="fas fa-phone" label="Home Number" mask="phone"></v-text-field>
+															</v-flex>
+															<v-flex xs6 lg6 class="pl-2">
+																<v-text-field prepend-icon="fas fa-envelope" v-model="email" :rules="emailRules" label="Email address" type="email"></v-text-field>
+															</v-flex>
+															<v-flex xs12 lg6 class="pl-4">
+																<v-select v-model="idType" prepend-icon="fas fa-id-card" :items="IDProofs" label="ID Proof"/>
+															</v-flex>
+															<v-flex xs12 lg6 class="pl-2">
+																<v-text-field v-model="idNumber" prepend-icon="fas fa-hashtag" label="ID Number" required/>
+															</v-flex>
+															<v-flex xs12 lg6 class="pl-4">
+																<v-textarea prepend-icon="place" name="input-7-1" label="Residential Address"></v-textarea>
+															</v-flex>
+															<v-flex xs12 lg6>
+																<v-menu ref="menu1" :close-on-content-click="false" v-model="menu1" :nudge-right="40" lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
+																<v-text-field slot="activator" v-model="dateFormatted" label="Date" hint="DD/MM/YYYY format" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)"></v-text-field>
+																<v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
+																</v-menu>
+															</v-flex>
+															<v-flex xs2 lg2 class="pl-4">
+																<v-subheader class="subheading">Trainer ID</v-subheader>
+															</v-flex>
+															<v-flex xs4 lg5>
+																<v-text-field label="Enter or Generate ID" single-line solo></v-text-field>
+															</v-flex>
+															<v-flex xs2>
+																<v-btn dark color="orange darken-4">Generate</v-btn>
+															</v-flex>
+
 														</v-layout>
 													</v-flex>
 
 													<v-flex xs4>
-														<v-layout row wrap>
-															<v-flex>
-																
-															</v-flex>	
+														<v-layout class="justify-center" row wrap>
+															<v-flex xs8 mt-4>
+																<v-card>
+																	<v-img :src="photo" height="200px" />
+																	<v-btn block dark color="orange darken-4">
+																		<v-icon>add</v-icon> Add Photo
+																	</v-btn>
+
+																	<v-btn block dark color="orange darken-4">
+																		<v-icon>fingerprint</v-icon> Enroll Now
+																	</v-btn>
+																</v-card>
+															</v-flex>
+											
 														</v-layout>
 													</v-flex>	
 												</v-layout>	
 											</v-card>	
+											<v-layout class="right">	
+												<v-btn dark>Cancel</v-btn>
+												<v-btn dark color="orange darken-4">Submit</v-btn>
+											</v-layout>	
 										</v-card>	
 									</v-dialog>
 									<!-- Add Trainer End -->
@@ -144,6 +204,7 @@
 import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
 import SystemInformation from "@/components/system-information.vue"
+import { parseDate, formatDate } from "@/utils/misc"
 import { Component,Vue, Watch } from "vue-property-decorator"
 import { watch } from 'fs';
 
@@ -155,10 +216,51 @@ import { watch } from 'fs';
 	},
 })
 export default class Home extends Vue{
+	get photo(){
+		return "https://cdn.vuetifyjs.com/images/cards/plane.jpg"
+	}
+	parseDate(date){ return parseDate(date) }
+	formatDate(date){ return formatDate(date) }
+
+	dob = new Date().toISOString().substr(0, 10)
+	dobFormattedDate = this.formatDate(this.dob)
+	dobMenu: boolean = false
+	@Watch("dob") onDobChanged() { this.dobFormattedDate = this.formatDate(this.dob) }
+
 	active: number = 0
+	menu1= false
+	email = ""
+	idType = ""
+	idNumber = ""
+	emailRules = [
+		v => (v || '').match(/@/) || 'Please enter a valid email',
+	]
 	tabsList = {
 		a: "Trainers",
 		b: "Fitness Consultant",
+	}
+	phone = ""
+	IDProofs = [
+		'Aadhaar Card',
+		'Passport',
+		'License',
+		'Pan Card',
+		'Voter ID'
+	]
+	phoneRules = [
+		v => !!v || "Number is required",
+	]
+
+	date = new Date().toISOString().substr(0, 10)
+	dateFormatted = this.formatDate(this.date)
+
+	@Watch("date")
+	onDateChanged() {
+		this.dateFormatted = this.formatDate(this.date)
+	}
+
+	get getDateFormatted() {
+		return this.formatDate(this.date)
 	}
 
 	dialogAT = false

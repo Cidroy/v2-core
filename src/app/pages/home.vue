@@ -1,6 +1,7 @@
 <template>
 	<Layout>
 		<v-layout row wrap justify-center id="wrapper">
+			<v-btn @click.native.stop="test">Test</v-btn>
 			<v-btn @click.native.stop="test_1">Test 1</v-btn>
 			<v-btn @click.native.stop="test_2">Test 2</v-btn>
 			<v-flex xs12 md6 class="text-xs-center centered">
@@ -121,6 +122,8 @@ import { Component, Vue } from "vue-property-decorator"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
 import SystemInformation from "@/components/system-information.vue"
+import Printer from "@electron/printer"
+import AppConfig from "@classes/appConfig"
 import { TestStore } from "@/state/modules/test"
 
 @Component({
@@ -131,6 +134,11 @@ import { TestStore } from "@/state/modules/test"
 	},
 })
 export default class Home extends Vue{
+	async test(){
+		console.log("done")
+		let dest = await Printer.renderAndPrintPDF("receipt", "receipt-1012", { name: "rinzler" })
+		console.log(dest)
+	}
 	test_1(){ TestStore.test_1() }
 	test_2(){ TestStore.test_2() }
 }
