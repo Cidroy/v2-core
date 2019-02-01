@@ -32,10 +32,10 @@ class Test extends VuexModule {
 					}
 				`,
 				{
-					typeId: 3,
+					typeId: 4,
 					price: 3000,
 					organization: 4,
-					typeName: "BOOKINGADDON"
+					typeName: "GroundBooking"
 				}
 			)
 			log.okay(response)
