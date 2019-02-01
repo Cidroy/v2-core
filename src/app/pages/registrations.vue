@@ -243,7 +243,7 @@
 				</v-tab-item>
       
 	  			<v-tab-item key="c">
-        			<v-card height="440px" color="transparent">
+        			<v-card height="565px" color="transparent">
 						<v-layout class="pt-4" row wrap>
 							<v-flex xs2>
 								<v-subheader class="title">Mobile No</v-subheader>
@@ -287,8 +287,32 @@
 									<v-checkbox class="" label="Random"></v-checkbox>
 								</v-layout>	
 							</v-flex>
+
+							<v-flex lg12>
+								<v-radio-group label="Type of Counsellor: " v-model="Counsellor" row>
+									<v-radio label="X" value="radio-1"></v-radio>
+									<v-radio label="Y" value="radio-2"></v-radio>
+									<v-radio label="Z" value="radio-3"></v-radio>
+									<v-radio label="A" value="radio-4"></v-radio>
+									<v-radio label="B" value="radio-5"></v-radio>
+								</v-radio-group>
+							</v-flex>
+
+							<v-flex lg4>
+								<v-text-field placeholder="No.of session"></v-text-field>	
+							</v-flex>
+
+							<v-flex lg4>
+								
+								<v-menu :close-on-content-click="false" v-model="menu3" :nudge-right="40" lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
+         						 <v-text-field	slot="activator" v-model="computedDateFormatted" label="Pick a Date"
+									hint="DD/MM/YYYY format" persistent-hint prepend-icon="event" readonly></v-text-field>
+          							<v-date-picker v-model="dates"  multiple no-title @input="menu3 = false"></v-date-picker>
+       							 </v-menu>
+								
+							</v-flex>
 							
-							<v-flex xs3>
+							<v-flex xs3 lg5>
 								<v-menu ref="menu1" :close-on-content-click="false" v-model="menu1" :nudge-right="40" lazy transition="scale-transition"
 								offset-y full-width max-width="290px" min-width="290px">
 									<v-text-field slot="activator" v-model="dateFormatted" label="Counseling Date" placeholder="Counseling Date"
@@ -346,7 +370,8 @@ export default class Home extends Vue{
 	timme = null
 	modal4 = false 
 	modal5 = false
-    menu2 = false
+	menu2 = false
+	menu3 = false
 	modal2 = false
 	menu1 = false
 	ODstart = false
@@ -358,7 +383,8 @@ export default class Home extends Vue{
 	radios2 = 'radio-1'
 	radioTime = 'radio-1'
 	radioOneDay = 'radio-1'
-	radioGroup1 = 1
+	Counsellor = 'radio-1'
+	radioGroup1 = 'radio-4'
 	firstname = ""
 	nameRules = [
 		v => !!v || "Name is required",
@@ -370,6 +396,7 @@ export default class Home extends Vue{
 		'Vue',
 		'Vuetify'
 	]
+	dates = ['2018-09-15', '2018-09-20']
 	email = ""
 	emailRules = [
 		v => (v || '').match(/@/) || 'Please enter a valid email',
@@ -403,6 +430,10 @@ export default class Home extends Vue{
 		// if (!date) return null
 		const [year, month, day,] = date.split("-")
 		return `${day}/${month}/${year}`
+	}
+
+	get computedDateFormatted() {
+		return this.formatDate(this.date)
 	}
 
 	parseDate(date) {
