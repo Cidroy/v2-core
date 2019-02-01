@@ -72,6 +72,26 @@ export default [
 		component: () => lazyLoadView("/login"),
 	},
 	{
+		path: "/hw-settings",
+		name: "Hardware",
+		component: () => lazyLoadView("/hw-settings"),
+	},
+	{
+		path: "/plans-offers",
+		name: "Plans & Offers",
+		component: () => lazyLoadView("/plans-offers"),
+	},
+	{
+		path: "/sms-emails",
+		name: "SMS & Emails",
+		component: () => lazyLoadView("/sms-emails"),
+	},
+	{
+		path: "/admin-settings",
+		name: "Admin Access",
+		component: () => lazyLoadView("/admin-settings"),
+	},
+	{
 		path: "/404",
 		name: "404",
 		component: require("@/pages/404").default,
