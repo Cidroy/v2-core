@@ -49,6 +49,7 @@ export default class User extends Base implements IUser {
 	
 	@GQL.Field(type => String)
 	@DB.Column("varchar", { length: 30, nullable: false, unique: true })
+	@Validate.IsPhoneNumber("IN")
 	public mobile!: string
 
 	@GQL.Field(type => String)

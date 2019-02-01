@@ -25,6 +25,7 @@ import CounsellorTypeResolver from "@positron/resolvers/counsellorType"
 import TrainerTypeResolver from "@positron/resolvers/trainerType"
 import GymUserModeResolver from "@positron/resolvers/gymUserMode"
 import PaymentModeResolver from "@positron/resolvers/paymentMode"
+import GymPricesResolver from "@positron/resolvers/gymPrices"
 
 export default class GQL{
 	private static Resolvers = [
@@ -53,6 +54,7 @@ export default class GQL{
 		TrainerTypeResolver,
 		GymUserModeResolver,
 		PaymentModeResolver,
+		GymPricesResolver,
 	]
 
 	public static async Schema(){
