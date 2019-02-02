@@ -13,7 +13,7 @@
 				</v-flex>	
 				
 				<v-flex xs3 class="pr-4">
-					<v-text-field box prepend-icon="fas fa-receipt" value="7384" label="Receipt No" readonly ></v-text-field>
+					<v-text-field prepend-icon="fas fa-receipt" value="7384" label="Receipt No" ></v-text-field>
 				</v-flex>
 
 				<v-flex xs6>
@@ -44,10 +44,10 @@
 					</v-flex>
 
 					<v-flex xs4 class="pl-4">
-						<v-select prepend-icon="list" :items="offers" label="Offers"></v-select>
+						<v-select prepend-icon="fas fa-bolt" :items="offers" label="Offers"></v-select>
 					</v-flex>
-					<v-flex xs2>
-						
+					<v-flex xs4 class="pl-4">
+						<v-text-field label="Enter Discount Amount" single-line solo></v-text-field>
 					</v-flex>
 				</v-layout>
 
@@ -97,6 +97,7 @@ import { Component } from "vue-property-decorator"
 export default class Home extends Vue{
 	radioPmode = "radio-1"
 	offers = [
+		'Custom',
 		'Couple',
 		'New year',
 		'Student',

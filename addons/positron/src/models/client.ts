@@ -20,19 +20,8 @@ GQL.registerEnumType(GENDER, {
 
 @GQL.ObjectType()
 @DB.Entity()
-export default class Client extends Base implements IUser{
-	@GQL.Field(type => String)
-	@DB.Column("varchar", { length: 30 })
-	public firstName!: string
-
-	@GQL.Field(type => String)
-	@DB.Column("varchar", { length: 30 })
-	public middleName?: string
-
-	@GQL.Field(type => String)
-	@DB.Column("varchar", { length: 30 })
-	public lastName?: string
-
+export default class Client extends Base {
+	
 	@GQL.Field(type => String)
 	@DB.Column("varchar", { length: 30 })
 	public username!: string
@@ -51,35 +40,6 @@ export default class Client extends Base implements IUser{
 		enum: PASSWORD_PREFERENCE,
 	})
 	public passwordPreference: PASSWORD_PREFERENCE = PASSWORD_PREFERENCE.PASSWORD
-
-	@GQL.Field(type => Date)
-	@DB.Column("date")
-	public dob!: Date
-
-	@GQL.Field(type => GENDER)
-	@DB.Column({
-		type: "enum",
-		enum: GENDER
-	})
-	public gender!: GENDER
-
-	@GQL.Field(type => String)
-	@DB.Column("varchar", { length: 30 })
-	public mobile!: string
-
-	@GQL.Field(type => String)
-	@DB.Column("varchar", { length: 30 })
-	public whatsapp?: string
-
-	@GQL.Field(type => String)
-	@DB.Column("varchar")
-	@Validate.IsEmail()
-	public email?: string
-
-	@GQL.Field(type => String)
-	@DB.OneToMany(type => Address, address => address.client)
-	@DB.Column("varchar")
-	public address!: string
 
 	@GQL.Field(type => Number)
 	@DB.Column("integer")

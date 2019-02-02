@@ -76,8 +76,8 @@
 			<div class="right pr-2"> 
 				<v-btn dark>Cancel</v-btn>
 				<v-btn dark @click="snackbar = true" color="orange darken-4" class="mb-2">Submit</v-btn>
-				<v-snackbar class="pt-5" v-model="snackbar" :top="y === 'top'" :right="x === 'right'">Freezing has been Initiated!
-      				<v-btn color="orange darken-4" flat @click="snackbar = false">Close</v-btn>
+				<v-snackbar color="deep-purple darken-1" class="pt-5" v-model="snackbar" :top="y === 'top'" :right="x === 'right'">Freezing has been Initiated!
+      				<v-btn color="grey darken-4" flat @click="snackbar = false">Close</v-btn>
     			</v-snackbar>
 			</div>
 		</v-card>

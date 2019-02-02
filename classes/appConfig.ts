@@ -1,17 +1,25 @@
-import { readFileSync, existsSync, writeFileSync } from "fs"
+import { readFileSync, existsSync, writeFileSync, mkdirSync } from "fs"
 import json5 from "json5"
 import { Logger } from "@classes/CONSOLE"
 import os from "os"
 
 let cache
+// TODO: filename based on project name
+const productName = "gymkonnect"
 export default class AppConfig {
 	private static log = new Logger("app-config")
 
 	private static get file(): string {
-		if (process.env.NODE_ENV == "development") return "dist/appConfig.json5"
-		// TODO: filename based on project name
-		else return os.homedir() + "/gymkonnect.w+boson"
+		try { if(!existsSync(AppConfig.DataFolder)) mkdirSync(AppConfig.DataFolder) }
+		catch (error) {
+			AppConfig.log.error(error)
+			AppConfig.log.verbose("failed to create data folder")
+		}
+		if (process.env.NODE_ENV === "development") return "dist/appConfig.json5"
+		else return `${AppConfig.DataFolder}/${productName}.w+boson`
 	}
+	
+	public static get DataFolder() { return os.homedir() + `/${productName}` }
 
 	private static readonly defaultCache = {
 		lastModified: new Date(),

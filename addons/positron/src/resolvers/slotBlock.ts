@@ -3,6 +3,12 @@ import SlotBlock from "@positron/models/slotBlock"
 
 @GQL.Resolver(of => SlotBlock)
 export default class SlotBlockResolver {
+
+	@GQL.Query(returns => [SlotBlock,])
+	public async slotBlock() {
+		return SlotBlock.find()
+	}
+
 	@GQL.Mutation(returns => SlotBlock)
 	public async addSlotBlock(
 		@GQL.Arg("start") start: Date,

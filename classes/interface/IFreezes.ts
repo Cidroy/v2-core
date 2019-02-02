@@ -1,12 +1,12 @@
 import { IEntityBase } from "@classes/interface/IEntityBase"
 
 export default interface IFreezes extends IEntityBase{
-	user : string,
-	transaction? : string,
+	user : number,
+	transaction? : number,
 	count? : number,
 	start : Date,
 	end? : Date,
-	payment? : string,
+	payment? : number,
 	days? : number
 	
 }

@@ -67,13 +67,12 @@
         			<v-icon>info</v-icon>
       			</v-btn>
 
-				<v-btn color="orange darken-4" flat>
+				<v-btn color="orange darken-4" flat to="/">
 					<span>Settings</span>
 					<v-icon>settings_applications</v-icon>
 				</v-btn>
-    		</v-bottom-nav>	
+    		</v-bottom-nav>
 		</v-navigation-drawer>
-
 
 		<!--drawer end-->
 		<v-toolbar color="orange darken-4" dark app :clipped-left="$vuetify.breakpoint.mdAndUp" fixed>
@@ -130,7 +129,7 @@
 								</v-list-tile-avatar>
 
 								<v-list-tile-content>
-									<v-list-tile-title>K Karthik</v-list-tile-title>
+									<v-list-tile-title>Kundan Singh</v-list-tile-title>
 									<v-list-tile-sub-title>Admin</v-list-tile-sub-title>
 								</v-list-tile-content>
 							</v-list-tile>
@@ -248,8 +247,10 @@ export default class Vuetify extends Vue {
             { icon: "bubble_chart", text: "HR", to: "/hr", },
             { 
 				icon: "settings", text: "Settings", children: [
-				{ icon: "bubble_chart", text: "Edit", to: "/inspire", },
-            	{ icon: "bubble_chart", text: "Profile", to: "/inspire", },
+				{ icon: "fas fa-ethernet", text: "Hardware", to: "/hw-settings", },
+            	{ icon: "fas fa-paper-plane", text: "Plans & Offers", to: "/plans-offers", },
+				{ icon: "fas fa-comments", text: "SMS & Emails", to: "/sms-emails", },
+				{ icon: "fab fa-superpowers", text: "Admin Access", to: "/admin-settings", },
 				],
 				"icon-alt": "settings",
 			}
@@ -257,7 +258,7 @@ export default class Vuetify extends Vue {
     profileList: { icon?: string, text: string, to?: string}[] = [
         { text: "My Account", to: "/inspire",},
         { text: "Dummy", to: "/inspire",},
-        { text: "Logout", to: "/inspire",},
+        { text: "Logout", to: "/login",},
         { text: "Exit", to: "/inspire",},
     ];
     

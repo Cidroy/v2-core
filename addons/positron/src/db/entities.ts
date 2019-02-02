@@ -1,6 +1,5 @@
 // TODO: use import all for auto import
 // TODO: provide functionality to get Object Repos for query
-import Client from "@positron/models/client"
 import Address from "@positron/models/address"
 import Options from "@positron/models/options"
 import User from "@positron/models/user"
@@ -17,9 +16,18 @@ import Occupation from "@positron/models/occupation"
 import Organization from "@positron/models/organization"
 import PriceList from "@positron/models/priceList"
 import SlotBlock from "@positron/models/slotBlock"
+import GymPurpose from "@positron/models/gymPurpose"
+import GymUsers from "@positron/models/gymUsers"
+import GymProgramme from "@positron/models/gymProgramme"
+import MembershipType from "@positron/models/membershipType"
+import GymPackage from "@positron/models/gymPackage"
+import CounsellorType from "@positron/models/counsellorType"
+import TrainerType from "@positron/models/trainerType"
+import GymUserMode from "@positron/models/gymUserMode"
+import PaymentMode from "@positron/models/paymentMode"
+import GymPrices from "@positron/models/gymPrices"
 
 export default [
-	Client,
 	Address,
 	Options,
 	User,
@@ -36,4 +44,14 @@ export default [
 	Organization,
 	PriceList,
 	SlotBlock,
+	GymPurpose,
+	GymUsers,
+	GymProgramme,
+	MembershipType,
+	GymPackage,
+	CounsellorType,
+	TrainerType,
+	GymUserMode,
+	PaymentMode,
+	GymPrices,
 ]

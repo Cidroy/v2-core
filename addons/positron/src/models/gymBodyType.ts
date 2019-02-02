@@ -4,14 +4,13 @@ import * as GQL from "type-graphql"
 import IGymBodyType from "@classes/interface/IGymBodyType"
 
 @DB.Entity()
-@DB.Entity()
 @GQL.ObjectType()
 export default class GymBodyType extends Base implements IGymBodyType {
 	@GQL.Field(type => String)
-	@DB.Column("varchar")
+	@DB.Column("varchar", { nullable: false, unique: true })
 	public name!: string
 
-	@GQL.Field(type => String)
+	@GQL.Field(type => String,{nullable:true})
 	@DB.Column("varchar" , {nullable : true})
 	public description?: string
 

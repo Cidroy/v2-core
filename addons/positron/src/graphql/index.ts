@@ -16,6 +16,16 @@ import OccupationResolver from "@positron/resolvers/occupation"
 import OrganizationResolver from "@positron/resolvers/organization"
 import PriceListResolver from "@positron/resolvers/priceList"
 import SlotBlockResolver from "@positron/resolvers/slotBlock"
+import GymPurposeResolver from "@positron/resolvers/gymPurpose"
+import GymUsersResolver from "@positron/resolvers/gymUsers"
+import GymProgrammeResolver from "@positron/resolvers/gymProgramme"
+import MembershipTypeResolver from "@positron/resolvers/membershipType"
+import GymPackageResolver from "@positron/resolvers/gymPackage"
+import CounsellorTypeResolver from "@positron/resolvers/counsellorType"
+import TrainerTypeResolver from "@positron/resolvers/trainerType"
+import GymUserModeResolver from "@positron/resolvers/gymUserMode"
+import PaymentModeResolver from "@positron/resolvers/paymentMode"
+import GymPricesResolver from "@positron/resolvers/gymPrices"
 
 export default class GQL{
 	private static Resolvers = [
@@ -35,6 +45,16 @@ export default class GQL{
 		OrganizationResolver,
 		PriceListResolver,
 		SlotBlockResolver,
+		GymPurposeResolver,
+		GymUsersResolver,
+		GymProgrammeResolver,
+		MembershipTypeResolver,
+		GymPackageResolver,
+		CounsellorTypeResolver,
+		TrainerTypeResolver,
+		GymUserModeResolver,
+		PaymentModeResolver,
+		GymPricesResolver,
 	]
 
 	public static async Schema(){

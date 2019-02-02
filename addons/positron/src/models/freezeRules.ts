@@ -6,9 +6,21 @@ import Base from "./base"
 @GQL.ObjectType()
 @DB.Entity("gym_freeze_rules")
 export default class GymFreezeRules extends Base implements IGymFreezeRules{
-	@GQL.Field(type => String)
-	@DB.Column("varchar")
-	public packages!: string
+	@GQL.Field(type => Number)
+	@DB.Column("integer")
+	public packages!: number
+
+	@GQL.Field(type => Number)
+	@DB.Column("integer")
+	public category!: number
+
+	@GQL.Field(type => Number)
+	@DB.Column("integer")
+	public grouping!: number
+
+	@GQL.Field(type => Number)
+	@DB.Column("integer")
+	public programme!: number
 
 	@GQL.Field(type => Number)
 	@DB.Column("integer")
