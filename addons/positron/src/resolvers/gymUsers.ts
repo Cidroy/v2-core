@@ -13,6 +13,7 @@ export default class GymUsersResolver {
 	public async addGymUser(
 		@GQL.Arg("userId") userId: number,
 		@GQL.Arg("mode") mode: number,
+		@GQL.Arg("mode") isGrouped: boolean,
 		@GQL.Arg("enquiryInitial", { nullable: true }) enquiryInitial?: number,
 		@GQL.Arg("enquiryRecent", { nullable: true }) enquiryRecent?: number,
 		@GQL.Arg("healthJoining", { nullable: true }) healthJoining?: number,
@@ -35,6 +36,7 @@ export default class GymUsersResolver {
 		let gymUsers = new GymUsers()
 		gymUsers.userId = userId
 		gymUsers.mode = mode
+		gymUsers.isGrouped = isGrouped
 		if (enquiryInitial) gymUsers.enquiryInitial = enquiryInitial
 		if (enquiryRecent) gymUsers.enquiryRecent = enquiryRecent
 		if (healthJoining) gymUsers.healthJoining = healthJoining

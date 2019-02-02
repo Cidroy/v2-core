@@ -49,7 +49,7 @@ export default class Transaction extends Base implements ITransaction{
 	@GQL.Field(type => Number)
 	@DB.Column("integer")
 	public payment!: number
-
+ 
 	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
 	public paymentWorkoutCard?: number

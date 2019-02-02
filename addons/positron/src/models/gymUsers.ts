@@ -23,6 +23,10 @@ export default class GymUsers extends Base implements IGymUsers {
 	@DB.Column("integer")
 	public mode!: number
 	
+	@GQL.Field(type => Boolean, { description: "Entity exists" })
+	@DB.Column("tinyint",{default: false})
+	public isGrouped! : boolean
+
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })
 	public enquiryInitial?: number

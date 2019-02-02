@@ -15,6 +15,7 @@ export default interface IGymUsers extends IEntityBase {
 	 * @memberof IUser
 	 */
 	mode: number,
+	isGrouped : boolean,
 	/**
 	 * References enquiry.id
 	 *
