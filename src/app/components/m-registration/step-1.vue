@@ -129,9 +129,13 @@ export default class MRegistrationStep1 extends Vue{
 	}
 
 	formValid: boolean = true
-	formReset(){ this.$refs.form.reset() }
+	formReset(){
+		// @ts-ignore
+		this.$refs.form.reset()
+	}
 	
 	formNext(){
+		// @ts-ignore
 		if(this.$refs.form.validate()){
 			this.inputEmitter()
 			this.nextStep()
@@ -147,6 +151,7 @@ export default class MRegistrationStep1 extends Vue{
 
 	get userData(){
 		return {
+			...this.value,
 			firstName : this.firstName,
 			middleName : this.middleName,
 			lastName : this.lastName,			
@@ -156,7 +161,11 @@ export default class MRegistrationStep1 extends Vue{
 		firstName : "",
 		middleName : "",
 		lastName : "",
-	}) }) value !: object
+	}) }) value !: {
+		firstName : string,
+		middleName : string,
+		lastName : string,
+	}
 	@Emit("input") inputEmitter(){ return this.userData }
 	@Watch("value") onValueChange(){
 		this.firstName = this.value.firstName

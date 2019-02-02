@@ -29,6 +29,38 @@ let _bodyTypes: string[] = [
 	"mesomorph",
 ]
 
+let _groupings = {
+	Solo : {
+		value:"SOLO",
+		count: 1,
+		min: 1,
+		max: 1,
+	},
+	Couple : {
+		value:"COUPLE",
+		count: 2,
+		min: 2,
+		max: 2,
+	},
+	Group : {
+		value:"GROUP",
+		count: 2,
+		min: 2,
+		max: 8,
+	},
+}
+
+let _purposes: string[] = [
+	"General Fitness",
+	"Lose Fat",
+	"Gain Muscle",
+	"Tone Up",
+	"Sports Oriented",
+	"Lifestyle",
+	"Transform",
+	"Specialized Training",
+]
+
 @Module({ dynamic: true, store, name: "Misc" })
 class Misc extends VuexModule {
 	private _occupations: string[] = _occupations
@@ -42,6 +74,12 @@ class Misc extends VuexModule {
 
 	private _bodyTypes: string[] = _bodyTypes
 	public get BODY_TYPES(): string[] { return this._bodyTypes }
+
+	private _groupings = _groupings
+	public get GROUPINGS() { return this._groupings }
+
+	private _purposes = _purposes
+	public get PURPOSES() {return this._purposes}
 }
 
 export const MiscStore = getModule(Misc)
