@@ -243,7 +243,7 @@ export default class Vuetify extends Vue {
 				"icon-alt": "library_add",
 			},
 			{ icon: "timeline", text: "Sales & Finance", to: "/payment", },
-			{ icon: "assessment", text: "Reports", to: "/inspire", },
+			{ icon: "assessment", text: "Reports", to: "/reports", },
             { icon: "bubble_chart", text: "HR", to: "/hr", },
             { 
 				icon: "settings", text: "Settings", children: [

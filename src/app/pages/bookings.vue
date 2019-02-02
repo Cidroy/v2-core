@@ -101,7 +101,13 @@
 							</v-flex>
 							<v-flex xs4>
 								<v-text-field label="Enter Mobile No" single-line solo></v-text-field>
-							</v-flex>	
+							</v-flex>
+							<v-spacer/>
+							<v-flex xs4 class="pl-4">
+								<v-subheader class="title">
+									<a @click.stop.prevent="show">View Previous Bookings</a>
+								</v-subheader>
+							</v-flex>
 						</v-layout>
 						<v-divider></v-divider>
 
@@ -245,6 +251,9 @@ export default class Home extends Vue{
 		v => !!v || "Name is required",
 		v => v.length <= 15 || "Name must be less than 15 characters",
 	]
+	show(){
+		to="/payment"
+	}
 	radioGroup1 = 1
 	radioGB1 = 1
 	radioGB2 = 1
