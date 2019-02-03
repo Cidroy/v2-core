@@ -29,7 +29,7 @@
 					<v-subheader class="title">Mobile No</v-subheader>
 				</v-flex>
 				<v-flex xs4>
-					<v-text-field label="Enter Mobile No" v-model="phone" :rules="phoneRules" single-line solo mask="##########"></v-text-field>
+					<v-text-field label="Enter Mobile No" v-model="phone" :rules="phoneRules" single-line solo color="orange darken-2" mask="##########"></v-text-field>
 				</v-flex>
 				<v-spacer></v-spacer>
 				<v-flex xs3 class="pr-4">

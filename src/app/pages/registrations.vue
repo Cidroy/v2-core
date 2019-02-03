@@ -12,8 +12,8 @@
 							<v-flex class="pl-2 ml-2" xs12>
 								<v-radio-group row label="Personal Traning Type: " v-model="radioTop1" :mandatory="false">
 									<v-layout row align-start>
-										<v-radio class="" label="Solo" value="radio-1"></v-radio>
-										<v-radio class="" label="Group" value="radio-2"></v-radio>
+										<v-radio color="orange darken-2" label="Solo" value="radio-1"></v-radio>
+										<v-radio color="orange darken-2" label="Group" value="radio-2"></v-radio>
 									</v-layout>
 								</v-radio-group>
 							</v-flex>	
@@ -21,7 +21,7 @@
 								<v-subheader class="title">Mobile No</v-subheader>
 							</v-flex>
 							<v-flex xs4>
-								<v-text-field label="Enter Mobile No" single-line solo></v-text-field>
+								<v-text-field label="Enter Mobile No" single-line solo color="orange darken-2"></v-text-field>
 							</v-flex>
 							<v-spacer></v-spacer>
 							<v-flex xs3 class="pr-4">
@@ -49,18 +49,18 @@
 						<h4 class="pl-4 pt-2 title">Purpose of taking Personal Training:</h4>
 			
 						<v-layout class="pl-4" align-start row>
-							<v-checkbox class="" label="General Fitness"></v-checkbox>
-							<v-checkbox class="" label="Fat Loss"></v-checkbox>
-							<v-checkbox class="" label="Muscle Toning"></v-checkbox>
-							<v-checkbox class="" label="Sports Oriented"></v-checkbox>
-							<v-checkbox class="" label="Physical"></v-checkbox>
+							<v-checkbox color="orange darken-2" label="General Fitness"></v-checkbox>
+							<v-checkbox color="orange darken-2" label="Fat Loss"></v-checkbox>
+							<v-checkbox color="orange darken-2" label="muscle Toning"></v-checkbox>
+							<v-checkbox color="orange darken-2" label="Sports Oriented"></v-checkbox>
+							<v-checkbox color="orange darken-2" label="Physical"></v-checkbox>
 						</v-layout>
 						<v-layout class="pl-4" align-start row>
-							<v-checkbox class="" label="Specialised"></v-checkbox>
-							<v-checkbox class="" label="Build muscel"></v-checkbox>
-							<v-checkbox class="" label="Random"></v-checkbox>
-							<v-checkbox class="" label="Random"></v-checkbox>
-							<v-checkbox class="" label="Random"></v-checkbox>
+							<v-checkbox color="orange darken-2" label="Specialised"></v-checkbox>
+							<v-checkbox color="orange darken-2" label="Build muscle"></v-checkbox>
+							<v-checkbox color="orange darken-2" label="Random"></v-checkbox>
+							<v-checkbox color="orange darken-2" label="Random"></v-checkbox>
+							<v-checkbox color="orange darken-2" label="Random"></v-checkbox>
 						</v-layout>	
 						
 						<h4 class="pl-4 title">Preffered Workout Time:</h4>
@@ -68,14 +68,14 @@
 							<v-flex xs2 class="">
 								<v-menu ref="menu4" v-model="modal4" :close-on-content-click="false" :nudge-right="40" :return-value.sync="time4"
 									lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
-									<v-text-field slot="activator" v-model="time4" label="Time From" prepend-icon="access_time" readonly></v-text-field>
+									<v-text-field color="orange darken-2" slot="activator" v-model="time4" label="Time From" prepend-icon="access_time" readonly></v-text-field>
 									<v-time-picker v-if="modal4" v-model="time4" full-width @change="$refs.menu4.save(time4)"></v-time-picker>
 								</v-menu>
 							</v-flex>
 							<v-flex xs2 class="">
 								<v-menu ref="menu5" v-model="modal2" :close-on-content-click="false" :nudge-right="40" :return-value.sync="timme"
 									lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
-									<v-text-field slot="activator" v-model="timme" label="Time To" prepend-icon="access_time" readonly></v-text-field>
+									<v-text-field color="orange darken-2" slot="activator" v-model="timme" label="Time To" prepend-icon="access_time" readonly></v-text-field>
 									<v-time-picker v-if="modal2" v-model="timme" full-width @change="$refs.menu5.save(timme)"></v-time-picker>
 								</v-menu>
 							</v-flex>
@@ -86,10 +86,10 @@
 							<v-flex xs12>
 								<v-radio-group v-model="radios1" :mandatory="false">
 									<v-layout row align-start>
-										<v-radio class="" label="1 Month" value="radio-1"></v-radio>
-										<v-radio class="" label="3 Months" value="radio-2"></v-radio>
-										<v-radio class="" label="3 Times a Week" value="radio-3"></v-radio>
-										<v-radio class="" label="Consultation with Trainers" value="radio-4"></v-radio>
+										<v-radio color="orange darken-2" label="1 Month" value="radio-1"></v-radio>
+										<v-radio color="orange darken-2" label="3 Months" value="radio-2"></v-radio>
+										<v-radio color="orange darken-2" label="3 Times a Week" value="radio-3"></v-radio>
+										<v-radio color="orange darken-2" label="Consultation with Trainers" value="radio-4"></v-radio>
 									</v-layout>
 								</v-radio-group>
 							</v-flex>
@@ -100,10 +100,10 @@
 							<v-flex xs12>
 								<v-radio-group v-model="radios2" :mandatory="false">
 									<v-layout row align-start>
-										<v-radio class="" label="Standard" value="radio-1"></v-radio>
-										<v-radio class="" label="Master" value="radio-2"></v-radio>
-										<v-radio class="" label="Master" value="radio-3"></v-radio>
-										<v-radio class="" label="Coach" value="radio-4"></v-radio>
+										<v-radio color="orange darken-2" label="Standard" value="radio-1"></v-radio>
+										<v-radio color="orange darken-2" label="Master" value="radio-2"></v-radio>
+										<v-radio color="orange darken-2" label="Master" value="radio-3"></v-radio>
+										<v-radio color="orange darken-2" label="Coach" value="radio-4"></v-radio>
 									</v-layout>
 								</v-radio-group>
 							</v-flex>
@@ -127,9 +127,9 @@
 							<v-flex class="pl-2 ml-2" xs12>
 								<v-radio-group row label="One-Day Type: " v-model="radioTop2" :mandatory="false">
 									<v-layout row align-start>
-										<v-radio class="" label="Solo" value="radio-1"></v-radio>
-										<v-radio class="" label="Couple" value="radio-2"></v-radio>
-										<v-radio class="" label="Group" value="radio-3"></v-radio>
+										<v-radio color="orange darken-2" label="Solo" value="radio-1"></v-radio>
+										<v-radio color="orange darken-2" label="Couple" value="radio-2"></v-radio>
+										<v-radio color="orange darken-2" label="Group" value="radio-3"></v-radio>
 									</v-layout>
 								</v-radio-group>
 							</v-flex>
@@ -137,49 +137,49 @@
 								<v-subheader class="title">Mobile No</v-subheader>
 							</v-flex>
 							<v-flex xs4>
-								<v-text-field label="Enter Mobile No" single-line solo></v-text-field>
+								<v-text-field label="Enter Mobile No" single-line solo color="orange darken-2"></v-text-field>
 							</v-flex>
 						</v-layout>
 						<v-divider></v-divider>
 
 						<v-layout class="pl-4 pt-2" row wrap>
 							<v-flex lg3 class="mr-3">
-								<v-text-field prepend-icon="fas fa-user" counter maxlength="15" label="First Name" required></v-text-field>
+								<v-text-field prepend-icon="fas fa-user" counter maxlength="15" label="First Name" required color="orange darken-2"></v-text-field>
 							</v-flex>
 							<v-flex lg3 class="mr-3">
-								<v-text-field counter maxlength="15" label="Middle Name"></v-text-field>
+								<v-text-field counter maxlength="15" label="Middle Name" color="orange darken-2"></v-text-field>
 							</v-flex>
 							<v-flex lg3 class="mr-3">
-								<v-text-field counter maxlength="15" label="Last Name"></v-text-field>
+								<v-text-field counter maxlength="15" label="Last Name" color="orange darken-2"></v-text-field>
 							</v-flex>
 						</v-layout>
 
 						<v-layout row wrap class="pl-4">
 							<v-flex xs6>
 								<v-radio-group prepend-icon="fas fa-transgender-alt" label="Gender" v-model="radioGroup1" row>
-									<v-radio label="Male" value="radio-4"></v-radio>
-									<v-radio label="Female" value="radio-5"></v-radio>
-									<v-radio label="Others" value="radio-6"></v-radio>
+									<v-radio color="orange darken-2" label="Male" value="radio-4"></v-radio>
+									<v-radio color="orange darken-2" label="Female" value="radio-5"></v-radio>
+									<v-radio color="orange darken-2" label="Others" value="radio-6"></v-radio>
 								</v-radio-group>
 							</v-flex>
 
 							<v-flex xs4>
-								<v-combobox prepend-icon="work" :items="items" label="Occupation"></v-combobox>
+								<v-combobox prepend-icon="work" :items="items" label="Occupation" color="orange darken-2"></v-combobox>
 							</v-flex>
 
 							<v-flex xs6 lg6 class="pr-4">
-								<v-text-field prepend-icon="fas fa-envelope" v-model="email" :rules="emailRules" label="Email address" type="email"></v-text-field>
+								<v-text-field prepend-icon="fas fa-envelope" v-model="email" :rules="emailRules" label="Email address" type="email" color="orange darken-2"></v-text-field>
 							</v-flex>
 
 							<v-flex xs3>
-								<v-text-field prepend-icon="fab fa-whatsapp" label="Whatsapp Number" mask="phone"></v-text-field>
+								<v-text-field prepend-icon="fab fa-whatsapp" label="Whatsapp Number" mask="phone" color="orange darken-2"></v-text-field>
 							</v-flex>
 							<v-flex xs3>
-								<v-checkbox label="Not Same As Phone Number"></v-checkbox>
+								<v-checkbox label="Not Same As Phone Number" color="orange darken-2"></v-checkbox>
 							</v-flex>
 							
 							<v-flex xs6 class="pr-4">
-								<v-textarea prepend-icon="place" name="input-7-1" label="Residential Address"></v-textarea>
+								<v-textarea prepend-icon="place" name="input-7-1" label="Residential Address" color="orange darken-2"></v-textarea>
 							</v-flex>
 						</v-layout>
 						<v-divider></v-divider>
@@ -191,9 +191,9 @@
 
 							<v-flex>
 								<v-radio-group v-model="radioOneDay" row>
-									<v-radio label="1 Day" value="radio-1"></v-radio>
-									<v-radio label="6 Days" value="radio-2"></v-radio>
-									<v-radio label="12 Days" value="radio-3"></v-radio>
+									<v-radio color="orange darken-2" label="1 Day" value="radio-1"></v-radio>
+									<v-radio color="orange darken-2" label="6 Days" value="radio-2"></v-radio>
+									<v-radio color="orange darken-2" label="12 Days" value="radio-3"></v-radio>
 								</v-radio-group>
 							</v-flex>		
 							<!-- <v-flex xs3 class="pt-2">
@@ -223,8 +223,8 @@
 							<v-flex xs12>
 								<v-radio-group v-model="radioTime" :mandatory="false">
 									<v-layout row align-start>
-										<v-radio class="" label="Peak Hours" value="radio-1"></v-radio>
-										<v-radio class="" label="Off-peak Hours" value="radio-2"></v-radio>
+										<v-radio color="orange darken-2" label="Peak Hours" value="radio-1"></v-radio>
+										<v-radio color="orange darken-2" label="Off-peak Hours" value="radio-2"></v-radio>
 									</v-layout>
 								</v-radio-group>
 							</v-flex>	
@@ -249,20 +249,20 @@
 								<v-subheader class="title">Mobile No</v-subheader>
 							</v-flex>
 							<v-flex xs4>
-								<v-text-field mask="phone" label="Enter Mobile No" single-line solo></v-text-field>
+								<v-text-field mask="phone" label="Enter Mobile No" single-line solo color="orange darken-2"></v-text-field>
 							</v-flex>
 						</v-layout>
 						<v-divider></v-divider>
 
 						<v-layout class="pl-4 pt-2" row wrap>
 							<v-flex lg3 class="mr-3">
-								<v-text-field prepend-icon="fas fa-user" counter maxlength="15" label="First Name" required></v-text-field>
+								<v-text-field color="orange darken-2" prepend-icon="fas fa-user" counter maxlength="15" label="First Name" required></v-text-field>
 							</v-flex>
 							<v-flex lg3 class="mr-3">
-								<v-text-field counter maxlength="15" label="Middle Name"></v-text-field>
+								<v-text-field color="orange darken-2" counter maxlength="15" label="Middle Name"></v-text-field>
 							</v-flex>
 							<v-flex lg3 class="mr-3">
-								<v-text-field counter maxlength="15" label="Last Name"></v-text-field>
+								<v-text-field color="orange darken-2" counter maxlength="15" label="Last Name"></v-text-field>
 							</v-flex>
 						</v-layout>
 			
@@ -273,39 +273,39 @@
 
 							<v-flex xs12>
 								<v-layout row align-start>
-									<v-checkbox class="" label="General Fitness"></v-checkbox>
-									<v-checkbox class="" label="Fat Loss"></v-checkbox>
-									<v-checkbox class="" label="Muscle Toning"></v-checkbox>
-									<v-checkbox class="" label="Sports Oriented"></v-checkbox>
-									<v-checkbox class="" label="Physical"></v-checkbox>
+									<v-checkbox color="orange darken-2" label="General Fitness"></v-checkbox>
+									<v-checkbox color="orange darken-2" label="Fat Loss"></v-checkbox>
+									<v-checkbox color="orange darken-2" label="Muscle Toning"></v-checkbox>
+									<v-checkbox color="orange darken-2" label="Sports Oriented"></v-checkbox>
+									<v-checkbox color="orange darken-2" label="Physical"></v-checkbox>
 								</v-layout>
 								<v-layout>
-									<v-checkbox class="" label="Specialised"></v-checkbox>
-									<v-checkbox class="" label="Build muscel"></v-checkbox>
-									<v-checkbox class="" label="Random"></v-checkbox>
-									<v-checkbox class="" label="Random"></v-checkbox>
-									<v-checkbox class="" label="Random"></v-checkbox>
+									<v-checkbox color="orange darken-2" label="Specialised"></v-checkbox>
+									<v-checkbox color="orange darken-2" label="Build muscle"></v-checkbox>
+									<v-checkbox color="orange darken-2" label="Random"></v-checkbox>
+									<v-checkbox color="orange darken-2" label="Random"></v-checkbox>
+									<v-checkbox color="orange darken-2" label="Random"></v-checkbox>
 								</v-layout>	
 							</v-flex>
 
 							<v-flex lg12>
 								<v-radio-group label="Type of Counsellor: " v-model="Counsellor" row>
-									<v-radio label="X" value="radio-1"></v-radio>
-									<v-radio label="Y" value="radio-2"></v-radio>
-									<v-radio label="Z" value="radio-3"></v-radio>
-									<v-radio label="A" value="radio-4"></v-radio>
-									<v-radio label="B" value="radio-5"></v-radio>
+									<v-radio color="orange darken-2" label="X" value="radio-1"></v-radio>
+									<v-radio color="orange darken-2" label="Y" value="radio-2"></v-radio>
+									<v-radio color="orange darken-2" label="Z" value="radio-3"></v-radio>
+									<v-radio color="orange darken-2" label="A" value="radio-4"></v-radio>
+									<v-radio color="orange darken-2" label="B" value="radio-5"></v-radio>
 								</v-radio-group>
 							</v-flex>
 
 							<v-flex lg4>
-								<v-text-field placeholder="No.of session"></v-text-field>	
+								<v-text-field color="orange darken-2" placeholder="No.of session"></v-text-field>	
 							</v-flex>
 
 							<v-flex lg4>
 								
 								<v-menu :close-on-content-click="false" v-model="menu3" :nudge-right="40" lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
-         						 <v-text-field	slot="activator" v-model="computedDateFormatted" label="Pick a Date"
+         						 <v-text-field color="orange darken-2"	slot="activator" v-model="computedDateFormatted" label="Pick a Date"
 									hint="DD/MM/YYYY format" persistent-hint prepend-icon="event" readonly></v-text-field>
           							<v-date-picker v-model="dates"  multiple no-title @input="menu3 = false"></v-date-picker>
        							 </v-menu>
@@ -315,7 +315,7 @@
 							<v-flex xs3 lg5>
 								<v-menu ref="menu1" :close-on-content-click="false" v-model="menu1" :nudge-right="40" lazy transition="scale-transition"
 								offset-y full-width max-width="290px" min-width="290px">
-									<v-text-field slot="activator" v-model="dateFormatted" label="Counseling Date" placeholder="Counseling Date"
+									<v-text-field color="orange darken-2" slot="activator" v-model="dateFormatted" label="Counseling Date" placeholder="Counseling Date"
 									hint="DD/MM/YYYY format" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)"></v-text-field>
 									<v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
 								</v-menu>
@@ -324,7 +324,7 @@
 							<v-flex xs3 class="pl-4">
 								<v-menu ref="menu1" v-model="menu2" :close-on-content-click="false" :nudge-right="40" :return-value.sync="time"
 								lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
-									<v-text-field slot="activator" v-model="time" label="Counseling Time" prepend-icon="access_time" readonly></v-text-field>
+									<v-text-field color="orange darken-2" slot="activator" v-model="time" label="Counseling Time" prepend-icon="access_time" readonly></v-text-field>
 									<v-time-picker v-if="menu2" v-model="time" full-width @change="$refs.menu1.save(time)"></v-time-picker>
 								</v-menu>
 							</v-flex>

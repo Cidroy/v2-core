@@ -8,7 +8,7 @@
 				</v-flex>
 				<v-spacer></v-spacer>
 				<v-flex lg3 mt-2 pr-4>
-					<v-text-field v-model="search" single-line hide-details append-icon="search" label="Search" class="hidden-sm-and-down pt-2" />
+					<v-text-field v-model="search" single-line hide-details append-icon="search" label="Search" color="orange darken-2" class="hidden-sm-and-down pt-2" />
 				</v-flex>
 				<v-btn dark color="orange darken-4">Send SMS</v-btn>
 				<v-btn dark color="orange darken-4">Send Email</v-btn>

@@ -7,19 +7,19 @@
 					<v-flex xs12>
 						<v-layout row wrap class="pt-2 pb-2">
 							<v-flex xs12 lg4 class="pl-4">
-								<v-select v-model="Type" prepend-icon="fas fa-id-card" :items="ReportType" label="Report Types"/>
+								<v-select color="orange darken-2" v-model="Type" prepend-icon="fas fa-id-card" :items="ReportType" label="Report Types"/>
 							</v-flex>
 
 							<v-flex xs12 lg4 class="pl-4">
 								<v-menu ref="menu1" :close-on-content-click="false" v-model="menu1" :nudge-right="40" lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
-								<v-text-field slot="activator" v-model="dateFormatted" label="From" hint="DD/MM/YYYY format" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)"></v-text-field>
+								<v-text-field color="orange darken-2" slot="activator" v-model="dateFormatted" label="From" hint="DD/MM/YYYY format" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)"></v-text-field>
 								<v-date-picker v-model="date" no-title @input="menu1 = false"></v-date-picker>
 								</v-menu>
 							</v-flex>
 
 							<v-flex xs12 lg4 class="pl-4">
 								<v-menu ref="menu" :close-on-content-click="false" v-model="menu" :nudge-right="40" lazy transition="scale-transition" offset-y full-width max-width="290px" min-width="290px">
-								<v-text-field slot="activator" v-model="dateFormatted" label="To" hint="DD/MM/YYYY format" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)"></v-text-field>
+								<v-text-field color="orange darken-2" slot="activator" v-model="dateFormatted" label="To" hint="DD/MM/YYYY format" persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)"></v-text-field>
 								<v-date-picker v-model="date" no-title @input="menu = false"></v-date-picker>
 								</v-menu>
 							</v-flex>
