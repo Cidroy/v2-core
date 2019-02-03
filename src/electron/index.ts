@@ -51,13 +51,19 @@ class Application {
 		resizable: true,
 	}
 
-	private store = {
+	private _store = {
 		positron: {
 			host: "localhost",
 			port: 9101,
 			ssl: false,
 			mode: "master"
 		}
+	}
+
+	private get store(){ return this._store }
+	private set store(value){
+		Console.log("$$$", value)
+		this._store = value
 	}
 
 	private async initializeStorage() {
@@ -133,8 +139,9 @@ class Application {
 
 	private async onExit(event: Electron.Event) {
 		try {
-			await AppConfig.Set("electron/ui", this.store)
-			Console.verbose("saved", this.store)
+			// FIXME: find why `this.store` is undefined
+			// await AppConfig.Set("electron/ui", this.store)
+			// Console.verbose("saved", this.store)
 			Console.okay("Normal Exit")
 		} catch (error) {
 			Console.error("Abnormal Exit :", error)
