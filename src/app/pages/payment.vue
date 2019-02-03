@@ -6,14 +6,14 @@
 			<v-layout class="pt-4 pl-4" row wrap>
 				<v-flex xs9>
 					<v-radio-group prepend-icon="fas fa-cash-register" label="Mode of Payment" v-model="radioPmode" row>
-						<v-radio label="Cash" value="radio-1"></v-radio>
-						<v-radio label="Card/Online" value="radio-2"></v-radio>
-						<v-radio label="Cheque" value="radio-3"></v-radio>
+						<v-radio color="orange darken-2" label="Cash" value="radio-1"></v-radio>
+						<v-radio color="orange darken-2" label="Card/Online" value="radio-2"></v-radio>
+						<v-radio color="orange darken-2" label="Cheque" value="radio-3"></v-radio>
 					</v-radio-group>
 				</v-flex>	
 				
 				<v-flex xs3 class="pr-4">
-					<v-text-field prepend-icon="fas fa-receipt" value="7384" label="Receipt No" ></v-text-field>
+					<v-text-field color="orange darken-2" prepend-icon="fas fa-receipt" value="7384" label="Receipt No" ></v-text-field>
 				</v-flex>
 
 				<v-flex xs6>
@@ -44,10 +44,10 @@
 					</v-flex>
 
 					<v-flex xs4 class="pl-4">
-						<v-select prepend-icon="fas fa-bolt" :items="offers" label="Offers"></v-select>
+						<v-select color="orange darken-2" prepend-icon="fas fa-bolt" :items="offers" label="Offers"></v-select>
 					</v-flex>
 					<v-flex xs4 class="pl-4">
-						<v-text-field label="Enter Discount Amount" single-line solo></v-text-field>
+						<v-text-field color="orange darken-2" label="Enter Discount Amount" single-line solo></v-text-field>
 					</v-flex>
 				</v-layout>
 
