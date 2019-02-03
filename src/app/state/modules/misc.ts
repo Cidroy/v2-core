@@ -50,6 +50,23 @@ let _groupings = {
 	},
 }
 
+let _membershipTypes = {
+	Gold: "GOLD",
+	Platinum: "PLATINUM",
+}
+
+let _packages = {
+	Monthly: 1,
+	Quaterly: 2,
+	"Half-Yearly": 3,
+	Yearly: 4,
+}
+
+let _timeSlots = {
+	"Peak Hours": 1,
+	"Off-Peak Hours": 2,
+}
+
 let _purposes: string[] = [
 	"General Fitness",
 	"Lose Fat",
@@ -60,6 +77,21 @@ let _purposes: string[] = [
 	"Transform",
 	"Specialized Training",
 ]
+
+let _doors = {
+	"Gym Mens Section": "gym-men",
+	"Gym Ladies Section": "gym-women",
+	SPA: "spa",
+}
+
+let _utmSources = {
+	"Family/Friends": "family-friends",
+	Advertisement: "Advertisement",
+	"Walk-In": "Walk-In",
+	Internet: "Internet",
+	Recommendation: "Recommendation",
+	Telephonic: "Telephonic",
+}
 
 @Module({ dynamic: true, store, name: "Misc" })
 class Misc extends VuexModule {
@@ -80,6 +112,21 @@ class Misc extends VuexModule {
 
 	private _purposes = _purposes
 	public get PURPOSES() {return this._purposes}
+
+	private _membershipTypes = _membershipTypes
+	public get MEMBERSHIP_TYPES() {return this._membershipTypes}
+
+	private _packages = _packages
+	public get PACKAGES() {return this._packages}
+
+	private _timeSlots = _timeSlots
+	public get TIME_SLOTS() {return this._timeSlots}
+
+	private _doors = _doors
+	public get DOORS() {return this._doors}
+
+	private _utmSources = _utmSources
+	public get UTM_SOURCES() {return this._utmSources}
 }
 
 export const MiscStore = getModule(Misc)

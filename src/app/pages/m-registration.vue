@@ -19,22 +19,23 @@
 		<v-layout class="px-2">
 			<v-flex xs12 md6>
 				<v-radio-group prepend-icon="people" label="Registration Type" v-model="grouping" row>
-					<v-radio v-for="(value, name) in GROUPINGS" :label="name" :value="name" :key="name"/>
+					<v-radio v-for="(value, name) in GROUPINGS" :label="name" :value="name" :key="name" color="orange darken-2"/>
 				</v-radio-group>
 			</v-flex>
 			<v-flex xs12 md6 v-if="allowAddPeople || allowDeletePeople"> {{ x_steppers }} / {{ this.GROUPINGS[this.grouping].max }} People </v-flex>
 			<v-flex xs12 md6 v-else> {{ x_steppers }} People </v-flex>
 		</v-layout>
-		<stepper v-for="count in x_steppers" :key="count" :showDelete="allowDeletePeople" @deleteStepper="()=>{ deleteStepper(count) }" />
+		<stepper v-for="(user, index) in x_users" :key="index" :showDelete="allowDeletePeople" @deleteStepper="()=>{ deleteStepper(index) }"/>
 		<v-btn v-show="allowAddPeople" @click.native.stop="addPeople" flat block large> <v-icon>add</v-icon> Add People </v-btn>
 	</Layout>
 </template>
 
 <script lang="ts">
+import { Component, Vue, Watch } from "vue-property-decorator"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
-import { Component, Vue, Watch } from "vue-property-decorator"
 import { MiscStore } from "@/state/modules/misc"
+import { TMRegistration, defaultRegistrationUser } from "@/classes/types/registration"
 
 import stepper from "@/components/m-registration/stepper.vue"
 
@@ -43,39 +44,41 @@ import stepper from "@/components/m-registration/stepper.vue"
 	components: { Layout, stepper, },
 	page: {
 		title: "Home",
-		meta: [{ name: "description", content: appConfig.description, },],
+		meta: [ { name: "description", content: appConfig.description, }, ],
 	},
+	created(){ this.onGroupingChange() }
 })
 export default class Home extends Vue {
-	grouping = Object.keys(this.GROUPINGS)[0]
-	get GROUPINGS(){ return MiscStore.GROUPINGS }
-	get allowAddPeople(){
-		if(this.x_steppers < this.GROUPINGS[this.grouping].max) return true
-		else{
-			if(this.x_steppers > this.GROUPINGS[this.grouping].max) this.x_steppers = this.GROUPINGS[this.grouping].max
-			return false
+	private grouping = Object.keys(this.GROUPINGS)[0]
+	private get GROUPINGS(){ return MiscStore.GROUPINGS }
+	private get allowAddPeople(){ return this.x_steppers < this.GROUPINGS[this.grouping].max }
+	private get allowDeletePeople(){ return this.x_steppers > this.GROUPINGS[this.grouping].min }
+
+	private users: TMRegistration[] = []
+
+	private get x_users(){ return this.users }
+	private get x_steppers(){ return this.users.length }
+	@Watch("grouping") private onGroupingChange(){
+		let diff = 0
+		let i = 0
+		if(this.x_steppers < this.GROUPINGS[this.grouping].count){
+			diff = this.GROUPINGS[this.grouping].count - this.x_steppers
+			for(i=0; i<diff; i++) this.users.push(defaultRegistrationUser)
+		} else if(this.x_steppers > this.GROUPINGS[this.grouping].count){
+			diff = this.x_steppers - this.GROUPINGS[this.grouping].count
+			for(i=0; i<diff; i++) this.users.pop()
 		}
 	}
 
-	get allowDeletePeople(){
-		if(this.x_steppers > this.GROUPINGS[this.grouping].min) return true
-		else{
-			if(this.x_steppers < this.GROUPINGS[this.grouping].min) this.x_steppers = this.GROUPINGS[this.grouping].min
-			return false
-		}
-	}
-
-	x_steppers = this.GROUPINGS[this.grouping].count
-	@Watch("grouping") onGroupingChange(){ this.x_steppers = this.GROUPINGS[this.grouping].count }
-
-	addPeople(){
+	private addPeople(){
 		if(!this.allowAddPeople) return false
-		this.x_steppers++
+		this.users.push(defaultRegistrationUser)
+		return true
 	}
 
-	deleteStepper(index){
-		console.log(index)
-		this.x_steppers--
+	private deleteStepper(index){
+		console.log(index, this.users[index].firstName, this.users)
+		this.users.splice(index,1)
 	}
 }
 </script>
