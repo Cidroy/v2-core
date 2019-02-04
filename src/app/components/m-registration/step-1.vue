@@ -28,13 +28,13 @@
 								</v-menu>
 							</v-flex>
 							<v-flex xs12 lg6 class="pr-2">
-								<v-combobox v-model="occupation" prepend-icon="work" :items="Occupations" label="Occupation"  :readonly="Readonly" color="orange darken-2"/>
+								<v-combobox v-model="occupation" prepend-icon="work" :items="Occupations" item-text="name" item-value="id" label="Occupation"  :readonly="Readonly" color="orange darken-2"/>
 							</v-flex>
 							<v-flex xs12 lg6 class="pl-2">
-								<v-select v-model="category" prepend-icon="list" :items="Categories" label="Category"  :readonly="Readonly" color="orange darken-2"/>
+								<v-select v-model="category" prepend-icon="list" :items="Categories" item-text="name" item-value="id" label="Category"  :readonly="Readonly" color="orange darken-2"/>
 							</v-flex>
 							<v-flex xs12 lg6 class="pr-2">
-								<v-select v-model="idType" prepend-icon="fas fa-id-card" :items="IDProofs" label="ID Proof" :readonly="Readonly"  color="orange darken-2"/>
+								<v-select v-model="idType" prepend-icon="fas fa-id-card" :items="IDTypes" item-text="name" item-value="id" label="ID Proof" :readonly="Readonly"  color="orange darken-2"/>
 							</v-flex>
 							<v-flex xs12 lg6 class="pl-2">
 								<v-text-field v-model="idNumber" prepend-icon="fas fa-hashtag" label="ID Number" required :rules="rules.idNumber" :readonly="Readonly"  color="orange darken-2"/>
@@ -101,15 +101,15 @@ export default class MRegistrationStep1 extends Vue{
 	private dobMenu: boolean = false
 	@Watch("dob") onDobChanged() { this.dobFormattedDate = this.formatDate(this.dob) }
 
-	private occupation: string | number = MiscStore.OCCUPATIONS[0]
+	private occupation: string | number = MiscStore.OCCUPATIONS[0].id
 	private get Occupations(){ return MiscStore.OCCUPATIONS }
 
-	private category: string | number = MiscStore.CATEGORIES[0]
+	private category: string | number = MiscStore.CATEGORIES[0].id
 	private get Categories(){ return MiscStore.CATEGORIES }
 
-	private idType: string | number = MiscStore.ID_PROOFS[0]
+	private idType: string | number = MiscStore.ID_TYPES[0].id
 	private idNumber: string = ""
-	private get IDProofs(){ return MiscStore.ID_PROOFS }
+	private get IDTypes(){ return MiscStore.ID_TYPES }
 
 	private address: string = ""
 
@@ -174,9 +174,9 @@ export default class MRegistrationStep1 extends Vue{
 				lastName: "",
 				gender: GENDER.MALE,
 				dob: new Date().toISOString().substr(0, 10),
-				occupation: MiscStore.OCCUPATIONS[0],
-				category: MiscStore.CATEGORIES[0],
-				idType: MiscStore.ID_PROOFS[0],
+				occupation: MiscStore.OCCUPATIONS[0].id,
+				category: MiscStore.CATEGORIES[0].id,
+				idType: MiscStore.ID_TYPES[0].id,
 				idNumber: "",
 				address: "",
 				bodyType: MiscStore.BODY_TYPES[0],

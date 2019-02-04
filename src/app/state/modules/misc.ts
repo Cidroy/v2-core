@@ -1,54 +1,17 @@
 import { VuexModule, Module, getModule, MutationAction } from "vuex-module-decorators"
 import store from "@/state/store"
+import GKHelper, { TGQLOccupations, TGQLCategories, TGQLIDProofs, TGQLGroupings } from "./gk-helper"
 
-let _occupations: string[] = [
-	"Teacher",
-	"Engineer",
-	"Doctor",
-	"Student",
-]
-
-let _categories: string[] = [
-	"student",
-	"Senior Citizen",
-	"Professionals",
-	"Buisness Man",
-]
-
-let _idProofs: string[] = [
-	"Aadhaar Card",
-	"Passport",
-	"License",
-	"Pan Card",
-	"Voter ID",
-]
+let _occupations: TGQLOccupations[] = []
+let _categories: TGQLCategories[] = []
+let _idTypes: TGQLIDProofs[] = []
+let _groupings: TGQLGroupings[] = []
 
 let _bodyTypes: string[] = [
 	"endomorph",
 	"ectomorph",
 	"mesomorph",
 ]
-
-let _groupings = {
-	Solo : {
-		value:"SOLO",
-		count: 1,
-		min: 1,
-		max: 1,
-	},
-	Couple : {
-		value:"COUPLE",
-		count: 2,
-		min: 2,
-		max: 2,
-	},
-	Group : {
-		value:"GROUP",
-		count: 2,
-		min: 2,
-		max: 8,
-	},
-}
 
 let _membershipTypes = {
 	Gold: "GOLD",
@@ -95,14 +58,14 @@ let _utmSources = {
 
 @Module({ dynamic: true, store, name: "Misc" })
 class Misc extends VuexModule {
-	private _occupations: string[] = _occupations
-	public get OCCUPATIONS(): string[] { return this._occupations }
+	private _occupations = _occupations
+	public get OCCUPATIONS() { return this._occupations }
 
-	private _categories: string[] = _categories
-	public get CATEGORIES(): string[] { return this._categories }
+	private _categories = _categories
+	public get CATEGORIES() { return this._categories }
 
-	private _idProofs: string[] = _idProofs
-	public get ID_PROOFS(): string[] { return this._idProofs }
+	private _idTypes = _idTypes
+	public get ID_TYPES() { return this._idTypes }
 
 	private _bodyTypes: string[] = _bodyTypes
 	public get BODY_TYPES(): string[] { return this._bodyTypes }
@@ -127,6 +90,36 @@ class Misc extends VuexModule {
 
 	private _utmSources = _utmSources
 	public get UTM_SOURCES() {return this._utmSources}
+
+	@MutationAction({ mutate: [
+		"_occupations",
+		"_categories",
+		"_idTypes",
+		"_groupings",
+	] })
+	public async Initialize(){
+		let [
+			Xoccupations,
+			Xcategories,
+			XidTypes,
+			Xgroupings,
+		] = await Promise.all([
+			GKHelper.GetOccupations(),
+			GKHelper.GetCategories(),
+			GKHelper.GetIdProofs(),
+			GKHelper.GetGroupings(),
+		])
+		_occupations = Xoccupations
+		_categories = Xcategories
+		_idTypes = XidTypes
+		_groupings = Xgroupings
+		return {
+			_occupations,
+			_categories,
+			_idTypes,
+			_groupings,
+		}
+	}
 }
 
 export const MiscStore = getModule(Misc)

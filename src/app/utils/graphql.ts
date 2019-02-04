@@ -100,6 +100,7 @@ export default class GQLClient{
 		if(!force && client) return true
 		GQLClient.log.verbose("initialize")
 		GQLClient.config = await AppConfig.Get(GQLClient.Namespace, GQLClient.config)
+		await AppConfig.Set(GQLClient.Namespace, GQLClient.config)
 		
 		cache = new InMemoryCache()
 		link = new HttpLink({

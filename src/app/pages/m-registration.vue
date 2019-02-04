@@ -19,7 +19,7 @@
 		<v-layout class="px-2">
 			<v-flex xs12 md6>
 				<v-radio-group prepend-icon="people" label="Registration Type" v-model="grouping" row>
-					<v-radio v-for="(value, name) in GROUPINGS" :label="name" :value="name" :key="name" color="orange darken-2"/>
+					<v-radio v-for="(grouping, index) in GROUPINGS" :label="grouping.name" :value="index" :key="index" color="orange darken-2"/>
 				</v-radio-group>
 			</v-flex>
 			<v-flex xs12 md6 v-if="allowAddPeople || allowDeletePeople"> {{ x_steppers }} / {{ this.GROUPINGS[this.grouping].max }} People </v-flex>
@@ -49,7 +49,7 @@ import stepper from "@/components/m-registration/stepper.vue"
 	created(){ this.onGroupingChange() }
 })
 export default class Home extends Vue {
-	private grouping = Object.keys(this.GROUPINGS)[0]
+	private grouping = 0
 	private get GROUPINGS(){ return MiscStore.GROUPINGS }
 	private get allowAddPeople(){ return this.x_steppers < this.GROUPINGS[this.grouping].max }
 	private get allowDeletePeople(){ return this.x_steppers > this.GROUPINGS[this.grouping].min }
