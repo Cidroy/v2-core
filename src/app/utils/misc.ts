@@ -5,7 +5,7 @@ export function parseDate(date) {
 }
 
 export function formatDate(date) {
-	// if (!date) return null
+	if (!date) return date
 	const [year, month, day,] = date.split("-")
 	return `${day}/${month}/${year}`
 }

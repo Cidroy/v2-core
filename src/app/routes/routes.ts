@@ -92,6 +92,11 @@ export default [
 		component: () => lazyLoadView("/admin-settings"),
 	},
 	{
+		path: "/reports",
+		name: "Reports",
+		component: () => lazyLoadView("/reports"),
+	},
+	{
 		path: "/404",
 		name: "404",
 		component: require("@/pages/404").default,

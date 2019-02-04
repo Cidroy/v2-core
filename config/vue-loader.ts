@@ -5,7 +5,7 @@ const isProduction = process.env.NODE_ENV === "production"
 export default {
 	loaders: {
 		ts: {
-			loader: "babel-loader"
+			loader: "babel-loader!ts-loader"
 		},
 		...utils.cssLoaders({
 			sourceMap: isProduction
