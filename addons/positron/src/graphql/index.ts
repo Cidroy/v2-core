@@ -31,6 +31,7 @@ import GroupingsResolver from "@positron/resolvers/groupings"
 import GroupsResolver from "@positron/resolvers/groups"
 import miscResolver from "@positron/resolvers/misc"
 import PaymentsResolver from "@positron/resolvers/payment"
+import LockedBadgenumbersResolver from "@positron/resolvers/lockedBadgenumbers"
 
 export default class GQL{
 	private static Resolvers = [
@@ -65,6 +66,7 @@ export default class GQL{
 		GroupsResolver,
 		miscResolver,
 		PaymentsResolver,
+		LockedBadgenumbersResolver,
 	]
 
 	public static async Schema(){

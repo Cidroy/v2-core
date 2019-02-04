@@ -30,6 +30,7 @@ import GroupMap from "@positron/models/groupMap"
 import Groupings from "@positron/models/groupings"
 import Groups from "@positron/models/groups"
 import Payment from "@positron/models/payments"
+import LockedBadgenumbers from "@positron/models/lockedBadgenumbers"
 
 export default [
 	Address,
@@ -62,4 +63,5 @@ export default [
 	Groupings,
 	Groups,
 	Payment,
+	LockedBadgenumbers,
 ]

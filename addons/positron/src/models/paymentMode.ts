@@ -14,4 +14,8 @@ export default class PaymentMode extends Base implements IPaymentMode {
 	@DB.Column("varchar", { nullable: true })
 	public description?: string
 
+	@GQL.Field(type => Boolean,{nullable: true})
+	@DB.Column("tinyint",{default : false})
+	public requireTransactionId?: boolean
+
 }

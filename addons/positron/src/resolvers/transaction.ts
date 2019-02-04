@@ -1,5 +1,7 @@
 import * as GQL from "type-graphql"
 import Transaction from "@positron/models/transaction"
+import Payment from "@positron/models/payments"
+import * as DB from "typeorm"
 
 @GQL.Resolver(of => Transaction)
 export default class TransactionResolver{
@@ -39,5 +41,29 @@ export default class TransactionResolver{
 		transaction.endExtendedDate = start
 		await transaction.save()
 		return transaction
+	}
+
+	@GQL.Mutation(returns => String)
+	public async linkTransactionPay(
+		@GQL.Arg("paymentId") paymentId: number,
+		@GQL.Arg("transactionId") transactionId: number,
+	){
+		try{
+			let payment = await Payment.createQueryBuilder()
+				.select(["id", "reciept", "amount",])
+				.where({ id: paymentId })
+				.execute()
+				console.log(payment)
+			if(payment===undefined) throw "Invalid Payment"
+
+			let transaction = await Transaction.createQueryBuilder()
+								.update(Transaction)
+				.set({ amount: payment[0].amount, receipt: payment[0].reciept  })
+				.where({id: transactionId})
+				.execute()
+			if (transaction === undefined) throw "Invalid trsancation"
+		}catch(error){
+			throw "Linking Transaction to pay error"
+		}
 	}
 }
