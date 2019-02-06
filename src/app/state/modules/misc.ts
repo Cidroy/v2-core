@@ -1,17 +1,13 @@
-import { VuexModule, Module, getModule, MutationAction } from "vuex-module-decorators"
+import { VuexModule, Module, getModule, MutationAction, Action } from "vuex-module-decorators"
 import store from "@/state/store"
-import GKHelper, { TGQLOccupations, TGQLCategories, TGQLIDProofs, TGQLGroupings } from "./gk-helper"
+import GKHelper, { TGQLOccupations, TGQLCategories, TGQLIDProofs, TGQLGroupings, TGQLBodyTypes, TGQLOrganizationTypes } from "./gk-helper"
 
 let _occupations: TGQLOccupations[] = []
 let _categories: TGQLCategories[] = []
 let _idTypes: TGQLIDProofs[] = []
 let _groupings: TGQLGroupings[] = []
-
-let _bodyTypes: string[] = [
-	"endomorph",
-	"ectomorph",
-	"mesomorph",
-]
+let _bodyTypes: TGQLBodyTypes[] = []
+let _organizationTypes: TGQLOrganizationTypes[] = []
 
 let _membershipTypes = {
 	Gold: "GOLD",
@@ -67,8 +63,8 @@ class Misc extends VuexModule {
 	private _idTypes = _idTypes
 	public get ID_TYPES() { return this._idTypes }
 
-	private _bodyTypes: string[] = _bodyTypes
-	public get BODY_TYPES(): string[] { return this._bodyTypes }
+	private _bodyTypes = _bodyTypes
+	public get BODY_TYPES() { return this._bodyTypes }
 
 	private _groupings = _groupings
 	public get GROUPINGS() { return this._groupings }
@@ -91,11 +87,16 @@ class Misc extends VuexModule {
 	private _utmSources = _utmSources
 	public get UTM_SOURCES() {return this._utmSources}
 
+	private _organizationTypes = _organizationTypes
+	public get ORGANIZATION_TYPES() { return this._organizationTypes}
+
 	@MutationAction({ mutate: [
 		"_occupations",
 		"_categories",
 		"_idTypes",
 		"_groupings",
+		"_bodyTypes",
+		"_organizationTypes",
 	] })
 	public async Initialize(){
 		let [
@@ -103,21 +104,29 @@ class Misc extends VuexModule {
 			Xcategories,
 			XidTypes,
 			Xgroupings,
+			XbodyTypes,
+			XorganizationTypes,
 		] = await Promise.all([
 			GKHelper.GetOccupations(),
 			GKHelper.GetCategories(),
 			GKHelper.GetIdProofs(),
 			GKHelper.GetGroupings(),
+			GKHelper.GetBodyTypes(),
+			GKHelper.GetOrganizationTypes(),
 		])
 		_occupations = Xoccupations
 		_categories = Xcategories
 		_idTypes = XidTypes
 		_groupings = Xgroupings
+		_bodyTypes = XbodyTypes
+		_organizationTypes = XorganizationTypes
 		return {
 			_occupations,
 			_categories,
 			_idTypes,
 			_groupings,
+			_bodyTypes,
+			_organizationTypes
 		}
 	}
 }

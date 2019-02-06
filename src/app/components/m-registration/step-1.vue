@@ -43,7 +43,7 @@
 								<v-textarea prepend-icon="place" label="Residential Address" v-model="address" :rules="rules.address" :readonly="Readonly"  color="orange darken-2"/>
 							</v-flex>
 							<v-flex xs12 lg4 class="pl-2">
-								<v-select v-model="bodyType" prepend-icon="accessibility" :items="BodyTypes" label="Body Type" :readonly="Readonly"  color="orange darken-2"/>
+								<v-select v-model="bodyType" prepend-icon="accessibility" item-text="name" item-value="id" :items="BodyTypes" label="Body Type" :readonly="Readonly"  color="orange darken-2"/>
 							</v-flex>
 							<v-spacer />
 						</v-layout>
@@ -71,7 +71,7 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
+import { Component, Vue, Watch, Emit, Prop, } from "vue-property-decorator"
 import { GENDER } from "@classes/enum/misc"
 import { parseDate, formatDate } from "@/utils/misc"
 import { MiscStore } from "@/state/modules/misc"
@@ -113,7 +113,7 @@ export default class MRegistrationStep1 extends Vue{
 
 	private address: string = ""
 
-	private bodyType: string | number = MiscStore.BODY_TYPES[0]
+	private bodyType: string | number = MiscStore.BODY_TYPES[0].id
 	private get BodyTypes(){ return MiscStore.BODY_TYPES }
 
 	private get photo(){
@@ -136,6 +136,7 @@ export default class MRegistrationStep1 extends Vue{
 	
 	private formNext(){
 		// @ts-ignore
+		
 		if(this.$refs.form.validate()){
 			this.inputEmitter()
 			this.nextStep()
@@ -179,7 +180,7 @@ export default class MRegistrationStep1 extends Vue{
 				idType: MiscStore.ID_TYPES[0].id,
 				idNumber: "",
 				address: "",
-				bodyType: MiscStore.BODY_TYPES[0],
+				bodyType: MiscStore.BODY_TYPES[0].id,
 			}
 			return def
 		}
@@ -201,5 +202,7 @@ export default class MRegistrationStep1 extends Vue{
 
 	@Prop({ type: Boolean, default: false }) public allowImportFromEnquiry !: boolean
 	@Prop({ type: Boolean, default: false }) public Readonly !: boolean
+
+	
 }
 </script>

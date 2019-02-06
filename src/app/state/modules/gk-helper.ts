@@ -8,6 +8,8 @@ export type TGQLOccupations = TGQLBasic
 export type TGQLCategories = TGQLBasic
 export type TGQLIDProofs = TGQLBasic
 export type TGQLGroupings = TGQLBasic & { count: number, min: number, max: number, }
+export type TGQLBodyTypes = TGQLBasic
+export type TGQLOrganizationTypes = TGQLBasic
 export default class GKHelper{
 	public static async GetOccupations(): Promise<TGQLOccupations[]>{
 		let response = await GQLClient.query<{
@@ -70,5 +72,33 @@ export default class GKHelper{
 			`,
 		)
 		return response.data.groupings
+	}
+
+	public static async GetBodyTypes(): Promise<TGQLBodyTypes[]> {
+		let response = await GQLClient.query<{ gymBodyTypes: TGQLBodyTypes[] }>(
+			gql`
+				query gymBodyTypes{
+					gymBodyTypes{
+						id
+						name
+					}
+				}
+			`,
+		)
+		return response.data.gymBodyTypes
+	}
+
+	public static async GetOrganizationTypes(): Promise<TGQLOrganizationTypes[]> {
+		let response = await GQLClient.query<{ organizations: TGQLOrganizationTypes[] }>(
+			gql`
+				query organizations{
+					organizations{
+						id
+						name
+					}
+				}
+			`,
+		)
+		return response.data.organizations
 	}
 }
