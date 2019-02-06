@@ -118,16 +118,17 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue } from "vue-property-decorator"
+import { Component, Vue, Watch } from "vue-property-decorator"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
 import SystemInformation from "@/components/system-information.vue"
 import Printer from "@electron/printer"
 import AppConfig from "@classes/appConfig"
 import { TestStore } from "@/state/modules/test"
+import addUserPhoto from "@/components/add-user-photo.vue"
 
 @Component({
-	components: { Layout, SystemInformation, },
+	components: { Layout, SystemInformation, addUserPhoto, },
 	page : {
 		title: "Home",
 		meta: [ { name: "description", content: appConfig.description, }, ],

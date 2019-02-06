@@ -5,6 +5,7 @@ export type TMRegistrationStep1 = {
 	firstName: string
 	middleName: string
 	lastName: string
+	photo: string
 	gender: GENDER
 	dob: string
 	occupation: string| number
@@ -45,6 +46,7 @@ export const defaultRegistrationUser: TMRegistration = {
 	firstName: "",
 	middleName: "",
 	lastName: "",
+	photo: "",
 	gender: GENDER.MALE,
 	dob: new Date().toISOString().substr(0, 10),
 	occupation: MiscStore.OCCUPATIONS[0].id,
