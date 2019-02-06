@@ -83,6 +83,8 @@ class Window {
 			//#IF DEBUG
 			Console.log("window-options", object)
 			//#ENDIF DEBUG
+			if (process.env.NODE_ENV === "development")
+				object = { ...object, webPreferences: { webSecurity: false } }
 			this._display = <WindowSize>{ ...object, __instance__: "IWindowSize" }
 			this._window = new BrowserWindow(object)
 		}

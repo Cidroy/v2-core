@@ -104,9 +104,26 @@
 							</v-flex>
 							<v-spacer/>
 							<v-flex xs4 class="pl-4">
-								<v-subheader class="title">
-									<a @click.stop.prevent="show">View Previous Bookings</a>
-								</v-subheader>
+								<v-dialog v-model="bookSlot" max-width="800px">
+									<span slot="activator" class="title">View Previous Bookings</span>
+									<v-card>
+									<!-- List Start -->
+										<v-data-table :headers="headers" :items="desserts"  item-key="name">
+											<template slot="items" slot-scope="props">
+												
+													<td>{{ props.item.name }}</td>
+													<td>{{ props.item.mobno }}</td>
+													<td>{{ props.item.orgname }}</td>
+													<td>{{ props.item.orgtype }}</td>
+													<td>{{ props.item.slotbooked }}</td>
+													<td>{{ props.item.status }}</td>
+												
+											</template>
+										</v-data-table>
+							<!-- List End -->
+									</v-card>
+								</v-dialog>	
+									
 							</v-flex>
 						</v-layout>
 						<v-divider></v-divider>
@@ -289,15 +306,14 @@ export default class Home extends Vue{
 		v => !!v || "Name is required",
 		v => v.length <= 15 || "Name must be less than 15 characters",
 	]
-	show(){
-		to="/payment"
-	}
+
 	radioGroup1 = 1
 	radioGB1 = 1
 	radioGB2 = 1
 	radioGB3 = 1
 	radioGB4 = 1
 	dialogSlot = false
+	bookSlot = false
 	toggle_none = null
 	items = [
 		'Programming',
@@ -318,6 +334,70 @@ export default class Home extends Vue{
 	radios1 = 'radio-1'
 	private organizationTypes: string | number = MiscStore.ORGANIZATION_TYPES[0].id
 	private get OrganizationTypes(){ return MiscStore.ORGANIZATION_TYPES }
+	OrgType = [
+		'Schools',
+		'Grassroots',
+		'Corporate',
+		'Outsider Teams',
+		'Professional Teams'
+	]
+	headers = [
+		{
+			text: 'Name', 
+			align: 'left',
+			value: 'name',
+		},
+		{ text: 'Mobile No.', value: 'mobno', sortable: false },
+		{ text: 'Organization Name', value: 'orgname', },
+		{ text: 'Organization Type', value: 'orgtype', },
+		{ text: 'Slots Booked', value: 'slotbooked', sortable: false},
+		{ text: 'Status', value: 'status'}
+
+	]
+
+	defaultItem = {
+		name: '',
+		mobno: 0,
+		orgname: '',
+		orgtype: '',
+		slotbooked: '',
+		status: ''
+	}
+	desserts = [
+		{
+			name: 'copper',
+			mobno: 821546878,
+			orgname: 'Gec',
+			orgtype: 'college',
+			slotbooked: 'askKarthik',
+			status: 'booked'
+		},
+		{
+			name: 'luffy',
+			mobno: 321546878,
+			orgname: 'Gec',
+			orgtype: 'college',
+			slotbooked: 'askKarthik',
+			status: 'NOT booked'
+		},
+		{
+			name: 'zoro',
+			mobno: 621546878,
+			orgname: 'Gec',
+			orgtype: 'college',
+			slotbooked: 'askKarthik',
+			status: 'booked'
+		},
+		{
+			name: 'sanji',
+			mobno: 821546878,
+			orgname: 'Gec',
+			orgtype: 'college',
+			slotbooked: 'askKarthik',
+			status: 'NOT booked'
+		},
+	]
+
 
 }
 </script>

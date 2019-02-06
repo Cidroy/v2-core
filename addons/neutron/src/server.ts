@@ -1,6 +1,7 @@
 import * as API from "@tsed/common"
 import Controllers from "@neutron/controllers"
 import path from "path"
+import cors from "cors"
 
 import config from "../config"
 import { Logger } from "@classes/CONSOLE"
@@ -24,6 +25,7 @@ export class Server extends API.ServerLoader{
 		this
 			.use(bodyParser.json())
 			.use(bodyParser.urlencoded({ extended: true }))
+			.use(cors())
 	}
 
 	public addControllersList(list: { [K: string]: any }) {
