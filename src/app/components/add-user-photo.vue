@@ -20,8 +20,10 @@
 				<v-card-actions class="grey darken-2">
 					<v-btn color="orange darken-2" v-if="!captured" @click="capture"> <v-icon v-text="'camera'" left/> Capture </v-btn>
 					<v-btn color="orange darken-2" v-else @click="retake"> <v-icon v-text="'replay'" left/> Retake </v-btn>
-					<v-spacer></v-spacer>
+					<v-select v-if="!captured" v-model="cameraID" :items="cameraList" menu-props="auto" label="Camera" hide-details prepend-icon="camera" single-line item-text="label" item-value="deviceId" />
+					<v-spacer v-else/>
 					<v-btn color="orange darken-2" v-if="captured" @click="save"> <v-icon v-text="'save'" left/> Save </v-btn>
+					<v-spacer v-else/>
 				</v-card-actions>
 			</v-card>
 		</v-dialog>
@@ -48,11 +50,18 @@ import AppConfig from "@classes/appConfig"
 let log = new Logger("electron/camera-input")
 
 @Component({
-	created(){
-		// @ts-ignore
-		this.videoElement = this.$refs.cameraOutput
-		// @ts-ignore
-		this.outputCanvas = this.$refs.outputCanvas
+	async created(){
+		let [ inputDevices, defaultCameraName ] = await Promise.all([
+			navigator.mediaDevices.enumerateDevices(),
+			AppConfig.Get("electron/default-camera", null)
+		])
+		this.cameraList = inputDevices.filter(device => device.kind === "videoinput")
+		let device = undefined
+		if(defaultCameraName){
+			device = this.cameraList.find(d => d.label===defaultCameraName)
+			if(device!==undefined) this.cameraID = device.deviceId
+		}
+		if(device===undefined) this.cameraID = this.cameraList[0]?this.cameraList[0].deviceId: "" 
 	}
 })
 export default class AddUserPhoto extends Vue{
@@ -62,6 +71,19 @@ export default class AddUserPhoto extends Vue{
 	private photoSrc = ""
 	private error = ""
 	private cameraStream : MediaStream| null = null
+	private cameraList: { label: string, deviceId: string }[] = []
+	
+	private cameraID = ""
+	private cameraName = ""
+	@Watch("cameraID") private async onChangeCameraID(){
+		if(!this.cameraStream) return
+		this.stopCameraStream()
+		this.startCameraStream()
+		let device = this.cameraList.find(d => d.deviceId===this.cameraID)
+		if(device===undefined) return
+		this.cameraName = device.label
+		AppConfig.Set("electron/default-camera", this.cameraName)
+	}
 
 	private get photo(){ return this.photoSrc?"file://"+this.photoSrc:defaultPhoto }
 	@Prop({ type: String, default: "" }) public value !:string
@@ -113,11 +135,12 @@ export default class AddUserPhoto extends Vue{
 				video: {
 					height: this.cameraStreamHeight,
 					width: this.cameraStreamWidth,
+					deviceId: { exact: this.cameraID }, 
 				}
 			},
 			stream => {
 				this.cameraStream = stream
-				log.verbose(stream, this.videoElement, this.$refs)
+				console.log(stream, this.videoElement, this.$refs)
 				this.videoElement.srcObject = stream
 				this.videoElement.autoplay = true
 			},
@@ -126,7 +149,7 @@ export default class AddUserPhoto extends Vue{
 				this.error = error.toString()
 			}
 		)
-		log.verbose("stream",streamer)
+		console.log("stream",streamer)
 	}
 	private stopCameraStream(){
 		if(this.cameraStream===null) return
