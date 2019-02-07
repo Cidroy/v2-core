@@ -13,7 +13,7 @@
 								<v-radio-group row label="SPA Booking Type: " v-model="radioTop">
 									<v-layout row align-start>
 										<v-radio color="orange darken-2" label="Solo" value="radio-1"></v-radio>
-										<v-radio color="orange darken-2" label="Group" value="radio-2"></v-radio>
+							 			<v-radio color="orange darken-2" label="Group" value="radio-2"></v-radio>
 									</v-layout>
 								</v-radio-group>
 							</v-flex>
@@ -104,9 +104,26 @@
 							</v-flex>
 							<v-spacer/>
 							<v-flex xs4 class="pl-4">
-								<v-subheader class="title">
-									<a @click.stop.prevent="show">View Previous Bookings</a>
-								</v-subheader>
+								<v-dialog v-model="bookSlot" max-width="800px">
+									<span slot="activator" class="title">View Previous Bookings</span>
+									<v-card>
+									<!-- List Start -->
+										<v-data-table :headers="headers" :items="desserts"  item-key="name">
+											<template slot="items" slot-scope="props">
+												
+													<td>{{ props.item.name }}</td>
+													<td>{{ props.item.mobno }}</td>
+													<td>{{ props.item.orgname }}</td>
+													<td>{{ props.item.orgtype }}</td>
+													<td>{{ props.item.slotbooked }}</td>
+													<td>{{ props.item.status }}</td>
+												
+											</template>
+										</v-data-table>
+							<!-- List End -->
+									</v-card>
+								</v-dialog>	
+									
 							</v-flex>
 						</v-layout>
 						<v-divider></v-divider>
@@ -129,8 +146,31 @@
 							</v-flex>
 
 							<v-flex xs6>
-								<v-select color="orange darken-2" prepend-icon="list" class="pr-4 pl-4" :items="OrgType" label="Organization Type"></v-select>
-							</v-flex>	
+								<v-select color="orange darken-2" prepend-icon="list" class="pr-4 pl-4" :items="organizationTypes" item-value="id" item-text="name" label="Organization Type"></v-select>
+							</v-flex>
+							<v-flex>
+								    <v-menu
+                                    v-model="menu2"
+                                    :close-on-content-click="false"
+                                    :nudge-right="40"
+                                    lazy
+                                    transition="scale-transition"
+        							offset-y
+        							full-width
+        							min-width="290px"
+                                    >
+        <v-text-field
+          slot="activator"
+          label="Booking Date"
+          prepend-icon="event"
+          readonly
+		  v-model="bookingDateFormatted"
+@blur="bookingDate = parseDate(bookingDateFormatted)"
+        ></v-text-field>
+        <v-date-picker v-model="date" @input="menu2 = false"></v-date-picker>
+      </v-menu>
+ 
+							</v-flex>
 						</v-layout>
 
 						<v-card class="pa-2" color="transparent">
@@ -232,6 +272,7 @@ import Layout from "@/layouts/main.vue"
 import SystemInformation from "@/components/system-information.vue"
 import { Component, Vue, Watch } from "vue-property-decorator"
 import { watch } from 'fs';
+import {MiscStore} from "@/state/modules/misc"
 
 @Component({
 	components: { Layout, SystemInformation, },
@@ -241,6 +282,20 @@ import { watch } from 'fs';
 	},
 })
 export default class Home extends Vue{
+    date= new Date().toISOString().substr(0, 10)
+	menu2 = false
+	bookingDateFormatted = this.formatDate(this.date)
+	formatDate(date) {
+		// if (!date) return null
+		const [year, month, day,] = date.split("-")
+		return `${day}/${month}/${year}`
+	}
+	parseDate(date) {
+		if (!this.date ) return null
+		const [day, month, year,] = this.date.split("/")
+		return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`
+	}
+		
 	active: number = 0
 	tabsList = {
 		a: "SPA Booking",
@@ -251,15 +306,14 @@ export default class Home extends Vue{
 		v => !!v || "Name is required",
 		v => v.length <= 15 || "Name must be less than 15 characters",
 	]
-	show(){
-		to="/payment"
-	}
+
 	radioGroup1 = 1
 	radioGB1 = 1
 	radioGB2 = 1
 	radioGB3 = 1
 	radioGB4 = 1
 	dialogSlot = false
+	bookSlot = false
 	toggle_none = null
 	items = [
 		'Programming',
@@ -278,6 +332,8 @@ export default class Home extends Vue{
 	timeout= 6000
 	radioTop = 'radio-1'
 	radios1 = 'radio-1'
+	private organizationTypes: string | number = MiscStore.ORGANIZATION_TYPES[0].id
+	private get OrganizationTypes(){ return MiscStore.ORGANIZATION_TYPES }
 	OrgType = [
 		'Schools',
 		'Grassroots',
@@ -285,6 +341,63 @@ export default class Home extends Vue{
 		'Outsider Teams',
 		'Professional Teams'
 	]
+	headers = [
+		{
+			text: 'Name', 
+			align: 'left',
+			value: 'name',
+		},
+		{ text: 'Mobile No.', value: 'mobno', sortable: false },
+		{ text: 'Organization Name', value: 'orgname', },
+		{ text: 'Organization Type', value: 'orgtype', },
+		{ text: 'Slots Booked', value: 'slotbooked', sortable: false},
+		{ text: 'Status', value: 'status'}
+
+	]
+
+	defaultItem = {
+		name: '',
+		mobno: 0,
+		orgname: '',
+		orgtype: '',
+		slotbooked: '',
+		status: ''
+	}
+	desserts = [
+		{
+			name: 'copper',
+			mobno: 821546878,
+			orgname: 'Gec',
+			orgtype: 'college',
+			slotbooked: 'askKarthik',
+			status: 'booked'
+		},
+		{
+			name: 'luffy',
+			mobno: 321546878,
+			orgname: 'Gec',
+			orgtype: 'college',
+			slotbooked: 'askKarthik',
+			status: 'NOT booked'
+		},
+		{
+			name: 'zoro',
+			mobno: 621546878,
+			orgname: 'Gec',
+			orgtype: 'college',
+			slotbooked: 'askKarthik',
+			status: 'booked'
+		},
+		{
+			name: 'sanji',
+			mobno: 821546878,
+			orgname: 'Gec',
+			orgtype: 'college',
+			slotbooked: 'askKarthik',
+			status: 'NOT booked'
+		},
+	]
+
 
 }
 </script>

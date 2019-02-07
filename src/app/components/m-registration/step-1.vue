@@ -43,7 +43,7 @@
 								<v-textarea prepend-icon="place" label="Residential Address" v-model="address" :rules="rules.address" :readonly="Readonly"  color="orange darken-2"/>
 							</v-flex>
 							<v-flex xs12 lg4 class="pl-2">
-								<v-select v-model="bodyType" prepend-icon="accessibility" :items="BodyTypes" label="Body Type" :readonly="Readonly"  color="orange darken-2"/>
+								<v-select v-model="bodyType" prepend-icon="accessibility" item-text="name" item-value="id" :items="BodyTypes" label="Body Type" :readonly="Readonly"  color="orange darken-2"/>
 							</v-flex>
 							<v-spacer />
 						</v-layout>
@@ -53,13 +53,7 @@
 					<import-from-enquiry v-show="allowImportFromEnquiry" @memberId="memberId" title="Import Details from Enquiry">
 						<v-btn outline block slot="activator" color="orange darken-4">Import from Enquiry</v-btn>
 					</import-from-enquiry>
-					<v-card>
-						<v-img :src="photo" height="200px" />
-						<v-btn v-show="!Readonly" block dark color="orange darken-4">
-							<v-icon>add</v-icon> Add Photo
-						</v-btn>
-					</v-card>
-
+					<add-user-photo v-model="photo" :Readonly="Readonly"/>
 				</v-flex>
 			</v-layout>
 		</v-card>
@@ -71,15 +65,16 @@
 </template>
 
 <script lang="ts">
-import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
+import { Component, Vue, Watch, Emit, Prop, } from "vue-property-decorator"
 import { GENDER } from "@classes/enum/misc"
 import { parseDate, formatDate } from "@/utils/misc"
 import { MiscStore } from "@/state/modules/misc"
 import importFromEnquiry from "@/components/enquiry/import-dialog.vue"
 import { TMRegistrationStep1 } from "@/classes/types/registration"
+import addUserPhoto from "@/components/add-user-photo.vue"
 
 @Component({
-	components: { importFromEnquiry },
+	components: { importFromEnquiry, addUserPhoto },
 	created(){
 		this.onValueChange()
 	}
@@ -92,6 +87,7 @@ export default class MRegistrationStep1 extends Vue{
 	private firstName: string = ""
 	private middleName: string = ""
 	private lastName: string = ""
+	private photo: string = ""
 
 	private gender: GENDER = GENDER.MALE
 	private get GENDERS(){ return GENDER }
@@ -113,12 +109,8 @@ export default class MRegistrationStep1 extends Vue{
 
 	private address: string = ""
 
-	private bodyType: string | number = MiscStore.BODY_TYPES[0]
+	private bodyType: string | number = MiscStore.BODY_TYPES[0].id
 	private get BodyTypes(){ return MiscStore.BODY_TYPES }
-
-	private get photo(){
-		return "https://cdn.vuetifyjs.com/images/cards/plane.jpg"
-	}
 
 	private get rules(){
 		return {
@@ -136,6 +128,7 @@ export default class MRegistrationStep1 extends Vue{
 	
 	private formNext(){
 		// @ts-ignore
+		
 		if(this.$refs.form.validate()){
 			this.inputEmitter()
 			this.nextStep()
@@ -155,6 +148,7 @@ export default class MRegistrationStep1 extends Vue{
 			firstName: this.firstName,
 			middleName: this.middleName,
 			lastName: this.lastName,
+			photo: this.photo,
 			gender: this.gender,
 			dob: this.dob,
 			occupation: this.occupation,
@@ -172,6 +166,7 @@ export default class MRegistrationStep1 extends Vue{
 				firstName: "",
 				middleName: "",
 				lastName: "",
+				photo: "",
 				gender: GENDER.MALE,
 				dob: new Date().toISOString().substr(0, 10),
 				occupation: MiscStore.OCCUPATIONS[0].id,
@@ -179,7 +174,7 @@ export default class MRegistrationStep1 extends Vue{
 				idType: MiscStore.ID_TYPES[0].id,
 				idNumber: "",
 				address: "",
-				bodyType: MiscStore.BODY_TYPES[0],
+				bodyType: MiscStore.BODY_TYPES[0].id,
 			}
 			return def
 		}
@@ -201,5 +196,7 @@ export default class MRegistrationStep1 extends Vue{
 
 	@Prop({ type: Boolean, default: false }) public allowImportFromEnquiry !: boolean
 	@Prop({ type: Boolean, default: false }) public Readonly !: boolean
+
+	
 }
 </script>

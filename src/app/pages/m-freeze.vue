@@ -166,5 +166,6 @@ export default class MemberFreezePage extends Vue{
 		return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`
 	}
 	
+	
 }
 </script>

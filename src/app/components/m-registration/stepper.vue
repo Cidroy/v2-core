@@ -34,6 +34,8 @@ import stepTwo from "@/components/m-registration/step-2.vue"
 import stepThree from "@/components/m-registration/step-3.vue"
 import stepFour from "@/components/m-registration/step-4.vue"
 
+import ClientRegisteration from "@/classes/registration.ts"
+
 
 @Component({
 	components: { Layout, stepOne ,stepTwo,stepThree,stepFour },
@@ -59,11 +61,21 @@ export default class Home extends Vue {
 
 	private step = 0
 	private grouping = Object.keys(this.GROUPINGS)[0]
+	private saving = false
+	private error = ""
 
 	private step2(){ this.step = 2 }
 	private step3(){ this.step = 3 }
 	private step4(){ this.step = 4 }
-	private finish(){ }
+	private async finish(){
+		this.saving = true
+		try{
+			await ClientRegisteration.register(this.userDataComputed)
+		}catch(error){
+			this.error = error.toString()
+		}
+		this.saving = false
+	}
 
 	private get GROUPINGS(){ return MiscStore.GROUPINGS }
 
