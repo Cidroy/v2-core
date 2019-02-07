@@ -334,13 +334,6 @@ export default class Home extends Vue{
 	radios1 = 'radio-1'
 	private organizationTypes: string | number = MiscStore.ORGANIZATION_TYPES[0].id
 	private get OrganizationTypes(){ return MiscStore.ORGANIZATION_TYPES }
-	OrgType = [
-		'Schools',
-		'Grassroots',
-		'Corporate',
-		'Outsider Teams',
-		'Professional Teams'
-	]
 	headers = [
 		{
 			text: 'Name', 

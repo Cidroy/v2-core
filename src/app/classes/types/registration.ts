@@ -54,7 +54,7 @@ export const defaultRegistrationUser: TMRegistration = {
 	idType: MiscStore.ID_TYPES[0].id,
 	idNumber: "",
 	address: "",
-	bodyType: MiscStore.BODY_TYPES[0],
+	bodyType: MiscStore.BODY_TYPES[0].id,
 	mobile: "",
 	whatsappNumber: "",
 	homeNumber: "",

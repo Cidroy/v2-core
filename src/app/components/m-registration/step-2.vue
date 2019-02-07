@@ -37,7 +37,7 @@
 										<v-text-field prepend-icon="fas fa-user" v-model="emergencyContactName" label="Contact Name" color="orange darken-2" />
 									</v-flex>
 									<v-flex xs12 lg5 class="pl-2">
-										<v-text-field prepend-icon="fas fa-phone" v-model="emergencyContactNumber" label="Contact Number" mask="phone" color="orange darken-2" />
+										<v-text-field prepend-icon="fas fa-phone" v-model="emergencyContactNumber" label="Contact Number" mask="##### ##### #####" color="orange darken-2" />
 									</v-flex>
 								</v-layout>
 							</v-card>
@@ -90,13 +90,13 @@ export default class MRegistrationStep2 extends Vue{
 	private get userData(){
 		return {
 			...this.value,
-			mobile : this.value.mobile,
-			whatsappNumber : this.value.whatsappNumber,
-			homeNumber : this.value.homeNumber,
-			officeNumber : this.value.officeNumber,
-			emergencyContactName : this.value.emergencyContactName,
-			emergencyContactNumber : this.value.emergencyContactNumber,
-			email : this.value.email,
+			mobile : this.mobile,
+			whatsappNumber : this.whatsappNumber,
+			homeNumber : this.homeNumber,
+			officeNumber : this.officeNumber,
+			emergencyContactName : this.emergencyContactName,
+			emergencyContactNumber : this.emergencyContactNumber,
+			email : this.email,
 		}
 	}
 	@Prop({

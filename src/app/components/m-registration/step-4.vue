@@ -54,22 +54,7 @@
 
 		<div class="right">
 			<v-btn dark>Cancel</v-btn>
-			<v-dialog v-model="confirmModal" persistent max-width="400px">
-				<v-btn dark slot="activator" color="orange darken-4" class="mb-2">Submit</v-btn>
-				<v-card>
-					<v-toolbar card dark color="orange darken-4" height="50px">
-						<v-toolbar-title>Alert!</v-toolbar-title>
-					</v-toolbar>
-					<v-card-text>
-						<label class="title">Do you want to Proceed for payments?</label>
-					</v-card-text>
-					<v-card-actions>
-						<v-spacer></v-spacer>
-						<v-btn dark color="orange darken-4" @click="confirmModal = false" to="/payment">Yes</v-btn>
-						<v-btn dark @click="confirmModal = false">No</v-btn>
-					</v-card-actions>
-				</v-card>
-			</v-dialog>
+			<v-btn dark @click.native.stop="submit" color="orange darken-4" class="mb-2" >Submit</v-btn>
 		</div>
 	</div>
 </template>
@@ -130,6 +115,7 @@ export default class MRegistrationStep4 extends Vue{
 		}
 	}) private value !: TMRegistrationStep4
 	@Emit("input") public inputEmitter(){ return this.userData }
+	@Emit("nextStep") public nextStep(){ return true }
 	@Watch("value") private onValueChange(){
 		this.utmSource = this.value.utmSource
 		this.toc = this.value.toc
@@ -140,5 +126,9 @@ export default class MRegistrationStep4 extends Vue{
 
 	private showToc(){}
 	private showRules(){}
+	private submit(){
+		this.inputEmitter()
+		this.nextStep()
+	}   
 }
 </script>

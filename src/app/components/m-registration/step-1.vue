@@ -28,7 +28,7 @@
 								</v-menu>
 							</v-flex>
 							<v-flex xs12 lg6 class="pr-2">
-								<v-combobox v-model="occupation" prepend-icon="work" :items="Occupations" item-text="name" item-value="id" label="Occupation"  :readonly="Readonly" color="orange darken-2"/>
+								<v-select v-model="occupation" prepend-icon="work" :items="Occupations" item-text="name" item-value="id" label="Occupation"  :readonly="Readonly" color="orange darken-2"/>
 							</v-flex>
 							<v-flex xs12 lg6 class="pl-2">
 								<v-select v-model="category" prepend-icon="list" :items="Categories" item-text="name" item-value="id" label="Category"  :readonly="Readonly" color="orange darken-2"/>
