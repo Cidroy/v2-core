@@ -17,6 +17,7 @@
 			<v-stepper-content step="2"> <step-two v-model="userData" @nextStep="step3"/>   </v-stepper-content>
 			<v-stepper-content step="3"> <step-three v-model="userData" @nextStep="step4" /> </v-stepper-content>
 			<v-stepper-content step="4"> <step-four v-model="userData" @nextStep="finish" /> </v-stepper-content>
+			<payment-prompt v-model="paymentModel" @submit="gotoPayment" @cancelled="paymentCancelled" />
 		</v-stepper-items>
 	</v-stepper>
 </template>
@@ -33,12 +34,13 @@ import stepOne from "@/components/m-registration/step-1.vue"
 import stepTwo from "@/components/m-registration/step-2.vue"
 import stepThree from "@/components/m-registration/step-3.vue"
 import stepFour from "@/components/m-registration/step-4.vue"
+import paymentPrompt from "@/components/m-registration/payment-prompt.vue"
 
 import ClientRegisteration from "@/classes/registration.ts"
 
 
 @Component({
-	components: { Layout, stepOne ,stepTwo,stepThree,stepFour },
+	components: { Layout, stepOne ,stepTwo,stepThree,stepFour,paymentPrompt, },
 	page: {
 		title: "Home",
 		meta: [{ name: "description", content: appConfig.description, },],
@@ -57,12 +59,16 @@ export default class Home extends Vue {
 	@Watch("value") private onValueChange(){
 		this.userData = { ...this.userData, ...this.value }
 	}
-	@Watch("userData") private onUserDataChange(newVal){ this.inputEmitter() }
+	@Watch("userData") private onUserDataChange(newVal){
+		console.log(this.userData, this.userDataComputed)
+		this.inputEmitter()
+	}
 
 	private step = 0
 	private grouping = Object.keys(this.GROUPINGS)[0]
 	private saving = false
 	private error = ""
+	private paymentModel = false
 
 	private step2(){ this.step = 2 }
 	private step3(){ this.step = 3 }
@@ -71,11 +77,14 @@ export default class Home extends Vue {
 		this.saving = true
 		try{
 			await ClientRegisteration.register(this.userDataComputed)
+			this.paymentModel = true
 		}catch(error){
 			this.error = error.toString()
 		}
 		this.saving = false
 	}
+	private gotoPayment(){}
+	private paymentCancelled(){}
 
 	private get GROUPINGS(){ return MiscStore.GROUPINGS }
 

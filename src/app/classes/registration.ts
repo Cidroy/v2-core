@@ -3,12 +3,11 @@ import GQLClient, { gql } from "@/utils/graphql"
 
 export default class ClientRegistration{
 	public static async register(userData: TMRegistration): Promise<string|number>{
-		let response = await GQLClient.mutate(
+		let response = await GQLClient.mutate<any>(
 			gql`
 				mutation AddUser(
 					$emergencyNumber: String
 					$emergencyName: String
-					$organization: Float
 					$occupation: Float
 					$category: Float
 					$imagePath: String
@@ -23,15 +22,12 @@ export default class ClientRegistration{
 					$dob: DateTime
 					$lastName: String
 					$middleName: String
-					$badgenumber: String
-					$wdmsId: [String!]
 					$firstName: String!
 					$mobile: String!
 				){
 					addUser(
 						emergencyName: $emergencyName,
 						emergencyNumber: $emergencyNumber,
-						organization: $organization,
 						occupation: $occupation,
 						category: $category,
 						imagePath: $imagePath,
@@ -46,8 +42,6 @@ export default class ClientRegistration{
 						dob: $dob,
 						lastName: $lastName,
 						middleName: $middleName,
-						badgenumber: $badgenumber,
-						wdmsId: $wdmsId,
 						firstName: $firstName,
 						mobile: $mobile,
 					){
@@ -59,9 +53,29 @@ export default class ClientRegistration{
 				}
 			`,
 			{
+				emergencyNumber: userData.emergencyContactNumber,
+				emergencyName: userData.emergencyContactName,
+				occupation: userData.occupation,
+				category: userData.category,
+				imagePath: userData.photo,
+				IDNumber: userData.idNumber,
+				IDType: userData.idType,
+				address: 0, // FIXME: add address seperately
+				email: userData.email,
+				homeNumber: userData.homeNumber,
+				officePhone: userData.officeNumber,
+				whatsapp: userData.whatsappNumber,
+				gender: userData.gender,
+				dob: userData.dob,
+				lastName: userData.lastName,
+				middleName: userData.middleName,
+				firstName: userData.firstName,
+				mobile: userData.mobile,
 			}
 		)
-		return 0
+		console.log(response.data)
+		if(response.errors) throw response.errors
+		return response.data.addUser.id
 	}
 
 	public static async getUser(id){

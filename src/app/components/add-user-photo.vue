@@ -59,6 +59,7 @@ let log = new Logger("electron/camera-input")
 		let device = undefined
 		if(defaultCameraName){
 			device = this.cameraList.find(d => d.label===defaultCameraName)
+			// @ts-ignore
 			if(device!==undefined) this.cameraID = device.deviceId
 		}
 		if(device===undefined) this.cameraID = this.cameraList[0]?this.cameraList[0].deviceId: "" 
