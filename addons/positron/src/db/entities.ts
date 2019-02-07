@@ -29,6 +29,7 @@ import GymPrices from "@positron/models/gymPrices"
 import GroupMap from "@positron/models/groupMap"
 import Groupings from "@positron/models/groupings"
 import Groups from "@positron/models/groups"
+import Payment from "@positron/models/payments"
 
 export default [
 	Address,
@@ -60,4 +61,5 @@ export default [
 	GroupMap,
 	Groupings,
 	Groups,
+	Payment,
 ]

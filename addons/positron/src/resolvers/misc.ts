@@ -1,33 +1,38 @@
 import * as GQL from "type-graphql"
 import * as DB from "typeorm"
 
+type user= {
+	name: string,
+	badgenumber: string,
+}
 @GQL.Resolver()
 export default class miscResolver {
 
-	@GQL.Query(returns =>Boolean)
+	@GQL.Query(returns =>String)
 	public async isBadgenumberValid(
 		@GQL.Arg("badgenumber") badgenumber: string,
 	) {
 		try{
-			const user = await DB.getConnectionManager.query("")
-			return true
+			let entityManager = DB.getManager()
+			let user = await entityManager.query("SELECT if(EXISTS(select 1 from userinfo where badgenumber= ?) =1 , 'true', 'false' )as exist", [badgenumber,])
+			return user[0].exist
 		}
 		catch(error){
 			console.log(error)
 			return false
 		}
 	}
-
-	// @GQL.Mutation(returns => )
-	// public async addCategory(
-	// 	@GQL.Arg("name") name: string,
-	// 	@GQL.Arg("description", { nullable: true }) description: string,
-	// ) {
-	// 	let category = new Category()
-	// 	category.name = name
-	// 	category.description = description
-
-	// 	await category.save()
-	// 	return category
-	// }
+	@GQL.Query(returns =>Number)
+	public async generateBadgenumber() {
+		try{
+			let entityManager = DB.getManager()
+			let badgenumber = await entityManager.query("select MAX(badgenumber)+1 as badgenumber from userinfo")
+			return badgenumber[0].badgenumber
+			 
+		}
+		catch(error){
+			console.log(error)
+			return null
+		}
+	}
 }
