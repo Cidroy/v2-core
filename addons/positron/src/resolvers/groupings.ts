@@ -6,7 +6,7 @@ export default class GroupingsResolver {
 
 	@GQL.Query(returns => [Groupings,])
 	public async groupings() {
-		return Groupings.find()
+		return Groupings.find({ where: { active: 1 } })
 	}
 
 	@GQL.Mutation(returns => Groupings)

@@ -52,7 +52,7 @@ export class BiometricDeviceController{
 	 * Add Member to device
 	 *
 	 * @permission { "neutron/biometric-device": "member|add" }
-	 * @param {(string | null | undefined)} id device id. defaaults to default
+	 * @param {(string | null | undefined)} deviceId device id. defaaults to default
 	 * @param {string} badgeNumber badgenumber
 	 * @param {TBiometricMemberDetails} details member details
 	 * @returns {(Promise<ISuccess | IError>)} response
@@ -61,15 +61,15 @@ export class BiometricDeviceController{
 	@API.Authenticated({ "neutron/biometric-device": "member|add" })
 	@API.Post("/member/add")
 	public async addMember(
-		@API.BodyParams("id") id: string | null | undefined,
+		@API.BodyParams("deviceId") deviceId: string | null | undefined,
 		@API.BodyParams("badgeNumber") badgeNumber: string,
 		@API.BodyParams("details") details: TBiometricMemberDetails,
 	): Promise<ISuccess | IError> {
 		try {
-			this.log.verbose(`device ${id} add member ${badgeNumber}`)
-			if (!id) id = null
+			this.log.verbose(`device ${deviceId} add member ${badgeNumber}`)
+			if (!deviceId) deviceId = null
 			await BiometricDevices.Initialize()
-			await BiometricDevices.Addmember(id, badgeNumber, details)
+			await BiometricDevices.Addmember(deviceId, badgeNumber, details)
 			return { type: "success" }
 		} catch (error) {
 			this.log.error(error)
@@ -83,7 +83,7 @@ export class BiometricDeviceController{
 	/**
 	 * Delete member from device
 	 * @permission { "neutron/biometric-device": "member|delete" }
-	 * @param {(string | null | undefined)} id device id
+	 * @param {(string | null | undefined)} deviceId device id
 	 * @param {string} memberId member id. not same as badgenumber
 	 * @returns {(Promise<ISuccess | IError>)} response
 	 * @memberof BiometricDeviceController
@@ -91,14 +91,14 @@ export class BiometricDeviceController{
 	@API.Authenticated({ "neutron/biometric-device": "member|delete" })
 	@API.Post("/member/delete")
 	public async deleteMember(
-		@API.BodyParams("id") id: string | null | undefined,
+		@API.BodyParams("deviceId") deviceId: string | null | undefined,
 		@API.BodyParams("memberId") memberId: string,
 	): Promise<ISuccess | IError> {
 		try {
-			this.log.verbose(`device ${id} delete member ${memberId} by id`)
-			if (!id) id = null
+			this.log.verbose(`device ${deviceId} delete member ${memberId} by id`)
+			if (!deviceId) deviceId = null
 			await BiometricDevices.Initialize()
-			await BiometricDevices.DeleteMember(id, memberId)
+			await BiometricDevices.DeleteMember(deviceId, memberId)
 			return { type: "success" }
 		} catch (error) {
 			this.log.error(error)
@@ -113,7 +113,7 @@ export class BiometricDeviceController{
 	 * Device freeze member
 	 *
 	 * @permission { "neutron/biometric-device": "member|freeze" }
-	 * @param {(string | null | undefined)} id device id
+	 * @param {(string | null | undefined)} deviceId device id
 	 * @param {string} memberId member id
 	 * @returns {(Promise<ISuccess | IError>)} response
 	 * @memberof BiometricDeviceController
@@ -121,14 +121,14 @@ export class BiometricDeviceController{
 	@API.Authenticated({ "neutron/biometric-device": "member|freeze" })
 	@API.Post("/member/freeze")
 	public async FreezeMember(
-		@API.BodyParams("id") id: string | null | undefined,
+		@API.BodyParams("deviceId") deviceId: string | null | undefined,
 		@API.BodyParams("memberId") memberId: string,
 	): Promise<ISuccess | IError> {
 		try {
-			this.log.verbose(`device ${id} freeze member ${memberId} by id`)
-			if (!id) id = null
+			this.log.verbose(`device ${deviceId} freeze member ${memberId} by id`)
+			if (!deviceId) deviceId = null
 			await BiometricDevices.Initialize()
-			await BiometricDevices.FreezeMember(id, memberId)
+			await BiometricDevices.FreezeMember(deviceId, memberId)
 			return { type: "success" }
 		} catch (error) {
 			this.log.error(error)
@@ -143,7 +143,7 @@ export class BiometricDeviceController{
 	 * Device Unfreeze Member by ID
 	 *
 	 * @permission { "neutron/biometric-device": "member|unfreeze" }
-	 * @param {(string | null | undefined)} id device id
+	 * @param {(string | null | undefined)} deviceId device id
 	 * @param {string} memberId member id
 	 * @returns {(Promise<ISuccess | IError>)} response
 	 * @memberof BiometricDeviceController
@@ -151,14 +151,14 @@ export class BiometricDeviceController{
 	@API.Authenticated({ "neutron/biometric-device": "member|unfreeze" })
 	@API.Post("/member/unfreeze")
 	public async UnfreezeMember(
-		@API.BodyParams("id") id: string | null | undefined,
+		@API.BodyParams("deviceId") deviceId: string | null | undefined,
 		@API.BodyParams("memberId") memberId: string,
 	): Promise<ISuccess | IError> {
 		try {
-			this.log.verbose(`device ${id} unfreeze member ${memberId}`)
-			if (!id) id = null
+			this.log.verbose(`device ${deviceId} unfreeze member ${memberId}`)
+			if (!deviceId) deviceId = null
 			await BiometricDevices.Initialize()
-			await BiometricDevices.UnfreezeMember(id, memberId)
+			await BiometricDevices.UnfreezeMember(deviceId, memberId)
 			return { type: "success" }
 		} catch (error) {
 			this.log.error(error)
@@ -173,7 +173,7 @@ export class BiometricDeviceController{
 	 * Scan fingerprint for member by id
 	 *
 	 * @permisssion { "neutron/biometric-device": "member|scan-fingerprint" }
-	 * @param {(string | null | undefined)} id device id
+	 * @param {(string | null | undefined)} deviceId device id
 	 * @param {string} memberId member id
 	 * @returns {(Promise<ISuccess | IError>)} response
 	 * @memberof BiometricDeviceController
@@ -181,14 +181,14 @@ export class BiometricDeviceController{
 	@API.Authenticated({ "neutron/biometric-device": "member|scan-fingerprint" })
 	@API.Post("/member/scan-fingerprint")
 	public async ScanFingerprint(
-		@API.BodyParams("id") id: string | null | undefined,
+		@API.BodyParams("deviceId") deviceId: string | null | undefined,
 		@API.BodyParams("memberId") memberId: string,
 	): Promise<ISuccess | IError> {
 		try {
-			this.log.verbose(`device ${id} scan fingerprint of member ${memberId}`)
-			if (!id) id = null
+			this.log.verbose(`device ${deviceId} scan fingerprint of member ${memberId}`)
+			if (!deviceId) deviceId = null
 			await BiometricDevices.Initialize()
-			await BiometricDevices.ScanFingerprint(id, memberId)
+			await BiometricDevices.ScanFingerprint(deviceId, memberId)
 			return { type: "success" }
 		} catch (error) {
 			this.log.error(error)

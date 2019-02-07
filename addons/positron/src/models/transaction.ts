@@ -4,7 +4,7 @@ import Base from "./base"
 import * as GQL from "type-graphql"
 
 @GQL.ObjectType()
-@DB.Entity("user_transaction")
+@DB.Entity()
 export default class Transaction extends Base implements ITransaction{
 	@GQL.Field(type => Number)
 	@DB.Column("integer")

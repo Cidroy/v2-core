@@ -15,8 +15,8 @@ export default class SlotBlock extends Base implements ISlotBlock {
 	@DB.Column("date")
 	public End!: Date
 
-	@GQL.Field(type => String)
-	@DB.Column("varchar")
-	public bookingType!: string
+	@GQL.Field(type => Number)
+	@DB.Column("integer")
+	public bookingType!: number
 
 }

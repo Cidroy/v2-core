@@ -6,7 +6,7 @@ export default class GroupMapResolver {
 
 	@GQL.Query(returns => [GroupMap,])
 	public async groupMaps() {
-		return GroupMap.find()
+		return GroupMap.find({ where: { active: 1 } })
 	}
 	
 	@GQL.Mutation(returns => GroupMap)

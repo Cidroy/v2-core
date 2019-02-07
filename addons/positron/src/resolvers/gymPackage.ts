@@ -6,7 +6,7 @@ export default class GymPackageResolver {
 
 	@GQL.Query(returns => [GymPackage,])
 	public async gymPackages() {
-		return GymPackage.find()
+		return GymPackage.find({ where: { active: 1 } })
 	}
 	
 	@GQL.Mutation(returns => GymPackage)

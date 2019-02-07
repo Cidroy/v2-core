@@ -6,7 +6,7 @@ export default class CategoryResolver {
 
 	@GQL.Query(returns => [Category,])
 	public async categories() {
-		return Category.find()
+		return Category.find({ where: { active: 1 } })
 	}
 	
 	@GQL.Mutation(returns => Category)

@@ -6,7 +6,7 @@ export default class GymBodyTypeResolver {
 
 	@GQL.Query(returns => [GymBodyType,])
 	public async gymBodyTypes() {
-		return GymBodyType.find()
+		return GymBodyType.find({ where: { active: 1 } })
 	}
 
 	@GQL.Mutation(returns => GymBodyType)

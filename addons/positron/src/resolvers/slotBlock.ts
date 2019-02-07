@@ -6,14 +6,14 @@ export default class SlotBlockResolver {
 
 	@GQL.Query(returns => [SlotBlock,])
 	public async slotBlock() {
-		return SlotBlock.find()
+		return SlotBlock.find({ where: { active: 1 } })
 	}
 
 	@GQL.Mutation(returns => SlotBlock)
 	public async addSlotBlock(
 		@GQL.Arg("start") start: Date,
 		@GQL.Arg("End") End: Date,
-		@GQL.Arg("bookingType") bookingType: string,
+		@GQL.Arg("bookingType") bookingType: number,
 	) {
 		let slotBlock = new SlotBlock()
 		slotBlock.start = start

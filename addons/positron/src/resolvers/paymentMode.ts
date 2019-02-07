@@ -6,7 +6,7 @@ export default class PaymentModeResolver {
 
 	@GQL.Query(returns => [PaymentMode,])
 	public async paymentModes() {
-		return PaymentMode.find()
+		return PaymentMode.find({ where: { active: 1 } })
 	}
 	
 	@GQL.Mutation(returns => PaymentMode)

@@ -6,7 +6,7 @@ export default class TransactionResolver{
 
 	@GQL.Query(returns => [Transaction,])
 	public async transactions() {
-		return Transaction.find()
+		return Transaction.find({ where: { active: 1 } })
 	}
 
 	@GQL.Mutation(returns => Transaction)

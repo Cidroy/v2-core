@@ -6,7 +6,7 @@ export default class TrainerTypeResolver {
 
 	@GQL.Query(returns => [TrainerType,])
 	public async trainerTypes() {
-		return TrainerType.find()
+		return TrainerType.find({ where: { active: 1 } })
 	}
 	
 	@GQL.Mutation(returns => TrainerType)

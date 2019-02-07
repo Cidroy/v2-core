@@ -6,7 +6,7 @@ export default class GymUsersResolver {
 
 	@GQL.Query(returns => [GymUsers,])
 	public async gymUsers() {
-		return GymUsers.find()
+		return GymUsers.find({ where: { active: 1 } })
 	}
 
 	@GQL.Mutation(returns => GymUsers)
@@ -20,7 +20,7 @@ export default class GymUsersResolver {
 		@GQL.Arg("healthCurrent", { nullable: true }) healthCurrent?: number,
 		@GQL.Arg("referredByAdmin", { nullable: true }) referredByAdmin?: number,
 		@GQL.Arg("referredByUser", { nullable: true }) referredByUser?: number,
-		@GQL.Arg("referredTo", { nullable: true }) referredTo?: number,
+		@GQL.Arg("referredTo",type=> [Number,], { nullable: true }) referredTo?: number[],
 		@GQL.Arg("referredOther", { nullable: true }) referredOther?: string,
 		@GQL.Arg("transferFrom", { nullable: true }) transferFrom?: number,
 		@GQL.Arg("transferTo", { nullable: true }) transferTo?: number,

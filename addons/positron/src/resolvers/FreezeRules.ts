@@ -6,7 +6,7 @@ export default class FreezeRulesResolver{
 	
 	@GQL.Query(returns => [GymFreezeRules,])
 	public async gymFreezeRules() {
-		return GymFreezeRules.find()
+		return GymFreezeRules.find({ where: { active: 1 } })
 	}
 
 	@GQL.Mutation(returns => GymFreezeRules)

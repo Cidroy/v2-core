@@ -7,7 +7,7 @@ export default class UserResolver{
 	
 	@GQL.Query(returns => [User,])
 	public async user() {
-		return User.find()
+		return User.find({ where: { active: 1 } })
 	}
 
 	@GQL.Mutation(returns => User)
@@ -15,7 +15,7 @@ export default class UserResolver{
 		
 		@GQL.Arg("mobile") mobile : string,
 		@GQL.Arg("firstName") firstName : string,
-		@GQL.Arg("wdmsId", type => [String,], { nullable: true }) wdmsId : object,
+		@GQL.Arg("wdmsId", type => [String,], { nullable: true }) wdmsId? : object,
 		@GQL.Arg("badgenumber", { nullable: true }) badgenumber ? : string,
 		@GQL.Arg("middleName", { nullable: true }) middleName ? : string,
 		@GQL.Arg("lastName", { nullable: true }) lastName ? : string,
@@ -25,7 +25,7 @@ export default class UserResolver{
 		@GQL.Arg("officePhone", { nullable: true }) officePhone ? : string,
 		@GQL.Arg("homeNumber", { nullable: true }) homeNumber ? : string,
 		@GQL.Arg("email", { nullable: true }) email ? : string,
-		@GQL.Arg("address", type => [Number,], { nullable: true }) address ? : number[],
+		@GQL.Arg("address", { nullable: true }) address ? : string,
 		@GQL.Arg("IDType", { nullable: true }) IDType ? : number,
 		@GQL.Arg("IDNumber", { nullable: true }) IDNumber ? : string,
 		@GQL.Arg("imagePath", { nullable: true }) imagePath ? : string,

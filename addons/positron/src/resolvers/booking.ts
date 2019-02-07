@@ -6,7 +6,7 @@ export default class BookingResolver {
 
 	@GQL.Query(returns => [Booking,])
 	public async bookings() {
-		let bookings = await Booking.find()
+		let bookings = await Booking.find({ where: { active: 1 } })
 		console.log("-=-=-=====================\n\n\n",bookings)
 		return bookings
 	}
