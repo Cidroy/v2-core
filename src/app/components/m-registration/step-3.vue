@@ -1,15 +1,15 @@
 <template>
 	<div>
-		<v-card class="mb-2" color="transparent" height="320px">
+		<v-card color="transparent">
 			<h3>Type Of Membership</h3>
 			<v-form lazy-validation ref="form" v-model="formValid">
 				<v-layout row wrap class="ml-4">
-					<v-checkbox v-for="(value, name) in MEMBERSHIP_TYPES" :key="value" v-model="membershipType" :label="name" :value="value" color="orange darken-2" autofocus/>
+					<v-checkbox v-for="mt in MEMBERSHIP_TYPES" :key="mt.id" v-model="membershipType" :label="mt.name" :value="mt.id" color="orange darken-2" autofocus/>
 				</v-layout>
 				<v-divider/>
 				<h3 class="pt-2">Membership Duration</h3>
 				<v-layout row wrap class="ml-4">
-					<v-checkbox v-model="packageType" v-for="(value, name) in PACKAGES" :key="value" :label="name" :value="value"  color="orange darken-2"/>
+					<v-checkbox v-model="packageType" v-for="Package in PACKAGES" :key="Package.id" :label="Package.name" :value="Package.id"  color="orange darken-2"/>
 				</v-layout>
 				<v-divider></v-divider>
 				<h3 class="pt-2">Preferable Time Slot:</h3>
@@ -19,12 +19,12 @@
 					</v-radio-group>
 				</v-layout>
 			</v-form>
+			<v-card-actions>
+				<v-btn dark @click.native.stop="formReset"> <v-icon left>close</v-icon> Cancel</v-btn>
+				<v-spacer />
+				<v-btn dark color="orange darken-4" @click.native.stop="formNext"> <v-icon left>done</v-icon> NEXT </v-btn>
+			</v-card-actions>
 		</v-card>
-
-		<div class="right">
-			<v-btn dark @click.native.stop="formReset">Cancel</v-btn>
-			<v-btn dark color="orange darken-4" @click.native.stop="formNext"> NEXT </v-btn>
-		</div>
 	</div>
 </template>
 
@@ -37,8 +37,8 @@ import { TMRegistrationStep3 } from "@/classes/types/registration"
 @Component({
 	components: { Layout,  },
 	created(){
-		this.membershipType = Object.values(this.MEMBERSHIP_TYPES)[0]
-		this.packageType = Object.values(this.PACKAGES)[0]
+		this.membershipType = this.MEMBERSHIP_TYPES[0].id
+		this.packageType = this.PACKAGES[0].id
 		this.timeSlot = Object.values(this.TIME_SLOTS)[0]
 	}
 })
@@ -60,8 +60,8 @@ export default class MRegistrationStep3 extends Vue{
 		type: Object,
 		default: () => {
 			let def: TMRegistrationStep3 = {
-				membershipType: Object.values(MiscStore.MEMBERSHIP_TYPES)[0],
-				packageType: Object.values(MiscStore.PACKAGES)[0],
+				membershipType: Object.values(MiscStore.MEMBERSHIP_TYPES)[0].id,
+				packageType: Object.values(MiscStore.PACKAGES)[0].id,
 				timeSlot: Object.values(MiscStore.TIME_SLOTS)[0],
 			}
 			return def

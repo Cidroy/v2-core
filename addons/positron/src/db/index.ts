@@ -10,7 +10,7 @@ let config: {
 		prefix: string,
 	} = {
 	databaseOptions: null,
-		prefix: "p_"
+	prefix: "p_",
 }
 
 let cache: {
@@ -39,7 +39,10 @@ export class Database {
 	}
 
 	public static async Initialize(){
-		Database.config = await AppConfig.Get(Database.Namespace, Database.config)
+		Database.config = {
+			...Database.config,
+			...await AppConfig.Get(Database.Namespace, Database.config),
+		}
 		Database.log.verbose("initialized", Database.config)
 	}
 

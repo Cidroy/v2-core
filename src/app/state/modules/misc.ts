@@ -1,6 +1,6 @@
-import { VuexModule, Module, getModule, MutationAction, Action } from "vuex-module-decorators"
+import { VuexModule, Module, getModule, MutationAction } from "vuex-module-decorators"
 import store from "@/state/store"
-import GKHelper, { TGQLOccupations, TGQLCategories, TGQLIDProofs, TGQLGroupings, TGQLBodyTypes, TGQLOrganizationTypes } from "./gk-helper"
+import GKHelper, { TGQLOccupations, TGQLCategories, TGQLIDProofs, TGQLGroupings, TGQLBodyTypes, TGQLOrganizationTypes, TGQLPackages, TGQLPurposes, TGQLMembershipTypes, TGQLPaymentModes } from "./gk-helper"
 
 let _occupations: TGQLOccupations[] = []
 let _categories: TGQLCategories[] = []
@@ -8,34 +8,15 @@ let _idTypes: TGQLIDProofs[] = []
 let _groupings: TGQLGroupings[] = []
 let _bodyTypes: TGQLBodyTypes[] = []
 let _organizationTypes: TGQLOrganizationTypes[] = []
-
-let _membershipTypes = {
-	Gold: "GOLD",
-	Platinum: "PLATINUM",
-}
-
-let _packages = {
-	Monthly: 1,
-	Quaterly: 2,
-	"Half-Yearly": 3,
-	Yearly: 4,
-}
+let _packages: TGQLPackages[] = []
+let _purposes: TGQLPurposes[] = []
+let _membershipTypes: TGQLMembershipTypes[] = []
+let _paymentModes: TGQLPaymentModes[] = []
 
 let _timeSlots = {
 	"Peak Hours": 1,
 	"Off-Peak Hours": 2,
 }
-
-let _purposes: string[] = [
-	"General Fitness",
-	"Lose Fat",
-	"Gain Muscle",
-	"Tone Up",
-	"Sports Oriented",
-	"Lifestyle",
-	"Transform",
-	"Specialized Training",
-]
 
 let _doors = {
 	"Gym Mens Section": "gym-men",
@@ -90,6 +71,9 @@ class Misc extends VuexModule {
 	private _organizationTypes = _organizationTypes
 	public get ORGANIZATION_TYPES() { return this._organizationTypes}
 
+	private _paymentModes = _paymentModes
+	public get PAYMENT_MODES() { return this._paymentModes}
+
 	@MutationAction({ mutate: [
 		"_occupations",
 		"_categories",
@@ -97,6 +81,10 @@ class Misc extends VuexModule {
 		"_groupings",
 		"_bodyTypes",
 		"_organizationTypes",
+		"_packages",
+		"_purposes",
+		"_membershipTypes",
+		"_paymentModes",
 	] })
 	public async Initialize(){
 		let [
@@ -106,6 +94,10 @@ class Misc extends VuexModule {
 			Xgroupings,
 			XbodyTypes,
 			XorganizationTypes,
+			Xpackages,
+			Xpurposes,
+			XmembershipTypes,
+			XpaymentModes,
 		] = await Promise.all([
 			GKHelper.GetOccupations(),
 			GKHelper.GetCategories(),
@@ -113,6 +105,10 @@ class Misc extends VuexModule {
 			GKHelper.GetGroupings(),
 			GKHelper.GetBodyTypes(),
 			GKHelper.GetOrganizationTypes(),
+			GKHelper.GetPackages(),
+			GKHelper.GetPurposes(),
+			GKHelper.GetMembershipTypes(),
+			GKHelper.GetPaymentModes(),
 		])
 		_occupations = Xoccupations
 		_categories = Xcategories
@@ -120,13 +116,21 @@ class Misc extends VuexModule {
 		_groupings = Xgroupings
 		_bodyTypes = XbodyTypes
 		_organizationTypes = XorganizationTypes
+		_packages = Xpackages
+		_purposes = Xpurposes
+		_membershipTypes = XmembershipTypes
+		_paymentModes = XpaymentModes
 		return {
 			_occupations,
 			_categories,
 			_idTypes,
 			_groupings,
 			_bodyTypes,
-			_organizationTypes
+			_organizationTypes,
+			_packages,
+			_purposes,
+			_membershipTypes,
+			_paymentModes,
 		}
 	}
 }
