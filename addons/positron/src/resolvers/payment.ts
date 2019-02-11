@@ -13,6 +13,7 @@ export default class PaymentsResolver {
 	public async addPayment(
 		@GQL.Arg("mode") mode: number,
 		@GQL.Arg("reciept") reciept: string,
+		@GQL.Arg("transactionId",{nullable: true}) transactionId: string,
 		@GQL.Arg("amount") amount: number,
 		@GQL.Arg("adjustment") adjustment: number,
 	) {
@@ -20,6 +21,7 @@ export default class PaymentsResolver {
 		payment.mode = mode
 		payment.reciept = reciept
 		payment.amount = amount
+		if(transactionId) payment.transacionId = transactionId
 		payment.adjustment = adjustment
 
 		await payment.save()

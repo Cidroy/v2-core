@@ -1,5 +1,6 @@
 import * as GQL from "type-graphql"
 import * as DB from "typeorm"
+import LockedBadgenumbers from "@positron/models/lockedBadgenumbers"
 
 type user= {
 	name: string,
@@ -15,7 +16,7 @@ export default class miscResolver {
 		try{
 			let entityManager = DB.getManager()
 			let user = await entityManager.query("SELECT if(EXISTS(select 1 from userinfo where badgenumber= ?) =1 , 'true', 'false' )as exist", [badgenumber,])
-			return user[0].exist
+			return user[0].exist && LockedBadgenumbers.find({ where: { badgenumber: badgenumber } }) !== undefined
 		}
 		catch(error){
 			console.log(error)

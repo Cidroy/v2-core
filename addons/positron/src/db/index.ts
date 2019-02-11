@@ -126,4 +126,9 @@ export class Database {
 		if (!Database.cache.connection) return
 		await Database.cache.connection.close()
 	}
+
+	public static get connection(): Connection  {
+		if (Database.cache.connection===null) throw "No DB Connection"
+		return Database.cache.connection
+	}
 }
