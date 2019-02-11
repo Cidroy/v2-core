@@ -1,23 +1,23 @@
 <template>
 	<div>
-		<v-card class="mb-2" color="transparent" height="480px">
+		<v-card color="transparent">
 			<v-layout row wrap>
 				<v-flex xs2> <v-subheader class="subheading">Member ID</v-subheader> </v-flex>
 				<v-flex xs4> <v-text-field label="Enter or Generate ID" single-line solo autofocus/> </v-flex>
 				<v-flex xs2> <v-btn dark :loading="loading" :disabled="loading" color="secondary" @click="loader = 'loading'">Generate</v-btn> </v-flex>
 
 				<!-- TODO: max 3 elements only -->
-				<v-flex xs12 lg6 class="pa-1"> <v-combobox prepend-icon="fas fa-star" v-model="purposes" :items="Purposes" label="Purpose of Joining Gym" multiple chips hint="Maximum 3 choices" persistent-hint clearable deletable-chips color="orange darken-2"/> </v-flex>
+				<v-flex xs12 lg6 class="pa-1"> <v-combobox prepend-icon="fas fa-star" v-model="purposes" :items="Purposes" item-text="name" item-value="id" label="Purpose of Joining Gym" multiple chips hint="Maximum 3 choices" persistent-hint clearable deletable-chips color="orange darken-2"/> </v-flex>
 				<v-spacer />
 				<v-flex xs5 md5 class="pa-1 pt-3">
 					<v-menu ref="dojMenu" :close-on-content-click="false" v-model="dojMenu" :nudge-right="40" lazy transition="scale-transition" offset-y full-width>
-						<v-text-field color="orange darken-2" slot="activator" v-model="dojFormatted" label="Date of Joining" prepend-icon="event" readonly persistent-hint @blur="doj = parseDate(dojFormatted)" />
+						<v-text-field color="orange darken-2" slot="activator" v-model="dojFormatted" label="Date of Joining" prepend-icon="event" readonly persistent-hint />
 						<v-date-picker v-model="doj" :min="minDoj" no-title @input="dojMenu = false"  color="orange darken-2"/>
 					</v-menu>
-					<v-checkbox label="Allow Back Dates" v-model="allowBackDating" color="orange"/>
+					<v-checkbox class="ma-0" label="Allow Back Dates" v-model="allowBackDating" color="orange"/>
 				</v-flex>
 
-				<v-flex xs12 class="pt-5 pl-2">
+				<v-flex xs12 class="pt-2 pl-2">
 					<span class="title font-weight-regular">Allow Door Access</span>
 					<v-layout align-start row>
 						<v-switch v-model="allowedDoors" v-for="(value, name) in Doors" :key="value" :label="name" :value="value" color="orange darken-2"/>
@@ -50,12 +50,12 @@
 					</v-layout>
 				</v-flex>
 			</v-layout>
+			<v-card-actions>
+				<v-btn dark @click.native.stop="formReset"> <v-icon left>close</v-icon> Cancel</v-btn>
+				<v-spacer />
+				<v-btn dark color="orange darken-4" @click.native.stop="formNext"> <v-icon left>done</v-icon> NEXT </v-btn>
+			</v-card-actions>
 		</v-card>
-
-		<div class="right">
-			<v-btn dark>Cancel</v-btn>
-			<v-btn dark @click.native.stop="submit" color="orange darken-4" class="mb-2" >Submit</v-btn>
-		</div>
 	</div>
 </template>
 
@@ -73,19 +73,20 @@ export default class MRegistrationStep4 extends Vue{
 
 	private loading = false
 	private confirmModal = false
-	private allowBackDating = false
 
 	private utmSource: boolean | string | number = false
 	private toc = false
 	private allowedDoors: (number|string)[] = []
-	private purposes: (string| number)[] = [ MiscStore.PURPOSES[0] ]
+	private purposes: (string| number)[] = []
 	private get Purposes(){return MiscStore.PURPOSES }
 
 	private doj = new Date().toISOString().substr(0, 10)
 	private dojFormatted = this.formatDate(this.doj)
 	private dojMenu = false
+	private get x_minDoj(){ return this.allowBackDating?new Date(1947, 7, 16): new Date() }
 	@Watch("doj") private onDateChanged() { this.dojFormatted = this.formatDate(this.doj) }
-	private get minDoj(){ return moment(new Date()).add(0, "days").toISOString().substr(0, 10) }
+	private get minDoj(){ return moment(this.x_minDoj).toISOString().substr(0, 10) }
+	private allowBackDating = false
 
 	private get getDateFormatted() { return this.formatDate(this.doj) }
 	private get Doors(){ return MiscStore.DOORS }
@@ -126,9 +127,10 @@ export default class MRegistrationStep4 extends Vue{
 
 	private showToc(){}
 	private showRules(){}
-	private submit(){
+	private formNext(){
 		this.inputEmitter()
 		this.nextStep()
-	}   
+	}
+	private formReset(){}
 }
 </script>

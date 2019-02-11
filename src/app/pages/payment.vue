@@ -2,105 +2,96 @@
 	<Layout>
 		<h1 class="text-md-center">Payment</h1>
 		
-		<v-card color="transparent" height="600px">
+
+		<v-card color="transparent">
 			<v-layout class="pt-4 pl-4" row wrap>
-				<v-flex xs9>
-					<v-radio-group prepend-icon="fas fa-cash-register" label="Mode of Payment" v-model="radioPmode" row>
-						<v-radio color="orange darken-2" label="Cash" value="radio-1"></v-radio>
-						<v-radio color="orange darken-2" label="Card/Online" value="radio-2"></v-radio>
-						<v-radio color="orange darken-2" label="Cheque" value="radio-3"></v-radio>
-					</v-radio-group>
-				</v-flex>	
-				
-				<v-flex xs3 class="pr-4">
-					<v-text-field color="orange darken-2" prepend-icon="fas fa-receipt" value="7384" label="Receipt No" ></v-text-field>
-				</v-flex>
-
-				<v-flex xs6>
-					<v-text-field box prepend-icon="fas fa-user" value="John Doe" label="Name" readonly ></v-text-field>
-				</v-flex>
 			</v-layout>
 
-			<v-layout class="pl-4" row wrap>
-				<v-flex xs6 class="pr-4">
-					<v-text-field box prepend-icon="fas fa-info-circle" value="Package Name" label="Payment Purpose" readonly ></v-text-field>
-				</v-flex>
-				<v-flex xs6 class="pr-4">
-					<v-text-field box prepend-icon="fas fa-calendar-alt" value="Package Duration" label="Payment Duration" readonly ></v-text-field>
-				</v-flex>
-
-				<v-flex xs12>
-					<v-subheader class="title">Amount Breakdown</v-subheader>
-				</v-flex>
-			</v-layout>
-
-			<v-card class="px-4">
-				<v-layout row wrap class="pl-4 pt-2">
-					<v-flex class="mt-2" xs2>
-						<v-subheader class="title">Sub-Total</v-subheader>
-					</v-flex>
-					<v-flex xs2>
-						<v-text-field box value="2580.00" prefix="₹" readonly></v-text-field>
-					</v-flex>
-
-					<v-flex xs4 class="pl-4">
-						<v-select color="orange darken-2" prepend-icon="fas fa-bolt" :items="offers" label="Offers"></v-select>
-					</v-flex>
-					<v-flex xs4 class="pl-4">
-						<v-text-field color="orange darken-2" label="Enter Discount Amount" single-line solo></v-text-field>
-					</v-flex>
-				</v-layout>
-
-				<v-layout row wrap class="pl-4">
-					<v-flex class="mt-2" xs2>
-						<v-subheader class="subheading">Discount Amount</v-subheader>
-					</v-flex>
-					<v-flex xs2>
-						<v-text-field box prefix="₹" value="280.00" readonly></v-text-field>
-					</v-flex>
-				</v-layout>
-
-				<v-layout row wrap class="pl-4">
-					<v-flex class="mt-2" xs2>
-						<v-subheader class="title">Total Amount</v-subheader>
-					</v-flex>
-					<v-flex xs2>
-						<v-text-field box value="2080.00" prefix="₹" readonly></v-text-field>
-					</v-flex>
-				</v-layout>
-			</v-card>	
-		</v-card>
-
-		<v-card width="100%" height="50px" color="transparent">
-			<div class="right pr-2"> 
+			<v-card-actions>
 				<v-btn dark>Cancel</v-btn>
 				<v-btn dark color="orange darken-4" class="mb-2">Submit</v-btn>
-			</div>
-		</v-card>	
+			</v-card-actions>
+		</v-card>
 	</Layout>
 </template>
 
 <script lang="ts">
-import Vue from "vue"
+import { Component, Vue, Prop, Watch } from "vue-property-decorator"
+import moment from "moment"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
-import SystemInformation from "@/components/system-information.vue"
-import { Component } from "vue-property-decorator"
+import { formatDate, parseDate } from "@/utils/misc"
+import { MiscStore } from "@/state/modules/misc"
 
 @Component({
-	components: { Layout, SystemInformation, },
+	components: { Layout, },
 	page : {
 		title: "Home",
 		meta: [ { name: "description", content: appConfig.description, }, ],
 	},
 })
-export default class Home extends Vue{
-	radioPmode = "radio-1"
+export default class SinglePaymentPage extends Vue{
+	private formatDate(date){ return formatDate(date) }
+	private parseDate(date){ return formatDate(date) }
+
+	private doj = new Date().toISOString().substr(0, 10)
+	private dojFormatted = this.formatDate(this.doj)
+	private dojMenu = false
+	private get x_minDoj(){ return this.allowBackDating?new Date(1947, 7, 16): new Date() }
+	@Watch("doj") private onDateChanged() { this.dojFormatted = this.formatDate(this.doj) }
+	private get minDoj(){ return moment(this.x_minDoj).toISOString().substr(0, 10) }
+	private allowBackDating = false
+
+	private receipt = "1"
+	private userFullName = "John Doe"
+	private userId = "00001212"
+	private mobileNumber = "0000000000"
+	private whatsappNumber = "0000000000"
+
+	private admissionFee = 1000
+	private membership = "Gold"
+	private membershipQty = 1
+	private membershipPrice = 5000
+	private get membershipAmount(){ return this.membershipQty * this.membershipPrice }
+
+	private packagex = "Monthly"
+	private packagexQty = 1
+	private packagexPrice = 5000
+	private get packagexAmount(){ return this.packagexQty * this.packagexPrice }
+	private startDate = this.formatDate(new Date().toISOString().substr(0, 10))
+	private endDate = this.formatDate(new Date().toISOString().substr(0, 10))
+
+	private timeSlot = "Peak Hours"
+	private timeSlotQty = 1
+	private timeSlotPrice = 500
+	private get timeSlotAmount(){ return this.packagexQty * this.packagexPrice }
+
+	private get subTotal(){
+		return this.admissionFee
+			+ this.membershipAmount
+			+ this.packagexAmount
+			+ this.timeSlotAmount
+	}
+	private discount = 0
+	private get total(){
+		return this.subTotal
+			+ this.discount
+	}
+
+	private transactionId = "0000"
+
+	private paymentMode = 0
+	private get PAYMENT_MODES(){ return MiscStore.PAYMENT_MODES }
+	private get requireTransactionId(){ return this.PAYMENT_MODES[this.paymentMode].requireTransactionId }
+
 	offers = [
 		'Custom',
 		'Couple',
 		'New year',
 		'Student',
 	]
+
+	@Prop({ type: Object }) public userData !: {}
+	@Watch("userData") private onUserData(){ }
 }
 </script>

@@ -10,6 +10,11 @@ export type TGQLIDProofs = TGQLBasic
 export type TGQLGroupings = TGQLBasic & { count: number, min: number, max: number, }
 export type TGQLBodyTypes = TGQLBasic
 export type TGQLOrganizationTypes = TGQLBasic
+export type TGQLPurposes = TGQLBasic
+export type TGQLMembershipTypes = TGQLBasic
+export type TGQLPaymentModes = TGQLBasic & { requireTransactionId: boolean }
+// FIXME: choose proper duration in next pull
+export type TGQLPackages = TGQLBasic & { count: number, duration: string }
 export default class GKHelper{
 	public static async GetOccupations(): Promise<TGQLOccupations[]>{
 		let response = await GQLClient.query<{
@@ -100,5 +105,64 @@ export default class GKHelper{
 			`,
 		)
 		return response.data.organizations
+	}
+
+	public static async GetPackages(): Promise<TGQLPackages[]> {
+		let response = await GQLClient.query<{ gymPackages: TGQLPackages[] }>(
+			gql`
+				query gymPackages{
+					gymPackages{
+						id
+						name
+						count
+						duration
+					}
+				}
+			`,
+		)
+		return response.data.gymPackages
+	}
+
+	public static async GetPurposes(): Promise<TGQLPurposes[]> {
+		let response = await GQLClient.query<{ gymPurposes: TGQLPurposes[] }>(
+			gql`
+				query gymPurposes{
+					gymPurposes{
+						id
+						name
+					}
+				}
+			`,
+		)
+		return response.data.gymPurposes
+	}
+
+	public static async GetMembershipTypes(): Promise<TGQLMembershipTypes[]> {
+		let response = await GQLClient.query<{ membershipTypes: TGQLMembershipTypes[] }>(
+			gql`
+				query membershipTypes{
+					membershipTypes{
+						id
+						name
+					}
+				}
+			`,
+		)
+		return response.data.membershipTypes
+	}
+
+	public static async GetPaymentModes(): Promise<TGQLPaymentModes[]> {
+		let response = await GQLClient.query<{ paymentModes: TGQLPaymentModes[] }>(
+			gql`
+				query PaymentModes{
+					paymentModes{
+						id
+						name
+						requireTransactionId
+					}
+				}
+			`,
+		)
+		return response.data.paymentModes
 	}
 }
