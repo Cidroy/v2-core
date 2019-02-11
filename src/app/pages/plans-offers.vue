@@ -52,7 +52,7 @@ export default class Home extends Vue{
 
 	open = []
 	active = []
-	users = []
+	users: any[] = []
 
 	get selected () {
         if (!this.active.length) return undefined

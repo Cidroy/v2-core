@@ -105,10 +105,10 @@ export default class MemberRegistrationPage extends Vue {
 		this.completedSteppers.push(stepperId)
 	}
 	private get allSteppersComplete(){
-		console.log([_(Object.keys(this.users)).difference(this.completedSteppers).value()])
-		return !_(Object.keys(this.users)).difference(this.completedSteppers).value().length
+		return	(this.usersCount && false)
+				|| !_(Object.keys(this.users)).difference(this.completedSteppers).value().length
 	}
-	@Watch("users") private onUsersChange(){
+	@Watch("usersCount") private onUsersChange(){
 		console.log([111, _(Object.keys(this.users)).difference(this.completedSteppers).value()])
 	}
 
