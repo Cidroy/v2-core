@@ -108,9 +108,7 @@ export default class MemberRegistrationPage extends Vue {
 		return	(this.usersCount && false)
 				|| !_(Object.keys(this.users)).difference(this.completedSteppers).value().length
 	}
-	@Watch("usersCount") private onUsersChange(){
-		console.log([111, _(Object.keys(this.users)).difference(this.completedSteppers).value()])
-	}
+	@Watch("usersCount") private onUsersChange(){ }
 
 	private paymentModel = false
 	private paymentCancelled(){}

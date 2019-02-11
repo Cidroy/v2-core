@@ -1,5 +1,7 @@
 import { MiscStore } from "@/state/modules/misc"
-import { GENDER } from "@classes/enum/misc"
+import { GENDER, ADDRESS_TYPE } from "@classes/enum/misc"
+import IAddress from "@classes/interface/IAddress"
+import AddressStore from "@/state/modules/addresses"
 
 export type TMRegistrationStep1 = {
 	id: number| string
@@ -13,7 +15,6 @@ export type TMRegistrationStep1 = {
 	category: string| number
 	idType: string| number
 	idNumber: string
-	address: string
 	bodyType: string| number
 }
 
@@ -29,7 +30,6 @@ export const defaultRegistrationStep1User: TMRegistrationStep1 = {
 	category: MiscStore.CATEGORIES[0].id,
 	idType: MiscStore.ID_TYPES[0].id,
 	idNumber: "",
-	address: "",
 	bodyType: MiscStore.BODY_TYPES[0].id,
 }
 
@@ -38,6 +38,7 @@ export type TMRegistrationStep2 = {
 	whatsappNumber: string
 	homeNumber: string
 	officeNumber: string
+	address: Partial<IAddress>
 	emergencyContactName: string
 	emergencyContactNumber: string
 	email: string
@@ -48,6 +49,18 @@ export const defaultRegistrationStep2User: TMRegistrationStep2 =  {
 	whatsappNumber: "",
 	homeNumber: "",
 	officeNumber: "",
+	address: {
+		receiver: "",
+		contact: "",
+		house: "",
+		locality: "",
+		landmark: "",
+		city: AddressStore.DEFAULT_CITY,
+		state: AddressStore.DEFAULT_STATE_SHORT,
+		country: AddressStore.DEFAULT_COUNTRY_SHORT,
+		pincode: "",
+		type: ADDRESS_TYPE.HOME,
+	},
 	emergencyContactName: "",
 	emergencyContactNumber: "",
 	email: "",

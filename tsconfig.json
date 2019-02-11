@@ -30,6 +30,7 @@
 		],
 		"baseUrl": ".",
 		"paths": {
+			"*": ["types/*"],
 			"@electron/*": [ "src/electron/*" ],
 			"@typescript/*": [ "typescript/*" ],
 			"@classes/*": [ "classes/*" ],

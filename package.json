@@ -184,6 +184,7 @@
 		"class-validator": "^0.9.1",
 		"core-decorators": "^0.20.0",
 		"cors": "^2.8.5",
+		"countrycitystatejson": "^0.2.9",
 		"electron-data": "^2.1.0",
 		"electron-debug": "^2.0.0",
 		"electron-log": "^2.2.17",

@@ -136,7 +136,7 @@ export default class AddUserPhoto extends Vue{
 			},
 			stream => {
 				this.cameraStream = stream
-				console.log(stream, this.videoElement, this.$refs)
+				log.log(stream, this.videoElement, this.$refs)
 				this.videoElement.srcObject = stream
 				this.videoElement.autoplay = true
 			},
@@ -145,7 +145,7 @@ export default class AddUserPhoto extends Vue{
 				this.error = error.toString()
 			}
 		)
-		console.log("stream",streamer)
+		log.log("stream",streamer)
 	}
 	private stopCameraStream(){
 		if(this.cameraStream===null) return

@@ -4,36 +4,40 @@
 			<v-layout row wrap>
 				<v-form lazy-validation ref="form" v-model="formValid">
 					<v-layout row wrap>
-						<v-flex xs12 lg4 class="pr-2">
+						<v-flex xs12 lg6 class="px-2">
 							<v-text-field prepend-icon="fas fa-mobile-alt" v-model="mobile" :rules="rules.mobile" label="Mobile Number" mask="##### ##### #####" required ref="autofocus" color="orange darken-2" autofocus v-observe-visibility="focus"/>
 						</v-flex>
-						<v-flex xs12 lg4 class="pl-2">
+						<v-flex xs12 lg6 class="px-2">
 							<v-text-field prepend-icon="fab fa-whatsapp" label="Whatsapp Number" v-model="whatsappNumber" mask="##### ##### #####" :rules="rules.whatsappNumber" required color="orange darken-2" />
-						</v-flex>
-						<v-flex xs12 lg4>
-							<v-checkbox v-model="sameAsPhone" :rules="rules.checkbox" label="Same As Phone Number" color="orange darken-2" />
+							<v-checkbox v-model="sameAsPhone" label="Same As Mobile Number" color="orange darken-2" />
 						</v-flex>
 
-						<v-flex xs12 lg4 class="pr-2">
+						<v-divider />
+
+						<v-flex xs12 class="px-2"> <v-textarea v-model="address.house" label="Residential Address" prepend-icon="place" :rules="rules.address.house" color="orange darken-2"/> </v-flex>
+						<v-flex xs12 lg6 class="px-2"> <v-text-field v-model="address.locality" label="Locality" prepend-icon="fas fa-phone" color="orange darken-2" /> </v-flex>
+						<v-flex xs12 lg6 class="px-2"> <v-text-field v-model="address.landmark" label="Landmark" prepend-icon="fas fa-phone" color="orange darken-2" /> </v-flex>
+						<v-flex xs12 lg6 class="px-2"> <v-autocomplete :items="COUNTRIES" item-text="name" item-value="shortName" v-model="address.country" label="Country" prepend-icon="fas fa-phone" auto-select-first color="orange darken-2" /> </v-flex>
+						<v-flex xs12 lg6 class="px-2"> <v-autocomplete :items="STATES" v-model="address.state" label="State" prepend-icon="fas fa-phone" color="orange darken-2" /> </v-flex>
+						<v-flex xs12 lg6 class="px-2"> <v-autocomplete :items="CITIES" v-model="address.city" label="City" prepend-icon="fas fa-phone" color="orange darken-2" /> </v-flex>
+						<v-flex xs12 lg6 class="px-2"> <v-text-field v-model="address.pincode" label="Pincode" mask="###-###" prepend-icon="fas fa-phone" color="orange darken-2" /> </v-flex>
+
+						<v-flex xs12 lg6 class="px-2">
 							<v-text-field prepend-icon="fas fa-phone" label="Home Number" v-model="homeNumber" mask="##### ##### #####" :rules="rules.homeNumber" color="orange darken-2" />
+							<v-checkbox v-model="homeSameAsPhone" label="Same As Mobile Number" color="orange darken-2" />
 						</v-flex>
-						<v-flex xs12 lg4 class="pl-2">
-							<v-text-field v-model="officeNumber" prepend-icon="fas fa-building" label="Office Number" mask="##### ##### #####" color="orange darken-2" />
-						</v-flex>
+						<v-flex xs12 lg6 class="px-2"> <v-text-field v-model="officeNumber" prepend-icon="fas fa-building" label="Office Number" mask="##### ##### #####" color="orange darken-2" /> </v-flex>
 
-						<v-flex xs12 lg6>
-							<v-text-field prepend-icon="fas fa-envelope" v-model="email" :rules="rules.emailRules" label="Email address" type="email" color="orange darken-2" />
-						</v-flex>
-						<v-flex xs12>
-						<v-divider/>
-						</v-flex>
+						<v-flex xs12 class="px-2"> <v-text-field prepend-icon="fas fa-envelope" v-model="email" :rules="rules.emailRules" label="Email address" type="email" color="orange darken-2" /> </v-flex>
+						
+						<v-flex xs12> <v-divider/> </v-flex>
 						<v-flex xs12 lg12 class="pt-2">
 							<h3 class="pl-4">Incase Of Emergency</h3>
 							<v-layout row wrap class="pl-4">
-								<v-flex xs12 lg5 class="pr-2">
+								<v-flex xs12 lg5 class="px-2">
 									<v-text-field prepend-icon="fas fa-user" v-model="emergencyContactName" label="Contact Name" color="orange darken-2" />
 								</v-flex>
-								<v-flex xs12 lg5 class="pl-2">
+								<v-flex xs12 lg5 class="px-2">
 									<v-text-field prepend-icon="fas fa-phone" v-model="emergencyContactNumber" label="Contact Number" mask="##### ##### #####" color="orange darken-2" />
 								</v-flex>
 							</v-layout>
@@ -53,7 +57,9 @@
 <script lang="ts">
 import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
 import { MiscStore } from "@/state/modules/misc"
-import { TMRegistrationStep2 } from "@/classes/types/registration"
+import { TMRegistrationStep2, defaultRegistrationStep2User } from "@/classes/types/registration"
+import IAddress from "@classes/interface/IAddress"
+import AddressStore from "@/state/modules/addresses"
 
 @Component({
 	created(){
@@ -70,10 +76,28 @@ export default class MRegistrationStep2 extends Vue{
 	private emergencyContactNumber: string = ""
 	private email: string = ""
 	private sameAsPhone: boolean = true
+	private homeSameAsPhone: boolean = true
+	private address: Partial<IAddress> = {
+		house: "",
+		locality: "",
+		landmark: "",
+		city: "",
+		state: "",
+		country: "",
+		pincode: "",
+	}
+
+	private get COUNTRIES(){ return AddressStore.COUNTRIES() }
+	private get STATES(){ return AddressStore.STATES(this.address.country) }
+	private get CITIES(){ return AddressStore.CITIES(this.address.country, this.address.state) }
 
 	@Watch("mobile")
 	@Watch("sameAsPhone")
-	private onSameAsPhoneChange(){ if(this.sameAsPhone) this.whatsappNumber = this.mobile }
+	@Watch("homeSameAsPhone")
+	private onSameAsPhoneChange(){
+		if(this.sameAsPhone) this.whatsappNumber = this.mobile
+		if(this.homeSameAsPhone) this.homeNumber = this.mobile
+	}
 
 	private get rules(){
 			return {
@@ -81,6 +105,13 @@ export default class MRegistrationStep2 extends Vue{
 				whatsappNumber: [ v => !!v || " Number is required" ],
 				homeNumber: [v => !!v || "Required"],
 				emailRules: [ v => !!v || 'E-mail is required',v => /.+@.+/.test(v) || 'E-mail must be valid'],
+				address: {
+					house: [ house => !!house || "House Address is required"],
+					city: [ city => !!city || "City is required"],
+					state: [ state => !!state || "State is required"],
+					pincode: [ pincode => !!pincode || "Pincode is required"],
+					country: [ country => !!country || "country is required"],
+				}
 			}
 	}
 	private get userData(){
@@ -93,22 +124,12 @@ export default class MRegistrationStep2 extends Vue{
 			emergencyContactName : this.emergencyContactName,
 			emergencyContactNumber : this.emergencyContactNumber,
 			email : this.email,
+			address: this.address,
 		}
 	}
 	@Prop({
 		type: Object,
-		default: () => {
-			let def: TMRegistrationStep2 = {
-				mobile: "",
-				whatsappNumber: "",
-				homeNumber: "",
-				officeNumber: "",
-				emergencyContactName: "",
-				emergencyContactNumber: "",
-				email: "",
-			}
-			return def
-		}
+		default: () => defaultRegistrationStep2User
 	}) private value !: TMRegistrationStep2
 	@Emit("input") public inputEmitter(){ return this.userData }
 	@Watch("value") private onValueChange(){
@@ -119,6 +140,7 @@ export default class MRegistrationStep2 extends Vue{
 		this.emergencyContactName = this.value.emergencyContactName
 		this.emergencyContactNumber = this.value.emergencyContactNumber
 		this.email = this.value.email
+		this.address = this.value.address
 	}
 
 	private formValid: boolean = true
@@ -141,6 +163,5 @@ export default class MRegistrationStep2 extends Vue{
 		// @ts-ignore
 		this.autofocus = isVisible
 	}
-
 }
 </script>
