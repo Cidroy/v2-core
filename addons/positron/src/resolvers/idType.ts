@@ -6,7 +6,7 @@ export default class IDTypeResolver {
 
 	@GQL.Query(returns => [IDType,])
 	public async IDTypes() {
-		return IDType.find()
+		return IDType.find({ where: { active: 1 } })
 	}
 
 	@GQL.Mutation(returns => IDType)

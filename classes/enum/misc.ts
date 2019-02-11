@@ -10,3 +10,9 @@ export enum ADDRESS_TYPE{
 	OLD = "OLD",
 	OTHER = "OTHER",
 }
+
+export enum DURATION{
+	MONTH = "MONTH",
+	DAY = "DAY",
+	YEAR = "YEAR",
+}

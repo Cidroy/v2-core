@@ -23,6 +23,10 @@ export default class GymUsers extends Base implements IGymUsers {
 	@DB.Column("integer")
 	public mode!: number
 	
+	@GQL.Field(type => Boolean, { description: "Entity exists" })
+	@DB.Column("tinyint",{default: false})
+	public isGrouped! : boolean
+
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })
 	public enquiryInitial?: number
@@ -47,9 +51,9 @@ export default class GymUsers extends Base implements IGymUsers {
 	@DB.Column("integer", { nullable: true })
 	public referredByUser?: number
 	
-	@GQL.Field(type => Number)
-	@DB.Column("integer", { nullable: true })
-	public referredTo?: number
+	@GQL.Field(type => [Number,])
+	@DB.Column("simple-array", { nullable: true })
+	public referredTo?: number[]
 	
 	@GQL.Field(type => String)
 	@DB.Column("varchar", { nullable: true })

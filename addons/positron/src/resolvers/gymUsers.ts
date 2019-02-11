@@ -6,20 +6,21 @@ export default class GymUsersResolver {
 
 	@GQL.Query(returns => [GymUsers,])
 	public async gymUsers() {
-		return GymUsers.find()
+		return GymUsers.find({ where: { active: 1 } })
 	}
 
 	@GQL.Mutation(returns => GymUsers)
 	public async addGymUser(
 		@GQL.Arg("userId") userId: number,
 		@GQL.Arg("mode") mode: number,
+		@GQL.Arg("mode") isGrouped: boolean,
 		@GQL.Arg("enquiryInitial", { nullable: true }) enquiryInitial?: number,
 		@GQL.Arg("enquiryRecent", { nullable: true }) enquiryRecent?: number,
 		@GQL.Arg("healthJoining", { nullable: true }) healthJoining?: number,
 		@GQL.Arg("healthCurrent", { nullable: true }) healthCurrent?: number,
 		@GQL.Arg("referredByAdmin", { nullable: true }) referredByAdmin?: number,
 		@GQL.Arg("referredByUser", { nullable: true }) referredByUser?: number,
-		@GQL.Arg("referredTo", { nullable: true }) referredTo?: number,
+		@GQL.Arg("referredTo",type=> [Number,], { nullable: true }) referredTo?: number[],
 		@GQL.Arg("referredOther", { nullable: true }) referredOther?: string,
 		@GQL.Arg("transferFrom", { nullable: true }) transferFrom?: number,
 		@GQL.Arg("transferTo", { nullable: true }) transferTo?: number,
@@ -35,6 +36,7 @@ export default class GymUsersResolver {
 		let gymUsers = new GymUsers()
 		gymUsers.userId = userId
 		gymUsers.mode = mode
+		gymUsers.isGrouped = isGrouped
 		if (enquiryInitial) gymUsers.enquiryInitial = enquiryInitial
 		if (enquiryRecent) gymUsers.enquiryRecent = enquiryRecent
 		if (healthJoining) gymUsers.healthJoining = healthJoining

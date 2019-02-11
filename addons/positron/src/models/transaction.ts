@@ -4,11 +4,11 @@ import Base from "./base"
 import * as GQL from "type-graphql"
 
 @GQL.ObjectType()
-@DB.Entity("user_transaction")
+@DB.Entity()
 export default class Transaction extends Base implements ITransaction{
-	@GQL.Field(type => Number)
-	@DB.Column("integer")
-	public gymUser!: number
+	@GQL.Field(type => Number, { nullable: true })
+	@DB.Column("integer",{nullable: true})
+	public gymUser?: number
 
 	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
@@ -46,21 +46,25 @@ export default class Transaction extends Base implements ITransaction{
 	@DB.Column("integer", { nullable: true })
 	public freezeId?: number
 
-	@GQL.Field(type => Number)
-	@DB.Column("integer")
-	public payment!: number
-
+	@GQL.Field(type => Number, { nullable: true })
+	@DB.Column("integer", { nullable: true })
+	public payment?: number
+ 
 	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
 	public paymentWorkoutCard?: number
+
+	@GQL.Field(type => Number, { nullable: true })
+	@DB.Column("integer", { nullable: true })
+	public membershipType?: number
 
 	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public receipt?: string
 
-	@GQL.Field(type => [ Number, ], { nullable: true })
-	@DB.Column("simple-array", { nullable: true })
-	public offer?: number[]
+	@GQL.Field(type => Number, { nullable: true })
+	@DB.Column("integer", { nullable: true })
+	public offer!: number
 
 	@GQL.Field(type => [ Number, ], { nullable: true })
 	@DB.Column("simple-array", { nullable: true })
@@ -76,11 +80,11 @@ export default class Transaction extends Base implements ITransaction{
 
 	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
-	public package?: number
+	public packages!: number
 
 	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
-	public packageMagnitude?: number
+	public packageMagnitude!: number
 
 	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })

@@ -10,8 +10,8 @@ export default class BookingAddon extends Base implements IBookingAddon {
 	@DB.Column("varchar", { nullable: false, unique: true })
 	public name!: string
 
-	@GQL.Field(type => Number)
-	@DB.Column("integer")
-	public bookingType!: number
+	@GQL.Field(type => String)
+	@DB.Column("varchar", {nullable: true})
+	public description?: string
 
 }

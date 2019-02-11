@@ -6,7 +6,7 @@ export default class OrganizationResolver {
 
 	@GQL.Query(returns => [Organization,])
 	public async organizations() {
-		return Organization.find()
+		return Organization.find({ where: { active: 1 } })
 	}
 
 	@GQL.Mutation(returns => Organization)

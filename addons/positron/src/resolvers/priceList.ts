@@ -6,7 +6,7 @@ export default class PriceListResolver {
 
 	@GQL.Query(returns => [PriceList,])
 	public async priceList() {
-		return PriceList.find()
+		return PriceList.find({ where: { active: 1 } })
 	}
 	
 	@GQL.Mutation(returns => PriceList)

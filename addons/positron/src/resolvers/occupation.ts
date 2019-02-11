@@ -6,7 +6,7 @@ export default class OccupationResolver {
 
 	@GQL.Query(returns => [Occupation,])
 	public async occupations() {
-		return Occupation.find()
+		return Occupation.find({ where: { active: 1 } })
 	}
 
 	@GQL.Mutation(returns => Occupation)

@@ -6,7 +6,7 @@ export default class BookingTypeResolver{
 
 	@GQL.Query(returns => [BookingType,])
 	public async bookingType() {
-		return BookingType.find()
+		return BookingType.find({ where: { active: 1 } })
 	}
 	
 	@GQL.Mutation(returns => BookingType)

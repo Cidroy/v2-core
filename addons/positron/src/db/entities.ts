@@ -26,6 +26,11 @@ import TrainerType from "@positron/models/trainerType"
 import GymUserMode from "@positron/models/gymUserMode"
 import PaymentMode from "@positron/models/paymentMode"
 import GymPrices from "@positron/models/gymPrices"
+import GroupMap from "@positron/models/groupMap"
+import Groupings from "@positron/models/groupings"
+import Groups from "@positron/models/groups"
+import Payment from "@positron/models/payments"
+import LockedBadgenumbers from "@positron/models/lockedBadgenumbers"
 
 export default [
 	Address,
@@ -54,4 +59,9 @@ export default [
 	GymUserMode,
 	PaymentMode,
 	GymPrices,
+	GroupMap,
+	Groupings,
+	Groups,
+	Payment,
+	LockedBadgenumbers,
 ]

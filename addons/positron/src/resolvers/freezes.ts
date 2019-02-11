@@ -6,7 +6,7 @@ export default class FreezeResolver{
 
 	@GQL.Query(returns => [Freezes,])
 	public async freezes() {
-		return Freezes.find()
+		return Freezes.find({ where: { active: 1 } })
 	}
 
 	@GQL.Mutation(returns => Freezes)

@@ -6,7 +6,7 @@ export default class CounsellorTypeResolver {
 
 	@GQL.Query(returns => [CounsellorType,])
 	public async counsellorTypes() {
-		return CounsellorType.find()
+		return CounsellorType.find({ where: { active: 1 } })
 	}
 	
 	@GQL.Mutation(returns => CounsellorType)

@@ -1,7 +1,7 @@
 import { IEntityBase } from "@classes/interface/IEntityBase"
 
 export default interface ITransaction extends IEntityBase{
-	gymUser : number,
+	gymUser? : number,
 	mode? : number,
 	start : Date,
 	end : Date,
@@ -11,16 +11,16 @@ export default interface ITransaction extends IEntityBase{
 	freezeCount? : number,
 	freezeDays? : number,
 	freezeId? : number,
-	payment : number,
+	payment? : number,
 	paymentWorkoutCard? : number,
 	receipt? : string,
-	offer? : number[],
+	offer? : number,
 	addon? : number[],
 	programme? : number[],
 	membershipType? : number,
 	purpose? : number[],
-	package? : number,
-	packageMagnitude?: number,
+	packages : number,
+	packageMagnitude: number,
 	amount? : number,
 	workoutCardStatus? : number
 }

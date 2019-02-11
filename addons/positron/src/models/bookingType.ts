@@ -13,18 +13,18 @@ export default class BookingType extends Base implements IBookingType {
 
 	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
-	public description?: string | undefined
+	public description?: string
 
 	@GQL.Field(type => Number)
 	@DB.Column("integer")
 	public slotDuration! : number
 
 	@GQL.Field(type => Date)
-	@DB.Column("datetime")
+	@DB.Column("time")
 	public slotStart! : Date
 
 	@GQL.Field(type => Date)
-	@DB.Column("datetime")
+	@DB.Column("time")
 	public slotEnd! : Date
 
 }

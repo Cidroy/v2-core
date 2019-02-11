@@ -6,20 +6,24 @@ import IPayment from "@classes/interface/IPayment"
 @GQL.ObjectType()
 @DB.Entity("payments")
 export default class Payment extends Base implements IPayment{
-	@GQL.Field(type => String)
-	@DB.Column("varchar")
-	public mode! : string
+	@GQL.Field(type => Number)
+	@DB.Column("integer")
+	public mode! : number
 	
 	@GQL.Field(type => String)
 	@DB.Column("varchar")
 	public reciept! : string
+
+	@GQL.Field(type => String,{nullable: true})
+	@DB.Column("varchar")
+	public transacionId? : string
 	
 	@GQL.Field(type => Number)
 	@DB.Column("integer")
 	public amount! : number
 	
 	@GQL.Field(type => Number)
-	@DB.Column("integer")
+	@DB.Column("integer",{nullable: true})
 	public adjustment! : number
 
 }

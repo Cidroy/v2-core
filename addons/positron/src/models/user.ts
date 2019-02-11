@@ -16,7 +16,7 @@ GQL.registerEnumType(GENDER, {
 @DB.Entity()
 @GQL.ObjectType()
 export default class User extends Base implements IUser {
-	@GQL.Field(type => String)
+	@GQL.Field(type => String,{nullable: true})
 	@DB.Column("varchar", { nullable:true, unique: true })
 	public badgenumber?: string
 
@@ -69,10 +69,9 @@ export default class User extends Base implements IUser {
 	@Validate.IsEmail()
 	public email?: string
 	
-	@GQL.Field(type => Number)
-	@DB.OneToMany(type => Address, address => address.user)
-	@DB.Column("simple-array", { nullable: true })
-	public address?: number[]
+	@GQL.Field(type => String)
+	@DB.Column("varchar", { nullable: true })
+	public address?: string
 	
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })

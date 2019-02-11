@@ -1,34 +1,69 @@
 import * as GQL from "type-graphql"
 import Transaction from "@positron/models/transaction"
+import Payment from "@positron/models/payments"
+import * as DB from "typeorm"
 
 @GQL.Resolver(of => Transaction)
 export default class TransactionResolver{
 
 	@GQL.Query(returns => [Transaction,])
 	public async transactions() {
-		return Transaction.find()
+		return Transaction.find({ where: { active: 1 } })
 	}
 
 	@GQL.Mutation(returns => Transaction)
 	public async addTransaction(
-		@GQL.Arg("gymUser") gymUser : number,
-		@GQL.Arg("payment") payment: number,
-		@GQL.Arg("start", { nullable: true }) start? : Date,
-		@GQL.Arg("end", { nullable: true }) end ?: Date,
-		@GQL.Arg("endExtendedDate", { nullable: true }) endExtendedDate? : Date,
-		
+		@GQL.Arg("packages") packages: number,
+		@GQL.Arg("packageMagnitude") packageMagnitude: number,
+		@GQL.Arg("start") start: Date,
+		@GQL.Arg("gymUser", { nullable: true }) gymUser? : number,
+		@GQL.Arg("offer", { nullable: true }) offer? : number,
+		@GQL.Arg("addon", type => [Number,], { nullable: true, }) addon? : number[],
+		@GQL.Arg("payment", {nullable:true}) payment?: number,
+		@GQL.Arg("membershipType", {nullable:true}) membershipType?: number,
+		@GQL.Arg("programme", type => [Number,], {nullable:true}) programme?: number[],
+		@GQL.Arg("purpose", type => [Number,], {nullable:true}) purpose?: number[],
 	){
 		let transaction = new Transaction()
-		transaction.gymUser = gymUser
-		transaction.payment = payment
+		transaction.packages = packages
+		transaction.packageMagnitude = packageMagnitude
 		if(!start)transaction.start = new Date()
 		else transaction.start = start
-		if (!end) transaction.end = new Date()
-		else transaction.end = end
-		if (!endExtendedDate) transaction.endExtendedDate = new Date()
-		else transaction.endExtendedDate = endExtendedDate
-		
+		if(offer)transaction.offer = offer
+		if(gymUser)transaction.gymUser = gymUser
+		if(payment)transaction.payment = payment
+		if(membershipType)transaction.membershipType = membershipType
+		if(addon) transaction.addon = addon
+		if(programme) transaction.programme = programme
+		if(purpose) transaction.purpose = purpose
+		// FIXME:
+		transaction.end = start
+		transaction.endExtendedDate = start
 		await transaction.save()
 		return transaction
+	}
+
+	@GQL.Mutation(returns => String)
+	public async linkTransactionPay(
+		@GQL.Arg("paymentId") paymentId: number,
+		@GQL.Arg("transactionId") transactionId: number,
+	){
+		try{
+			let payment = await Payment.createQueryBuilder()
+				.select(["id", "reciept", "amount",])
+				.where({ id: paymentId })
+				.execute()
+				console.log(payment)
+			if(payment===undefined) throw "Invalid Payment"
+
+			let transaction = await Transaction.createQueryBuilder()
+								.update(Transaction)
+				.set({ amount: payment[0].amount, receipt: payment[0].reciept  })
+				.where({id: transactionId})
+				.execute()
+			if (transaction === undefined) throw "Invalid trsancation"
+		}catch(error){
+			throw "Linking Transaction to pay error"
+		}
 	}
 }

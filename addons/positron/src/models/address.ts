@@ -12,6 +12,7 @@ GQL.registerEnumType(ADDRESS_TYPE,{
 })
 
 @DB.Entity()
+@GQL.ObjectType()
 export default class Address extends Base implements IAddress{
 	@DB.ManyToOne(type => User, user => user.address)
 	public user!: number

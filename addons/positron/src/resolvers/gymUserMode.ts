@@ -6,7 +6,7 @@ export default class GymUserModeResolver {
 
 	@GQL.Query(returns => [GymUserMode,])
 	public async gymUserModes() {
-		return GymUserMode.find()
+		return GymUserMode.find({ where: { active: 1 } })
 	}
 	
 	@GQL.Mutation(returns => GymUserMode)

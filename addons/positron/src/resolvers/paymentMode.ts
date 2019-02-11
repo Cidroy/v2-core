@@ -6,17 +6,19 @@ export default class PaymentModeResolver {
 
 	@GQL.Query(returns => [PaymentMode,])
 	public async paymentModes() {
-		return PaymentMode.find()
+		return PaymentMode.find({ where: { active: 1 } })
 	}
 	
 	@GQL.Mutation(returns => PaymentMode)
 	public async addPaymentMode(
 		@GQL.Arg("name") name: string,
 		@GQL.Arg("description", {nullable :true}) description: string,
+		@GQL.Arg("requireTransactionId", {nullable :true}) requireTransactionId: boolean,
 	) {
 		let paymentMode = new PaymentMode()
 		paymentMode.name = name
-		paymentMode.description = description
+		if(description)paymentMode.description = description
+		if(requireTransactionId)paymentMode.requireTransactionId = requireTransactionId
 
 		await paymentMode.save()
 		return paymentMode

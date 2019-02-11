@@ -6,7 +6,7 @@ export default class MembershipTypeResolver {
 
 	@GQL.Query(returns => [MembershipType,])
 	public async membershipTypes() {
-		return MembershipType.find()
+		return MembershipType.find({ where: { active: 1 } })
 	}
 
 	@GQL.Mutation(returns => MembershipType)

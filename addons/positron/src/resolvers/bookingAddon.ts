@@ -6,17 +6,17 @@ export default class BookingAddonResolver {
 	
 	@GQL.Query(returns => [BookingAddon,])
 	public async bookingAddons() {
-		return BookingAddon.find()
+		return BookingAddon.find({ where: { active: 1 } })
 	}
 
 	@GQL.Mutation(returns => BookingAddon)
 	public async addBookingAddon(
 		@GQL.Arg("name") name: string,
-		@GQL.Arg("bookingType") bookingType: number,
+		@GQL.Arg("description", { nullable: true }) description: string,
 	) {
 		let bookingAddon = new BookingAddon()
 		bookingAddon.name = name
-		bookingAddon.bookingType = bookingType
+		if(description)bookingAddon.description = description
 
 		await bookingAddon.save()
 		return bookingAddon
