@@ -12,7 +12,7 @@ export default class LockedBadgenumbersResolver {
 
 	@GQL.Mutation(returns => LockedBadgenumbers)
 	public async addLockedBadgenumber(
-		@GQL.Arg("badgenumber") badgenumber: string,
+		@GQL.Arg("badgenumber") badgenumber: number,
 	) {
 		let lockedBadgenumbers = new LockedBadgenumbers()
 		lockedBadgenumbers.badgenumber = badgenumber

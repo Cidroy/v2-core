@@ -1,6 +1,6 @@
 import * as GQL from "type-graphql"
 import GymPackage from "@positron/models/gymPackage"
-import { DURATION } from '@classes/enum/misc';
+import { DURATION } from "@classes/enum/misc"
 
 @GQL.Resolver(of => GymPackage)
 export default class GymPackageResolver {

@@ -25,7 +25,7 @@ export default class UserResolver{
 		@GQL.Arg("officePhone", { nullable: true }) officePhone ? : string,
 		@GQL.Arg("homeNumber", { nullable: true }) homeNumber ? : string,
 		@GQL.Arg("email", { nullable: true }) email ? : string,
-		@GQL.Arg("address", { nullable: true }) address ? : string,
+		@GQL.Arg("address", { nullable: true }) address ? : number,
 		@GQL.Arg("IDType", { nullable: true }) IDType ? : number,
 		@GQL.Arg("IDNumber", { nullable: true }) IDNumber ? : string,
 		@GQL.Arg("imagePath", { nullable: true }) imagePath ? : string,

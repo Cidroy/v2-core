@@ -69,9 +69,9 @@ export default class User extends Base implements IUser {
 	@Validate.IsEmail()
 	public email?: string
 	
-	@GQL.Field(type => String)
-	@DB.Column("varchar", { nullable: true })
-	public address?: string
+	@GQL.Field(type => Number)
+	@DB.Column("integer", { nullable: true })
+	public address?: number
 	
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })
