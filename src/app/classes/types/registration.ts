@@ -15,7 +15,6 @@ export type TMRegistrationStep1 = {
 	category: string| number
 	idType: string| number
 	idNumber: string
-	bodyType: string| number
 }
 
 export const defaultRegistrationStep1User: TMRegistrationStep1 = {
@@ -30,7 +29,6 @@ export const defaultRegistrationStep1User: TMRegistrationStep1 = {
 	category: MiscStore.CATEGORIES[0].id,
 	idType: MiscStore.ID_TYPES[0].id,
 	idNumber: "",
-	bodyType: MiscStore.BODY_TYPES[0].id,
 }
 
 export type TMRegistrationStep2 = {

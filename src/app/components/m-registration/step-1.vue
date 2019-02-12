@@ -38,10 +38,6 @@
 						<v-flex xs12 lg6 class="pl-2">
 							<v-text-field v-model="idNumber" prepend-icon="fas fa-hashtag" label="ID Number" required :rules="rules.idNumber" :readonly="Readonly"  color="orange darken-2"/>
 						</v-flex>
-						<!-- Make another step for health -->
-						<v-flex xs12 lg6 class="pl-2">
-							<v-select v-model="bodyType" prepend-icon="accessibility" item-text="name" item-value="id" :items="BodyTypes" label="Body Type" :readonly="Readonly"  color="orange darken-2"/>
-						</v-flex>
 						<v-spacer />
 					</v-layout>
 				</v-form>
@@ -104,9 +100,6 @@ export default class MRegistrationStep1 extends Vue{
 	private idNumber: string = ""
 	private get IDTypes(){ return MiscStore.ID_TYPES }
 
-	private bodyType: string | number = MiscStore.BODY_TYPES[0].id
-	private get BodyTypes(){ return MiscStore.BODY_TYPES }
-
 	private get rules(){
 		return {
 			firstName : [ v => !!v || "First Name is required"  ],
@@ -149,7 +142,6 @@ export default class MRegistrationStep1 extends Vue{
 			category: this.category,
 			idType: this.idType,
 			idNumber: this.idNumber,
-			bodyType: this.bodyType,
 		}
 	}
 	@Prop({
@@ -167,7 +159,6 @@ export default class MRegistrationStep1 extends Vue{
 		this.category = this.value.category
 		this.idType = this.value.idType
 		this.idNumber = this.value.idNumber
-		this.bodyType = this.value.bodyType
 	}
 
 	@Prop({ type: Boolean, default: false }) public allowImportFromEnquiry !: boolean
