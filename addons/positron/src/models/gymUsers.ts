@@ -87,9 +87,9 @@ export default class GymUsers extends Base implements IGymUsers {
 	@DB.Column("integer", { nullable: true })
 	public counselling?: number
 	
-	@GQL.Field(type => Date)
-	@DB.Column("datetime", { nullable: true })
-	public preferredTime?: Date
+	@GQL.Field(type => String)
+	@DB.Column("time", { nullable: true })
+	public preferredTime?: string
 	
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })

@@ -45,7 +45,7 @@ export interface IUser extends IEntityBase{
 	 * @type {string}
 	 * @memberof IUser
 	 */
-	address?: string,
+	address?: number,
 	/**
 	 * References IDTypes.id for IDTypes
 	 *

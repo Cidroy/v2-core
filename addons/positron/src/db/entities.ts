@@ -31,6 +31,8 @@ import Groupings from "@positron/models/groupings"
 import Groups from "@positron/models/groups"
 import Payment from "@positron/models/payments"
 import LockedBadgenumbers from "@positron/models/lockedBadgenumbers"
+import BloodGroup from "@positron/models/bloodGroup"
+import TimeSlot from "@positron/models/timeSlot"
 
 export default [
 	Address,
@@ -64,4 +66,6 @@ export default [
 	Groups,
 	Payment,
 	LockedBadgenumbers,
+	BloodGroup,
+	TimeSlot,
 ]

@@ -29,7 +29,7 @@ export default class GymUsersResolver {
 		@GQL.Arg("diet", { nullable: true }) diet?: number,
 		@GQL.Arg("personalTraining", { nullable: true }) personalTraining?: number,
 		@GQL.Arg("counselling", { nullable: true }) counselling?: number,
-		@GQL.Arg("preferredTime", { nullable: true }) preferredTime?: Date,
+		@GQL.Arg("preferredTime", { nullable: true }) preferredTime?: string,
 		@GQL.Arg("agreement", { nullable: true }) agreement?: number,
 		@GQL.Arg("doj", { nullable: true }) doj?: Date,
 	) {

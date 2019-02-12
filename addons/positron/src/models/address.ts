@@ -14,39 +14,50 @@ GQL.registerEnumType(ADDRESS_TYPE,{
 @DB.Entity()
 @GQL.ObjectType()
 export default class Address extends Base implements IAddress{
-	@DB.ManyToOne(type => User, user => user.address)
+	@GQL.Field(type => Number)
+	@DB.Column("integer", { nullable: false })
 	public user!: number
 
+	@GQL.Field(type => ADDRESS_TYPE)
 	@DB.Column({
 		type: "enum",
 		enum: ADDRESS_TYPE
 	})
 	public type!: ADDRESS_TYPE
 
+	@GQL.Field(type => String)
 	@DB.Column("varchar")
 	public receiver!: string
 
+	@GQL.Field(type => String)
 	@DB.Column("varchar")
 	public contact!: string
 
+	@GQL.Field(type => String)
 	@DB.Column("varchar")
 	public house!: string
 
-	@DB.Column("varchar")
+	@GQL.Field(type => String,{nullable: true})
+	@DB.Column("varchar",{nullable: true})
 	public locality?: string
 
-	@DB.Column("varchar")
+	@GQL.Field(type => String,{nullable :true})
+	@DB.Column("varchar",{nullable :true})
 	public landmark?: string
 
+	@GQL.Field(type => String)
 	@DB.Column("varchar", { length: 50 })
 	public city!: string
 
+	@GQL.Field(type => String)
 	@DB.Column("varchar", { length: 50 })
 	public state!: string
 
+	@GQL.Field(type => String)
 	@DB.Column("varchar", { length: 50 })
 	public country!: string
 
+	@GQL.Field(type => String)
 	@DB.Column("varchar", { length: 20 })
 	public pincode!: string
 

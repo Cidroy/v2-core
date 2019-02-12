@@ -6,8 +6,8 @@ import ILockedBadgenumbers from "@classes/interface/ILockedBadgenumbers"
 @DB.Entity()
 @GQL.ObjectType()
 export default class LockedBadgenumbers extends Base implements ILockedBadgenumbers {
-	@GQL.Field(type => String)
-	@DB.Column("varchar", { nullable: false, unique: true })
-	public badgenumber!: string
+	@GQL.Field(type => Number)
+	@DB.Column("integer", { nullable: false, unique: true })
+	public badgenumber!: number
 
 }

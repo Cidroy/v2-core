@@ -52,7 +52,7 @@ export default interface IGymUsers extends IEntityBase {
 	 * @type {number}
 	 * @memberof IGymUsers
 	 */
-	referredTo?: number,
+	referredTo?: number[],
 	referredOther?: string,
 	/**
 	 * References gym_user.id
@@ -79,7 +79,7 @@ export default interface IGymUsers extends IEntityBase {
 	 * @type {Date}
 	 * @memberof IGymUsers
 	 */
-	preferredTime?: Date,
+	preferredTime?: string,
 	/**
 	 * References agreement.id
 	 *
