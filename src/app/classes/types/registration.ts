@@ -5,6 +5,7 @@ import AddressStore from "@/state/modules/addresses"
 
 export type TMRegistrationStep1 = {
 	id: number| string
+	badgeNumber: number| string
 	firstName: string
 	middleName: string
 	lastName: string
@@ -19,6 +20,7 @@ export type TMRegistrationStep1 = {
 
 export const defaultRegistrationStep1User: TMRegistrationStep1 = {
 	id: 0,
+	badgeNumber: 0,
 	firstName: "",
 	middleName: "",
 	lastName: "",
