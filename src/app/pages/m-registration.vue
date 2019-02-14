@@ -15,10 +15,10 @@
 			<v-layout slot="extension" class="px-2">
 				<v-flex xs12 md6>
 					<v-radio-group :prepend-icon="usersCount===1?'person':'people'" label="Registration Type" v-model="grouping" row>
-						<v-radio v-for="(grouping, index) in GROUPINGS" :label="grouping.name" :value="index" :key="index" color="orange darken-2"/>
+						<v-radio v-for="(grouping, index) in GROUPINGS" :label="grouping.name" :value="grouping.id" :key="index" color="orange darken-2"/>
 					</v-radio-group>
 				</v-flex>
-				<v-flex xs12 md6 v-if="allowAddPeople || allowDeletePeople"> <h3 class="text-xs-right py-2">{{ usersCount }} / {{ this.GROUPINGS[this.grouping].max }} People</h3> </v-flex>
+				<v-flex xs12 md6 v-if="allowAddPeople || allowDeletePeople"> <h3 class="text-xs-right py-2">{{ usersCount }} / {{ this.GROUPINGS[this.groupIndex].max }} People</h3> </v-flex>
 				<v-flex xs12 md6 v-else> <h3 class="text-xs-right py-2">{{ usersCount }} People</h3> </v-flex>
 			</v-layout>
 		</v-toolbar>
@@ -27,13 +27,15 @@
 				<h2 v-if="usersCount>1" v-text="`Person #${getIndex(index)}`"/>
 				<stepper class="elevation-10" :showDelete="allowDeletePeople" @deleteStepper="()=>{ deleteStepper(index) }" @finished="clientId => stepperComplete(index, clientId)"/>
 			</v-flex>
-			<v-flex xs12 v-show="allowAddPeople"> <v-btn @click.native.stop="addPeople" flat block large> <v-icon>add</v-icon> Add People </v-btn> </v-flex>
+			<v-flex xs12 v-show="allowAddPeople" class="mb-4"> <v-btn @click.native.stop="addPeople" flat block large outline> <v-icon left>add</v-icon> Add People </v-btn> </v-flex>
+			<v-flex xs12 class="elevation-10 mb-4"> <step-three v-model="transactionData" :group="grouping" :quantity="usersCount" /> </v-flex>
+			<v-flex xs12 class="elevation-10 mb-4"> <step-four v-model="transactionData" /> </v-flex>
 		</v-layout>
-		<payment-single v-model="paymentModel" />
-		<v-footer v-if="allSteppersComplete" height="auto" color="primary lighten-1" >
+		<payment-single v-model="paymentModel" :users="users" :transaction="transactionData" @pay="pay"/>
+		<v-footer v-if="true || allSteppersComplete" height="auto" color="primary lighten-1" >
 			<v-layout justify-center row justify-end align-end class="px-4 py-2">
 				<v-spacer />
-				<v-btn color="orange darken-4" class="white--text" @click.native.stop="paymentModel = true"> <v-icon class="fas" left>fa-cash-register</v-icon> Make Payment </v-btn>
+				<v-btn :loading="paying" :disable="paying" color="orange darken-4" class="white--text" @click.native.stop="paymentModel = true"> <v-icon class="fas" left>fa-cash-register</v-icon> Make Payment </v-btn>
 			</v-layout>
 		</v-footer>
 	</Layout>
@@ -47,13 +49,17 @@ import _ from "lodash"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
 import { MiscStore } from "@/state/modules/misc"
-import { TMRegistration, defaultRegistrationUser } from "@/classes/types/registration"
+import { TMRegistration, defaultRegistrationUser, TMRegistrationStep3, defaultRegistrationStep3User, TMRegistrationStep4, defaultRegistrationStep4User } from "@/classes/types/registration"
 
+import stepThree from "@/components/m-registration/step-3.vue"
+import stepFour from "@/components/m-registration/step-4.vue"
 import stepper from "@/components/m-registration/stepper.vue"
 import paymentSingle from "@/components/payment/modal-single.vue"
 
+import Gymkonnect from "@classes/gymkonnect"
+
 @Component({
-	components: { Layout, stepper, paymentSingle, },
+	components: { Layout, stepper, paymentSingle, stepThree, stepFour, },
 	page: {
 		title: "Home",
 		meta: [ { name: "description", content: appConfig.description, }, ],
@@ -61,10 +67,24 @@ import paymentSingle from "@/components/payment/modal-single.vue"
 	created(){ this.onGroupingChange() }
 })
 export default class MemberRegistrationPage extends Vue {
-	private grouping = 0
+	private transactionData: TMRegistrationStep3 & TMRegistrationStep4  = {
+		...defaultRegistrationStep3User,
+		...defaultRegistrationStep4User,
+	}
+	@Watch("transactionData") private onTransactionDataChange(){
+		Object.keys(this.users).forEach(i => {
+			this.users[i] = {
+				...this.users[i],
+				...this.transactionData
+			}
+		})
+	}
+
+	private grouping = MiscStore.GROUPINGS[0].id
+	private get groupIndex(){ return (this.grouping && false) || this.GROUPINGS.findIndex(i => i.id ===this.grouping) }
 	private get GROUPINGS(){ return MiscStore.GROUPINGS }
-	private get allowAddPeople(){ return this.usersCount < this.GROUPINGS[this.grouping].max }
-	private get allowDeletePeople(){ return this.usersCount > this.GROUPINGS[this.grouping].min }
+	private get allowAddPeople(){ return this.usersCount < this.GROUPINGS[this.groupIndex].max }
+	private get allowDeletePeople(){ return this.usersCount > this.GROUPINGS[this.groupIndex].min }
 
 	private users: { [index: string]: TMRegistration } = {}
 	private usersCount = 0
@@ -73,14 +93,14 @@ export default class MemberRegistrationPage extends Vue {
 	@Watch("grouping") private onGroupingChange(){
 		let diff = 0
 		let i = 0
-		if(this.usersCount < this.GROUPINGS[this.grouping].count){
-			diff = this.GROUPINGS[this.grouping].count - this.usersCount
+		if(this.usersCount < this.GROUPINGS[this.groupIndex].count){
+			diff = this.GROUPINGS[this.groupIndex].count - this.usersCount
 			for(i=0; i<diff; i++){
 				this.users[uuid()] = defaultRegistrationUser
 				this.usersCount++
 			}
-		} else if(this.usersCount > this.GROUPINGS[this.grouping].count){
-			diff = this.usersCount - this.GROUPINGS[this.grouping].count
+		} else if(this.usersCount > this.GROUPINGS[this.groupIndex].count){
+			diff = this.usersCount - this.GROUPINGS[this.groupIndex].count
 			for(i=0; i<diff; i++){
 				delete this.users[<string>Object.keys(this.users).pop()]
 				this.usersCount--
@@ -101,8 +121,11 @@ export default class MemberRegistrationPage extends Vue {
 	}
 
 	private completedSteppers: (number|string)[] = []
+	private clientIds: (number|string)[] = []
 	private stepperComplete(stepperId, clientId){
 		this.completedSteppers.push(stepperId)
+		this.clientIds.push(clientId)
+		this.users[stepperId].id = clientId
 	}
 	private get allSteppersComplete(){
 		return	(this.usersCount && false)
@@ -112,6 +135,13 @@ export default class MemberRegistrationPage extends Vue {
 
 	private paymentModel = false
 	private paymentCancelled(){}
+
+	private paying = false
+	private async pay(){
+		this.paying = true
+		await Gymkonnect.Registration.makePayments(this.clientIds, this.transactionData)
+		this.paying = false
+	}
 
 }
 </script>

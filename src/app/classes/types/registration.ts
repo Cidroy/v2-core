@@ -5,6 +5,7 @@ import AddressStore from "@/state/modules/addresses"
 
 export type TMRegistrationStep1 = {
 	id: number| string
+	badgenumber: number| string
 	firstName: string
 	middleName: string
 	lastName: string
@@ -12,13 +13,13 @@ export type TMRegistrationStep1 = {
 	gender: GENDER
 	dob: string
 	occupation: string| number
-	category: string| number
 	idType: string| number
 	idNumber: string
 }
 
 export const defaultRegistrationStep1User: TMRegistrationStep1 = {
 	id: 0,
+	badgenumber: 0,
 	firstName: "",
 	middleName: "",
 	lastName: "",
@@ -26,7 +27,6 @@ export const defaultRegistrationStep1User: TMRegistrationStep1 = {
 	gender: GENDER.MALE,
 	dob: new Date().toISOString().substr(0, 10),
 	occupation: MiscStore.OCCUPATIONS[0].id,
-	category: MiscStore.CATEGORIES[0].id,
 	idType: MiscStore.ID_TYPES[0].id,
 	idNumber: "",
 }
@@ -48,15 +48,15 @@ export const defaultRegistrationStep2User: TMRegistrationStep2 =  {
 	homeNumber: "",
 	officeNumber: "",
 	address: {
-		receiver: "",
-		contact: "",
-		house: "",
-		locality: "",
-		landmark: "",
 		city: AddressStore.DEFAULT_CITY,
-		state: AddressStore.DEFAULT_STATE_SHORT,
+		contact: "",
 		country: AddressStore.DEFAULT_COUNTRY_SHORT,
+		house: "",
+		landmark: "",
+		locality: "",
 		pincode: "",
+		receiver: "",
+		state: AddressStore.DEFAULT_STATE_SHORT,
 		type: ADDRESS_TYPE.HOME,
 	},
 	emergencyContactName: "",
@@ -65,29 +65,31 @@ export const defaultRegistrationStep2User: TMRegistrationStep2 =  {
 }
 
 export type TMRegistrationStep3 = {
+	category: string| number
+	doj : string,
 	membershipType: string| number,
 	packageType: string| number,
 	timeSlot: string| number,
 }
 
 export const defaultRegistrationStep3User: TMRegistrationStep3 = {
+	category: MiscStore.CATEGORIES[0].id,
+	doj: new Date().toISOString().substr(0, 10),
 	membershipType: MiscStore.MEMBERSHIP_TYPES[0].id,
 	packageType: MiscStore.PACKAGES[0].id,
-	timeSlot: Object.values(MiscStore.TIME_SLOTS)[0],
+	timeSlot: MiscStore.TIME_SLOTS[0].id,
 }
 
 export type TMRegistrationStep4 = {
 	utmSource : string| number | boolean,
 	toc : boolean,
 	allowedDoors : (string| number)[],
-	doj : string,
 	purposes : (string| number)[],
 }
 export const defaultRegistrationStep4User: TMRegistrationStep4 = {
 	utmSource: false,
 	toc: false,
 	allowedDoors: [],
-	doj: new Date().toISOString().substr(0, 10),
 	purposes: [],
 }
 

@@ -12,6 +12,11 @@ export type TGQLBodyTypes = TGQLBasic
 export type TGQLOrganizationTypes = TGQLBasic
 export type TGQLPurposes = TGQLBasic
 export type TGQLMembershipTypes = TGQLBasic
+export type TGQLBloodGroup = TGQLBasic
+export type TGQLUTMSource = TGQLBasic
+export type TGQLOffer = TGQLBasic
+export type TGQLDoor = TGQLBasic & { zoneId: string, zoneName: string }
+export type TGQLTimeSlot = TGQLBasic & { startTime: string, endTime: string, }
 export type TGQLPaymentModes = TGQLBasic & { requireTransactionId: boolean }
 // FIXME: choose proper duration in next pull
 export type TGQLPackages = TGQLBasic & { count: number, duration: string }
@@ -47,7 +52,7 @@ export default class GKHelper{
 		return response.data.categories
 	}
 
-	public static async GetIdProofs(): Promise<TGQLIDProofs[]>{
+	public static async GetIdTypes(): Promise<TGQLIDProofs[]>{
 		let response = await GQLClient.query<{ IDTypes: TGQLIDProofs[] }>(
 			gql`
 				query IDTypes{
@@ -151,6 +156,48 @@ export default class GKHelper{
 		return response.data.membershipTypes
 	}
 
+	public static async GetBloodGroups(): Promise<TGQLBloodGroup[]> {
+		let response = await GQLClient.query<{ bloodGroups: TGQLBloodGroup[] }>(
+			gql`
+				query bloodGroups{
+					bloodGroups{
+						id
+						name
+					}
+				}
+			`,
+		)
+		return response.data.bloodGroups
+	}
+
+	public static async GetUTMSources(): Promise<TGQLUTMSource[]> {
+		let response = await GQLClient.query<{ utmSources: TGQLUTMSource[] }>(
+			gql`
+				query utmSources{
+					utmSources{
+						id
+						name
+					}
+				}
+			`,
+		)
+		return response.data.utmSources
+	}
+
+	public static async GetAllOffers(): Promise<TGQLOffer[]> {
+		let response = await GQLClient.query<{ gymOffers: TGQLOffer[] }>(
+			gql`
+				query gymOffers{
+					gymOffers{
+						id
+						name
+					}
+				}
+			`,
+		)
+		return response.data.gymOffers
+	}
+
 	public static async GetPaymentModes(): Promise<TGQLPaymentModes[]> {
 		let response = await GQLClient.query<{ paymentModes: TGQLPaymentModes[] }>(
 			gql`
@@ -165,4 +212,37 @@ export default class GKHelper{
 		)
 		return response.data.paymentModes
 	}
+
+	public static async GetTimeSlots(): Promise<TGQLTimeSlot[]> {
+		let response = await GQLClient.query<{ timeSlot: TGQLTimeSlot[] }>(
+			gql`
+				query timeSlot{
+					timeSlot{
+						id
+						name
+						startTime
+						endTime
+					}
+				}
+			`,
+		)
+		return response.data.timeSlot
+	}
+
+	public static async GetDoors(): Promise<TGQLDoor[]> {
+		let response = await GQLClient.query<{ doors: TGQLDoor[] }>(
+			gql`
+				query zonesAvailable{
+					doors: zonesAvailable{
+						id
+						name
+						zoneId
+						zoneName
+					}
+				}
+			`,
+		)
+		return response.data.doors
+	}
+
 }

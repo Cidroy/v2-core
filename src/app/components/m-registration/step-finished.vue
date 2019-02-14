@@ -50,7 +50,7 @@ export default class MRegistrationStep1 extends Vue{
 		type: Object,
 		default: () => defaultRegistrationUser
 	}) private value !: TMRegistration
-	@Emit("input") public inputEmitter(){ return this.userData }
+	@Emit("input") public inputEmitter(){ return this.value }
 	@Watch("value") private onValueChange(){
 		this.firstName = this.value.firstName
 		this.middleName = this.value.middleName
