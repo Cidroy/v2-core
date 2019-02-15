@@ -5,7 +5,6 @@ export default interface IGymPrices extends IEntityBase {
 	description?: string,
 	category?: number,
 	group?: number,
-	couples?: boolean,
 	gymProgramme? : number,
 	gymPackage?: number,
 	membershipType? : number,

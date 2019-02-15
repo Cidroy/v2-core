@@ -26,10 +26,6 @@ export default class GymPrices extends Base implements IGymPrices {
 	@DB.Column("integer", { nullable: true })
 	public group?: number
 	
-	@GQL.Field(type => Boolean, { nullable: true })
-	@DB.Column("tinyint", { default: false,nullable: true })
-	public couples?: boolean
-	
 	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
 	public gymProgramme?: number

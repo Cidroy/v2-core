@@ -14,9 +14,9 @@ GQL.registerEnumType(ADDRESS_TYPE,{
 @DB.Entity()
 @GQL.ObjectType()
 export default class Address extends Base implements IAddress{
-	@GQL.Field(type => Number)
-	@DB.Column("integer", { nullable: false })
-	public user!: number
+	@GQL.Field(type => Number, { nullable: true })
+	@DB.Column("integer", { nullable: true })
+	public user?: number
 
 	@GQL.Field(type => ADDRESS_TYPE)
 	@DB.Column({

@@ -20,7 +20,7 @@ export default class AddressResolver {
 		@GQL.Arg("country") country: string,
 		@GQL.Arg("pincode") pincode: string,
 		@GQL.Arg("type") type: ADDRESS_TYPE,
-		@GQL.Arg("user") user: number,
+		@GQL.Arg("user", { nullable: true }) user: number,
 		@GQL.Arg("locality", { nullable: true }) locality: string,
 		@GQL.Arg("landmark", { nullable: true }) landmark: string,
 	) {
@@ -34,7 +34,7 @@ export default class AddressResolver {
 		address.country = country
 		address.pincode = pincode
 		address.type = type
-		address.user = user
+		if(user)address.user = user
 		address.locality = locality
 		address.landmark = landmark
 

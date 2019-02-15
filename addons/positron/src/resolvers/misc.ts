@@ -19,9 +19,6 @@ export default class miscResolver {
 			let userinfo = await entityManager.query("select 1 from userinfo where badgenumber= ?", [badgenumber,])
 			// FIXME: delete from lockedbadgenumber here
 			let lockedBadgenumber =await LockedBadgenumbers.find({ where: { badgenumber: badgenumber } })
-			console.log(lockedBadgenumber)
-			console.log(userinfo === undefined,userinfo )
-			console.log(lockedBadgenumber === undefined,lockedBadgenumber)
 			let isBadgenumberAvailable = userinfo === undefined && lockedBadgenumber === undefined
 			return isBadgenumberAvailable
 			if(isBadgenumberAvailable){
@@ -41,7 +38,7 @@ export default class miscResolver {
 	) {
 		try{
 			let entityManager = DB.getManager()
-			let badgenumber = await entityManager.query("selectif(max(badgenumber) is null, 1,max(badgenumber)+1 ) as badgenumber from userinfo")
+			let badgenumber = await entityManager.query("select if(max(badgenumber) is null, 1,max(badgenumber)+1 ) as badgenumber from userinfo")
 			let badgenumberStart : number= badgenumber[0].badgenumber
 			let badgenumbers : number[] = []
 			badgenumbers[0]= badgenumberStart
