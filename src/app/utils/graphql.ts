@@ -25,9 +25,9 @@ export default class GQLClient{
 
 	protected static config = {
 		host: "localhost",
-		ssl: false,
+		path: "/gql",
 		port: PORTS.POSITRON,
-		path: "/gql"
+		ssl: false,
 	}
 
 	public static get uri(){
@@ -57,7 +57,7 @@ export default class GQLClient{
 	 * @returns {Promise<ApolloQueryResult<T>>} response
 	 * @memberof GQL
 	 */
-	public static async query<T, TVariables = OperationVariables>(query: DocumentNode , variables?: TVariables, options?: QueryOptions<TVariables>): Promise<ApolloQueryResult<T>>{
+	public static async query<T, TVariables = OperationVariables>(query: DocumentNode , variables?: TVariables, options?: Partial<QueryOptions<TVariables>>): Promise<ApolloQueryResult<T>>{
 		return GQLClient.Client.query({
 			query,
 			variables,
@@ -77,7 +77,7 @@ export default class GQLClient{
 	 * @returns {Promise<FetchResult<T>>} response
 	 * @memberof GQL
 	 */
-	public static async mutate<T, TVariables = OperationVariables>(mutation: DocumentNode, variables?: TVariables, options?: MutationOptions<T, TVariables>): Promise<FetchResult<T>>{
+	public static async mutate<T, TVariables = OperationVariables>(mutation: DocumentNode, variables?: TVariables, options?: Partial<MutationOptions<T, TVariables>>): Promise<FetchResult<T>>{
 		return GQLClient.Client.mutate({
 			mutation,
 			variables,
@@ -107,8 +107,9 @@ export default class GQLClient{
 			uri: GQLClient.uri
 		})
 		client = new ApolloClient({
+			link,
 			cache,
-			link
+			connectToDevTools: true,
 		})
 		GQLClient.log.verbose("initialized")
 		return true

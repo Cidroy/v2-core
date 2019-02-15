@@ -26,30 +26,31 @@
 								<v-date-picker v-model="dob" no-title @input="dobMenu = false" :max=" new Date().toISOString().substr(0, 10)"  color="orange darken-2"/>
 							</v-menu>
 						</v-flex>
-						<v-flex xs12 lg6 class="pr-2">
-							<v-select v-model="occupation" prepend-icon="work" :items="Occupations" item-text="name" item-value="id" label="Occupation"  :readonly="Readonly" color="orange darken-2"/>
-						</v-flex>
-						<v-flex xs12 lg6 class="pl-2">
-							<v-select v-model="category" prepend-icon="list" :items="Categories" item-text="name" item-value="id" label="Category"  :readonly="Readonly" color="orange darken-2"/>
-						</v-flex>
+
 						<v-flex xs12 lg6 class="pr-2">
 							<v-select v-model="idType" prepend-icon="fas fa-id-card" :items="IDTypes" item-text="name" item-value="id" label="ID Proof" :readonly="Readonly"  color="orange darken-2"/>
 						</v-flex>
 						<v-flex xs12 lg6 class="pl-2">
 							<v-text-field v-model="idNumber" prepend-icon="fas fa-hashtag" label="ID Number" required :rules="rules.idNumber" :readonly="Readonly"  color="orange darken-2"/>
 						</v-flex>
-						<v-flex xs12 lg8 class="pr-2">
-							<v-textarea prepend-icon="place" label="Residential Address" v-model="address" :rules="rules.address" :readonly="Readonly"  color="orange darken-2"/>
+
+						<v-flex xs12 lg6 class="pr-2">
+							<v-select v-model="occupation" prepend-icon="work" :items="Occupations" item-text="name" item-value="id" label="Occupation"  :readonly="Readonly" color="orange darken-2"/>
 						</v-flex>
-						<v-flex xs12 lg4 class="pl-2">
-							<v-select v-model="bodyType" prepend-icon="accessibility" item-text="name" item-value="id" :items="BodyTypes" label="Body Type" :readonly="Readonly"  color="orange darken-2"/>
+
+						<v-flex xs12 class="px-2">
+							<v-text-field v-model="badgenumber" label="Member ID" placeholder="Enter or Generate Member Id" prepend-icon="fas fa-hashtag">
+								<v-fade-transition slot="append">
+									<v-btn dark :loading="loading" :disabled="loading" color="secondary" @click.native.stop="generateMemberId">Generate</v-btn>
+								</v-fade-transition>
+							</v-text-field>
 						</v-flex>
-						<v-spacer />
+
 					</v-layout>
 				</v-form>
 			</v-flex>
 			<v-flex xs3 class="pa-4">
-				<import-from-enquiry v-show="allowImportFromEnquiry" @memberId="memberId" title="Import Details from Enquiry">
+				<import-from-enquiry v-show="allowImportFromEnquiry" @badgenumber="b => {badgenumber = b}" title="Import Details from Enquiry">
 					<v-btn outline block slot="activator" color="orange darken-4">Import from Enquiry</v-btn>
 				</import-from-enquiry>
 				<add-user-photo v-model="photo" :Readonly="Readonly"/>
@@ -72,6 +73,8 @@ import importFromEnquiry from "@/components/enquiry/import-dialog.vue"
 import { TMRegistrationStep1, defaultRegistrationStep1User } from "@/classes/types/registration"
 import addUserPhoto from "@/components/add-user-photo.vue"
 
+import Gymkonnect from "@classes/gymkonnect"
+
 @Component({
 	components: { importFromEnquiry, addUserPhoto },
 	created(){
@@ -82,6 +85,8 @@ export default class MRegistrationStep1 extends Vue{
 
 	private parseDate(date){ return parseDate(date) }
 	private formatDate(date){ return formatDate(date) }
+
+	private loading = false
 
 	private firstName: string = ""
 	private middleName: string = ""
@@ -99,23 +104,14 @@ export default class MRegistrationStep1 extends Vue{
 	private occupation: string | number = MiscStore.OCCUPATIONS[0].id
 	private get Occupations(){ return MiscStore.OCCUPATIONS }
 
-	private category: string | number = MiscStore.CATEGORIES[0].id
-	private get Categories(){ return MiscStore.CATEGORIES }
-
 	private idType: string | number = MiscStore.ID_TYPES[0].id
 	private idNumber: string = ""
 	private get IDTypes(){ return MiscStore.ID_TYPES }
-
-	private address: string = ""
-
-	private bodyType: string | number = MiscStore.BODY_TYPES[0].id
-	private get BodyTypes(){ return MiscStore.BODY_TYPES }
 
 	private get rules(){
 		return {
 			firstName : [ v => !!v || "First Name is required"  ],
 			idNumber: [ v => !!v || "ID Number is required" ],
-			address: [ address => !!address || "This field is required"],
 		}
 	}
 
@@ -137,9 +133,7 @@ export default class MRegistrationStep1 extends Vue{
 	@Emit("nextStep") public nextStep(){ return true }
 	@Emit("cancel") public cancel(){ return true }
 
-	private async memberId(id){
-		console.log("member-id", id)
-	}
+	private badgenumber: string|number = 1
 
 	private get userData(): TMRegistrationStep1{
 		return {
@@ -151,11 +145,9 @@ export default class MRegistrationStep1 extends Vue{
 			gender: this.gender,
 			dob: this.dob,
 			occupation: this.occupation,
-			category: this.category,
 			idType: this.idType,
 			idNumber: this.idNumber,
-			address: this.address,
-			bodyType: this.bodyType,
+			badgenumber: this.badgenumber,
 		}
 	}
 	@Prop({
@@ -170,16 +162,21 @@ export default class MRegistrationStep1 extends Vue{
 		this.gender = this.value.gender
 		this.dob = this.value.dob
 		this.occupation = this.value.occupation
-		this.category = this.value.category
 		this.idType = this.value.idType
 		this.idNumber = this.value.idNumber
-		this.address = this.value.address
-		this.bodyType = this.value.bodyType
+		this.badgenumber = this.value.badgenumber
 	}
 
 	@Prop({ type: Boolean, default: false }) public allowImportFromEnquiry !: boolean
 	@Prop({ type: Boolean, default: false }) public Readonly !: boolean
 
-	
+	private async generateMemberId(){
+		this.loading = true
+		try{
+			this.badgenumber = (await Gymkonnect.generateBadgenumber())[0]
+			console.log(this.badgenumber)
+		} catch(e){ console.log(e) }
+		this.loading = false
+	}	
 }
 </script>

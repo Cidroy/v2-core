@@ -4,17 +4,13 @@
 			<v-stepper-header>
 				<v-stepper-step :editable="step > 1" :complete="step > 1" step="1">Personal Details </v-stepper-step> <v-divider />
 				<v-stepper-step :editable="step > 2" :complete="step > 2" step="2">Contact Details</v-stepper-step> <v-divider />
-				<v-stepper-step :editable="step > 3" :complete="step > 3" step="3">Members Plan</v-stepper-step> <v-divider />
-				<v-stepper-step :editable="step > 4" step="4">Final Step</v-stepper-step>
 				<v-divider v-show="showDelete" />
 				<v-btn v-show="showDelete" @click.native.stop="deleteStepper" flat float> <v-icon>close</v-icon> </v-btn>
 			</v-stepper-header>
 
 			<v-stepper-items>
 				<v-stepper-content step="1"> <step-one v-model="userData" @nextStep="step2" allowImportFromEnquiry/> </v-stepper-content>
-				<v-stepper-content step="2"> <step-two v-model="userData" @nextStep="step3"/>   </v-stepper-content>
-				<v-stepper-content step="3"> <step-three v-model="userData" @nextStep="step4" /> </v-stepper-content>
-				<v-stepper-content step="4"> <step-four v-model="userData" @nextStep="finish" /> </v-stepper-content>
+				<v-stepper-content step="2"> <step-two v-model="userData" @nextStep="finish"/>   </v-stepper-content>
 			</v-stepper-items>
 		</v-stepper>
 		<step-finished v-else />
@@ -31,15 +27,13 @@ import { GENDER } from "@classes/enum/misc"
 
 import stepOne from "@/components/m-registration/step-1.vue"
 import stepTwo from "@/components/m-registration/step-2.vue"
-import stepThree from "@/components/m-registration/step-3.vue"
-import stepFour from "@/components/m-registration/step-4.vue"
 import stepFinished from "@/components/m-registration/step-finished.vue"
 
-import ClientRegisteration from "@/classes/registration.ts"
+import Gymkonnect from "@classes/gymkonnect"
 
 
 @Component({
-	components: { Layout, stepOne, stepTwo, stepThree, stepFour, stepFinished, },
+	components: { Layout, stepOne, stepTwo, stepFinished, },
 	page: {
 		title: "Home",
 		meta: [{ name: "description", content: appConfig.description, },],
@@ -74,9 +68,11 @@ export default class MemberRegistrationStepper extends Vue {
 	private async finish(){
 		this.saving = true
 		try{
-			let result = await ClientRegisteration.register(this.userDataComputed)
+			let id = 0
+			// let id = await Gymkonnect.Registration.addMember(this.userDataComputed)
+			this.userData.id = id
 			this.inputEmitter()
-			this.finishedEmitter(result)
+			this.finishedEmitter(id)
 			this.finished = true
 		}catch(error){
 			this.error = error.toString()
