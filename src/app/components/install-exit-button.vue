@@ -26,18 +26,20 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
-import { ipcMain, ipcRenderer, remote } from "electron"
+import { ipcRenderer, remote } from "electron"
 
+// @ts-ignore
 @Component({})
+// @ts-ignore
 export default class InstallExitButton extends Vue{
-	requireConfirmExit:boolean = true
-	confirmExit:boolean = false
+	private requireConfirmExit:boolean = true
+	private confirmExit:boolean = false
 
-	exitInstallation(){
+	private exitInstallation(){
 		let thisWindow = remote.getCurrentWindow()
 		thisWindow.close()
 	}	
-	mounted(){
+	private mounted(){
 		ipcRenderer.on("app-require-quit-confirm", state=>{ this.requireConfirmExit = state })
 	}
 }

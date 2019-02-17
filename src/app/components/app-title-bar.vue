@@ -4,15 +4,6 @@
 	</v-flex>
 </template>
 
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator"
-
-@Component({
-	name: "app-title-bar",
-})
-export default class AppTitleBar extends Vue{}
-</script>
-
 <style>
 .app-drag{
 	-webkit-app-region: drag;

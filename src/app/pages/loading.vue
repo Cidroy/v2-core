@@ -12,7 +12,7 @@ import { Component, Vue } from "vue-property-decorator"
 @Component({
 	page : {		
 		title: "Loading page...",
-		meta: [ { name: "description", content: "Loading page...", }, ],
+		meta: [ { name: "Loading", content: "Loading page...", }, ],
 	},
 })
 export default class Loading extends Vue{}

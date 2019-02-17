@@ -6,13 +6,12 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
-import { ipcMain, ipcRenderer, remote } from "electron"
 import { MAIN } from "@/classes/setup"
 
+// @ts-ignore
 @Component({})
+// @ts-ignore
 export default class InstallExitButton extends Vue{
-	back(){
-		MAIN.previous()
-	}
+	private back(){ MAIN.previous() }
 }
 </script>

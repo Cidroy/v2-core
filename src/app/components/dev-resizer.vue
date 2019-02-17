@@ -14,22 +14,14 @@
 import { Component, Prop, Vue, Watch } from "vue-property-decorator"
 import ResizeWindow from "@@/electron/window-resizer"
 
+// @ts-ignore
 @Component({})
+// @ts-ignore
 export default class DevResizer extends Vue{
-    @Prop({ type: Boolean, default: false }) show!: boolean
-    modal: boolean = false
+	@Prop({ type: Boolean, default: false }) private show!: boolean
+	private modal: boolean = false
 
-    @Watch("show")
-    onShowChanged(){
-		this.modal = this.show
-	}
-
-    mobile(){
-        ResizeWindow.mobileSize()
-    }
-
-    fullScreen(){
-        ResizeWindow.fullSize()
-    }
-}
-</script>
+	@Watch("show") private onShowChanged(){ this.modal = this.show }
+	private mobile(){ ResizeWindow.mobileSize() }
+	private fullScreen(){ ResizeWindow.fullSize() }
+}</script>

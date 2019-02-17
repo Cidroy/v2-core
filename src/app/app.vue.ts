@@ -4,7 +4,9 @@ import Keyboard from "mousetrap"
 import devResizer from "@/components/dev-resizer.vue"
 import { ThemeStore } from "@/state/theme"
 import { MiscStore } from "@/state/modules/misc"
+import { Logger } from "@classes/CONSOLE"
 
+const Console = new Logger(`gk-vue/${__filename}`)
 @Component({
 	// @ts-ignore
 	components: { devResizer, },
@@ -20,11 +22,15 @@ import { MiscStore } from "@/state/modules/misc"
 		Keyboard.bind([ "command+p", "ctrl+p", ], () => {
 			this.showDevResizer = !this.showDevResizer
 		})
-		MiscStore.Initialize()
+		try {
+			MiscStore.Initialize()
+		} catch (error) {
+			Console.error(error)
+		}
 	},
 })
 // @ts-ignore
-export default class Vuetify extends Vue {
+export default class App extends Vue {
 	private menu: boolean = false
 	private menuNotify: boolean = false
 	private clipped: boolean = false
