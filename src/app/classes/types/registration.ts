@@ -104,14 +104,14 @@ export const defaultRegistrationUser: TMRegistration = {
 
 export type PaymentData = {
 	mode: number
-	reciept: string
+	receipt: string
 	amount: number
 	adjustment: number
 }
 
 export const defaultPaymentData: PaymentData = {
 	mode: 1,
-	reciept: "0",
+	receipt: "0",
 	amount: 0,
 	adjustment: 0,
 }

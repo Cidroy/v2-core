@@ -12,7 +12,7 @@ export default class Payment extends Base implements IPayment{
 	
 	@GQL.Field(type => String)
 	@DB.Column("varchar")
-	public reciept! : string
+	public receipt! : string
 
 	@GQL.Field(type => String,{nullable: true})
 	@DB.Column("varchar")

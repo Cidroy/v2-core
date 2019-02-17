@@ -33,6 +33,10 @@ import Payment from "@positron/models/payments"
 import LockedBadgenumbers from "@positron/models/lockedBadgenumbers"
 import BloodGroup from "@positron/models/bloodGroup"
 import TimeSlot from "@positron/models/timeSlot"
+import UTMSource from "@positron/models/utmSource"
+import ZonesAvailable from "@positron/models/zonesAvailable"
+import GymOffers from "@positron/models/gymOffers"
+import GymOffersLogicResolver from "@positron/resolvers/gymOffersLogic"
 
 export default [
 	Address,
@@ -68,4 +72,8 @@ export default [
 	LockedBadgenumbers,
 	BloodGroup,
 	TimeSlot,
+	UTMSource,
+	ZonesAvailable,
+	GymOffers,
+	GymOffersLogicResolver,
 ]
