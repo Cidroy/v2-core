@@ -10,7 +10,10 @@ import Gymkonnect from "@classes/gymkonnect"
 
 @Component({
 	// @ts-ignore
-	components: { importFromEnquiry, addUserPhoto },
+	components: {
+		importFromEnquiry,
+		addUserPhoto,
+	},
 	created() {
 		this.onValueChange()
 	}

@@ -1,11 +1,15 @@
 import { Component, Vue, Watch } from "vue-property-decorator"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
+import personalTraining from "@/components/registration/personalTraining.vue"
+import oneDay from "@/components/registration/oneDay.vue"
 
 @Component({
 	// @ts-ignore
 	components: {
 		Layout,
+		personalTraining,
+		oneDay
 	},
 	page: {
 		title: "Home",
@@ -19,16 +23,13 @@ export default class Home extends Vue {
 	private time4 = null
 	private time5 = null
 	private time = null
-	private timme = null
-	private modal4 = false
 	private modal5 = false
 	private menu2 = false
 	private menu3 = false
-	private modal2 = false
 	private menu1 = false
 	private ODstart = false
 	private ODend = false
-	private active: number = 0
+	private active = 0
 	private radioTop1 = "radio-1"
 	private radioTop2 = "radio-1"
 	private radios1 = "radio-1"

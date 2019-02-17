@@ -11,6 +11,14 @@ let _idTypes: TGQLIDProofs[] = []
 let _groupings: TGQLGroupings[] = []
 let _bodyTypes: TGQLBodyTypes[] = []
 let _organizationTypes: TGQLOrganizationTypes[] = []
+let _spaplan = [
+	"one",
+	"two",
+
+]
+let _regType = [
+	
+]
 let _packages: TGQLPackages[] = []
 let _purposes: TGQLPurposes[] = []
 let _membershipTypes: TGQLMembershipTypes[] = []
@@ -283,6 +291,12 @@ class Misc extends VuexModule {
 	 * @memberof Misc
 	 */
 	public get ALL_OFFER() { return id => this._offers.find(i => i.id === id) }
+
+	private _spaplan = _spaplan
+	public get SPA_PLAN() { return this._spaplan }
+
+	private _regType = _regType
+	public get regType() { return this._regType }
 
 	@MutationAction({
 		mutate: [
