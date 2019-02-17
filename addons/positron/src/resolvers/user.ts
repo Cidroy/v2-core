@@ -1,6 +1,7 @@
 import * as GQL from "type-graphql"
 import {GENDER} from "@classes/enum/misc"
 import User from "@positron/models/user"
+import Address from "@positron/models/address"
 
 @GQL.Resolver(of => User)
 export default class UserResolver{
@@ -8,6 +9,46 @@ export default class UserResolver{
 	@GQL.Query(returns => [User,])
 	public async user() {
 		return User.find({ where: { active: 1 } })
+	}
+	@GQL.Mutation(returns => Boolean)
+	public async linkAddressUser(
+		@GQL.Arg("UserId") UserId: number,
+		@GQL.Arg("address") userAddress: number,
+	) {
+		try {
+
+			let user = await User.createQueryBuilder()
+				.update(User)
+				.set({ address: userAddress })
+				.where({ id: UserId })
+				.execute()
+			if (user === undefined) throw "Invalid user"
+
+			let address = await Address.createQueryBuilder()
+				.update(Address)
+				.set({ user: UserId })
+				.where({ id: userAddress })
+				.execute()
+			if (address === undefined) throw "Invalid address"
+			return true
+		} catch (error) {
+			return false
+
+		}
+	}
+
+	@GQL.Query(returns => Boolean)
+	public async isEmailExists(
+		@GQL.Arg("email") email: string,
+	){
+		let user = await User.find({ where: { email: email } })
+		console.log(user)
+		return user === undefined
+	}
+
+	@GQL.Query(returns => Boolean)
+	public async isMobileExists() {
+		
 	}
 
 	@GQL.Mutation(returns => User)
@@ -25,7 +66,7 @@ export default class UserResolver{
 		@GQL.Arg("officePhone", { nullable: true }) officePhone ? : string,
 		@GQL.Arg("homeNumber", { nullable: true }) homeNumber ? : string,
 		@GQL.Arg("email", { nullable: true }) email ? : string,
-		@GQL.Arg("address", { nullable: true }) address ? : string,
+		@GQL.Arg("address", { nullable: true }) address ? : number,
 		@GQL.Arg("IDType", { nullable: true }) IDType ? : number,
 		@GQL.Arg("IDNumber", { nullable: true }) IDNumber ? : string,
 		@GQL.Arg("imagePath", { nullable: true }) imagePath ? : string,
@@ -62,4 +103,5 @@ export default class UserResolver{
 		await user.save()
 		return user
 	}
+
 }

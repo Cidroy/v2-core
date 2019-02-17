@@ -1,15 +1,16 @@
 import { IEntityBase } from "@classes/interface/IEntityBase"
 
 export default interface IGymPrices extends IEntityBase {
-	name: string,
+	name?: string,
 	description?: string,
 	category?: number,
-	groupMagnitude?: number,
-	couples?: boolean,
+	group?: number,
 	gymProgramme? : number,
 	gymPackage?: number,
 	membershipType? : number,
 	counsellorType? : number,
 	trainerType? : number,
-	price: number
+	timeSlot?: number,
+	price: number,
+	
 }

@@ -1,5 +1,8 @@
 import * as GQL from "type-graphql"
 import Transaction from "@positron/models/transaction"
+import Payment from "@positron/models/payments"
+import * as DB from "typeorm"
+import GymUsers from "@positron/models/gymUsers"
 
 @GQL.Resolver(of => Transaction)
 export default class TransactionResolver{
@@ -39,5 +42,55 @@ export default class TransactionResolver{
 		transaction.endExtendedDate = start
 		await transaction.save()
 		return transaction
+	}
+
+	@GQL.Mutation(returns => String)
+	public async linkTransactionPay(
+		@GQL.Arg("paymentId") paymentId: number,
+		@GQL.Arg("transactionId") transactionId: number,
+	){
+		try{
+			let payment = await Payment.createQueryBuilder()
+				.select(["id", "receipt", "amount",])
+				.where({ id: paymentId })
+				.execute()
+			console.log(payment)
+			if(payment===undefined) throw "Invalid Payment"
+
+			let transaction = await Transaction.createQueryBuilder()
+								.update(Transaction)
+				.set({ amount: payment[0].amount, receipt: payment[0].receipt  })
+				.where({id: transactionId})
+				.execute()
+			if (transaction === undefined) throw "Invalid trsancation"
+		}catch(error){
+			throw "Linking Transaction to pay error"
+		}
+	}
+	@GQL.Mutation(returns => Boolean)
+	public async linkTransactionGymUser(
+		@GQL.Arg("gymUserId") gymUserId: number,
+		@GQL.Arg("transactionId") transactionId: number,
+	){
+		try{
+			
+			let transaction = await Transaction.createQueryBuilder()
+								.update(Transaction)
+								.set({ gymUser: gymUserId })
+								.where({id: transactionId})
+								.execute()
+			if (transaction === undefined) throw "Invalid trsancation"
+
+			let gymUser = await GymUsers.createQueryBuilder()
+				.update(GymUsers)
+				.set({ transaction: transactionId })
+				.where({ id: gymUserId})
+				.execute()
+			if (gymUser === undefined) throw "Invalid Gym User"
+			return true
+		}catch(error){
+			return false
+			
+		}
 	}
 }

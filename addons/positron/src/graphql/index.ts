@@ -31,6 +31,14 @@ import GroupingsResolver from "@positron/resolvers/groupings"
 import GroupsResolver from "@positron/resolvers/groups"
 import miscResolver from "@positron/resolvers/misc"
 import PaymentsResolver from "@positron/resolvers/payment"
+import LockedBadgenumbersResolver from "@positron/resolvers/lockedBadgenumbers"
+import BloodGroupResolver from "@positron/resolvers/BloodGroup"
+import TimeSlotResolver from "@positron/resolvers/timeSlot"
+import AddressResolver from "@positron/resolvers/address"
+import UTMSourceResolver from "@positron/resolvers/utmSource"
+import ZonesAvailableResolver from "@positron/resolvers/zonesAvailable"
+import GymOffersResolver from "@positron/resolvers/gymOffers"
+import GymOffersLogicResolver from "@positron/resolvers/gymOffersLogic"
 
 export default class GQL{
 	private static Resolvers = [
@@ -65,6 +73,14 @@ export default class GQL{
 		GroupsResolver,
 		miscResolver,
 		PaymentsResolver,
+		LockedBadgenumbersResolver,
+		BloodGroupResolver,
+		TimeSlotResolver,
+		AddressResolver,
+		UTMSourceResolver,
+		ZonesAvailableResolver,
+		GymOffersResolver,
+		GymOffersLogicResolver,
 	]
 
 	public static async Schema(){

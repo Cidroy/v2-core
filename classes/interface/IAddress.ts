@@ -12,5 +12,5 @@ export default interface IAddress extends IEntityBase{
 	country: string,
 	pincode: string,
 	type: ADDRESS_TYPE,
-	user: number,
+	user?: number,
 }

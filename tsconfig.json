@@ -30,6 +30,7 @@
 		],
 		"baseUrl": ".",
 		"paths": {
+			"*": ["types/*"],
 			"@electron/*": [ "src/electron/*" ],
 			"@typescript/*": [ "typescript/*" ],
 			"@classes/*": [ "classes/*" ],
@@ -62,6 +63,8 @@
 	"exclude": [
 		"node_modules",
 		"dist",
-		"bin"
+		"bin",
+		"docs",
+		"static"
 	]
 }

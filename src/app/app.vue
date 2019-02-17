@@ -2,30 +2,10 @@
 <div id="app">
 	<v-app :dark="darkTheme">
 		<dev-resizer :show="showDevResizer" />
-		<!--v-navigation-drawer fixed :mini-variant="miniVariant" :clipped="true" v-model="drawer" app >
-				<v-list>
-					<v-list-tile router :to="item.to" :key="i" v-for="(item, i) in items" exact>
-						<v-list-tile-action>
-							<v-icon v-html="item.icon" />
-						</v-list-tile-action>
-						<v-list-tile-content>
-							<v-list-tile-title v-text="item.title"></v-list-tile-title>
-						</v-list-tile-content>
-					</v-list-tile>
-				</v-list>
-			</v-navigation-drawer>
-			<v-toolbar fixed app :clipped-left="clipped">
-				<v-toolbar-side-icon @click.native.stop="miniVariant = !miniVariant"></v-toolbar-side-icon>
-				<v-toolbar-title v-text="title"></v-toolbar-title>
-				<v-spacer />
-				<app-exit-button />
-      </v-toolbar-->
-	  <!--drawer-->
-
 		<v-navigation-drawer fixed :clipped="$vuetify.breakpoint.mdAndUp" app v-model="drawer">
 			<v-list dense>
 				<template v-for="item in items">
-					<v-layout row v-if="item.heading" align-center :key="item.heading" @click="$router.push({path: item.to})">
+					<v-layout row v-if="item.heading" align-center :key="item.heading" @click="$router.push({path: item.to})" :color="$router.currentRoute.path===item.to?'orange darken-3':''">
 						<v-flex xs6>
 							<v-subheader v-if="item.heading">{{ item.heading }}</v-subheader>
 						</v-flex>
@@ -36,18 +16,18 @@
 								<v-list-tile-title>{{ item.text }}</v-list-tile-title>
 							</v-list-tile-content>
 						</v-list-tile>
-						<v-list-tile v-for="(child, i) in item.children" :key="i" @click="$router.push({path: child.to})">
+						<v-list-tile v-for="(child, i) in item.children" :key="i" @click="$router.push({path: child.to})" :color="$router.currentRoute.path===child.to?'orange darken-3':''">
 							<v-list-tile-action v-if="child.icon">
-								<v-icon>{{ child.icon }}</v-icon>
+								<v-icon :color="$router.currentRoute.path===child.to?'orange darken-3':''">{{ child.icon }}</v-icon>
 							</v-list-tile-action>
 							<v-list-tile-content>
 								<v-list-tile-title>{{ child.text }}</v-list-tile-title>
 							</v-list-tile-content>
 						</v-list-tile>
 					</v-list-group>
-					<v-list-tile v-else :key="item.text" @click="$router.push({path: item.to})">
+					<v-list-tile v-else :key="item.text" @click="$router.push({path: item.to})" :color="$router.currentRoute.path===item.to?'orange darken-3':''">
 						<v-list-tile-action>
-							<v-icon>{{ item.icon }}</v-icon>
+							<v-icon :color="$router.currentRoute.path===item.to?'orange darken-3':''">{{ item.icon }}</v-icon>
 						</v-list-tile-action>
 						<v-list-tile-content>
 							<v-list-tile-title>{{ item.text }}</v-list-tile-title>
@@ -158,7 +138,7 @@
 			<!--profile end -->
 		</v-toolbar>
 		<v-content>
-			<v-container fluid style="overflow-y:scroll; min-height:calc(100vh - 100px); max-height:calc(100vh - 100px)">
+			<v-container class="pa-0" fluid style="overflow-y:scroll; min-height:calc(100vh - 100px); max-height:calc(100vh - 100px)">
 				<v-slide-y-transition mode="out-in">
 					<router-view :key="$route.fullPath" />
 				</v-slide-y-transition>
@@ -183,125 +163,6 @@
 	</v-app>
 </div>
 </template>
-
-<script lang="ts">
-import appConfig from "@/app.config"
-import { Component, Watch, Vue } from "vue-property-decorator"
-import Keyboard from "mousetrap"
-import devResizer from "@/components/dev-resizer.vue"
-import { ThemeStore } from "@/state/theme"
-import { MiscStore } from "@/state/modules/misc"
-
-@Component({
-	components: { devResizer, },
-	page: {
-		// All subcomponent titles will be injected into this template.
-		titleTemplate(title) {
-			// @ts-ignore
-			title = typeof title === "function" ? title(this.$store) : title
-			return title ? `${title} | ${appConfig.title}` : appConfig.title
-		},
-	},
-	created() {
-		Keyboard.bind([ "command+p", "ctrl+p", ], () => {
-			this.showDevResizer = !this.showDevResizer
-		})
-		MiscStore.Initialize()
-	},
-})
-export default class Vuetify extends Vue {
-	menu: boolean = false;
-	menuNotify: boolean = false;
-    clipped: boolean = false;
-    showDevResizer: boolean = false;
-    drawer: boolean = false;
-    fixed: boolean = false;
-    miniVariant: boolean = false;
-    right: boolean = true;
-    rightDrawer: boolean = false;
-	title: string = "GymKonnect";
-
-    items:
-        { icon: string, text: string, children: { icon: string, text: string, to: string }[], model: boolean, "icon-alt": string }[] |
-        { icon: string, heading: string, to?: string }[] |
-        { icon: string, text: string, to: string }[] | any
-        = [
-            { icon: "dashboard", text: "Dashboard", to: "/", },
-            {
-                icon: "people", text: "Members", children: [
-                    { icon: "view_list", text: "List", to: "/m-list", },
-                    { icon: "group_add", text: "Registration", to: "/m-registration", },
-                    { icon: "autorenew", text: "Renewal", to: "/m-renewal", },
-                    { icon: "timer_off", text: "Freezing", to: "/m-freeze", },
-                ],
-                "icon-alt": "people",
-            },
-            { 
-				icon: "library_add", text: "Add Ons", children: [
-				{ icon: "assignment_ind", text: "Registrations", to: "/registrations", },
-            	{ icon: "event", text: "Bookings", to: "/bookings", },
-				{ icon: "forum", text: "Enquiry", to: "/enquiry", },
-				],
-				"icon-alt": "library_add",
-			},
-			{ icon: "timeline", text: "Sales & Finance", to: "/payment", },
-			{ icon: "assessment", text: "Reports", to: "/reports", },
-            { icon: "bubble_chart", text: "HR", to: "/hr", },
-            { 
-				icon: "settings", text: "Settings", children: [
-				{ icon: "fas fa-ethernet", text: "Hardware", to: "/hw-settings", },
-            	{ icon: "fas fa-paper-plane", text: "Plans & Offers", to: "/plans-offers", },
-				{ icon: "fas fa-comments", text: "SMS & Emails", to: "/sms-emails", },
-				{ icon: "fab fa-superpowers", text: "Admin Access", to: "/admin-settings", },
-				],
-				"icon-alt": "settings",
-			}
-        ];
-    profileList: { icon?: string, text: string, to?: string}[] = [
-        { text: "My Account", to: "/inspire",},
-        { text: "Dummy", to: "/inspire",},
-        { text: "Logout", to: "/login",},
-        { text: "Exit", to: "/inspire",},
-    ];
-    
-	notis: ({ avatar?: string, title?: string, subtitle?: string } | { divider: boolean, inset: boolean }) [] =[
-          
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/1.jpg',
-            title: 'Brunch this weekend?',
-            subtitle: "<span class='text--primary'>Ali Connors</span> &mdash; Do you want to hang out?"
-          },
-          { divider: true, inset: true },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/2.jpg',
-            title: 'Summer BBQ <span class="grey--text text--lighten-1">4</span>',
-            subtitle: "<span class='text--primary'>to Alex, Scott, Jennifer</span> &mdash; Wish I could come."
-          },
-          { divider: true, inset: true },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/3.jpg',
-            title: 'Oui oui',
-            subtitle: "<span class='text--primary'>Sandra Adams</span> &mdash; Do you have Paris recommendations?"
-          },
-          { divider: true, inset: true },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/4.jpg',
-            title: 'Birthday gift',
-            subtitle: "<span class='text--primary'>Trevor Hansen</span> &mdash; Have any ideas?"
-          },
-          { divider: true, inset: true },
-          {
-            avatar: 'https://cdn.vuetifyjs.com/images/lists/5.jpg',
-            title: 'Recipe to try',
-            subtitle: "<span class='text--primary'>Britta Holt</span> &mdash; We should eat this"
-          }
-	];
-		
-	darkTheme:boolean = ThemeStore.DARK_THEME
-	@Watch("darkTheme") toggleDarkTheme(){ ThemeStore.toggleDarkTheme() }
-}
-</script>
-
 
 <style>
 @import url("assets/fonts/icons/material-icons.css");

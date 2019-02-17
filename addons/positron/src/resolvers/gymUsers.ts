@@ -13,7 +13,7 @@ export default class GymUsersResolver {
 	public async addGymUser(
 		@GQL.Arg("userId") userId: number,
 		@GQL.Arg("mode") mode: number,
-		@GQL.Arg("mode") isGrouped: boolean,
+		@GQL.Arg("isGrouped") isGrouped: boolean,
 		@GQL.Arg("enquiryInitial", { nullable: true }) enquiryInitial?: number,
 		@GQL.Arg("enquiryRecent", { nullable: true }) enquiryRecent?: number,
 		@GQL.Arg("healthJoining", { nullable: true }) healthJoining?: number,
@@ -29,7 +29,7 @@ export default class GymUsersResolver {
 		@GQL.Arg("diet", { nullable: true }) diet?: number,
 		@GQL.Arg("personalTraining", { nullable: true }) personalTraining?: number,
 		@GQL.Arg("counselling", { nullable: true }) counselling?: number,
-		@GQL.Arg("preferredTime", { nullable: true }) preferredTime?: Date,
+		@GQL.Arg("preferredTime", { nullable: true }) preferredTime?: string,
 		@GQL.Arg("agreement", { nullable: true }) agreement?: number,
 		@GQL.Arg("doj", { nullable: true }) doj?: Date,
 	) {

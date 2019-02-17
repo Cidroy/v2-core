@@ -10,7 +10,7 @@ let config: {
 		prefix: string,
 	} = {
 	databaseOptions: null,
-		prefix: "p_"
+	prefix: "p_",
 }
 
 let cache: {
@@ -39,7 +39,10 @@ export class Database {
 	}
 
 	public static async Initialize(){
-		Database.config = await AppConfig.Get(Database.Namespace, Database.config)
+		Database.config = {
+			...Database.config,
+			...await AppConfig.Get(Database.Namespace, Database.config),
+		}
 		Database.log.verbose("initialized", Database.config)
 	}
 
@@ -125,5 +128,10 @@ export class Database {
 	public static async Destroy(){
 		if (!Database.cache.connection) return
 		await Database.cache.connection.close()
+	}
+
+	public static get connection(): Connection  {
+		if (Database.cache.connection===null) throw "No DB Connection"
+		return Database.cache.connection
 	}
 }

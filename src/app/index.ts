@@ -1,6 +1,6 @@
 import { default as Vue } from "vue"
 import Vuetify from "vuetify"
-import VueObserveVisibility from "vue-observe-visibility"
+import { ObserveVisibility } from "vue-observe-visibility"
 import Axios from "axios"
 
 import "vuetify/dist/vuetify.min.css"
@@ -16,6 +16,6 @@ Vue.config["productionTip"] = process.env.NODE_ENV === "production"
 Vue["http"] = Vue.prototype.$http = Axios
 
 Vue.use(Vuetify, { theme })
-Vue.use(VueObserveVisibility)
+Vue.directive("observe-visibility", ObserveVisibility)
 
 MainProcess.main()

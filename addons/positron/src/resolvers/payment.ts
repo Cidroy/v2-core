@@ -12,14 +12,16 @@ export default class PaymentsResolver {
 	@GQL.Mutation(returns => Payments)
 	public async addPayment(
 		@GQL.Arg("mode") mode: number,
-		@GQL.Arg("reciept") reciept: string,
+		@GQL.Arg("receipt") receipt: string,
+		@GQL.Arg("transactionId",{nullable: true}) transactionId: string,
 		@GQL.Arg("amount") amount: number,
 		@GQL.Arg("adjustment") adjustment: number,
 	) {
 		let payment = new Payments()
 		payment.mode = mode
-		payment.reciept = reciept
+		payment.receipt = receipt
 		payment.amount = amount
+		if(transactionId) payment.transacionId = transactionId
 		payment.adjustment = adjustment
 
 		await payment.save()

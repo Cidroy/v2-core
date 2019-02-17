@@ -30,6 +30,13 @@ import GroupMap from "@positron/models/groupMap"
 import Groupings from "@positron/models/groupings"
 import Groups from "@positron/models/groups"
 import Payment from "@positron/models/payments"
+import LockedBadgenumbers from "@positron/models/lockedBadgenumbers"
+import BloodGroup from "@positron/models/bloodGroup"
+import TimeSlot from "@positron/models/timeSlot"
+import UTMSource from "@positron/models/utmSource"
+import ZonesAvailable from "@positron/models/zonesAvailable"
+import GymOffers from "@positron/models/gymOffers"
+import GymOffersLogicResolver from "@positron/resolvers/gymOffersLogic"
 
 export default [
 	Address,
@@ -62,4 +69,11 @@ export default [
 	Groupings,
 	Groups,
 	Payment,
+	LockedBadgenumbers,
+	BloodGroup,
+	TimeSlot,
+	UTMSource,
+	ZonesAvailable,
+	GymOffers,
+	GymOffersLogicResolver,
 ]
