@@ -1,6 +1,6 @@
 <template>
     <div>
-<!-- <v-layout row wrap   >					
+ <v-layout row wrap   >					
 					<v-form lazy-validation ref="form" v-model="formValid">
 						<v-layout class="pl-4 pt-2" row wrap>
 							<v-flex lg3 class="mr-3">
@@ -65,96 +65,96 @@
 					</v-form>	
 	</v-layout>
 	
-	<v-btn v-show="showDelete" @click.native.stop="deleteLayout" flat float> <v-icon>close</v-icon> </v-btn> -->
+	<v-btn v-show="showDelete" @click.native.stop="deleteLayout" flat float> <v-icon>close</v-icon> </v-btn>
 	</div>
 </template>
 
 
-   <script lang="ts">
-// import appConfig from "@/app.config"
-// import Layout from "@/layouts/main.vue"
-// import { Component, Vue, Watch, Prop, Emit } from "vue-property-decorator"
-// import { MiscStore } from "@/state/modules/misc"
-// import { GENDER } from "@classes/enum/misc"
-// @Component({
-// 	components: { },
-// 	created(){
-// 		this.onValueChange()
-// 	}
-// })
+ <script lang="ts">
+  import appConfig from "@/app.config"
+  import Layout from "@/layouts/main.vue"
+  import { Component, Vue, Watch, Prop, Emit } from "vue-property-decorator"
+  import { MiscStore } from "@/state/modules/misc"
+  import { GENDER } from "@classes/enum/misc"
+  @Component({
+  	components: { },
+  	created(){
+  		this.onValueChange()
+  	}
+  })
 
 
-// export default class Spa extends Vue{
-// 	@Watch("userData") onUserDataChange(newVal){ console.log(newVal) }
-// 	get GROUPINGS(){ return MiscStore.GROUPINGS }
+  export default class Spa extends Vue{
+  	@Watch("userData") onUserDataChange(newVal){ console.log(newVal) }
+ 	get GROUPINGS_layout(){ return MiscStore.GROUPINGS }
 
-// 	gender: GENDER = GENDER.MALE
-// 	get GENDERS(){ return GENDER }
-// 	occupation = MiscStore.OCCUPATIONS[0]
-// 	get Occupations(){ return MiscStore.OCCUPATIONS }
+  	gender: GENDER = GENDER.MALE
+  	get GENDERS(){ return GENDER }
+  	occupation = MiscStore.OCCUPATIONS[0]
+  	get Occupations(){ return MiscStore.OCCUPATIONS }
 
-// 	spaPlan = MiscStore.SPA_PLAN[0]
-// 	get spaPlan(){ return MiscStore.SPA_PLAN }
+  
+  	get spaPlan(){ return MiscStore.SPA_PLAN[0] }
 
-// 	get rules(){
-// 		return {
-// 			firstName : [ v => !!v || "First Name is required"  ],
-// 			idNumber: [ v => !!v || "ID Number is required" ],
-// 			address: [ address => !!address || "This field is required"],
-// 			phone: [ v => !!v || "Phone number is required" ]
-// 		}
-// 	}
+  	get rules(){
+  		return {
+  			firstName : [ v => !!v || "First Name is required"  ],
+  			idNumber: [ v => !!v || "ID Number is required" ],
+  			address: [ address => !!address || "This field is required"],
+  			phone: [ v => !!v || "Phone number is required" ]
+  		}
+  	}
 
-// 	get userData(){
-// 		return {
-// 			...this.value,
-// 			firstName : this.firstName,
-// 			middleName : this.middleName,
-// 			lastName : this.lastName,
-// 			address : this.address,
-// 			whatsappNumber : this.whatsappNumber			
-// 		}
-// 	}
-// 	@Prop({ type: Object, default: () => ({
-// 		firstName : "",
-// 		middleName : "",
-// 		lastName : "",
-// 		address : "",
-// 		whatsappNumber:""
-// 	}) }) value !: {
-// 		firstName : string,
-// 		middleName : string,
-// 		lastName : string,
-// 		address : string,
-// 		whatsappNumber : string
-// 	}
-// 	@Emit("input") inputEmitter(){ return this.userData }
-// 	@Watch("value") onValueChange(){
-// 		this.firstName = this.value.firstName
-// 		this.middleName = this.value.middleName
-// 		this.lastName = this.value.lastName
-// 		this.address = this.value.address
-// 		this.whatsappNumber = this.value.whatsappNumber
-// 	}
+  	get userData(){
+  		return {
+  			...this.value,
+  			firstName : this.firstName,
+  			middleName : this.middleName,
+  			lastName : this.lastName,
+ 			address : this.address,
+  			whatsappNumber : this.whatsappNumber			
+  		}
+  	}
+  	@Prop({ type: Object, default: () => ({
+  		firstName : "",
+  		middleName : "",
+  		lastName : "",
+  		address : "",
+  		whatsappNumber:""
+ 	}) }) value !: {
+  		firstName : string,
+  		middleName : string,
+  		lastName : string,
+  		address : string,
+  		whatsappNumber : string
+  	}
+  	@Emit("input") inputEmitter(){ return this.userData }
+  	@Watch("value") onValueChange(){
+  		this.firstName = this.value.firstName
+  		this.middleName = this.value.middleName
+  		this.lastName = this.value.lastName
+  		this.address = this.value.address
+  		this.whatsappNumber = this.value.whatsappNumber
+  	}
 	
-// 	@Prop({ type: Boolean, default: false }) showDelete !: boolean
-// 	@Emit("deleteStepper") deleteLayout(){ return true }
+//  	@Prop({ type: Boolean, default: false }) showDelete !: boolean
+//  	@Emit("deleteStepper") deleteLayout(){ return true }
 
-// 	formValid: boolean = true
-// 	formReset(){
-// 		// @ts-ignore
-// 		this.$refs.form.reset()
-// 	}
+//  	formValid: boolean = true
+//  	formReset(){
+//  		// @ts-ignore
+//  		this.$refs.form.reset()
+//  	}
 	
-// 	Submit(){
-// 		// @ts-ignore
-// 		if(this.$refs.form.validate()){
-// 			this.inputEmitter()
-// 			//this.
-// 		}
-// 	}
+//  	Submit(){
+//  		 //@ts-ignore
+//  		if(this.$refs.form.validate()){
+//  			this.inputEmitter()
+//  			this.
+//  		}
+//  	}
 
-// 	//@Emit("") (){ return true }
-// 	//@Emit("cancel") cancel(){ return true }
+//  	@Emit("") (){ return true }
+//  	@Emit("cancel") cancel(){ return true }
 
-// }
+//  }

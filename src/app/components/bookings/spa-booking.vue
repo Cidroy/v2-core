@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<!-- <v-tab-item key="a">
+		<v-tab-item key="a">
         			<v-card color="transparent" height="610px">
 						<v-layout row wrap>
 							<v-flex class="pl-2 ml-2" xs12>
@@ -24,57 +24,57 @@
 						<v-divider></v-divider>
 
 			</v-card>
-      	</v-tab-item> -->
+      	</v-tab-item>
 				  
 	</div>
 </template>
 
 // <script lang="ts">
-// import appConfig from "@/app.config"
-// import Layout from "@/layouts/main.vue"
-// import { Component, Vue, Watch } from "vue-property-decorator"
-// import { watch } from 'fs';
-// import { MiscStore } from "@/state/modules/misc"
-// import layout from "@/components/m-registration/layout.vue"
-// @Component({
-// 	components: { Layout, layout,  },
-// 	page : {
-// 		title: "Home",
-// 		meta: [ { name: "description", content: appConfig.description, }, ],
-// 	},
-// })
+import appConfig from "@/app.config"
+import Layout from "@/layouts/main.vue"
+import { Component, Vue, Watch } from "vue-property-decorator"
+import { watch } from 'fs';
+import { MiscStore } from "@/state/modules/misc"
+import layout from "@/components/m-registration/layout.vue"
+@Component({
+	components: { Layout, layout,  },
+	page : {
+		title: "Home",
+		meta: [ { name: "description", content: appConfig.description, }, ],
+	},
+})
 
-// export default class Spa extends Vue{
+export default class Spa extends Vue{
 	
-// 	grouping = Object.keys(this.GROUPINGS)[0]
-// 	get GROUPINGS(){ return MiscStore.GROUPINGS }
-// 	get allowAddPeople(){
-// 		if(this.x_layouts < this.GROUPINGS[this.grouping].max) return true
-// 		else{
-// 			if(this.x_layouts > this.GROUPINGS[this.grouping].max) this.x_layouts = this.GROUPINGS[this.grouping].max
-// 			return false
-// 		}
-// 	}
+	grouping = Object.keys(this.GROUPINGS)[0]
+	get GROUPINGS(){ return MiscStore.GROUPINGS }
+	get allowAddPeople(){
+		if(this.x_layouts < this.GROUPINGS[this.grouping].max) return true
+		else{
+			if(this.x_layouts > this.GROUPINGS[this.grouping].max) this.x_layouts = this.GROUPINGS[this.grouping].max
+			return false
+		}
+	}
 
-// 	get allowDeletePeople(){
-// 		if(this.x_layouts > this.GROUPINGS[this.grouping].min) return true
-// 		else{
-// 			if(this.x_layouts < this.GROUPINGS[this.grouping].min) this.x_layouts = this.GROUPINGS[this.grouping].min
-// 			return false
-// 		}
-// 	}
+	get allowDeletePeople(){
+		if(this.x_layouts > this.GROUPINGS[this.grouping].min) return true
+		else{
+			if(this.x_layouts < this.GROUPINGS[this.grouping].min) this.x_layouts = this.GROUPINGS[this.grouping].min
+			return false
+		}
+	}
 
-// 	x_layouts = this.GROUPINGS[this.grouping].count
-// 	@Watch("grouping") onGroupingChange(){ this.x_layouts = this.GROUPINGS[this.grouping].count }
+	x_layouts = this.GROUPINGS[this.grouping].count
+	@Watch("grouping") onGroupingChange(){ this.x_layouts = this.GROUPINGS[this.grouping].count }
 
-// 	addPeople(){
-// 		if(!this.allowAddPeople) return false
-// 		this.x_layouts++
-// 	}
+	addPeople(){
+		if(!this.allowAddPeople) return false
+		this.x_layouts++
+	}
 
-// 	deleteStepper(index){
-// 		console.log(index)
-// 		this.x_layouts--
-// 	}
+	deleteLayout(index){
+		console.log(index)
+		this.x_layouts--
+	}
 
-// }
+}

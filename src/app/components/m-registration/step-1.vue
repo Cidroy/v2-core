@@ -156,7 +156,7 @@ export default class MRegistrationStep1 extends Vue{
 			idType: this.idType,
 			idNumber: this.idNumber,
 			address: this.address,
-			bodyType: this.bodyType,
+			bodyType: this.bodyType, 
 		}
 	}
 	@Prop({

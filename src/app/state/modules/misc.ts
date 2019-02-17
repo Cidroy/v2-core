@@ -8,6 +8,11 @@ let _idTypes: TGQLIDProofs[] = []
 let _groupings: TGQLGroupings[] = []
 let _bodyTypes: TGQLBodyTypes[] = []
 let _organizationTypes: TGQLOrganizationTypes[] = []
+let _spaplan = [
+	"one",
+	"two",
+
+]
 
 let _membershipTypes = {
 	Gold: "GOLD",
@@ -51,6 +56,9 @@ let _utmSources = {
 	Recommendation: "Recommendation",
 	Telephonic: "Telephonic",
 }
+let _regType = [
+	
+]
 
 @Module({ dynamic: true, store, name: "Misc" })
 class Misc extends VuexModule {
@@ -89,6 +97,13 @@ class Misc extends VuexModule {
 
 	private _organizationTypes = _organizationTypes
 	public get ORGANIZATION_TYPES() { return this._organizationTypes}
+
+	private _spaplan = _spaplan
+	public get SPA_PLAN() {return this._spaplan}
+
+	private _regType = _regType
+	public get regType() { return this._regType }
+    
 
 	@MutationAction({ mutate: [
 		"_occupations",
