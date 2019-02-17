@@ -4,16 +4,17 @@ import { Logger } from "@classes/CONSOLE"
 import IAddress from "@classes/interface/IAddress"
 import { ADDRESS_TYPE } from "@classes/enum/misc"
 import { sleep } from "@classes/misc"
+import { PaymentDetail } from "@/classes/types/payment"
 
 let Console = new Logger("gk-client/registration")
 
 async function getAmount(details: {
-	membershipType: (string| number),
-	packageType: (string| number),
-	timeSlot: (string| number),
-	category: (string| number),
+	membershipType: (string | number),
+	packageType: (string | number),
+	timeSlot: (string | number),
+	category: (string | number),
 	group: (string | number),
-}): Promise<number>{
+}): Promise<number> {
 	try {
 		Console.verbose("get price", details)
 		let response = await GQLClient.query<{ price: number }>(
@@ -42,8 +43,8 @@ async function getAmount(details: {
 				timeSlot: details.timeSlot,
 			}
 		)
-		if(response.errors) throw response.errors
-		if(!response.data.price) throw "Unable to fetch price"
+		if (response.errors) throw response.errors
+		if (!response.data.price) throw "Unable to fetch price"
 		return response.data.price
 	} catch (error) {
 		Console.error(error)
@@ -51,9 +52,9 @@ async function getAmount(details: {
 	}
 }
 
-async function addAddress(address: Partial<IAddress>){
+async function addAddress(address: Partial<IAddress>) {
 	try {
-		let response = await GQLClient.mutate<{ address: { id: string| number } }>(
+		let response = await GQLClient.mutate<{ address: { id: string | number } }>(
 			gql`
 				mutation AddAddress(
 					$landmark: String
@@ -108,7 +109,7 @@ async function addAddress(address: Partial<IAddress>){
  * @param address address id
  * @param user user id
  */
-async function linkAddressUser(address: string|number, user: string| number): Promise<boolean>{
+async function linkAddressUser(address: string | number, user: string | number): Promise<boolean> {
 	try {
 		let response = await GQLClient.mutate<{ linked: boolean }>(
 			gql`
@@ -125,17 +126,17 @@ async function linkAddressUser(address: string|number, user: string| number): Pr
 	return false
 }
 
-async function addMember(userData: TMRegistration){
+async function addMember(userData: TMRegistration) {
 	type TResult = {
 		user: {
 			id: string,
 			createdAt: string,
 			author: string,
 		}
-	// tslint:disable-next-line: semicolon
+		// tslint:disable-next-line: semicolon
 	};
 
-	try{
+	try {
 		let responsePromise = GQLClient.mutate<TResult>(
 			gql`
 				mutation AddUser(
@@ -203,7 +204,7 @@ async function addMember(userData: TMRegistration){
 				mobile: userData.mobile,
 			}
 		)
-		let [ response, address, ] = await Promise.all([
+		let [response, address,] = await Promise.all([
 			responsePromise,
 			addAddress({
 				landmark: userData.address.landmark,
@@ -219,13 +220,28 @@ async function addMember(userData: TMRegistration){
 			}),
 		])
 		if (response.errors) throw response.errors
-		if(!response.data) throw "Unable to add user"
+		if (!response.data) throw "Unable to add user"
 		await linkAddressUser(address, response.data.user.id)
 		return response.data.user.id
 	} catch (error) { throw error.toString() }
 }
 
-async function makePayments(clients: (string| number)[], transactionData: TMRegistrationStep3){
+async function getAdmissionFee() {
+	try {
+		Console.verbose("get admission fee")
+		let response = await GQLClient.query<{ price: number }>(gql` query AdmissionFee{ price: getPrice(name: "ADMISSION FEE") } `)
+		if (response.errors) throw response.errors
+		if (!response.data) throw "Unable to get admission fee"
+		return response.data.price
+	} catch (error) { throw error.toString() }
+	return 0
+}
+
+async function addTransaction() {
+
+}
+
+async function makePayments(clients: (string | number)[], transactionData: TMRegistrationStep3, paymentData: PaymentDetail) {
 	await sleep(10000)
 	return true
 }
@@ -234,4 +250,5 @@ export const Registration = {
 	getAmount,
 	addMember,
 	makePayments,
+	getAdmissionFee,
 }
