@@ -21,22 +21,3 @@
 		</v-dialog>
 	</div>
 </template>
-
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator"
-import { ipcMain, ipcRenderer, remote } from "electron"
-
-@Component({})
-export default class InstallExitButton extends Vue{
-	requireConfirmExit:boolean = true
-	confirmExit:boolean = false
-
-	exitInstallation(){
-		let thisWindow = remote.getCurrentWindow()
-		thisWindow.close()
-	}	
-	mounted(){
-		ipcRenderer.on("app-require-quit-confirm", state=>{ this.requireConfirmExit = state })
-	}
-}
-</script>

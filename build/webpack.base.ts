@@ -55,6 +55,13 @@ const baseConfig: webpack.Configuration = {
 	module: {
 		rules: [
 			{
+				test: /\.vue$/,
+				use: "vue-import-script",
+				enforce: "pre",
+				exclude: /node_modules/,
+				include: RESOLVE_PATHS,
+			},
+			{
 				test: /\.(jsx?|vue|tsx?)$/,
 				use: "strip-debug-block",
 				enforce: "pre",

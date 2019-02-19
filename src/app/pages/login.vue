@@ -65,39 +65,3 @@
 
 	</v-container>
 </template>
-
-<script lang="ts">
-import appConfig from "@/app.config"
-import Layout from "@/layouts/main.vue"
-import SystemInformation from "@/components/system-information.vue"
-import { Component, Watch, Vue } from "vue-property-decorator"
-import { watch } from 'fs';
-
-@Component({
-	components: { Layout, SystemInformation, },
-	page: {
-		title: "Home",
-		meta: [{ name: "description", content: appConfig.description, },],
-	},
-	
-})
-export default class Home extends Vue {
-	show3: boolean = false
-	dialog = false
-	email = ""
-	username = ""
-	password = ""
-	passRules= [
-		 v => !! v || 'Required.',
-		 v => v.length >= 8 || 'Min 8 characters'
-	]
-	emailRules = [
-		v => (v || '').match(/@/) || 'Please enter a valid email',
-	]
-	cards = [
-		{ src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 }
-	]
-	
-	show: boolean = true
-}
-</script>

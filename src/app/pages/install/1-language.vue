@@ -15,33 +15,3 @@
 		<v-btn large block class="ma-0 orange darken-2" @click.native.stop="next">{{ $t('next') }}</v-btn> 
 	</v-layout>
 </template>
-
-<script lang="ts">
-import { i18n, ILanguage } from "@/i18n"
-import { Component, Watch, Vue } from "vue-property-decorator"
-import { InstallerStore } from "@/state/install-modules/install"
-import { MAIN } from "@/classes/setup"
-import { TStageProductKey, TStageLanguage } from "@/classes/install-router"
-
-@Component({
-	page : {
-		title: "Install Gym-Konnect",
-		meta: [ { name: "Install", content: "Install Gymkonnect now", }, ],
-	},
-})
-export default class LanguagePage extends Vue{
-	i18n = i18n
-	language: ILanguage = i18n.default
-	@Watch("language")
-	onLanguageChange(){
-		InstallerStore.setLanguage(this.language)
-	}
-	next(){
-		MAIN.next({ language: this.language, })
-	}
-	constructor(){
-		super()
-		InstallerStore.setInstallPageTitle("install.steps.select_language")
-	}
-}
-</script>

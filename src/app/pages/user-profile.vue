@@ -117,37 +117,3 @@
 		</v-layout>
 	</v-container>
 </template>
-
-<script lang="ts">
-import appConfig from "@/app.config"
-import Layout from "@/layouts/main.vue"
-import SystemInformation from "@/components/system-information.vue"
-import { Component, Watch, Vue } from "vue-property-decorator"
-
-@Component({
-	components: { Layout, SystemInformation, },
-	page: {
-		title: "Home",
-		meta: [{ name: "description", content: appConfig.description, },],
-	},
-})
-export default class Home extends Vue{
-	active: number = 0
-	tabsList = {
-		e: "Overview",
-		a: "Activities",
-		b: "Transaction",
-		c: "Membership",
-		d: "Details",
-	}
-	 profileList: { icon?: string, text: string }[] = [
-        { text: "Name: Kundan Singh", },
-        { text: "Status:", },
-        { text: "Phone:", },
-		{ text: "Email: kundan785@gmail.com", },
-	];
-	cards = [
-		{ src: 'https://cdn.vuetifyjs.com/images/cards/plane.jpg', flex: 6 }
-	]
-}
-</script>

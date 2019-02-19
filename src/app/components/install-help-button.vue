@@ -18,13 +18,14 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
-import { ipcRenderer } from "electron"
 import { InstallerStore } from "@/state/install-modules/install"
 
+// @ts-ignore
 @Component({})
+// @ts-ignore
 export default class InstallHelpButton extends Vue{
-	showHelpPage:boolean = false
-	get page(){ return InstallerStore.HELPDOC }
-	get installHelpDocument(){ return `install.helpdoc.${this.page}` }
+	private showHelpPage:boolean = false
+	private get page(){ return InstallerStore.HELPDOC }
+	private get installHelpDocument(){ return `install.helpdoc.${this.page}` }
 }
 </script>

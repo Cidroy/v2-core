@@ -28,7 +28,7 @@ import { InstallerStore } from "@/state/install-modules/install"
 
 @Component({})
 export default class Main extends Vue{
-	get backButton(){ return InstallerStore.REVERT_BUTTON }
-	get installerLayout(){ return InstallerStore.INSTALLER_LAYOUT }
+	private get backButton(){ return InstallerStore.REVERT_BUTTON }
+	private get installerLayout(){ return InstallerStore.INSTALLER_LAYOUT }
 }
 </script>
