@@ -9,7 +9,24 @@ export default class GymUsersResolver {
 	public async gymUsers() {
 		return GymUsers.find({ where: { active: 1 } })
 	}
-
+	@GQL.Mutation(returns => String)
+	public async activateGymUsers(
+		@GQL.Arg("gymUserID", type => [Number,]) gymUserID: number[],
+	){
+		try{
+			for (let i in gymUserID){
+				let gymUser = await GymUsers.find({ where: { id: gymUserID[i] } })
+				if (gymUser === undefined) throw "invalid user"
+				let userMode = await GymUserMode.find({ where: { name: "ACTIVE" } })
+				gymUser[0].mode = userMode[0].id
+				await gymUser[0].save()
+			}
+			return "Success"
+		}catch(error){
+			return "Error"
+		}
+	}
+	
 	@GQL.Mutation(returns => GymUsers)
 	public async addGymUser(
 		@GQL.Arg("userId") userId: number,

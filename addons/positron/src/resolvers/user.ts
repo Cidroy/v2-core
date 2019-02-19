@@ -2,6 +2,7 @@ import * as GQL from "type-graphql"
 import {GENDER} from "@classes/enum/misc"
 import User from "@positron/models/user"
 import Address from "@positron/models/address"
+import Member from "@positron/Biometric/Member"
 
 @GQL.Resolver(of => User)
 export default class UserResolver{
@@ -81,7 +82,11 @@ export default class UserResolver{
 		user.firstName = firstName
 		user.mobile = mobile
 		if (wdmsId) user.wdmsId = wdmsId
-		if (badgenumber) user.badgenumber = badgenumber
+		if (badgenumber){
+			user.badgenumber = badgenumber
+			Member.add(badgenumber, { name: firstName + (lastName) ? <string>lastName: ""  })
+			// FIXME:
+		}
 		if (middleName) user.middleName = middleName
 		if (lastName) user.lastName = lastName
 		if (dob) user.dob = dob
