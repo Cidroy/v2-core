@@ -3,6 +3,9 @@ import Transaction from "@positron/models/transaction"
 import Payment from "@positron/models/payments"
 import * as DB from "typeorm"
 import GymUsers from "@positron/models/gymUsers"
+import GymUserMode from "@positron/models/gymUserMode"
+import GymPackage from "@positron/models/gymPackage"
+import moment = require("moment")
 
 @GQL.Resolver(of => Transaction)
 export default class TransactionResolver{
@@ -37,9 +40,8 @@ export default class TransactionResolver{
 		if(addon) transaction.addon = addon
 		if(programme) transaction.programme = programme
 		if(purpose) transaction.purpose = purpose
-		// FIXME:
-		transaction.end = start
-		transaction.endExtendedDate = start
+		if(start && packages && packageMagnitude)transaction.end = await this.getDueDate(packages, packageMagnitude, start)
+		if(start && packages && packageMagnitude)transaction.endExtendedDate = transaction.end
 		await transaction.save()
 		return transaction
 	}
@@ -81,16 +83,35 @@ export default class TransactionResolver{
 								.execute()
 			if (transaction === undefined) throw "Invalid trsancation"
 
+			let userMode = await GymUserMode.find({ where: { name: "PREBOOK" } })
 			let gymUser = await GymUsers.createQueryBuilder()
 				.update(GymUsers)
-				.set({ transaction: transactionId })
+				.set({ transaction: transactionId, mode: userMode[0].id})
 				.where({ id: gymUserId})
 				.execute()
 			if (gymUser === undefined) throw "Invalid Gym User"
+
 			return true
 		}catch(error){
 			return false
-			
 		}
 	}
+	@GQL.Query(returns => Date)
+	public async  getTransactionEndDateDry(
+		@GQL.Arg("packages") packages : number,
+		@GQL.Arg("packageMagnitude") packageMagnitude : number,
+		@GQL.Arg("startDate") startDate: Date
+	){
+		return this.getDueDate(packages,packageMagnitude,startDate)
+	}
+	
+	public async getDueDate(packages: number,
+							packageMagnitude: number,
+							startDate: Date
+							)
+		{
+			let pckg = await GymPackage.find({ where: { id: packages } })
+			let duration: any = pckg[0].duration
+			return moment(startDate).add(packageMagnitude * pckg[0].count , duration).toDate()
+		}
 }

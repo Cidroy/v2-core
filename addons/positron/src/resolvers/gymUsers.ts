@@ -1,5 +1,6 @@
 import * as GQL from "type-graphql"
 import GymUsers from "@positron/models/gymUsers"
+import GymUserMode from "@positron/models/gymUserMode"
 
 @GQL.Resolver(of => GymUsers)
 export default class GymUsersResolver {
@@ -12,8 +13,8 @@ export default class GymUsersResolver {
 	@GQL.Mutation(returns => GymUsers)
 	public async addGymUser(
 		@GQL.Arg("userId") userId: number,
-		@GQL.Arg("mode") mode: number,
-		@GQL.Arg("isGrouped") isGrouped: boolean,
+		@GQL.Arg("mode", { nullable: true }) mode: number,
+		@GQL.Arg("isGrouped", { nullable: true }) isGrouped: boolean,
 		@GQL.Arg("enquiryInitial", { nullable: true }) enquiryInitial?: number,
 		@GQL.Arg("enquiryRecent", { nullable: true }) enquiryRecent?: number,
 		@GQL.Arg("healthJoining", { nullable: true }) healthJoining?: number,
@@ -33,10 +34,11 @@ export default class GymUsersResolver {
 		@GQL.Arg("agreement", { nullable: true }) agreement?: number,
 		@GQL.Arg("doj", { nullable: true }) doj?: Date,
 	) {
+		let userMode = await GymUserMode.find({where: {name: "TEMPORARY"}})
 		let gymUsers = new GymUsers()
 		gymUsers.userId = userId
-		gymUsers.mode = mode
-		gymUsers.isGrouped = isGrouped
+		gymUsers.mode = (mode) ? mode : userMode[0].id
+		if(isGrouped)gymUsers.isGrouped = isGrouped
 		if (enquiryInitial) gymUsers.enquiryInitial = enquiryInitial
 		if (enquiryRecent) gymUsers.enquiryRecent = enquiryRecent
 		if (healthJoining) gymUsers.healthJoining = healthJoining

@@ -12,6 +12,6 @@ export default class GroupMap extends Base implements IGroupMap {
 
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: false })
-	public userId!: number
+	public gymUserId!: number
 
 }

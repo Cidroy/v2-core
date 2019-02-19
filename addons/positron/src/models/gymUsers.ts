@@ -2,9 +2,6 @@ import Base from "./base"
 import { GENDER } from "@classes/enum/misc"
 import * as GQL from "type-graphql"
 import * as DB from "typeorm"
-import * as Validate from "class-validator"
-import { mysql } from "safesql"
-import { GraphQLObjectType } from "graphql"
 import IGymUsers from "@classes/interface/IGymUsers"
 
 GQL.registerEnumType(GENDER, {
@@ -19,12 +16,12 @@ export default class GymUsers extends Base implements IGymUsers {
 	@DB.Column("integer",{nullable:false , unique: true})
 	public userId!: number
 	
-	@GQL.Field(type => Number)
-	@DB.Column("integer")
-	public mode!: number
+	@GQL.Field(type => Number, { nullable: true })
+	@DB.Column("integer", {nullable: true})
+	public mode?: number
 	
-	@GQL.Field(type => Boolean, { description: "Entity exists" })
-	@DB.Column("tinyint",{default: false})
+	@GQL.Field(type => Boolean, { description: "Entity exists", nullable: true })
+	@DB.Column("tinyint", { default: false, nullable: true})
 	public isGrouped! : boolean
 
 	@GQL.Field(type => Number)

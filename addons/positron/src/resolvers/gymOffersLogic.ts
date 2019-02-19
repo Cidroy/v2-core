@@ -1,9 +1,12 @@
 import * as GQL from "type-graphql"
 import GymOffersLogic from "@positron/models/gymOffersLogic"
+@GQL.ObjectType()
+class Offer  {
+	@GQL.Field(type => Number)
+	public offer!: number
 
-const Offer = {
-	offer : Number,
-	discountPercentage : Number,
+	@GQL.Field(type => Number)
+	public discountPercentage?: number
 }
 @GQL.Resolver(of => GymOffersLogic)
 export default class GymOffersLogicResolver {
@@ -13,7 +16,7 @@ export default class GymOffersLogicResolver {
 		return GymOffersLogic.find({ where: { active: 1 } })
 	}
 	
-	@GQL.Query(returns => String)
+	@GQL.Query(returns => [Offer,])
 	public async getOffer(
 		@GQL.Arg("programme", { nullable: true }) programme: number,
 		@GQL.Arg("packages", { nullable: true }) packages: number,
@@ -31,10 +34,15 @@ export default class GymOffersLogicResolver {
 		}
 
 		Object.keys(where).forEach(key => where[key] === undefined && delete where[key])
-		let gymOffer = await GymOffersLogic.find({ where })
-		if (gymOffer === undefined) throw "Invalid offer"
-		console.log(gymOffer)
-		return gymOffer[0] === undefined ? "" : gymOffer[0].discountPercentage
+		let gymOffers = await GymOffersLogic.find({ where })
+		if (gymOffers === undefined) throw "Invalid offer"
+		console.log(gymOffers)
+		let i
+		let offers: Offer[] = []
+		for(i in gymOffers){
+			offers.push({ offer:gymOffers[i].offer, discountPercentage: gymOffers[i].discountPercentage })
+		}
+		return gymOffers[0] === undefined ? [] : offers
 	}
 
 	@GQL.Mutation(returns => GymOffersLogic)

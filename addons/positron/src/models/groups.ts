@@ -16,6 +16,7 @@ export default class Groups extends Base implements IGroups {
 
 	@GQL.Field(type => String)
 	@DB.Column("varchar", { nullable: true, unique: true })
+	@DB.Generated("uuid")
 	public groupName!: string
 
 }

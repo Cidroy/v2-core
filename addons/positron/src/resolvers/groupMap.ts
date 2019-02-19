@@ -12,11 +12,11 @@ export default class GroupMapResolver {
 	@GQL.Mutation(returns => GroupMap)
 	public async addGroupMap(
 		@GQL.Arg("groupId") groupId: number,
-		@GQL.Arg("userId") userId: number,
+		@GQL.Arg("gymUserId") gymUserId: number,
 	) {
 		let groupMap = new GroupMap()
 		groupMap.groupId = groupId
-		groupMap.userId = userId
+		groupMap.gymUserId = gymUserId
 
 		await groupMap.save()
 		return groupMap

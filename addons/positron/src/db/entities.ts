@@ -36,7 +36,7 @@ import TimeSlot from "@positron/models/timeSlot"
 import UTMSource from "@positron/models/utmSource"
 import ZonesAvailable from "@positron/models/zonesAvailable"
 import GymOffers from "@positron/models/gymOffers"
-import GymOffersLogicResolver from "@positron/resolvers/gymOffersLogic"
+import GymOffersLogic from "@positron/models/gymOffersLogic"
 
 export default [
 	Address,
@@ -75,5 +75,5 @@ export default [
 	UTMSource,
 	ZonesAvailable,
 	GymOffers,
-	GymOffersLogicResolver,
+	GymOffersLogic,
 ]
