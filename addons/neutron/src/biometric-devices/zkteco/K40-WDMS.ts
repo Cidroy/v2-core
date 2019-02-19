@@ -22,7 +22,7 @@ function dataParser(html: string) {
 	return { unmapped, html }
 }
 
-export const DefaultWDMS: WDMSConnectionConfig = {
+export const DefaultWDMS = (): WDMSConnectionConfig => ({
 	ssl: false,
 	host: "localhost",
 	port: 8081,
@@ -33,7 +33,7 @@ export const DefaultWDMS: WDMSConnectionConfig = {
 	serial: "none",
 	ip: "0.0.0.0",
 	deptID: "1",
-}
+})
 
 /**
  * Login to ZKTEco K40 devices in wdms mode
@@ -623,15 +623,15 @@ export default class ZKTEco_K40_WDMS implements IBiometric {
 			this.log.error(error)
 			this.log.log("Incorrect Config to connect with ZKTEco K40 over WDMS")
 
-			this._id = DefaultWDMS.id
-			this._ssl = DefaultWDMS.ssl
-			this._host = DefaultWDMS.host
-			this._port = DefaultWDMS.port
-			this._zone = DefaultWDMS.zoneName
-			this._checkType = DefaultWDMS.checkType
-			this._serial = DefaultWDMS.serial
-			this._IP = DefaultWDMS.ip
-			this._deptID = DefaultWDMS.deptID
+			this._id = DefaultWDMS().id
+			this._ssl = DefaultWDMS().ssl
+			this._host = DefaultWDMS().host
+			this._port = DefaultWDMS().port
+			this._zone = DefaultWDMS().zoneName
+			this._checkType = DefaultWDMS().checkType
+			this._serial = DefaultWDMS().serial
+			this._IP = DefaultWDMS().ip
+			this._deptID = DefaultWDMS().deptID
 		}
 	}
 }
