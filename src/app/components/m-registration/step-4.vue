@@ -6,13 +6,6 @@
 			<v-flex xs12 class="px-1"> <v-combobox prepend-icon="fas fa-star" v-model="purposes" :items="Purposes" item-text="name" item-value="id" label="Purpose of Joining Gym" multiple chips hint="Maximum 3 choices" persistent-hint clearable deletable-chips color="orange darken-2"/> </v-flex>
 
 			<v-flex xs12 class="pt-2 px-2">
-				<span class="title font-weight-regular">Allow Door Access</span>
-				<v-layout align-start row>
-					<v-switch v-model="allowedDoors" v-for="door in DOORS" :key="door.id" :label="door.name" :value="door.id" color="orange darken-2"/>
-				</v-layout>
-			</v-flex>
-
-			<v-flex xs12 class="pt-2 px-2">
 				<span class="title font-weight-regular">How did you hear of us?</span>
 				<v-layout align-start row>
 					<v-checkbox v-model="utmSource" v-for="source in UTM_SOURCES" :key="source.id" :label="source.name" :value="source.id" color="orange darken-2" />

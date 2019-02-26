@@ -7,7 +7,6 @@ import empty from "@/components/empty.vue"
 	// @ts-ignore
 	components: { empty, },
 	created() {
-		this.allowedDoors = [this.DOORS[0].id,]
 		this.utmSource = this.UTM_SOURCES[0].id
 	}
 })
@@ -17,11 +16,9 @@ export default class MRegistrationStep4 extends Vue {
 
 	private utmSource: boolean | string | number = false
 	private toc = true
-	private allowedDoors: (number | string)[] = []
 	private purposes: (string | number)[] = []
 	private get Purposes() { return MiscStore.PURPOSES }
 
-	private get DOORS() { return MiscStore.DOORS }
 	private get UTM_SOURCES() { return MiscStore.UTM_SOURCES }
 
 	private get userData() {
@@ -29,7 +26,6 @@ export default class MRegistrationStep4 extends Vue {
 			...this.value,
 			utmSource: this.value.utmSource,
 			toc: this.value.toc,
-			allowedDoors: this.value.allowedDoors,
 			purposes: this.value.purposes,
 		}
 	}
@@ -42,7 +38,6 @@ export default class MRegistrationStep4 extends Vue {
 	@Watch("value") private onValueChange() {
 		this.utmSource = this.value.utmSource
 		this.toc = this.value.toc
-		this.allowedDoors = this.value.allowedDoors
 		this.purposes = this.value.purposes
 	}
 

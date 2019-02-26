@@ -27,7 +27,7 @@
 								<v-flex xs6 class="px-2"> <v-text-field v-model="whatsappNumber" prepend-icon="fab fa-whatsapp" label="Whatsapp Number" mask="##### ##### #####" readonly tabindex="-1" color="orange darken-2" /></v-flex>
 								
 								<v-flex xs6 class="px-2"> <v-text-field v-model="startDate" prepend-icon="event" label="Start Date" readonly tabindex="-1" color="orange darken-2" /></v-flex>
-								<v-flex xs6 class="px-2"> <v-text-field v-model="startDate" prepend-icon="event" label="End Date" readonly tabindex="-1" color="orange darken-2" /></v-flex>
+								<v-flex xs6 class="px-2"> <v-text-field v-model="endDate" prepend-icon="event" label="End Date" readonly tabindex="-1" color="orange darken-2" /></v-flex>
 							</v-layout>
 							<div class="elevation-5 pt-2 px-2 mb-4">
 								<v-layout row wrap class="mt-4">
@@ -59,13 +59,14 @@
 								</v-layout>
 								<v-layout row wrap>
 									<v-flex xs12 md6 class="px-2"> <v-text-field :value="timeSlot" label="Preferred Time Slot" prepend-icon="fas fa-info-circle" readonly tabindex="-1" color="orange darken-2"/> </v-flex>
-									<v-flex xs6 md1 class="px-2"> <v-text-field :value="transactionQty" readonly tabindex="-1" color="orange darken-2"/> </v-flex>
+									<v-flex xs6 md1 class="px-2"> <v-text-field :value="packageMagnitude" readonly tabindex="-1" color="orange darken-2"/> </v-flex>
 									<v-flex xs6 md2 class="px-2"> <v-text-field :value="transactionPrice" prefix="₹" readonly tabindex="-1" color="orange darken-2"/> </v-flex>
 									<v-flex xs6 md3 class="px-2"> <v-text-field :value="transactionAmount" prefix="₹" readonly tabindex="-1" color="orange darken-2"/> </v-flex>
 								</v-layout>
 								<v-divider />
 								<v-layout row wrap>
-									<v-flex xs12 md7/>
+									<v-flex xs12 md6 class="px-2"> <v-text-field :value="'People'" :suffix="` X ${transactionQty}`" prepend-icon="people" placeholder="People" readonly tabindex="-1" color="orange darken-2"/> </v-flex>
+									<v-flex xs12 md1/>
 									<v-flex xs12 md2 class="px-2 py-4"> <span class="title">Sub Total</span> </v-flex>
 									<v-flex xs6 md3 class="px-2"> <v-text-field :value="subTotal" prefix="₹" readonly tabindex="-1" color="orange darken-2"/> </v-flex>
 								</v-layout>

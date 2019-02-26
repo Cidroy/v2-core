@@ -3,6 +3,8 @@ import { TMRegistrationStep2, defaultRegistrationStep2User } from "@/classes/typ
 import IAddress from "@classes/interface/IAddress"
 import AddressStore from "@/state/modules/addresses"
 import empty from "@/components/empty.vue"
+import Gymkonnect from "@classes/gymkonnect"
+import moment from "moment"
 
 @Component({
 	// @ts-ignore
@@ -35,6 +37,12 @@ export default class MRegistrationStep2 extends Vue {
 	private get COUNTRIES() { return AddressStore.COUNTRIES() }
 	private get STATES() { return AddressStore.STATES(this.address.country) }
 	private get CITIES() { return AddressStore.CITIES(this.address.country, this.address.state) }
+	private get mobilePrefix(){ return "+" + AddressStore.MOBILE_PREFIX(this.address.country) + " " }
+	private get mask(){
+		return {
+			mobile: "##### ##### #####",
+		}
+	}
 
 	@Watch("mobile")
 	@Watch("sameAsPhone")
@@ -46,16 +54,23 @@ export default class MRegistrationStep2 extends Vue {
 
 	private get rules() {
 		return {
-			mobile: [(v: any) => !!v || "Number is required",],
-			whatsappNumber: [(v: any) => !!v || " Number is required",],
-			homeNumber: [(v: any) => !!v || "Required",],
-			emailRules: [(v: any) => !!v || "E-mail is required", (v: string) => /.+@.+/.test(v) || "E-mail must be valid",],
+			mobile: [
+				(v: string) => !!v || "Number is required",
+				(v: string) => !this.existsMobile || "Mobile Number already registered",
+			],
+			whatsappNumber: [(v: string) => !!v || " Number is required",],
+			homeNumber: [(v: string) => !!v || "Required",],
+			emailRules: [
+				(v: string) => !!v || "E-mail is required",
+				(v: string) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+				// (v: string) => !!v && !this.existsEmail || "E-mail already registered",
+			],
 			address: {
-				house: [(house: any) => !!house || "House Address is required",],
-				city: [(city: any) => !!city || "City is required",],
-				state: [(state: any) => !!state || "State is required",],
-				pincode: [(pincode: any) => !!pincode || "Pincode is required",],
-				country: [(country: any) => !!country || "country is required",],
+				house: [(house: string) => !!house || "House Address is required",],
+				city: [(city: string) => !!city || "City is required",],
+				state: [(state: string) => !!state || "State is required",],
+				pincode: [(pincode: string) => !!pincode || "Pincode is required",],
+				country: [(country: string) => !!country || "country is required",],
 			}
 		}
 	}
@@ -108,4 +123,47 @@ export default class MRegistrationStep2 extends Vue {
 		// @ts-ignore
 		this.autofocus = isVisible
 	}
+
+	@Prop({ type: Boolean, default: false }) public saving !: boolean
+
+	private validatingMobile = false
+	private validatingEmail = false
+	private existsMobile = false
+	private existsEmail = false
+
+	@Watch("mobile") private async onMobileChange(){
+		if(this.mobile.length > 4){
+			this.validatingMobile = true
+			this.existsMobile = await Gymkonnect.existsMobile(this.mobile)
+			this.validatingMobile = false
+		}
+	}
+
+	// FIXME: email verification
+	// @Watch("email") private async onEmailChange(){
+	// 	if(this.email.includes("@")){
+	// 		this.validatingEmail = true
+	// 		const autoCancelVerificationPromise = new Promise(async (resolve, reject)=> {
+	// 			const start  = moment()
+	// 			const startS = start.toISOString()
+	// 			const email = this.email
+	// 			console.log(startS, email)
+	// 			const result = await Gymkonnect.existsEmail(email)
+	// 			console.log(startS, moment().diff(start), email, this.email, result)
+	// 			if(this.email!==email){
+	// 				resolve(false)
+	// 				return false
+	// 			}
+	// 			if(result){
+	// 				// rinzler.d.vicky@gmail.com
+	// 				console.log(true, startS, moment().diff(start), email, this.email, result)
+	// 			}
+	// 			this.existsEmail = result
+	// 			resolve(true)
+	// 			return true
+	// 		})
+	// 		await autoCancelVerificationPromise
+	// 		this.validatingEmail = false
+	// 	}
+	// }
 }

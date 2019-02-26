@@ -9,8 +9,8 @@
 			</v-stepper-header>
 
 			<v-stepper-items>
-				<v-stepper-content step="1"> <step-one v-model="userData" @nextStep="step2" allowImportFromEnquiry/> </v-stepper-content>
-				<v-stepper-content step="2"> <step-two v-model="userData" @nextStep="finish"/>   </v-stepper-content>
+				<v-stepper-content step="1"> <step-one v-model="userData" @nextStep="step2"  :saving="saving" /> </v-stepper-content>
+				<v-stepper-content step="2"> <step-two v-model="userData" @nextStep="finish" :saving="saving" />   </v-stepper-content>
 			</v-stepper-items>
 		</v-stepper>
 		<step-finished v-model="userData" v-else />

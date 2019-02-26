@@ -1,6 +1,4 @@
 import { Component, Vue, Prop, Watch, Emit } from "vue-property-decorator"
-import moment from "moment"
-import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
 import { formatDate, parseDate } from "@/utils/misc"
 import { MiscStore } from "@/state/modules/misc"
@@ -9,6 +7,7 @@ import { PaymentDetail } from "@/classes/types/payment"
 
 import Gymkonnect from "@classes/gymkonnect"
 import { Logger } from "@classes/CONSOLE"
+import moment from "moment"
 
 const Console = new Logger("gk/payment/modal-single")
 
@@ -36,6 +35,7 @@ export default class SinglePaymentModal extends Vue {
 		Console.log("recalculating")
 		this.primaryUser = this.users[Object.keys(this.users)[0]]
 		this.transactionQty = Object.keys(this.users).length
+		this.packageMagnitude = this.transaction.packageMagnitude
 
 		Gymkonnect.Registration.getAmount({
 			membershipType: this.primaryUser.membershipType,
@@ -50,6 +50,14 @@ export default class SinglePaymentModal extends Vue {
 		Gymkonnect.Registration.getAdmissionFee()
 			.then(admissionFeePrice => { this.admissionFeePrice = admissionFeePrice })
 			.catch(e => { Console.error(e) })
+
+		Gymkonnect.Registration.getEndDate({
+			startDate: moment(this.transaction.doj).toDate(),
+			packages: this.transaction.packageType,
+			packageMagnitude: this.transaction.packageMagnitude
+		})
+			.then(end => { this.end = end.toISOString().substr(0, 10) })
+			.catch(e => { Console.error(e) })
 	}
 
 	private receipt = "1"
@@ -60,11 +68,12 @@ export default class SinglePaymentModal extends Vue {
 	private get doj() { return this.primaryUser.doj }
 	private get dojFormatted() { return this.formatDate(this.doj) }
 	private get startDate() { return this.formatDate(this.doj) }
-	private get endDate() { return this.formatDate(this.doj) }
+	private end = this.doj
+	private get endDate(){ return this.formatDate(this.end) }
 
 	private admissionFee = "Admission Fee"
 	private admissionFeePrice = 0
-	private get admissionFeeQty() { return this.transactionQty }
+	private get admissionFeeQty() { return 1 }
 	private get admissionFeeAmount() { return this.admissionFeeQty * this.admissionFeePrice }
 
 	private get membership() {
@@ -80,9 +89,11 @@ export default class SinglePaymentModal extends Vue {
 		return temp !== undefined ? temp.name : "Invalid"
 	}
 
+	private packageMagnitude = 1
+
 	private transactionQty = 1
 	private transactionPrice = 0
-	private get transactionAmount() { return this.transactionQty * this.transactionPrice }
+	private get transactionAmount() { return this.packageMagnitude * this.transactionPrice }
 
 	private offer: string | boolean = false
 	private get OFFERS() { return MiscStore.ALL_OFFERS }
@@ -94,8 +105,7 @@ export default class SinglePaymentModal extends Vue {
 	private get requireTransactionId() { return this.PAYMENT_MODES[this.paymentModeIndex].requireTransactionId }
 
 	private get subTotal() {
-		return this.admissionFeeAmount
-			+ this.transactionAmount
+		return (this.admissionFeeAmount + this.transactionAmount) * this.transactionQty
 	}
 	private discount = 0
 	private get total() {

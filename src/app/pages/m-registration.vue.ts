@@ -17,7 +17,10 @@ import Gymkonnect from "@classes/gymkonnect"
 @Component({
 	// @ts-ignore
 	components: { Layout, stepper, paymentSingle, stepThree, stepFour, },
-	created() { this.onGroupingChange() }
+	created() {
+		// @ts-ignore
+		this.onGroupingChange()
+	}
 })
 // @ts-ignore
 export default class MemberRegistrationPage extends Vue {
@@ -44,7 +47,7 @@ export default class MemberRegistrationPage extends Vue {
 	private usersCount = 0
 
 	private getIndex(indexStr: string) { return Object.keys(this.users).indexOf(indexStr) + 1 }
-	@Watch("grouping") private onGroupingChange() {
+	@Watch("grouping") public onGroupingChange() {
 		let diff = 0
 		let i = 0
 		if (this.usersCount < this.GROUPINGS[this.groupIndex].count) {
@@ -93,7 +96,8 @@ export default class MemberRegistrationPage extends Vue {
 	private paying = false
 	private async pay(paymentData: PaymentDetail) {
 		this.paying = true
-		await Gymkonnect.Registration.makePayments(this.clientIds, this.transactionData, paymentData)
+		let result = await Gymkonnect.Registration.makePayments(this.clientIds, this.transactionData, paymentData, this.grouping)
+		console.log(result)
 		this.paying = false
 	}
 

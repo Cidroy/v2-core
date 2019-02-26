@@ -20,7 +20,7 @@ import Gymkonnect from "@classes/gymkonnect"
 // @ts-ignore
 export default class MRegistrationStep3 extends Vue {
 	private formatDate(date: string) { return formatDate(date) }
-	private parseDate(date: string) { return formatDate(date) }
+	private parseDate(date: string) { return parseDate(date) }
 
 	private formValid = true
 
@@ -52,7 +52,8 @@ export default class MRegistrationStep3 extends Vue {
 			membershipType: this.membershipType,
 			packageType: this.packageType,
 			timeSlot: this.timeSlot,
-			doj: this.value.doj,
+			doj: this.doj,
+			packageMagnitude: this.packageMagnitude
 		}
 	}
 	@Prop({
@@ -66,6 +67,7 @@ export default class MRegistrationStep3 extends Vue {
 		this.timeSlot = this.value.timeSlot
 		this.category = this.value.category
 		this.doj = this.value.doj
+		this.packageMagnitude = this.value.packageMagnitude
 	}
 
 	private formReset() {
@@ -85,10 +87,14 @@ export default class MRegistrationStep3 extends Vue {
 
 	@Watch("membershipType")
 	@Watch("packageType")
+	@Watch("packageMagnitude")
 	@Watch("timeSlot")
 	@Watch("category")
 	@Watch("doj")
 	private doInputEmit() { this.inputEmitter() }
+
+	private packageMagnitude = 1
+	private get packageMagnitudeMax(){ return 3 }
 
 	@Prop({ type: Number }) public group !: number
 	@Prop({ type: Number, default: 1 }) public quantity !: number
@@ -98,13 +104,14 @@ export default class MRegistrationStep3 extends Vue {
 
 	@Watch("membershipType")
 	@Watch("packageType")
+	@Watch("packageMagnitude")
 	@Watch("timeSlot")
 	@Watch("category")
 	@Watch("group")
 	@Watch("quantity")
 	private async recalculateSubTotal() {
 		this.priceLoading = true
-		this.subTotal = await Gymkonnect.Registration.getAmount({
+		this.subTotal = this.packageMagnitude * await Gymkonnect.Registration.getAmount({
 			membershipType: this.membershipType,
 			packageType: this.packageType,
 			timeSlot: this.timeSlot,

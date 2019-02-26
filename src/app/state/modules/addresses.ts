@@ -16,4 +16,5 @@ export default class AddressStore {
 	public static COUNTRY = (countryShortName: string = AddressStore.DEFAULT_COUNTRY_SHORT) => AddressJSON.getCountryByShort(countryShortName)
 	public static STATES = (countryShortName: string = AddressStore.DEFAULT_COUNTRY_SHORT): string[] => AddressJSON.getStatesByShort(countryShortName)
 	public static CITIES = (countryShortName: string = AddressStore.DEFAULT_COUNTRY_SHORT, state: string = DEFAULT_STATE_SHORT): string[] => AddressJSON.getCities(countryShortName, state)
+	public static MOBILE_PREFIX = (countryShortName: string = AddressStore.DEFAULT_COUNTRY_SHORT) => AddressJSON.getCountryByShort(countryShortName).phone
 }

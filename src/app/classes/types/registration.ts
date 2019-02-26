@@ -70,6 +70,7 @@ export type TMRegistrationStep3 = {
 	membershipType: string| number,
 	packageType: string| number,
 	timeSlot: string| number,
+	packageMagnitude: number,
 }
 
 export const defaultRegistrationStep3User: TMRegistrationStep3 = {
@@ -78,18 +79,17 @@ export const defaultRegistrationStep3User: TMRegistrationStep3 = {
 	membershipType: MiscStore.MEMBERSHIP_TYPES[0].id,
 	packageType: MiscStore.PACKAGES[0].id,
 	timeSlot: MiscStore.TIME_SLOTS[0].id,
+	packageMagnitude: 1,
 }
 
 export type TMRegistrationStep4 = {
-	utmSource : string| number | boolean,
+	utmSource : string | false,
 	toc : boolean,
-	allowedDoors : (string| number)[],
 	purposes : (string| number)[],
 }
 export const defaultRegistrationStep4User: TMRegistrationStep4 = {
 	utmSource: false,
-	toc: false,
-	allowedDoors: [],
+	toc: true,
 	purposes: [],
 }
 

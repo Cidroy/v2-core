@@ -26,18 +26,18 @@ export default class MRegistrationStep1 extends Vue {
 
 	private loading = false
 
-	private firstName: string = ""
-	private middleName: string = ""
-	private lastName: string = ""
-	private photo: string = ""
+	private firstName = ""
+	private middleName = ""
+	private lastName = ""
+	private photo = ""
 
 	private gender: GENDER = GENDER.MALE
 	private get GENDERS() { return GENDER }
 
 	private dob = new Date().toISOString().substr(0, 10)
-	private dobFormattedDate = this.formatDate(this.dob)
-	private dobMenu: boolean = false
-	@Watch("dob") private onDobChanged() { this.dobFormattedDate = this.formatDate(this.dob) }
+	private dobFormatted = this.formatDate(this.dob)
+	private dobMenu = true
+	@Watch("dob") private onDobChanged() { this.dobFormatted = this.formatDate(this.dob) }
 
 	private occupation: string | number = MiscStore.OCCUPATIONS[0].id
 	private get Occupations() { return MiscStore.OCCUPATIONS }
@@ -117,4 +117,6 @@ export default class MRegistrationStep1 extends Vue {
 		} catch (e) { console.log(e) }
 		this.loading = false
 	}
+
+	@Prop({ type: Boolean, default: false }) public saving !: boolean
 }

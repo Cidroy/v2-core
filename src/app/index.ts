@@ -10,10 +10,12 @@ import "@fortawesome/fontawesome-free/css/brands.min.css"
 
 import { MainProcess } from "@/MainProcess"
 import { theme } from "@@/config/theme"
+import { Permission } from "@classes/Permission"
 
 // Don't warn about using the dev version of Vue in development
 Vue.config["productionTip"] = process.env.NODE_ENV === "production"
 Vue["http"] = Vue.prototype.$http = Axios
+Vue["permission"] = Vue.prototype.$permission = Permission
 
 Vue.use(Vuetify, { theme })
 Vue.directive("observe-visibility", ObserveVisibility)

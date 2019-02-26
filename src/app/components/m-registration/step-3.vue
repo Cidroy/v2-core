@@ -6,8 +6,9 @@
 					<v-select v-model="category" prepend-icon="list" :items="Categories" item-text="name" item-value="id" label="Category" color="orange darken-2"/>
 				</v-flex>
 				<v-flex xs12 lg6 class="px-2">
+					<v-text-field color="orange darken-2" v-model="dojFormatted" @blur="doj = parseDate(dojFormatted)" @click:prepend="dojMenu = true" label="Date of Joining" placeholder="DD/MM/YYYY" prepend-icon="event" mask="##/##/####" return-masked-value persistent-hint />
 					<v-menu ref="dojMenu" :close-on-content-click="false" v-model="dojMenu" :nudge-right="40" lazy transition="scale-transition" offset-y full-width>
-						<v-text-field color="orange darken-2" slot="activator" v-model="dojFormatted" label="Date of Joining" prepend-icon="event" readonly persistent-hint />
+						<div slot="activator"/>
 						<v-date-picker v-model="doj" :min="minDoj" no-title @input="dojMenu = false"  color="orange darken-2"/>
 					</v-menu>
 					<v-checkbox class="ma-0" label="Allow Back Dates" v-model="allowBackDating" color="orange"/>
@@ -38,8 +39,9 @@
 		</v-form>
 		<v-card-actions>
 			<v-layout row wrap>
-				<v-flex xs12 lg6/>
-				<v-flex xs12 lg3 class="px-2"> <v-text-field v-model="subTotal" label="SubTotal" prefix="₹" :suffix="`X ${quantity}`" readonly color="orange darken-2"/> </v-flex>
+				<v-flex xs12 lg3> <v-text-field v-model="packageMagnitude" type="number" label="Quantity" color="orange darken-2" :min="1" :max="packageMagnitudeMax" /> </v-flex>
+				<v-flex xs12 lg3/>
+				<v-flex xs12 lg3 class="px-2"> <v-text-field v-model="subTotal" tabindex="-1" label="SubTotal" prefix="₹" :suffix="`X ${quantity}`" readonly color="orange darken-2"/> </v-flex>
 				<v-flex xs12 lg3 class="px-2"> <v-text-field v-model="total" label="Total" prefix="₹" outline readonly :loading="priceLoading" color="orange darken-2"/> </v-flex>
 			</v-layout>
 		</v-card-actions>
