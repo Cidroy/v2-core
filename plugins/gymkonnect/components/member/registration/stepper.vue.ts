@@ -1,14 +1,14 @@
 import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
 import { Component, Vue, Watch, Prop, Emit } from "vue-property-decorator"
-import { MiscStore } from "@/state/modules/misc"
-import { TMRegistration, defaultRegistrationUser } from "@/classes/types/registration"
+import { MiscStore } from "@plugins/gymkonnect/state/misc"
+import { TMRegistration, defaultRegistrationUser } from "@plugins/gymkonnect/classes/types/registration"
 
-import stepOne from "@/components/m-registration/step-1.vue"
-import stepTwo from "@/components/m-registration/step-2.vue"
-import stepFinished from "@/components/m-registration/step-finished.vue"
+import stepOne from "@plugins/gymkonnect/components/member/registration/step-1.vue"
+import stepTwo from "@plugins/gymkonnect/components/member/registration/step-2.vue"
+import stepFinished from "@plugins/gymkonnect/components/member/registration/step-finished.vue"
 
-import Gymkonnect from "@classes/gymkonnect"
+import Gymkonnect from "@plugins/gymkonnect/classes/clients"
 
 @Component({
 	// @ts-ignore

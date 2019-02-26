@@ -1,7 +1,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator"
 import appConfig from "@/app.config"
-import { MiscStore } from "@/state/modules/misc"
-import layout from "@/components/m-registration/layout.vue"
+import { MiscStore } from "@plugins/gymkonnect/state/misc"
+import layout from "@plugins/gymkonnect/components/member/registration/layout.vue"
 @Component({
 	// @ts-ignore
 	components: {
@@ -14,7 +14,7 @@ import layout from "@/components/m-registration/layout.vue"
 })
 // @ts-ignore
 export default class Spa extends Vue{
-	
+
 	private grouping = Object.keys(this.GROUPINGS)[0]
 	private get GROUPINGS(){ return MiscStore.GROUPINGS }
 	private get allowAddPeople(){

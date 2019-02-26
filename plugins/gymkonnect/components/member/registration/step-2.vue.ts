@@ -1,9 +1,9 @@
 import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
-import { TMRegistrationStep2, defaultRegistrationStep2User } from "@/classes/types/registration"
+import { TMRegistrationStep2, defaultRegistrationStep2User } from "@plugins/gymkonnect/classes/types/registration"
 import IAddress from "@classes/interface/IAddress"
-import AddressStore from "@/state/modules/addresses"
+import AddressStore from "@plugins/gymkonnect/state/addresses"
 import empty from "@/components/empty.vue"
-import Gymkonnect from "@classes/gymkonnect"
+import Gymkonnect from "@plugins/gymkonnect/classes/clients"
 import moment from "moment"
 
 @Component({

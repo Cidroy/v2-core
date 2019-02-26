@@ -14,8 +14,17 @@
 //
 // component: () => import('@/pages/my-view')
 //
-export default function lazyLoadView(viewName) {
-	const AsyncView = import(/* webpackChunkName: "page-[name]" */ `@/pages${viewName}`)
+/**
+ *	Lazy Load Views
+ *
+ * @export
+ * @param {string} viewName file name
+ * @param {string} [importHandle=(file: string) => import(/* webpackChunkName: "page-[name]" * /`@/pages${file}`)] resolver method
+ * (file: string) => import(/* webpackChunkName: "page-[name]" * /`@/pages${file}`)
+ * @returns something
+ */
+export default function lazyLoadView(viewName: string, importHandle = (file: string) => import(/* webpackChunkName: "page-[name]" */ `@/pages${file}`)) {
+	const AsyncView = importHandle(viewName)
 	const AsyncHandler = () => ({
 		component: AsyncView,
 		// A component to use while the component is loading.
@@ -32,7 +41,7 @@ export default function lazyLoadView(viewName) {
 	})
 	return Promise.resolve({
 		functional: true,
-		render(h, { data, children }) {
+		render(h: any, { data, children }) {
 			// Transparently pass any props or children
 			// to the view component.
 			return h(AsyncHandler, data, children)

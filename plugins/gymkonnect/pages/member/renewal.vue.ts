@@ -1,7 +1,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
-import stepOne from "@/components/m-registration/step-1.vue"
+import stepOne from "@plugins/gymkonnect/components/member/registration/step-1.vue"
 
 @Component({
 	// @ts-ignore

@@ -1,8 +1,8 @@
 import { Component, Vue, Emit, Prop } from "vue-property-decorator"
 import { GENDER } from "@classes/enum/misc"
 import { parseDate, formatDate } from "@/utils/misc"
-import { TMRegistration, defaultRegistrationUser } from "@/classes/types/registration"
-import addUserPhoto from "@/components/add-user-photo.vue"
+import { TMRegistration, defaultRegistrationUser } from "@plugins/gymkonnect/classes/types/registration"
+import addUserPhoto from "@plugins/gymkonnect/components/add-user-photo.vue"
 
 @Component({
 	// @ts-ignore

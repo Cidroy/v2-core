@@ -34,6 +34,7 @@
 			"@electron/*": [ "src/electron/*" ],
 			"@typescript/*": [ "typescript/*" ],
 			"@classes/*": [ "classes/*" ],
+			"@plugins/*": [ "plugins/*" ],
 			"@/*": [ "src/app/*" ],
 			"@@/*": [ "src/*" ],
 			"@positron/*": [ "addons/positron/src/*" ],
@@ -46,7 +47,7 @@
 			"~config/*": [ "config/*" ]
 		},
 		"lib": [
-			"es2015", 
+			"es2015",
 			"esnext",
 			"dom"
 		]
@@ -58,7 +59,8 @@
 		"src/**/*",
 		"src/**/*.vue",
 		"classes/**/*",
-		"typescript/**/*"
+		"typescript/**/*",
+		"plugins/**/*"
 	],
 	"exclude": [
 		"node_modules",

@@ -38,7 +38,7 @@ export default class AddUserPhoto extends Vue{
 	private error = ""
 	private cameraStream : MediaStream| null = null
 	private cameraList: { label: string, deviceId: string }[] = []
-	
+
 	private cameraID = ""
 	private cameraName = ""
 	@Watch("cameraID") private async onChangeCameraID(){

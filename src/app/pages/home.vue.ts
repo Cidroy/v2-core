@@ -1,7 +1,7 @@
 import { Component, Vue, Watch } from "vue-property-decorator"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
-import { TestStore } from "@/state/modules/test"
+import { TestStore } from "@plugins/gymkonnect/state/test"
 import systemInformation from "@/components/system-information.vue"
 
 @Component({

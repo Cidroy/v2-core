@@ -3,16 +3,16 @@ import uuid from "uuid"
 import _ from "lodash"
 
 import Layout from "@/layouts/main.vue"
-import { MiscStore } from "@/state/modules/misc"
-import { TMRegistration, defaultRegistrationUser, TMRegistrationStep3, defaultRegistrationStep3User, TMRegistrationStep4, defaultRegistrationStep4User } from "@/classes/types/registration"
-import { PaymentDetail } from "@/classes/types/payment"
+import { MiscStore } from "@plugins/gymkonnect/state/misc"
+import { TMRegistration, defaultRegistrationUser, TMRegistrationStep3, defaultRegistrationStep3User, TMRegistrationStep4, defaultRegistrationStep4User } from "@plugins/gymkonnect/classes/types/registration"
+import { PaymentDetail } from "@plugins/gymkonnect/classes/types/payment"
 
-import stepThree from "@/components/m-registration/step-3.vue"
-import stepFour from "@/components/m-registration/step-4.vue"
-import stepper from "@/components/m-registration/stepper.vue"
-import paymentSingle from "@/components/payment/modal-single.vue"
+import stepThree from "@plugins/gymkonnect/components/member/registration/step-3.vue"
+import stepFour from "@plugins/gymkonnect/components/member/registration/step-4.vue"
+import stepper from "@plugins/gymkonnect/components/member/registration/stepper.vue"
+import paymentSingle from "@plugins/gymkonnect/components/payment/modal-single.vue"
 
-import Gymkonnect from "@classes/gymkonnect"
+import Gymkonnect from "@plugins/gymkonnect/classes/clients"
 
 @Component({
 	// @ts-ignore

@@ -1,6 +1,6 @@
 import { generateBadgenumber, existsEmail, existsMobile } from "./misc"
-import { Registration } from "./registration"
-import { Permission } from "./permission"
+import { Registration } from "./member/registration"
+import { Permission } from "../../permission"
 
 const Gymkonnect = {
 	existsEmail,

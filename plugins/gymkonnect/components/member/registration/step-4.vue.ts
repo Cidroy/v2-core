@@ -1,6 +1,6 @@
 import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
-import { MiscStore } from "@/state/modules/misc"
-import { TMRegistrationStep4, defaultRegistrationStep4User } from "@/classes/types/registration"
+import { MiscStore } from "@plugins/gymkonnect/state/misc"
+import { TMRegistrationStep4, defaultRegistrationStep4User } from "@plugins/gymkonnect/classes/types/registration"
 import empty from "@/components/empty.vue"
 
 @Component({

@@ -1,8 +1,8 @@
 import { Component, Vue, Watch } from "vue-property-decorator"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
-import personalTraining from "@/components/registration/personalTraining.vue"
-import oneDay from "@/components/registration/oneDay.vue"
+import personalTraining from "@plugins/gymkonnect/components/registration/personalTraining.vue"
+import oneDay from "@plugins/gymkonnect/components/registration/oneDay.vue"
 
 @Component({
 	// @ts-ignore

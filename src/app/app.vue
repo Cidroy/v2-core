@@ -5,7 +5,7 @@
 		<v-navigation-drawer fixed :clipped="$vuetify.breakpoint.mdAndUp" app v-model="drawer">
 			<v-list dense>
 				<template v-for="item in items">
-					<v-layout row v-if="item.heading" align-center :key="item.heading" @click="$router.push({path: item.to})" :color="$router.currentRoute.path===item.to?'orange darken-3':''">
+					<v-layout row v-if="item.heading" align-center :key="item.heading" @click="$router.push({name: item.to})" :color="$router.currentRoute.name===item.to?'orange darken-3':''">
 						<v-flex xs6>
 							<v-subheader v-if="item.heading">{{ item.heading }}</v-subheader>
 						</v-flex>
@@ -16,18 +16,18 @@
 								<v-list-tile-title>{{ item.text }}</v-list-tile-title>
 							</v-list-tile-content>
 						</v-list-tile>
-						<v-list-tile v-for="(child, i) in item.children" :key="i" @click="$router.push({path: child.to})" :color="$router.currentRoute.path===child.to?'orange darken-3':''">
+						<v-list-tile v-for="(child, i) in item.children" :key="i" @click="$router.push({name: child.to})" :color="$router.currentRoute.name===child.to?'orange darken-3':''">
 							<v-list-tile-action v-if="child.icon">
-								<v-icon :color="$router.currentRoute.path===child.to?'orange darken-3':''">{{ child.icon }}</v-icon>
+								<v-icon :color="$router.currentRoute.name===child.to?'orange darken-3':''">{{ child.icon }}</v-icon>
 							</v-list-tile-action>
 							<v-list-tile-content>
 								<v-list-tile-title>{{ child.text }}</v-list-tile-title>
 							</v-list-tile-content>
 						</v-list-tile>
 					</v-list-group>
-					<v-list-tile v-else :key="item.text" @click="$router.push({path: item.to})" :color="$router.currentRoute.path===item.to?'orange darken-3':''">
+					<v-list-tile v-else :key="item.text" @click="$router.push({name: item.to})" :color="$router.currentRoute.name===item.to?'orange darken-3':''">
 						<v-list-tile-action>
-							<v-icon :color="$router.currentRoute.path===item.to?'orange darken-3':''">{{ item.icon }}</v-icon>
+							<v-icon :color="$router.currentRoute.name===item.to?'orange darken-3':''">{{ item.icon }}</v-icon>
 						</v-list-tile-action>
 						<v-list-tile-content>
 							<v-list-tile-title>{{ item.text }}</v-list-tile-title>
@@ -91,10 +91,10 @@
 					</template>
 				</v-list>
 			</v-menu>
-			
+
 			<!--profile  -->
 			<div class="text-xs-center">
-				<v-menu v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-y> 
+				<v-menu v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-y>
 					<v-btn slot="activator" icon large>
 						<v-avatar color="orange darken-4" size="40">
 							<v-icon dark>account_circle</v-icon>
@@ -118,7 +118,7 @@
 						<v-divider></v-divider>
 
 						<v-list>
-							<v-list-tile  v-for="(item, index) in profileList" :key="index"  @click="$router.push({path: item.to})">
+							<v-list-tile  v-for="(item, index) in profileList" :key="index"  @click="$router.push({name: item.to})">
 								<v-list-tile-title>{{ item.text }}</v-list-tile-title>
 							</v-list-tile>
 
@@ -129,7 +129,7 @@
 								<v-list-tile-action>
 									<v-switch v-model="darkTheme" color="orange darken-4"></v-switch>
 								</v-list-tile-action>
-								
+
 							</v-list-tile>
 						</v-list>
 					</v-card>

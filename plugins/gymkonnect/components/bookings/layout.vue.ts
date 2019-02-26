@@ -1,6 +1,6 @@
 import Layout from "@/layouts/main.vue"
 import { Component, Vue, Watch, Prop, Emit } from "vue-property-decorator"
-import { MiscStore } from "@/state/modules/misc"
+import { MiscStore } from "@plugins/gymkonnect/state/misc"
 import { GENDER } from "@classes/enum/misc"
 @Component({
 	//   @ts-ignore

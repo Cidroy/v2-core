@@ -1,9 +1,9 @@
 import GQLClient, { gql } from "@/utils/graphql"
-import { TMRegistration, TMRegistrationStep3, TMRegistrationStep4 } from "@/classes/types/registration"
+import { TMRegistration, TMRegistrationStep3, TMRegistrationStep4 } from "@plugins/gymkonnect/classes/types/registration"
 import { Logger } from "@classes/CONSOLE"
 import IAddress from "@classes/interface/IAddress"
 import { ADDRESS_TYPE } from "@classes/enum/misc"
-import { PaymentDetail } from "@/classes/types/payment"
+import { PaymentDetail } from "@plugins/gymkonnect/classes/types/payment"
 import moment from "moment"
 
 let Console = new Logger("gk-client/registration")
@@ -511,8 +511,8 @@ async function linkTransactionPay(
 					$paymentId: Float!
 				){
 					linked: linkTransactionPay(
-						transactionId: $transactionId 
-						paymentId: $paymentId 
+						transactionId: $transactionId
+						paymentId: $paymentId
 					)
 				}
 			`,
@@ -550,7 +550,7 @@ async function createGroupGymUsers(userIDs: (string | number)[], groupingId: str
 				){
 					group: createGroupGymUsers(
 						userIDs: $userIDs
-						groupingId: $groupingId 
+						groupingId: $groupingId
 					){
 						id
 						name: groupName

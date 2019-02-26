@@ -1,7 +1,7 @@
-import { MiscStore } from "@/state/modules/misc"
+import { MiscStore } from "@plugins/gymkonnect/state/misc"
 import { GENDER, ADDRESS_TYPE } from "@classes/enum/misc"
 import IAddress from "@classes/interface/IAddress"
-import AddressStore from "@/state/modules/addresses"
+import AddressStore from "@plugins/gymkonnect/state/addresses"
 
 export type TMRegistrationStep1 = {
 	id: number| string

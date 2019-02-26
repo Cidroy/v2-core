@@ -5,7 +5,7 @@
 		<div>
 			<v-tabs v-model="active" color="grey darken-4" dark slider-color="orange darken-4">
       			<v-tab v-for="(name, key) in tabsList" :key="key" ripple>{{ name }}</v-tab>
-				
+
 				<v-tab-item key="a">
         			<v-card color="transparent" height="610px">
 						<v-layout row wrap>
@@ -61,7 +61,7 @@
 							<v-flex xs3>
 								<v-checkbox color="orange darken-2" label="Same As Phone Number"></v-checkbox>
 							</v-flex>
-							
+
 							<v-flex xs6 class="pr-4">
 								<v-textarea color="orange darken-2" prepend-icon="place" name="input-7-1" label="Residential Address"></v-textarea>
 							</v-flex>
@@ -81,7 +81,7 @@
 										<v-radio color="orange darken-2" label="Steam & Jacuzzi" value="radio-3"></v-radio>
 									</v-layout>
 								</v-radio-group>
-							</v-flex>	
+							</v-flex>
 						</v-layout>
 
 						<v-card width="100%" height="50px" color="transparent">
@@ -110,20 +110,20 @@
 									<!-- List Start -->
 										<v-data-table :headers="headers" :items="desserts"  item-key="name">
 											<template slot="items" slot-scope="props">
-												
+
 													<td>{{ props.item.name }}</td>
 													<td>{{ props.item.mobno }}</td>
 													<td>{{ props.item.orgname }}</td>
 													<td>{{ props.item.orgtype }}</td>
 													<td>{{ props.item.slotbooked }}</td>
 													<td>{{ props.item.status }}</td>
-												
+
 											</template>
 										</v-data-table>
 							<!-- List End -->
 									</v-card>
-								</v-dialog>	
-									
+								</v-dialog>
+
 							</v-flex>
 						</v-layout>
 						<v-divider></v-divider>
@@ -169,7 +169,7 @@
         ></v-text-field>
         <v-date-picker v-model="date" @input="menu2 = false"></v-date-picker>
       </v-menu>
- 
+
 							</v-flex>
 						</v-layout>
 
@@ -208,11 +208,11 @@
 															<v-spacer></v-spacer>
 															<v-btn color="orange darken-4" @click="dialogSlot = false">Confirm</v-btn>
 															<v-btn color="orange darken-4" @click="dialogSlot = false">Cancel</v-btn>
-														</v-flex>	
-													</v-layout>	
+														</v-flex>
+													</v-layout>
 												</v-card-actions>
 											</v-card>
-										</v-dialog>	
+										</v-dialog>
 									</v-radio-group>
 								</v-flex>
 
@@ -246,9 +246,9 @@
 								<v-flex xs3>
 									<v-checkbox color="orange darken-2" label="Wooden Floor"></v-checkbox>
 								</v-flex>
-							</v-layout>	
+							</v-layout>
 						</v-card>
-						
+
 						<v-card width="100%" height="50px" color="transparent">
 							<div class="right pr-2">
 								<v-btn dark>Cancel</v-btn>
@@ -257,10 +257,10 @@
 									<v-btn color="orange darken-4" flat @click="snackbar2 = false">Close</v-btn>
 								</v-snackbar>
 							</div>
-						</v-card>		
+						</v-card>
         			</v-card>
       			</v-tab-item>
-			</v-tabs>	  
+			</v-tabs>
 		</div>
 
 	</Layout>
@@ -269,13 +269,12 @@
 <script lang="ts">
 import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
-import SystemInformation from "@/components/system-information.vue"
 import { Component, Vue, Watch } from "vue-property-decorator"
 import { watch } from 'fs';
-import {MiscStore} from "@/state/modules/misc"
+import {MiscStore} from "@plugins/gymkonnect/state/misc"
 
 @Component({
-	components: { Layout, SystemInformation, },
+	components: { Layout },
 	page : {
 		title: "Home",
 		meta: [ { name: "description", content: appConfig.description, }, ],
@@ -295,7 +294,7 @@ export default class Home extends Vue{
 		const [day, month, year,] = this.date.split("/")
 		return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`
 	}
-		
+
 	active: number = 0
 	tabsList = {
 		a: "SPA Booking",
@@ -336,7 +335,7 @@ export default class Home extends Vue{
 	private get OrganizationTypes(){ return MiscStore.ORGANIZATION_TYPES }
 	headers = [
 		{
-			text: 'Name', 
+			text: 'Name',
 			align: 'left',
 			value: 'name',
 		},
