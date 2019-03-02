@@ -67,31 +67,7 @@
 				<v-icon>apps</v-icon>
 			</v-btn>
 
-			<v-menu v-model="menuNotify" :close-on-content-click="true" :nudge-width="200" offset-y>
-				<v-btn icon large slot="activator" dark>
-					<v-badge color="indigo" overlap>
-						<span slot="badge">3</span>
-						<v-avatar color="orange darken-4" size="40">
-							<v-icon dark>notifications</v-icon>
-						</v-avatar>
-					</v-badge>
-				</v-btn>
-				<v-list three-line>
-					<template v-for="(noti, index) in notis">
-						<v-subheader v-if="noti.header" :key="noti.header"> {{ noti.header }} </v-subheader>
-						<v-divider v-else-if="noti.divider" :inset="noti.inset" :key="index" ></v-divider>
-     					<v-list-tile v-else :key="noti.title" avatar>
-							<v-list-tile-avatar><img :src="noti.avatar"></v-list-tile-avatar>
-
-								<v-list-tile-content>
-									<v-list-tile-title v-html="noti.title"></v-list-tile-title>
-									<v-list-tile-sub-title v-html="noti.subtitle"></v-list-tile-sub-title>
-								</v-list-tile-content>
-						</v-list-tile>
-					</template>
-				</v-list>
-			</v-menu>
-
+			<notification-panel v-if="$permission(PERMISSIONS.maple.NOTIFICATION_VIEW)" />
 			<!--profile  -->
 			<div class="text-xs-center">
 				<v-menu v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-y>

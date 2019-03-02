@@ -5,11 +5,13 @@ import devResizer from "@/components/dev-resizer.vue"
 import { ThemeStore } from "@/state/theme"
 import { MiscStore } from "@plugins/gymkonnect/state/misc"
 import { Logger } from "@classes/CONSOLE"
+import NotificationPanel from "@plugins/1-core/components/notifications.vue"
+import { Permissions } from "@plugins/1-core/permission"
 
 const Console = new Logger(`gk-vue/${__filename}`)
 @Component({
 	// @ts-ignore
-	components: { devResizer, },
+	components: { devResizer, NotificationPanel, },
 	page: {
 		// All subcomponent titles will be injected into this template.
 		titleTemplate(title) {
@@ -19,7 +21,7 @@ const Console = new Logger(`gk-vue/${__filename}`)
 		},
 	},
 	created() {
-		Keyboard.bind([ "command+p", "ctrl+p", ], () => {
+		Keyboard.bind(["command+p", "ctrl+p",], () => {
 			// @ts-ignore
 			this.showDevResizer = !this.showDevResizer
 		})
@@ -32,6 +34,10 @@ const Console = new Logger(`gk-vue/${__filename}`)
 })
 // @ts-ignore
 export default class App extends Vue {
+	private PERMISSIONS = {
+		maple: Permissions
+	}
+
 	private menu: boolean = false
 	private menuNotify: boolean = false
 	private clipped: boolean = false
@@ -79,46 +85,15 @@ export default class App extends Vue {
 				"icon-alt": "settings",
 			},
 		]
-	private profileList: { icon?: string, text: string, to?: string}[] = [
-		{ text: "My Account", to: "inspire",},
-		{ text: "Dummy", to: "inspire",},
-		{ text: "Logout", to: "login",},
-		{ text: "Exit", to: "inspire",},
+	private profileList: { icon?: string, text: string, to?: string }[] = [
+		{ text: "My Account", to: "inspire", },
+		{ text: "Dummy", to: "inspire", },
+		{ text: "Logout", to: "login", },
+		{ text: "Exit", to: "inspire", },
 	]
 
-	private notis: ({ avatar?: string, title?: string, subtitle?: string } | { divider: boolean, inset: boolean }) [] =[
+	private notis: ({ avatar?: string, title?: string, subtitle?: string } | { divider: boolean, inset: boolean })[] = []
 
-			{
-			avatar: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-			title: "Brunch this weekend?",
-			subtitle: "<span class='text--primary'>Ali Connors</span> &mdash; Do you want to hang out?"
-			},
-			{ divider: true, inset: true },
-			{
-			avatar: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-			title: "Summer BBQ <span class=\"grey--text text--lighten-1\">4</span>",
-			subtitle: "<span class='text--primary'>to Alex, Scott, Jennifer</span> &mdash; Wish I could come."
-			},
-			{ divider: true, inset: true },
-			{
-			avatar: "https://cdn.vuetifyjs.com/images/lists/3.jpg",
-			title: "Oui oui",
-			subtitle: "<span class='text--primary'>Sandra Adams</span> &mdash; Do you have Paris recommendations?"
-			},
-			{ divider: true, inset: true },
-			{
-			avatar: "https://cdn.vuetifyjs.com/images/lists/4.jpg",
-			title: "Birthday gift",
-			subtitle: "<span class='text--primary'>Trevor Hansen</span> &mdash; Have any ideas?"
-			},
-			{ divider: true, inset: true },
-			{
-			avatar: "https://cdn.vuetifyjs.com/images/lists/5.jpg",
-			title: "Recipe to try",
-			subtitle: "<span class='text--primary'>Britta Holt</span> &mdash; We should eat this"
-			},
-	]
-
-	private darkTheme:boolean = ThemeStore.DARK_THEME
-	@Watch("darkTheme") private toggleDarkTheme(){ ThemeStore.toggleDarkTheme() }
+	private darkTheme: boolean = ThemeStore.DARK_THEME
+	@Watch("darkTheme") private toggleDarkTheme() { ThemeStore.toggleDarkTheme() }
 }
