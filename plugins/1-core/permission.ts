@@ -11,4 +11,9 @@ export const Permissions = {
 		description: "View own profile",
 		access: "default"
 	},
+	NAVBAR_SEARCH : {
+		permission: { [NAMESPACE]: "navbar-search" },
+		description: "Allow to search from navbar",
+		access: "default"
+	},
 }

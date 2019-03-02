@@ -5,14 +5,21 @@ import devResizer from "@/components/dev-resizer.vue"
 import { ThemeStore } from "@/state/theme"
 import { MiscStore } from "@plugins/gymkonnect/state/misc"
 import { Logger } from "@classes/CONSOLE"
-import NotificationPanel from "@plugins/1-core/components/notifications.vue"
 import { Permissions } from "@plugins/1-core/permission"
+
+import NotificationPanel from "@plugins/1-core/components/notifications.vue"
 import ProfilePanel from "@plugins/1-core/components/profile-panel.vue"
+import NavbarSearch from "@plugins/1-core/components/navbar-search.vue"
 
 const Console = new Logger(`gk-vue/${__filename}`)
 @Component({
 	// @ts-ignore
-	components: { devResizer, NotificationPanel, ProfilePanel, },
+	components: {
+		devResizer,
+		NotificationPanel,
+		ProfilePanel,
+		NavbarSearch,
+	},
 	page: {
 		// All subcomponent titles will be injected into this template.
 		titleTemplate(title) {
