@@ -209,6 +209,7 @@
 		"request-promise-native": "^1.0.5",
 		"safesql": "^2.0.1",
 		"simple-crypto-js": "^2.0.2",
+		"sweetalert2": "^8.2.6",
 		"ts-httpexceptions": "^3.1.1",
 		"twig": "^1.13.2",
 		"type-graphql": "^0.16.0",

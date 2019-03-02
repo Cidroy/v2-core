@@ -7,11 +7,12 @@ import { MiscStore } from "@plugins/gymkonnect/state/misc"
 import { Logger } from "@classes/CONSOLE"
 import NotificationPanel from "@plugins/1-core/components/notifications.vue"
 import { Permissions } from "@plugins/1-core/permission"
+import ProfilePanel from "@plugins/1-core/components/profile-panel.vue"
 
 const Console = new Logger(`gk-vue/${__filename}`)
 @Component({
 	// @ts-ignore
-	components: { devResizer, NotificationPanel, },
+	components: { devResizer, NotificationPanel, ProfilePanel, },
 	page: {
 		// All subcomponent titles will be injected into this template.
 		titleTemplate(title) {
@@ -37,6 +38,8 @@ export default class App extends Vue {
 	private PERMISSIONS = {
 		maple: Permissions
 	}
+
+	private get darkTheme(){ return ThemeStore.DARK_THEME }
 
 	private menu: boolean = false
 	private menuNotify: boolean = false
@@ -85,15 +88,4 @@ export default class App extends Vue {
 				"icon-alt": "settings",
 			},
 		]
-	private profileList: { icon?: string, text: string, to?: string }[] = [
-		{ text: "My Account", to: "inspire", },
-		{ text: "Dummy", to: "inspire", },
-		{ text: "Logout", to: "login", },
-		{ text: "Exit", to: "inspire", },
-	]
-
-	private notis: ({ avatar?: string, title?: string, subtitle?: string } | { divider: boolean, inset: boolean })[] = []
-
-	private darkTheme: boolean = ThemeStore.DARK_THEME
-	@Watch("darkTheme") private toggleDarkTheme() { ThemeStore.toggleDarkTheme() }
 }

@@ -68,50 +68,7 @@
 			</v-btn>
 
 			<notification-panel v-if="$permission(PERMISSIONS.maple.NOTIFICATION_VIEW)" />
-			<!--profile  -->
-			<div class="text-xs-center">
-				<v-menu v-model="menu" :close-on-content-click="false" :nudge-width="200" offset-y>
-					<v-btn slot="activator" icon large>
-						<v-avatar color="orange darken-4" size="40">
-							<v-icon dark>account_circle</v-icon>
-						</v-avatar>
-					</v-btn>
-
-					<v-card>
-						<v-list>
-							<v-list-tile avatar>
-								<v-list-tile-avatar color="orange darken-4">
-									<span class="white--text headline">K</span>
-								</v-list-tile-avatar>
-
-								<v-list-tile-content>
-									<v-list-tile-title>Kundan Singh</v-list-tile-title>
-									<v-list-tile-sub-title>Admin</v-list-tile-sub-title>
-								</v-list-tile-content>
-							</v-list-tile>
-						</v-list>
-
-						<v-divider></v-divider>
-
-						<v-list>
-							<v-list-tile  v-for="(item, index) in profileList" :key="index"  @click="$router.push({name: item.to})">
-								<v-list-tile-title>{{ item.text }}</v-list-tile-title>
-							</v-list-tile>
-
-							<v-divider></v-divider>
-
-							<v-list-tile>
-								<v-list-tile-title>Dark</v-list-tile-title>
-								<v-list-tile-action>
-									<v-switch v-model="darkTheme" color="orange darken-4"></v-switch>
-								</v-list-tile-action>
-
-							</v-list-tile>
-						</v-list>
-					</v-card>
-				</v-menu>
-			</div>
-			<!--profile end -->
+			<profile-panel />
 		</v-toolbar>
 		<v-content>
 			<v-container class="pa-0" fluid style="overflow-y:scroll; min-height:calc(100vh - 100px); max-height:calc(100vh - 100px)">

@@ -1,3 +1,8 @@
-export function Permission(permission: { [K in string]: string }, mode: "all" | "any" = "all"): boolean{
+import { TPermission } from "./types/permission"
+
+export function Permission(
+	permission: TPermission,
+	mode: "all" | "any" = "all"
+): boolean{
 	return true
 }

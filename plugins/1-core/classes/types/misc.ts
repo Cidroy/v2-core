@@ -26,3 +26,6 @@ export type TNotification =
 		header: string,
 		icon: string,
 	}
+
+// tslint:disable-next-line: ban-types
+export type TProfilePanelAction = { text: string, action: Function, icon?: string, iconClass?: string, }

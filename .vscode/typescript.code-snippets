@@ -110,7 +110,7 @@
 	"Permission File": {
 		"prefix": "permission file",
 		"body": [
-			"import { Permissions as P } from \"@classes/types/permission\"",
+			"import { TPermissions } from \"@classes/types/permission\"",
 			"",
 			"const NAMESPACE = \"${1:namespace}\"",
 			"",
@@ -127,11 +127,11 @@
 	"New Permission": {
 		"prefix": "permission",
 		"body": [
-			"\t${1:PERMISSION_NAME} : {",
-			"\t\tpermission: { [NAMESPACE]: \"${2:permission}\" },",
-			"\t\tdescription: \"${3:description}\",",
-			"\t\taccess: \"${4:default}\"",
-			"\t},${0}",
+			"${1:PERMISSION_NAME} : {",
+			"\tpermission: { [NAMESPACE]: \"${2:permission}\" },",
+			"\tdescription: \"${3:description}\",",
+			"\taccess: \"${4:default}\"",
+			"},${0}",
 		],
 		"description": "New Permission description"
 	}

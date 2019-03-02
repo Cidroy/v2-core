@@ -1,11 +1,14 @@
-import { Permissions as P } from "@classes/types/permission"
-
 const NAMESPACE = "maple"
 
-export const Permissions: P = {
+export const Permissions = {
 	NOTIFICATION_VIEW : {
 		permission: { [NAMESPACE]: "notification|view" },
 		description: "can view notifications",
+		access: "default"
+	},
+	PROFILE_VIEW : {
+		permission: { [NAMESPACE]: "profile|view" },
+		description: "View own profile",
 		access: "default"
 	},
 }
