@@ -1,5 +1,5 @@
 import appConfig from "@/app.config"
-import { Component, Watch, Vue } from "vue-property-decorator"
+import { Component, Vue } from "vue-property-decorator"
 import Keyboard from "mousetrap"
 import devResizer from "@/components/dev-resizer.vue"
 import { ThemeStore } from "@/state/theme"
@@ -10,6 +10,7 @@ import { Permissions } from "@plugins/1-core/permission"
 import NotificationPanel from "@plugins/1-core/components/notifications.vue"
 import ProfilePanel from "@plugins/1-core/components/profile-panel.vue"
 import NavbarSearch from "@plugins/1-core/components/navbar-search.vue"
+import AppFooter from "@plugins/1-core/components/footer.vue"
 
 const Console = new Logger(`gk-vue/${__filename}`)
 @Component({
@@ -19,6 +20,7 @@ const Console = new Logger(`gk-vue/${__filename}`)
 		NotificationPanel,
 		ProfilePanel,
 		NavbarSearch,
+		AppFooter,
 	},
 	page: {
 		// All subcomponent titles will be injected into this template.

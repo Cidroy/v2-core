@@ -8,7 +8,8 @@ class Theme extends VuexModule{
 	private _darkTheme: boolean = _darkTheme
 	public get DARK_THEME(): boolean{ return this._darkTheme }
 	@MutationAction({ mutate: [ "_darkTheme", ] }) public async toggleDarkTheme(){
-		return { _darkTheme : !_darkTheme }
+		_darkTheme = !_darkTheme
+		return { _darkTheme }
 	}
 }
 

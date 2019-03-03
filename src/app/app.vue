@@ -41,15 +41,9 @@
 						<span>Help</span>
 						<v-icon>help</v-icon>
 					</v-btn>
-
 					<v-btn color="orange darken-4" flat to="/about">
 						<span>About</span>
 						<v-icon>info</v-icon>
-					</v-btn>
-
-					<v-btn color="orange darken-4" flat to="/">
-						<span>Settings</span>
-						<v-icon>settings_applications</v-icon>
 					</v-btn>
 				</v-bottom-nav>
 			</v-navigation-drawer>
@@ -73,22 +67,7 @@
 					</v-slide-y-transition>
 				</v-container>
 			</v-content>
-			<v-footer dark :fixed="fixed" app>
-				<span class="pl-2"> &copy; GymKonnect 2019. All rights reserved.</span>
-				<v-spacer></v-spacer>
-				<v-btn outline small>
-					<span>BackUp</span>
-					<v-icon right>cloud_upload</v-icon>
-				</v-btn>
-				<span>
-					<v-chip color="grey darken-4" :label="true" :disabled="true" text-color="white">Messages Left :</v-chip>
-				</span>
-				<span>
-					<v-chip color="grey darken-4" :label="true" :disabled="true" text-color="white">Device Status
-						<v-icon color="red" right>fingerprint</v-icon>
-					</v-chip>
-				</span>
-			</v-footer>
+			<app-footer />
 		</v-app>
 	</div>
 </template>

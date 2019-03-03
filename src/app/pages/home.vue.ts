@@ -1,10 +1,10 @@
 import { Component, Vue, Watch } from "vue-property-decorator"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
-import { TestStore } from "@plugins/gymkonnect/state/test"
 import systemInformation from "@/components/system-information.vue"
 import { NotificationStore } from "@plugins/1-core/state/notifications"
 import uuid from "uuid"
+import { DeviceStore } from "@plugins/gymkonnect/state/device"
 
 @Component({
 	// @ts-ignore
@@ -26,5 +26,5 @@ export default class Home extends Vue {
 		title: uuid(),
 		subtitle: "octavious"
 	}) }
-	private test_2() { TestStore.test_2() }
+	private test_2() { DeviceStore.gkFPSync() }
 }
