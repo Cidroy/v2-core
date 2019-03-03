@@ -16,4 +16,14 @@ export const Permissions = {
 		description: "Allow to search from navbar",
 		access: "default"
 	},
+	DASHBOARD_VIEW : {
+		permission: { [NAMESPACE]: "dashboard|view" },
+		description: "view dashboard",
+		access: "default"
+	},
+	ADMIN_SETTINGS : {
+		permission: { [NAMESPACE]: "settings|admin" },
+		description: "view administrator settings",
+		access: "default"
+	},
 }
