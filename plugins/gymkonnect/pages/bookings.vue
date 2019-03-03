@@ -271,7 +271,7 @@ import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
 import { Component, Vue, Watch } from "vue-property-decorator"
 import { watch } from 'fs';
-import {MiscStore} from "@plugins/gymkonnect/state/misc"
+import {GymkonnectStore} from "@plugins/gymkonnect/state/misc"
 
 @Component({
 	components: { Layout },
@@ -331,8 +331,8 @@ export default class Home extends Vue{
 	timeout= 6000
 	radioTop = 'radio-1'
 	radios1 = 'radio-1'
-	private organizationTypes: string | number = MiscStore.ORGANIZATION_TYPES[0].id
-	private get OrganizationTypes(){ return MiscStore.ORGANIZATION_TYPES }
+	private organizationTypes: string | number = GymkonnectStore.ORGANIZATION_TYPES[0].id
+	private get OrganizationTypes(){ return GymkonnectStore.ORGANIZATION_TYPES }
 	headers = [
 		{
 			text: 'Name',

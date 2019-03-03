@@ -58,7 +58,11 @@
 			<notification-panel v-if="$permission(PERMISSIONS.maple.NOTIFICATION_VIEW)" />
 			<profile-panel />
 		</v-toolbar>
-		<slot />
+		<v-content>
+			<v-container class="pa-0" fluid style="overflow-y:scroll; min-height:calc(100vh - 100px); max-height:calc(100vh - 100px)">
+				<slot />
+			</v-container>
+		</v-content>
 		<app-footer />
 	</div>
 </template>

@@ -1,6 +1,6 @@
 import Layout from "@/layouts/main.vue"
 import { Component, Vue, Watch, Prop, Emit } from "vue-property-decorator"
-import { MiscStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
 import { GENDER } from "@classes/enum/misc"
 @Component({
 	//   @ts-ignore
@@ -20,14 +20,14 @@ export default class Spa extends Vue {
 	private whatsappNumber = ""
 
 	@Watch("userData") private onUserDataChange(newVal) { console.log(newVal) }
-	private get GROUPINGS_layout() { return MiscStore.GROUPINGS }
+	private get GROUPINGS_layout() { return GymkonnectStore.GK_GROUPINGS }
 
 	private gender: GENDER = GENDER.MALE
 	private get GENDERS() { return GENDER }
-	private occupation = MiscStore.OCCUPATIONS[0]
-	private get Occupations() { return MiscStore.OCCUPATIONS }
+	private occupation = GymkonnectStore.GK_OCCUPATIONS[0]
+	private get Occupations() { return GymkonnectStore.GK_OCCUPATIONS }
 
-	private get spaPlan() { return MiscStore.SPA_PLAN[0] }
+	private get spaPlan() { return GymkonnectStore.GK_SPA_PLAN[0] }
 
 	private get rules() {
 		return {

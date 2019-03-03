@@ -3,7 +3,7 @@ import moment from "moment"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
 import { formatDate, parseDate } from "@/utils/misc"
-import { MiscStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
 
 @Component({
 	// @ts-ignore
@@ -67,7 +67,7 @@ export default class SinglePaymentPage extends Vue {
 	private transactionId = "0000"
 
 	private paymentMode = 0
-	private get PAYMENT_MODES() { return MiscStore.PAYMENT_MODES }
+	private get PAYMENT_MODES() { return GymkonnectStore.GK_PAYMENT_MODES }
 	private get requireTransactionId() { return this.PAYMENT_MODES[this.paymentMode].requireTransactionId }
 
 	private offers = [

@@ -1,6 +1,6 @@
 // FIXME: Proxy sweetalert with vuetify CSS alert, confirm, loading as Mixins
 import sweetalert from "sweetalert2"
-import { sleep } from "@classes/misc"
+import { UserClient } from "@/classes/clients/user"
 
 export const exit = async () => {
 	let result = await sweetalert.fire({
@@ -33,7 +33,7 @@ export const logout = async () => {
 		allowOutsideClick: false,
 		allowEscapeKey: false,
 	})
-	await sleep(3000)
+	await UserClient.Logout()
 	// @ts-ignore
 	loggingOutPrompt.close && loggingOutPrompt.close()
 }

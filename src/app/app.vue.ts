@@ -3,7 +3,6 @@ import { Component, Vue } from "vue-property-decorator"
 import Keyboard from "mousetrap"
 import devResizer from "@/components/dev-resizer.vue"
 import { ThemeStore } from "@/state/theme"
-import { MiscStore } from "@plugins/gymkonnect/state/misc"
 import { Logger } from "@classes/CONSOLE"
 import { ApplicationStore } from "@/state/application"
 
@@ -26,8 +25,6 @@ const Console = new Logger(`gk-vue/${__filename}`)
 			this.showDevResizer = !this.showDevResizer
 		})
 		try {
-			MiscStore.Initialize()
-			ApplicationStore.InitializeAppMenu()
 		} catch (error) {
 			Console.error(error)
 		}

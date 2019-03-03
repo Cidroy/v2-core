@@ -1,7 +1,7 @@
 import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
 import moment from "moment"
 import Layout from "@/layouts/main.vue"
-import { MiscStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
 import { formatDate, parseDate } from "@/utils/misc"
 import { TMRegistrationStep3, defaultRegistrationStep3User } from "@plugins/gymkonnect/classes/types/registration"
 
@@ -25,16 +25,16 @@ export default class MRegistrationStep3 extends Vue {
 	private formValid = true
 
 	private membershipType: number | string = ""
-	private get MEMBERSHIP_TYPES() { return MiscStore.MEMBERSHIP_TYPES }
+	private get MEMBERSHIP_TYPES() { return GymkonnectStore.GK_MEMBERSHIP_TYPES }
 
 	private packageType: number | string = ""
-	private get PACKAGES() { return MiscStore.PACKAGES }
+	private get PACKAGES() { return GymkonnectStore.GK_PACKAGES }
 
 	private timeSlot: number | string = ""
-	private get TIME_SLOTS() { return MiscStore.TIME_SLOTS }
+	private get TIME_SLOTS() { return GymkonnectStore.GK_TIME_SLOTS }
 
-	private category: string | number = MiscStore.CATEGORIES[0].id
-	private get Categories() { return MiscStore.CATEGORIES }
+	private category: string | number = GymkonnectStore.GK_CATEGORIES[0].id
+	private get Categories() { return GymkonnectStore.GK_CATEGORIES }
 
 	private doj = new Date().toISOString().substr(0, 10)
 	private dojFormatted = this.formatDate(this.doj)

@@ -25,8 +25,8 @@
 		"indent":[true, "tabs", 4],
 		"object-literal-sort-keys":[false],
 		"prefer-readonly":false,
-		"trailing-comma":[ 
-			true, 
+		"trailing-comma":[
+			true,
 			{
 				"multiline": {
 					"arrays": "always",

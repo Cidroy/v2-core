@@ -3,6 +3,7 @@ import store from "@/state/store"
 import { TMenu } from "@classes/types/application"
 import _ from "lodash"
 import { Permissions } from "@plugins/1-core/permission"
+import { UserStore } from "./user"
 
 let appMenu: TMenu[] = []
 let appSettingsMenu: TMenu[] = []
@@ -53,7 +54,11 @@ class Application extends VuexModule {
 	}
 
 	public get APP_NAME() { return "GYM KONNECT" }
-	public get APP_LAYOUT() { return "app-admin-layout" }
+	public get APP_LAYOUT() {
+		return UserStore.USER_LOGGEDIN?
+			"app-admin-layout"
+			:"app-empty-layout"
+	}
 }
 
 export const ApplicationStore = getModule(Application)

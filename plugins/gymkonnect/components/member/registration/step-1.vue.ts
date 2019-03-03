@@ -1,7 +1,7 @@
 import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
 import { GENDER } from "@classes/enum/misc"
 import { parseDate, formatDate } from "@/utils/misc"
-import { MiscStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
 import importFromEnquiry from "@plugins/gymkonnect/components/enquiry/import-dialog.vue"
 import { TMRegistrationStep1, defaultRegistrationStep1User } from "@plugins/gymkonnect/classes/types/registration"
 import addUserPhoto from "@plugins/gymkonnect/components/add-user-photo.vue"
@@ -39,12 +39,12 @@ export default class MRegistrationStep1 extends Vue {
 	private dobMenu = true
 	@Watch("dob") private onDobChanged() { this.dobFormatted = this.formatDate(this.dob) }
 
-	private occupation: string | number = MiscStore.OCCUPATIONS[0].id
-	private get Occupations() { return MiscStore.OCCUPATIONS }
+	private occupation: string | number = GymkonnectStore.GK_OCCUPATIONS[0].id
+	private get Occupations() { return GymkonnectStore.GK_OCCUPATIONS }
 
-	private idType: string | number = MiscStore.ID_TYPES[0].id
+	private idType: string | number = GymkonnectStore.GK_ID_TYPES[0].id
 	private idNumber: string = ""
-	private get IDTypes() { return MiscStore.ID_TYPES }
+	private get IDTypes() { return GymkonnectStore.GK_ID_TYPES }
 
 	private get rules() {
 		return {

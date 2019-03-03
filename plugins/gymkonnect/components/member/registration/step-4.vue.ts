@@ -1,5 +1,5 @@
 import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
-import { MiscStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
 import { TMRegistrationStep4, defaultRegistrationStep4User } from "@plugins/gymkonnect/classes/types/registration"
 import empty from "@/components/empty.vue"
 
@@ -17,9 +17,9 @@ export default class MRegistrationStep4 extends Vue {
 	private utmSource: boolean | string | number = false
 	private toc = true
 	private purposes: (string | number)[] = []
-	private get Purposes() { return MiscStore.PURPOSES }
+	private get Purposes() { return GymkonnectStore.GK_PURPOSES }
 
-	private get UTM_SOURCES() { return MiscStore.UTM_SOURCES }
+	private get UTM_SOURCES() { return GymkonnectStore.GK_UTM_SOURCES }
 
 	private get userData() {
 		return {

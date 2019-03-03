@@ -3,7 +3,7 @@ import uuid from "uuid"
 import _ from "lodash"
 
 import Layout from "@/layouts/main.vue"
-import { MiscStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
 import { TMRegistration, defaultRegistrationUser, TMRegistrationStep3, defaultRegistrationStep3User, TMRegistrationStep4, defaultRegistrationStep4User } from "@plugins/gymkonnect/classes/types/registration"
 import { PaymentDetail } from "@plugins/gymkonnect/classes/types/payment"
 
@@ -37,9 +37,9 @@ export default class MemberRegistrationPage extends Vue {
 		})
 	}
 
-	private grouping = MiscStore.GROUPINGS[0].id
+	private grouping = GymkonnectStore.GK_GROUPINGS[0].id
 	private get groupIndex() { return (this.grouping && false) || this.GROUPINGS.findIndex(i => i.id === this.grouping) }
-	private get GROUPINGS() { return MiscStore.GROUPINGS }
+	private get GROUPINGS() { return GymkonnectStore.GK_GROUPINGS }
 	private get allowAddPeople() { return this.usersCount < this.GROUPINGS[this.groupIndex].max }
 	private get allowDeletePeople() { return this.usersCount > this.GROUPINGS[this.groupIndex].min }
 

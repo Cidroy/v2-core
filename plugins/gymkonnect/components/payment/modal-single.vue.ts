@@ -1,7 +1,7 @@
 import { Component, Vue, Prop, Watch, Emit } from "vue-property-decorator"
 import Layout from "@/layouts/main.vue"
 import { formatDate, parseDate } from "@/utils/misc"
-import { MiscStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
 import { TMRegistrationStep3, defaultRegistrationStep3User, TMRegistrationStep4, defaultRegistrationStep4User, TMRegistration, defaultRegistrationUser } from "@plugins/gymkonnect/classes/types/registration"
 import { PaymentDetail } from "@plugins/gymkonnect/classes/types/payment"
 
@@ -77,15 +77,15 @@ export default class SinglePaymentModal extends Vue {
 	private get admissionFeeAmount() { return this.admissionFeeQty * this.admissionFeePrice }
 
 	private get membership() {
-		let temp = MiscStore.MEMBERSHIP_TYPE(this.transaction.membershipType)
+		let temp = GymkonnectStore.GK_MEMBERSHIP_TYPE(this.transaction.membershipType)
 		return temp !== undefined ? temp.name : "Invalid"
 	}
 	private get packagex() {
-		let temp = MiscStore.PACKAGE(this.transaction.packageType)
+		let temp = GymkonnectStore.GK_PACKAGE(this.transaction.packageType)
 		return temp !== undefined ? temp.name : "Invalid"
 	}
 	private get timeSlot() {
-		let temp = MiscStore.TIME_SLOT(this.transaction.timeSlot)
+		let temp = GymkonnectStore.GK_TIME_SLOT(this.transaction.timeSlot)
 		return temp !== undefined ? temp.name : "Invalid"
 	}
 
@@ -96,12 +96,12 @@ export default class SinglePaymentModal extends Vue {
 	private get transactionAmount() { return this.packageMagnitude * this.transactionPrice }
 
 	private offer: string | boolean = false
-	private get OFFERS() { return MiscStore.ALL_OFFERS }
+	private get OFFERS() { return GymkonnectStore.GK_ALL_OFFERS }
 
-	private paymentMode = MiscStore.PAYMENT_MODES[0].id
-	private get PAYMENT_MODES() { return MiscStore.PAYMENT_MODES }
+	private paymentMode = GymkonnectStore.GK_PAYMENT_MODES[0].id
+	private get PAYMENT_MODES() { return GymkonnectStore.GK_PAYMENT_MODES }
 	private transactionId = "0000"
-	private get paymentModeIndex() { return (this.paymentMode && false) || MiscStore.PAYMENT_MODES.findIndex(i => i.id === this.paymentMode) }
+	private get paymentModeIndex() { return (this.paymentMode && false) || GymkonnectStore.GK_PAYMENT_MODES.findIndex(i => i.id === this.paymentMode) }
 	private get requireTransactionId() { return this.PAYMENT_MODES[this.paymentModeIndex].requireTransactionId }
 
 	private get subTotal() {

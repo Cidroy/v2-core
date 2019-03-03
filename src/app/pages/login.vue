@@ -1,67 +1,34 @@
 <template>
-	<v-container>
-		<Layout>
-			<v-card v-show="show" width="30%" color="transparent" height="500px">
-				<v-layout pt-2 class="justify-center" row wrap>
-
-					<v-avatar size="150">
-						<v-img :src="cards[0].src" height="150px" />
-					</v-avatar>
-				</v-layout>
-
-				<v-layout pt-5 class="justify-center" row wrap>
-					<v-flex lg9>
-						<v-text-field v-model="username" placeholder="Username" single-line required></v-text-field>
-					</v-flex>
-
-					<v-flex lg9>
-						<v-text-field :append-icon="show3 ? 'visibility_off' : 'visibility'" :type="show3 ? 'text' : 'password'" name="input-10-2" placeholder="Password" class="input-group--focused" @click:append="show3 = !show3" v-model="password" required></v-text-field>
-					</v-flex>
-
-					<v-flex lg9>
-						<a @click.stop.prevent="show = false">Forgot Password?</a>
-					</v-flex>
-
-						<v-btn dark color="orange darken-4">Login</v-btn>
-		 
-				</v-layout>
-			</v-card>		
-		</Layout>
-
-		<Layout>
-			<v-card v-show="!show" width="30%" color="transparent" height="500px">
-				<v-layout pt-2 class="justify-center" row wrap>
-
-					<h3>Forgot Password</h3>
-					
-					<h3 mt-5>Enter the registered Email ID</h3>
-					
-				</v-layout>
-
-				<v-layout pt-5 class="justify-center" row wrap>
-					<v-flex lg9>
-						<v-text-field v-model="email" placeholder="Email ID" single-line required :rules="emailRules"></v-text-field>
-					</v-flex>
-
-					<v-dialog v-model="dialog" persistent max-width="400px">
-						<v-btn dark slot="activator" color="orange darken-4" class="mt-5">Submit</v-btn>
-						<v-card>
-								<v-toolbar card dark color="orange darken-4" height="50px">
-									<v-toolbar-title>Alert!</v-toolbar-title>
-								</v-toolbar>
-								<v-card-text>
-									<label class="title">Check Your Email</label>
-								</v-card-text>
-								<v-card-actions>
-									<v-spacer></v-spacer>
-									<v-btn dark color="orange darken-4" @click="dialog = false">OK</v-btn>
-								</v-card-actions>
-						</v-card>
-					</v-dialog>
-		
-				</v-layout>
-			</v-card>		
-		</Layout>
-
+	<v-container fill-height fluid>
+		<v-layout align-center justify-center>
+			<v-flex xs12 sm8 md6 lg4>
+				<v-card class="elevation-10 pa-3" dark>
+					<v-img :src="logo" contain max-height="100"/>
+					<h3 class="text-xs-center">GymKonnect</h3>
+					<v-form ref="loginForm">
+						<v-layout row wrap>
+							<v-flex xs12>
+								<v-autocomplete v-model="username" :items="Usernames" :loading="loadingUsers" label="Username" placeholder="Username" prepend-icon="person" color="orange darken-2" autofocus auto-select-first :rules="rules.username" no-data-text="Unavailable"/>
+							</v-flex>
+							<v-flex xs12>
+								<v-slide-y-transition mode="out-in">
+									<v-text-field v-if="PasswordPrefered" v-model="password" label="Password" :type="showPassword ? 'text' : 'password'" :append-icon="showPassword ? 'visibility_off' : 'visibility'" @click:append="showPassword = !showPassword"  prepend-icon="lock" append-outer-icon="dialpad" @click:append-outer="changeLoginPreferrence(PASSWORD_PREFERENCE.PIN)" color="orange darken-2" :rules="rules.password"/>
+									<v-text-field v-else v-model="password" label="Pin" mask="############" prepend-icon="dialpad" type="password" append-outer-icon="vpn_key" @click:append-outer="changeLoginPreferrence(PASSWORD_PREFERENCE.PASSWORD)" color="orange darken-2" :rules="rules.pin"/>
+								</v-slide-y-transition>
+							</v-flex>
+							<v-btn @click.native.stop="login" v-text="'login'" color="orange darken-2" block medium :disabled="loggingIn" :loading="loggingIn"/>
+						</v-layout>
+					</v-form>
+				</v-card>
+			</v-flex>
+		</v-layout>
+		<v-dialog v-model="loggingIn" persistent width="300" >
+			<v-card color="orange darken-4" dark>
+				<v-card-text>
+					Please Wait
+					<v-progress-linear indeterminate color="white" class="mb-0" />
+				</v-card-text>
+			</v-card>
+		</v-dialog>
 	</v-container>
 </template>

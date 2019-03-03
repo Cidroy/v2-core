@@ -77,8 +77,8 @@
 			"",
 			"let ${2:variable} = ${3:false}",
 			"",
-			"@Module({ dynamic: true, store, name: \"${1:Store}\" })",
-			"class ${1:Store} extends VuexModule {",
+			"@Module({ dynamic: true, store, name: \"${1:$TM_FILENAME_BASE}\" })",
+			"class ${1:$TM_FILENAME_BASE} extends VuexModule {",
 			"\tprivate ${2:variable} = ${2:variable}",
 			"\tpublic get ${4:GETTER}() { return this.${2:variable} }",
 			"\t@MutationAction({ mutate: [\"${2:variable}\",] }) public async ${5:mutationAction}() {",
@@ -87,7 +87,7 @@
 			"\t}${0}",
 			"}",
 			"",
-			"export const ${1:Store}Store = getModule(${1:Store})",
+			"export const ${1:$TM_FILENAME_BASE}Store = getModule(${1:$TM_FILENAME_BASE})",
 		],
 		"description": "Generate a Vuex Class Component"
 	},
@@ -113,7 +113,7 @@
 			"",
 			"const NAMESPACE = \"${1:namespace}\"",
 			"",
-			"export const Permissions: P = {",
+			"export const Permissions: TPermissions = {",
 			"\t${2:PERMISSION_NAME} : {",
 			"\t\tpermission: { [NAMESPACE]: \"${3:permission}\" },",
 			"\t\tdescription: \"${4:description}\",",
@@ -133,5 +133,14 @@
 			"},${0}",
 		],
 		"description": "New Permission description"
+	},
+	"New Custom Console": {
+		"prefix": "console",
+		"body": [
+			"import { Logger } from \"@classes/CONSOLE\"",
+			"",
+			"const Console = new Logger(`${1:namespace}/${2:$TM_FILENAME_BASE}`)",
+		],
+		"description": "Custom Console Logger"
 	}
 }

@@ -1,6 +1,6 @@
 import { Component, Vue, Watch } from "vue-property-decorator"
 import appConfig from "@/app.config"
-import { MiscStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
 import layout from "@plugins/gymkonnect/components/member/registration/layout.vue"
 @Component({
 	// @ts-ignore
@@ -16,7 +16,7 @@ import layout from "@plugins/gymkonnect/components/member/registration/layout.vu
 export default class Spa extends Vue{
 
 	private grouping = Object.keys(this.GROUPINGS)[0]
-	private get GROUPINGS(){ return MiscStore.GROUPINGS }
+	private get GROUPINGS(){ return GymkonnectStore.GK_GROUPINGS }
 	private get allowAddPeople(){
 		if(this.xLayouts < this.GROUPINGS[this.grouping].max) return true
 		else{

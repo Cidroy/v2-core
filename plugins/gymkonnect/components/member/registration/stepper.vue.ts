@@ -1,7 +1,7 @@
 import appConfig from "@/app.config"
 import Layout from "@/layouts/main.vue"
 import { Component, Vue, Watch, Prop, Emit } from "vue-property-decorator"
-import { MiscStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
 import { TMRegistration, defaultRegistrationUser } from "@plugins/gymkonnect/classes/types/registration"
 
 import stepOne from "@plugins/gymkonnect/components/member/registration/step-1.vue"
@@ -55,7 +55,7 @@ export default class MemberRegistrationStepper extends Vue {
 		this.saving = false
 	}
 
-	private get GROUPINGS() { return MiscStore.GROUPINGS }
+	private get GROUPINGS() { return GymkonnectStore.GK_GROUPINGS }
 
 	@Prop({ type: Boolean, default: false }) private showDelete !: boolean
 	@Emit("deleteStepper") public deleteStepper() { return true }

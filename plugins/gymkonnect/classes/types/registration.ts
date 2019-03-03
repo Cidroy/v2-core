@@ -1,4 +1,4 @@
-import { MiscStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
 import { GENDER, ADDRESS_TYPE } from "@classes/enum/misc"
 import IAddress from "@classes/interface/IAddress"
 import AddressStore from "@plugins/gymkonnect/state/addresses"
@@ -26,8 +26,8 @@ export const defaultRegistrationStep1User: TMRegistrationStep1 = {
 	photo: "",
 	gender: GENDER.MALE,
 	dob: new Date().toISOString().substr(0, 10),
-	occupation: MiscStore.OCCUPATIONS[0].id,
-	idType: MiscStore.ID_TYPES[0].id,
+	occupation: GymkonnectStore.GK_OCCUPATIONS[0].id,
+	idType: GymkonnectStore.GK_ID_TYPES[0].id,
 	idNumber: "",
 }
 
@@ -74,11 +74,11 @@ export type TMRegistrationStep3 = {
 }
 
 export const defaultRegistrationStep3User: TMRegistrationStep3 = {
-	category: MiscStore.CATEGORIES[0].id,
+	category: GymkonnectStore.GK_CATEGORIES[0].id,
 	doj: new Date().toISOString().substr(0, 10),
-	membershipType: MiscStore.MEMBERSHIP_TYPES[0].id,
-	packageType: MiscStore.PACKAGES[0].id,
-	timeSlot: MiscStore.TIME_SLOTS[0].id,
+	membershipType: GymkonnectStore.GK_MEMBERSHIP_TYPES[0].id,
+	packageType: GymkonnectStore.GK_PACKAGES[0].id,
+	timeSlot: GymkonnectStore.GK_TIME_SLOTS[0].id,
 	packageMagnitude: 1,
 }
 

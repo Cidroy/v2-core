@@ -21,9 +21,9 @@
 					<v-flex xs12 lg6 class="px-2"> <v-text-field v-model="address.locality" label="Locality" prepend-icon="fas fa-phone" color="orange darken-2" /> </v-flex>
 					<v-flex xs12 lg6 class="px-2"> <v-text-field v-model="address.landmark" label="Landmark" prepend-icon="fas fa-phone" color="orange darken-2" /> </v-flex>
 					<v-flex xs12 lg6 class="px-2"> <v-autocomplete :items="COUNTRIES" item-text="name" item-value="shortName" v-model="address.country" label="Country" prepend-icon="fas fa-phone" auto-select-first color="orange darken-2" /> </v-flex>
-					<v-flex xs12 lg6 class="px-2"> <v-autocomplete :items="STATES" v-model="address.state" label="State" prepend-icon="fas fa-phone" color="orange darken-2" /> </v-flex>
-					<v-flex xs12 lg6 class="px-2"> <v-autocomplete :items="CITIES" v-model="address.city" label="City" prepend-icon="fas fa-phone" color="orange darken-2" /> </v-flex>
-					<v-flex xs12 lg6 class="px-2"> <v-text-field v-model="address.pincode" label="Pincode" mask="###-###" prepend-icon="fas fa-phone" color="orange darken-2" /> </v-flex>
+					<v-flex xs12 lg6 class="px-2"> <v-autocomplete :items="STATES" v-model="address.state" label="State" prepend-icon="fas fa-phone" color="orange darken-2" auto-select-first /> </v-flex>
+					<v-flex xs12 lg6 class="px-2"> <v-autocomplete :items="CITIES" v-model="address.city" label="City" prepend-icon="fas fa-phone" color="orange darken-2" auto-select-first /> </v-flex>
+					<v-flex xs12 lg6 class="px-2"> <v-text-field v-model="address.pincode" label="Pincode" mask="###-###" prepend-icon="fas fa-phone" color="orange darken-2" auto-select-first /> </v-flex>
 
 					<v-flex xs12 lg6 class="px-2">
 						<v-text-field prepend-icon="fas fa-phone" label="Home Number" v-model="homeNumber" :mask="mask.mobile" :prefix="mobilePrefix" :rules="rules.homeNumber" color="orange darken-2" />
@@ -38,7 +38,7 @@
 							</v-fade-transition>
 						</v-text-field>
 					</v-flex>
-					
+
 					<v-flex xs12> <v-divider/> </v-flex>
 					<v-flex xs12 lg12 class="pt-2">
 						<h3 class="pl-4">Incase Of Emergency</h3>

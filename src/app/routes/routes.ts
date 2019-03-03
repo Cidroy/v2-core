@@ -6,7 +6,7 @@ export default [
 	{
 		path: "/",
 		name: "index",
-		component: () => lazyLoadView("/home"),
+		component: () => lazyLoadView("/login"),
 		props: true,
 	},
 	{
