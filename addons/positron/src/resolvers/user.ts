@@ -3,6 +3,8 @@ import {GENDER} from "@classes/enum/misc"
 import User from "@positron/models/user"
 import Address from "@positron/models/address"
 import Member from "@positron/Biometric/Member"
+import * as DB from "typeorm"
+import Utils from "@classes/functions/utils"
 
 @GQL.Resolver(of => User)
 export default class UserResolver{
@@ -57,7 +59,7 @@ export default class UserResolver{
 		
 		@GQL.Arg("mobile") mobile : string,
 		@GQL.Arg("firstName") firstName : string,
-		@GQL.Arg("wdmsId", type => [String,], { nullable: true }) wdmsId? : object,
+		// @GQL.Arg("wdmsId", type => [String,], { nullable: true }) wdmsId? : object,
 		@GQL.Arg("badgenumber", { nullable: true }) badgenumber ? : string,
 		@GQL.Arg("middleName", { nullable: true }) middleName ? : string,
 		@GQL.Arg("lastName", { nullable: true }) lastName ? : string,
@@ -81,11 +83,18 @@ export default class UserResolver{
 		let user = new User()
 		user.firstName = firstName
 		user.mobile = mobile
-		if (wdmsId) user.wdmsId = wdmsId
+		// if (wdmsId) user.wdmsId = wdmsId
 		if (badgenumber){
 			user.badgenumber = badgenumber
-			Member.add(badgenumber, { name: firstName + (lastName) ? <string>lastName: ""  })
-			// FIXME:
+			await Member.add(badgenumber, { name: firstName +" "+ ((lastName) ? <string>lastName : "")})
+			let entityManager = DB.getManager()
+			let userinfo = await entityManager.query("select userId, company_id from userinfo where badgenumber= ?", [Utils.appendZeroesToBadgenumber(badgenumber),])
+			let wdmsId = {
+				zoneID: <number>userinfo[0].company_id,
+				userID: <number>userinfo[0].userId
+			}
+			user.wdmsId = [wdmsId,]
+
 		}
 		if (middleName) user.middleName = middleName
 		if (lastName) user.lastName = lastName

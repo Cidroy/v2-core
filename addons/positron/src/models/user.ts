@@ -12,7 +12,13 @@ GQL.registerEnumType(GENDER, {
 	name: "GENDER",
 	description: "Gender of client"
 })
-
+@GQL.ObjectType()
+export class WdmsID {
+	@GQL.Field(type => Number)
+	public zoneID!: number
+	@GQL.Field(type => Number)
+	public userID!: number
+}
 @DB.Entity()
 @GQL.ObjectType()
 export default class User extends Base implements IUser {
@@ -20,9 +26,9 @@ export default class User extends Base implements IUser {
 	@DB.Column("varchar", { nullable:true, unique: true })
 	public badgenumber?: string
 
-	@GQL.Field(type => [String,], { nullable: true })
+	@GQL.Field(type => [WdmsID,])
 	@DB.Column("simple-json", { nullable: true})
-	public wdmsId?: object
+	public wdmsId?: WdmsID[]
 	
 	@GQL.Field(type => String)
 	@DB.Column("varchar", { length: 30 })
