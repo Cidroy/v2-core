@@ -7,6 +7,8 @@ import routes from "./routes"
 
 import { UserStore } from "@/state/user"
 import { ApplicationStore } from "@/state/application"
+import { UserClient } from "@/classes/clients/user"
+import { PASSWORD_PREFERENCE } from "@classes/interface/IUser"
 
 Vue.use(VueRouter)
 Vue.use(VueMeta, {
@@ -21,8 +23,10 @@ const router = new VueRouter({
 	scrollBehavior: (to, from, savedPosition) => savedPosition ? savedPosition : { x: 0, y: 0 },
 })
 
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
 	ApplicationStore.setAppRouterLoading(true)
+	// FIXME: remove this before production
+	if(!UserStore.USER_LOGGEDIN) await UserClient.Login("","",PASSWORD_PREFERENCE.PASSWORD, to.name)
 	if (!(to.meta && to.meta.noAuth) && !UserStore.USER_LOGGEDIN) next({ name: "login" })
 	else next()
 })

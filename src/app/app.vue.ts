@@ -5,12 +5,14 @@ import devResizer from "@/components/dev-resizer.vue"
 import { ThemeStore } from "@/state/theme"
 import { Logger } from "@classes/CONSOLE"
 import { ApplicationStore } from "@/state/application"
+import loading from "@/pages/loading.vue"
 
 const Console = new Logger(`gk-vue/${__filename}`)
 @Component({
 	// @ts-ignore
 	components: {
 		devResizer,
+		loading,
 	},
 	page: {
 		// All subcomponent titles will be injected into this template.

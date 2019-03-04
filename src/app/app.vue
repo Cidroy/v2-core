@@ -3,7 +3,9 @@
 		<v-app :dark="darkTheme">
 			<component :is="layout">
 				<dev-resizer :show="showDevResizer" />
-				<p v-if="appRouterLoading" v-text="'---'" />
+				<!-- <v-slide-y-transition mode="out-in">
+					<loading v-if="appRouterLoading" />
+				</v-slide-y-transition> -->
 				<v-slide-y-transition mode="out-in">
 					<router-view :key="$route.fullPath" />
 				</v-slide-y-transition>

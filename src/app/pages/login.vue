@@ -3,6 +3,12 @@
 		<v-layout align-center justify-center>
 			<v-flex xs12 sm8 md6 lg4>
 				<v-card class="elevation-10 pa-3" dark>
+					<v-tooltip left>
+						<template v-slot:activator="{ on }">
+							<v-btn flat icon absolute right style="z-index:3000" v-on="on" @click.native.stop="exit"> <v-icon>close</v-icon> </v-btn>
+						</template>
+						<span>Exit Application</span>
+					</v-tooltip>
 					<v-img :src="logo" contain max-height="100"/>
 					<h3 class="text-xs-center">GymKonnect</h3>
 					<v-form ref="loginForm">

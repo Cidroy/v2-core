@@ -86,4 +86,29 @@ export const Permissions = {
 		description: "description",
 		access: "default"
 	},
+	SMS_SEND : {
+		permission: { [NAMESPACE]: "sms|send" },
+		description: "description",
+		access: "default"
+	},
+	EMAIL_SEND : {
+		permission: { [NAMESPACE]: "email|send" },
+		description: "description",
+		access: "default"
+	},
+	PRINT_REGISTRATION : {
+		permission: { [NAMESPACE]: "print|registration" },
+		description: "description",
+		access: "default"
+	},
+	PRINT_REGISTRATION_BLANK : {
+		permission: { [NAMESPACE]: "print|registration-blank" },
+		description: "description",
+		access: "default"
+	},
+	PRINT_MEMBERS_LIST : {
+		permission: { [NAMESPACE]: "print|member-list" },
+		description: "description",
+		access: "default"
+	},
 }

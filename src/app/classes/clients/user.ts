@@ -7,14 +7,14 @@ import router from "@/routes"
 
 const Console = new Logger(`gk/user`)
 export class UserClient{
-	public static async Login(username: string, password: string, preference: PASSWORD_PREFERENCE){
+	public static async Login(username: string, password: string, preference: PASSWORD_PREFERENCE, redirectTo: string = "index"){
 		// TODO: login logic
 		await UserStore.Login()
 		await Promise.all([
 			GymkonnectStore.GK_Initialize(),
 			ApplicationStore.InitializeAppMenu(),
 		])
-		router.push({ name: "index" })
+		router.push({ name: redirectTo })
 	}
 
 	public static async Logout(){

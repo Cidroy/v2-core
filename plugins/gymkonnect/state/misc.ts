@@ -280,7 +280,7 @@ class Gymkonnect extends VuexModule {
 	 * @readonly
 	 * @memberof Misc
 	 */
-	public get GK_ALL_gk_OFFERS() { return this._gk_offers }
+	public get GK_ALL_OFFERS() { return this._gk_offers }
 
 	/**
 	 * Get ALL_OFFER by ID
@@ -288,7 +288,7 @@ class Gymkonnect extends VuexModule {
 	 * @readonly
 	 * @memberof Misc
 	 */
-	public get GK_ALL_OFFERS() { return id => this._gk_offers.find(i => i.id === id) }
+	public get GK_ALL_OFFER() { return id => this._gk_offers.find(i => i.id === id) }
 
 	private _gk_spaplan = _gk_spaplan
 	public get GK_SPA_PLAN() { return this._gk_spaplan }

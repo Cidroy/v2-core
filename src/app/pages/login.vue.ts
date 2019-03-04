@@ -7,6 +7,7 @@ import { UserStore } from "@/state/user"
 import { alert } from "@/components/toast"
 import { UserClient } from "@/classes/clients/user"
 import { Logger } from "@classes/CONSOLE"
+import { exit } from "@plugins/1-core/classes/actions"
 
 const Console = new Logger(`gk/${__filename}`)
 
@@ -71,4 +72,6 @@ export default class LoginPage extends Vue {
 			username : [ (v: string) => !!v || "Username is Required", ],
 		}
 	}
+
+	private exit(){ exit() }
 }
