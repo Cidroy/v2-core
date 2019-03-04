@@ -36,4 +36,5 @@ export default class App extends Vue {
 
 	private get darkTheme(){ return ThemeStore.DARK_THEME }
 	private get layout(){ return ApplicationStore.APP_LAYOUT }
+	private get appRouterLoading(){ return ApplicationStore.APP_ROUTER_LOADING }
 }

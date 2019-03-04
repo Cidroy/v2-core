@@ -18,8 +18,11 @@ import { DeviceStore } from "@plugins/gymkonnect/state/device"
 	},
 })
 // @ts-ignore
-export default class Home extends Vue {
-	private async test() { console.log("done") }
+export default class HomePage extends Vue {
+	private async test() {
+		// @ts-ignore
+		this.$router.push({name: "login"})
+	}
 	private test_1() { NotificationStore.newNotification({
 		time: new Date(),
 		seen: false,

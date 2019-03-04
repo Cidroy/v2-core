@@ -24,7 +24,7 @@ const Console = new Logger(`gk/${__filename}`)
 	}
 })
 // @ts-ignore
-export default class Home extends Vue {
+export default class LoginPage extends Vue {
 	private logo = logo
 	private username = ""
 	private password = ""

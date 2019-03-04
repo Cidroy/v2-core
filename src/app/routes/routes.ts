@@ -6,7 +6,7 @@ export default [
 	{
 		path: "/",
 		name: "index",
-		component: () => lazyLoadView("/login"),
+		component: () => lazyLoadView("/home"),
 		props: true,
 	},
 	{
@@ -26,6 +26,13 @@ export default [
 		name: "login",
 		component: () => lazyLoadView("/login"),
 		props: true,
+		meta: { noAuth: true }
+	},
+	{
+		path: "/logout",
+		name: "logout",
+		component: () => lazyLoadView("/logout"),
+		props: true,
 	},
 	{
 		path: "/404",
@@ -34,6 +41,7 @@ export default [
 		// Allows props to be passed to the 404 page through route
 		// params, such as `resource` to define what wasn't found.
 		props: true,
+		meta: { noAuth: true }
 	},
 	// Redirect any unmatched routes to the 404 page. This may
 	// require some server configuration to work in production:
@@ -42,5 +50,6 @@ export default [
 		path: "*",
 		redirect: "404",
 		props: true,
+		meta: { noAuth: true }
 	},
 ]

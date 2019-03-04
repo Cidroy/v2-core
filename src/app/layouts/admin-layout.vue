@@ -1,6 +1,6 @@
 <template>
 	<div>
-		<v-navigation-drawer fixed :clipped="$vuetify.breakpoint.mdAndUp" app v-model="menuDrawer">
+		<v-navigation-drawer fixed :clipped="$vuetify.breakpoint.mdAndUp" app v-model="menuDrawer" transition="slide-x-transition">
 			<v-list dense>
 				<template v-for="menu in menus">
 					<v-layout row v-if="menu.heading" align-center :key="menu.heading" @click="$router.push({name: menu.to})" :color="$router.currentRoute.name===menu.to?'orange darken-3':''">
@@ -47,7 +47,7 @@
 			</v-bottom-nav>
 		</v-navigation-drawer>
 
-		<v-toolbar color="orange darken-4" dark app :clipped-left="$vuetify.breakpoint.mdAndUp" fixed>
+		<v-toolbar color="orange darken-4" dark app :clipped-left="$vuetify.breakpoint.mdAndUp" fixed transition="slide-y-transition">
 			<span class="hidden-sm-and-down title font-weight-black" style="width: 190px">{{ appName }}</span>
 			<v-toolbar-title style="width: 100px" class="ml-0 pl-3">
 				<v-toolbar-side-icon @click.stop="menuDrawer = !menuDrawer"></v-toolbar-side-icon>
@@ -63,6 +63,6 @@
 				<slot />
 			</v-container>
 		</v-content>
-		<app-footer />
+		<app-footer transition="slide-y-reverse-transition"/>
 	</div>
 </template>

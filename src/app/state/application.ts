@@ -7,11 +7,19 @@ import { UserStore } from "./user"
 
 let appMenu: TMenu[] = []
 let appSettingsMenu: TMenu[] = []
+let appRouterLoading = false
 
 @Module({ dynamic: true, store, name: "Application" })
 class Application extends VuexModule {
 	private appMenu = appMenu
 	private appSettingsMenu = appSettingsMenu
+	private appRouterLoading = appRouterLoading
+
+	public get APP_ROUTER_LOADING() { return this.appRouterLoading }
+	@MutationAction({ mutate: [ "appRouterLoading", ] }) public async setAppRouterLoading(payload: boolean) {
+		appRouterLoading = payload
+		return { appRouterLoading }
+	}
 
 	public get APP_MENUS() {
 		return [

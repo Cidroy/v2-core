@@ -11,4 +11,4 @@ import Layout from "@/layouts/main.vue"
 	},
 })
 // @ts-ignore
-export default class Home extends Vue { }
+export default class AboutPage extends Vue { }

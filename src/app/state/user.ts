@@ -13,14 +13,12 @@ class User extends VuexModule {
 	public get USER_LOGGEDIN() { return this.loggedin }
 
 	@MutationAction({ mutate: ["loggedin",] }) public async Login() {
-		await sleep(3000)
 		loggedin = true
 		// FIXME: more logic, fetch user details, login preference etc.
 		return { loggedin }
 	}
 
 	@MutationAction({ mutate: [ "loggedin", ] }) public async Logout() {
-		await sleep(3000)
 		loggedin = false
 		// FIXME: log the fuck out
 		return { loggedin }
