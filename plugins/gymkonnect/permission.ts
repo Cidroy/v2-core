@@ -111,4 +111,9 @@ export const Permissions = {
 		description: "description",
 		access: "default"
 	},
+	TEST : {
+		permission: { [NAMESPACE]: "test" },
+		description: "test",
+		access: "default"
+	},
 }

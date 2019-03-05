@@ -96,6 +96,12 @@ export const Routes = {
 		component: () => lazyLoadView("/reports"),
 		props: true,
 	},
+	TEST: {
+		path: "/gk/test",
+		name: "gk/test",
+		component: () => lazyLoadView("/test"),
+		props: true,
+	}
 }
 
 export default Object.values(Routes)
