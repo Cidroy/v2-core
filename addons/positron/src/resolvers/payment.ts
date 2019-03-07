@@ -13,7 +13,7 @@ export default class PaymentsResolver {
 	public async addPayment(
 		@GQL.Arg("mode") mode: number,
 		@GQL.Arg("receipt") receipt: string,
-		@GQL.Arg("transactionId",{nullable: true}) transactionId: string,
+		@GQL.Arg("transactionId",{nullable: true}) transactionId: number,
 		@GQL.Arg("amount") amount: number,
 		@GQL.Arg("adjustment") adjustment: number,
 	) {
