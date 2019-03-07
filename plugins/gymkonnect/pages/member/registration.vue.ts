@@ -2,7 +2,7 @@ import { Component, Vue, Watch } from "vue-property-decorator"
 import uuid from "uuid"
 import _ from "lodash"
 
-import Layout from "@/layouts/main.vue"
+import Layout from "@/layouts/layout.vue"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
 import { TMRegistration, defaultRegistrationUser, TMRegistrationStep3, defaultRegistrationStep3User, TMRegistrationStep4, defaultRegistrationStep4User } from "@plugins/gymkonnect/classes/types/registration"
 import { PaymentDetail } from "@plugins/gymkonnect/classes/types/payment"
@@ -13,10 +13,18 @@ import stepper from "@plugins/gymkonnect/components/member/registration/stepper.
 import paymentSingle from "@plugins/gymkonnect/components/payment/modal-single.vue"
 
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
+import router from "@/routes"
+import { Routes } from "@plugins/gymkonnect/routes"
 
 @Component({
 	// @ts-ignore
-	components: { Layout, stepper, paymentSingle, stepThree, stepFour, },
+	components: {
+		Layout,
+		stepper,
+		paymentSingle,
+		stepThree,
+		stepFour,
+	},
 	created() {
 		// @ts-ignore
 		this.onGroupingChange()
@@ -97,7 +105,7 @@ export default class MemberRegistrationPage extends Vue {
 	private async pay(paymentData: PaymentDetail) {
 		this.paying = true
 		let result = await Gymkonnect.Registration.makePayments(this.clientIds, this.transactionData, paymentData, this.grouping)
-		console.log(result)
+		router.push({ name: Routes.MEMBER_REGISTRATION_FINALIZE.name })
 		this.paying = false
 	}
 

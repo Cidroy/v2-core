@@ -1,5 +1,6 @@
 import GQLClient, { gql } from "@/utils/graphql"
 import { Logger } from "@classes/CONSOLE"
+import { sleep } from "@classes/misc"
 
 let Console = new Logger("gk-client/registration")
 
@@ -52,5 +53,13 @@ export async function existsMobile(mobile: string): Promise<boolean> {
 	} catch (error) {
 		Console.error(error)
 		throw error.toString()
+	}
+}
+
+export class Health {
+	public static async addInitialHealth(id: string | number, height: number, weight: number, bodyType: string | number, bloodGroup: string | number): Promise<string|number>{
+		await sleep(2000)
+		// throw "Unable to save Health"
+		return 1
 	}
 }

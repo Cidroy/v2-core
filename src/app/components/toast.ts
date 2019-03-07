@@ -15,3 +15,12 @@ export const alert = async (title: string, type: TAlertTypes = "info") => {
 		type,
 	})
 }
+
+export const loading = async (title = "Loading ...") => {
+	return Sweetalert.fire({
+		title,
+		onBeforeOpen() { Sweetalert.showLoading() },
+		allowOutsideClick: false,
+		allowEscapeKey: false,
+	})
+}

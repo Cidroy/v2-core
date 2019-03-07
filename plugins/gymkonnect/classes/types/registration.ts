@@ -115,3 +115,17 @@ export const defaultPaymentData: PaymentData = {
 	amount: 0,
 	adjustment: 0,
 }
+
+export type TMRegistrationHealth = {
+	height: number,
+	weight: number,
+	bodyType: string | number,
+	bloodGroup: string | number,
+}
+
+export const defaultRegistrationUserHealth: TMRegistrationHealth = {
+	height: 180,
+	weight: 70,
+	bodyType: 1,
+	bloodGroup: 1,
+}

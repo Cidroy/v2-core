@@ -1,7 +1,7 @@
 import { Component, Vue, Prop, Watch } from "vue-property-decorator"
 import moment from "moment"
 import appConfig from "@/app.config"
-import Layout from "@/layouts/main.vue"
+import Layout from "@/layouts/layout.vue"
 import { formatDate, parseDate } from "@/utils/misc"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
 

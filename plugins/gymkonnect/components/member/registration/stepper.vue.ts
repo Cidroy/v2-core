@@ -1,5 +1,5 @@
 import appConfig from "@/app.config"
-import Layout from "@/layouts/main.vue"
+import Layout from "@/layouts/layout.vue"
 import { Component, Vue, Watch, Prop, Emit } from "vue-property-decorator"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
 import { TMRegistration, defaultRegistrationUser } from "@plugins/gymkonnect/classes/types/registration"

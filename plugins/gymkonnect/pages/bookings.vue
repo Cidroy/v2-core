@@ -268,7 +268,7 @@
 
 <script lang="ts">
 import appConfig from "@/app.config"
-import Layout from "@/layouts/main.vue"
+import Layout from "@/layouts/layout.vue"
 import { Component, Vue, Watch } from "vue-property-decorator"
 import { watch } from 'fs';
 import {GymkonnectStore} from "@plugins/gymkonnect/state/misc"

@@ -1,5 +1,5 @@
 import appConfig from "@/app.config"
-import Layout from "@/layouts/main.vue"
+import Layout from "@/layouts/layout.vue"
 import { Component, Vue, Watch } from "vue-property-decorator"
 import logo from "@/assets/images/splash-logo.png"
 import { PASSWORD_PREFERENCE } from "@classes/interface/IUser"

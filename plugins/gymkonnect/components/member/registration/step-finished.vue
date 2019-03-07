@@ -6,7 +6,7 @@
 					<v-flex xs12 class="pr-2">
 						<v-text-field prepend-icon="fas fa-user" v-model="fullName" label="Full Name" readonly tabindex="-1" color="orange darken-2"/>
 					</v-flex>
-					
+
 
 					<v-flex xs12 lg6 class="pr-2"> <v-text-field prepend-icon="fas fa-transgender-alt" :value="GENDERS[gender]" label="Gender" readonly tabindex="-1" color="orange darken-2"/> </v-flex>
 					<v-flex xs12 lg6 class="pl-2"> <v-text-field v-model="dobFormattedDate" label="Date of Birth" placeholder="Date of Birth" persistent-hint prepend-icon="event" readonly tabindex="-1" color="orange darken-2"/> </v-flex>
@@ -25,5 +25,6 @@
 				<add-user-photo v-model="photo" :Readonly="true"/>
 			</v-flex>
 		</v-layout>
+		<slot />
 	</v-card>
 </template>

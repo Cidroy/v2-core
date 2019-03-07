@@ -2,7 +2,7 @@ import llv from "@classes/utils/lazy-load-view"
 
 const lazyLoadView = (file: string) => llv(
 	file,
-	(file: string) => import(/* webpackChunkName: "page-[name]" */`./pages${file}`)
+	(file: string) => import(/* webpackChunkName: "page-[name]" */ `./pages${file}`)
 )
 
 export const Routes = {
@@ -16,6 +16,12 @@ export const Routes = {
 		path: "/gk/member-registration",
 		name: "gk/member-registration",
 		component: () => lazyLoadView("/member/registration"),
+		props: true,
+	},
+	MEMBER_REGISTRATION_FINALIZE: {
+		path: "/gk/member-registration-finalize",
+		name: "gk/member-registration-finalize",
+		component: () => lazyLoadView("/member/registration/finalize"),
 		props: true,
 	},
 	MEMBER_RENEWAL: {

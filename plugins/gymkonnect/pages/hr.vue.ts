@@ -1,6 +1,6 @@
 import { Component, Vue, Watch } from "vue-property-decorator"
 import appConfig from "@/app.config"
-import Layout from "@/layouts/main.vue"
+import Layout from "@/layouts/layout.vue"
 import { parseDate, formatDate } from "@/utils/misc"
 
 @Component({

@@ -1,6 +1,6 @@
 import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
 import moment from "moment"
-import Layout from "@/layouts/main.vue"
+import Layout from "@/layouts/layout.vue"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
 import { formatDate, parseDate } from "@/utils/misc"
 import { TMRegistrationStep3, defaultRegistrationStep3User } from "@plugins/gymkonnect/classes/types/registration"

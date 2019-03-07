@@ -5,6 +5,8 @@ import IAddress from "@classes/interface/IAddress"
 import { ADDRESS_TYPE } from "@classes/enum/misc"
 import { PaymentDetail } from "@plugins/gymkonnect/classes/types/payment"
 import moment from "moment"
+import { sleep } from "@classes/misc"
+import { alert } from "@/components/toast"
 
 let Console = new Logger("gk-client/registration")
 
@@ -675,10 +677,17 @@ async function makePayments(
 	return [ result, group, ]
 }
 
+async function scanFingerprint(clientId: string | number): Promise<boolean>{
+	await sleep(500)
+	alert("Please look for <h1>0000000</h1> and enroll", "info")
+	return true
+}
+
 export const Registration = {
 	getAmount,
 	addMember,
 	makePayments,
 	getAdmissionFee,
 	getEndDate,
+	scanFingerprint,
 }
