@@ -28,6 +28,7 @@ export type TBiometricMemberDetails = {
 	accessGroup ?: number
 }
 
+// TODO: proxy from @classes
 export type TBiometricDetails = {
 	serial: string,
 	ip: string,
@@ -133,7 +134,7 @@ export default interface IBiometric{
 	 * @returns {Promise<boolean>}
 	 * @memberof IBiometric
 	 */
-	
+
 	Initialize(): Promise<boolean>
 	/**
 	 * Login for device access

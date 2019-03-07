@@ -13,6 +13,7 @@ export const RESOLVE_PATHS = [
 	resolve("src"),
 	resolve("typescript"),
 	resolve("classes"),
+	resolve("plugins"),
 	resolve("test"),
 ]
 
@@ -41,8 +42,8 @@ const baseConfig: webpack.Configuration = {
 			"@": resolve("src/app"),
 			"@electron": resolve("src/electron"),
 			"@typescript": resolve("typescript"),
+			"@plugins": resolve("plugins"),
 			"@classes": resolve("classes"),
-			"@server": resolve("server"),
 			vue$: "vue/dist/vue.esm.js" // 'vue/dist/vue.common.js' for webpack
 		}
 	},

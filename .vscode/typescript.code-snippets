@@ -1,0 +1,156 @@
+{
+	// Place your snippets for typescript here. Each snippet is defined under a snippet name and has a prefix, body and
+	// description. The prefix is what is used to trigger the snippet and the body will be expanded and inserted. Possible variables are:
+	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. Placeholders with the
+	// same ids are connected.
+	// Example:
+	// "Print to console": {
+	// 	"prefix": "log",
+	// 	"body": [
+	// 		"console.log('$1');",
+	// 		"$2"
+	// 	],
+	// 	"description": "Log output to console"
+	// }
+	"GQLClient Mutation": {
+		"prefix": "gqlmutation",
+		"body": [
+			"async function ${1:mutationName}(${2:paramName}:{${3}}):Promise<${4}>{",
+			"\ttry {",
+			"\t\tlet response = await GQLClient.mutate<{}>(",
+			"\t\t\tgql``,",
+			"\t\t\t{}",
+			"\t\t)",
+			"\t\tif (response.errors) throw response.errors",
+			"\t\tif (!response.data) throw \"Unable to ${5:error}\"",
+			"\t\treturn response.data${6}",
+			"\t} catch (error) {",
+			"\t\tConsole.error(error)",
+			"\t\tthrow error.toString()",
+			"\t}",
+			"}${0}"
+		],
+		"description": "GQL Mutation function"
+	},
+	"GQLClient Query": {
+		"prefix": "gqlquery",
+		"body": [
+			"async function ${1:queryName}(${2:paramName}:{${3}}):Promise<${4}>{",
+			"\ttry {",
+			"\t\tlet response = await GQLClient.query<{}>(",
+			"\t\t\tgql``,",
+			"\t\t\t{}",
+			"\t\t)",
+			"\t\tif (response.errors) throw response.errors",
+			"\t\tif (!response.data) throw \"Unable to ${5:error}\"",
+			"\t\treturn response.data${6}",
+			"\t} catch (error) {",
+			"\t\tConsole.error(error)",
+			"\t\tthrow error.toString()",
+			"\t}",
+			"}${0}"
+		],
+		"description": "GQL Query function"
+	},
+	"Vue Component": {
+		"prefix": "vClassComponent",
+		"body": [
+			"import { Component, Vue } from \"vue-property-decorator\"",
+			"import empty from \"@/components/empty.vue\"",
+			"",
+			"@Component({",
+			"\t// @ts-ignore",
+			"\tcomponents: { empty, },",
+			"})",
+			"// @ts-ignore",
+			"export default class ${1:Name} extends Vue {",
+			"\t${0}",
+			"}",
+		],
+		"description": "Generate a New Vue Class Component"
+	},
+	"Vuex Component": {
+		"prefix": "vxClassComponent",
+		"body": [
+			"import { VuexModule, Module, getModule, MutationAction } from \"vuex-module-decorators\"",
+			"import store from \"@/state/store\"",
+			"",
+			"let ${2:variable} = ${3:false}",
+			"",
+			"@Module({ dynamic: true, store, name: \"${1:$TM_FILENAME_BASE}\" })",
+			"class ${1:$TM_FILENAME_BASE} extends VuexModule {",
+			"\tprivate ${2:variable} = ${2:variable}",
+			"\tpublic get ${4:GETTER}() { return this.${2:variable} }",
+			"\t@MutationAction({ mutate: [\"${2:variable}\",] }) public async ${5:mutationAction}() {",
+			"\t\t${2:variable} = !${2:variable}",
+			"\t\treturn { ${2:variable} }",
+			"\t}${0}",
+			"}",
+			"",
+			"export const ${1:$TM_FILENAME_BASE}Store = getModule(${1:$TM_FILENAME_BASE})",
+		],
+		"description": "Generate a Vuex Class Component"
+	},
+	"Vuex Action": {
+		"prefix": "vxAction",
+		"body": [
+			"@Action({}) public async ${1:mutationAction}(${2:param}) {",
+			"\t${0}",
+			"\treturn ${3:param}",
+			"}",
+		],
+		"description": "Mutation Action for Vuex Class Component"
+	},
+	"Vuex Mutation": {
+		"prefix": "vxMutation",
+		"body": [
+			"@MutationAction({ mutate: [ \"${2:mutate}\", ] }) public async ${1:mutationAction}() {",
+			"\t${0}",
+			"\treturn { ${2:mutate} }",
+			"}",
+		],
+		"description": "Mutation Action for Vuex Class Component"
+	},
+	"Vuex Getter": {
+		"prefix": "vxGetter",
+		"body": "public get ${1:GETTER}() { return this.${2:state}${3} }${0}",
+		"description": "Getter for Vuex Class Component"
+	},
+	"Permission File": {
+		"prefix": "permission file",
+		"body": [
+			"import { TPermissions } from \"@classes/types/permission\"",
+			"",
+			"const NAMESPACE = \"${1:namespace}\"",
+			"",
+			"export const Permissions: TPermissions = {",
+			"\t${2:PERMISSION_NAME} : {",
+			"\t\tpermission: { [NAMESPACE]: \"${3:permission}\" },",
+			"\t\tdescription: \"${4:description}\",",
+			"\t\taccess: \"${5:default}\"",
+			"\t},${0}",
+			"}",
+		],
+		"description": "Create a basic permisssion file"
+	},
+	"New Permission": {
+		"prefix": "permission",
+		"body": [
+			"${1:PERMISSION_NAME} : {",
+			"\tpermission: { [NAMESPACE]: \"${2:permission}\" },",
+			"\tdescription: \"${3:description}\",",
+			"\taccess: \"${4:default}\"",
+			"},${0}",
+		],
+		"description": "New Permission description"
+	},
+	"New Custom Console": {
+		"prefix": "console",
+		"body": [
+			"import { Logger } from \"@classes/CONSOLE\"",
+			"",
+			"const Console = new Logger(`${1:namespace}/${2:$TM_FILENAME_BASE}`)",
+		],
+		"description": "Custom Console Logger"
+	}
+}

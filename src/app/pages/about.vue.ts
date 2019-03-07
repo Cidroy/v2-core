@@ -1,6 +1,6 @@
 import { Component, Vue } from "vue-property-decorator"
 import appConfig from "@/app.config"
-import Layout from "@/layouts/main.vue"
+import Layout from "@/layouts/layout.vue"
 
 @Component({
 	// @ts-ignore
@@ -11,4 +11,4 @@ import Layout from "@/layouts/main.vue"
 	},
 })
 // @ts-ignore
-export default class Home extends Vue { }
+export default class AboutPage extends Vue { }

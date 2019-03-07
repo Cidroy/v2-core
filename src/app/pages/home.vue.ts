@@ -1,8 +1,11 @@
 import { Component, Vue, Watch } from "vue-property-decorator"
 import appConfig from "@/app.config"
-import Layout from "@/layouts/main.vue"
-import { TestStore } from "@/state/modules/test"
+import Layout from "@/layouts/layout.vue"
 import systemInformation from "@/components/system-information.vue"
+import { NotificationStore } from "@plugins/1-core/state/notifications"
+import uuid from "uuid"
+import { DeviceStore } from "@plugins/gymkonnect/state/device"
+import router from "@/routes"
 
 @Component({
 	// @ts-ignore
@@ -16,8 +19,15 @@ import systemInformation from "@/components/system-information.vue"
 	},
 })
 // @ts-ignore
-export default class Home extends Vue {
-	private async test() { console.log("done") }
-	private test_1() { TestStore.test_1() }
-	private test_2() { TestStore.test_2() }
+export default class HomePage extends Vue {
+	private async test() {
+		router.push({name: "login"})
+	}
+	private test_1() { NotificationStore.newNotification({
+		time: new Date(),
+		seen: false,
+		title: uuid(),
+		subtitle: "octavious"
+	}) }
+	private test_2() { DeviceStore.gkFPSync() }
 }

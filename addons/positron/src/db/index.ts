@@ -7,8 +7,8 @@ import { TDatabaseConnectionOptions } from "@positron/db/misc"
 
 let config: {
 	databaseOptions: TDatabaseConnectionOptions | null,
-		prefix: string,
-	} = {
+	prefix: string,
+} = {
 	databaseOptions: null,
 	prefix: "p_",
 }

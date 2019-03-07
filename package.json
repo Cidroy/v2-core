@@ -209,6 +209,7 @@
 		"request-promise-native": "^1.0.5",
 		"safesql": "^2.0.1",
 		"simple-crypto-js": "^2.0.2",
+		"sweetalert2": "^8.2.6",
 		"ts-httpexceptions": "^3.1.1",
 		"twig": "^1.13.2",
 		"type-graphql": "^0.16.0",
@@ -220,7 +221,7 @@
 		"vue-meta": "^1.5.3",
 		"vue-observe-visibility": "^0.4.3",
 		"vue-router": "^3.0.1",
-		"vuetify": "^1.4.0",
+		"vuetify": "^1.5.2",
 		"vuex": "^3.0.1"
 	}
 }
