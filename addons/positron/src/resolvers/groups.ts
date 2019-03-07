@@ -10,36 +10,40 @@ export default class GroupsResolver {
 	public async Groups() {
 		return Groups.find({ where: { active: 1 } })
 	}
-	@GQL.Mutation(returns => [GroupMap,])
+	@GQL.Mutation(returns => Groups)
 	public async createGroupGymUsers(
 		@GQL.Arg("groupingId") groupingId: number,
-		@GQL.Arg("gymUserIDs", type => [Number,]) gymUserIDs: number[],
+		@GQL.Arg("userIDs", type => [Number,]) userIDs: number[],
 	) {
-		let group = new Groups()
-		group.groupingId = groupingId
-		group.groupCount = gymUserIDs.length
-		await group.save()
+		try{
+			let group = new Groups()
+			group.groupingId = groupingId
+			group.groupCount = userIDs.length
+			await group.save()
 
-		let groupMaps: GroupMap[] = []
-		console.log("before for each")
-		let i
-		for(i in gymUserIDs){
-			let gymUser = await GymUsers.createQueryBuilder()
-				.update(GymUsers)
-				.set({ isGrouped: true })
-				.where({ id: gymUserIDs[i] })
-				.execute()
-			if (gymUser === undefined) throw "Invalid user"
-			let groupMap = new GroupMap()
-			groupMap.gymUserId = gymUserIDs[i]
-			groupMap.groupId = group.id
-			await groupMap.save()
+			for (let i in userIDs){
+				let gymuser = await GymUsers.find({ where: { userId: userIDs[i] } })
+				if ( gymuser.length == 0) throw "Invalid user"
+				let gymUserId = gymuser[0].id
+
+				let gymUser = await GymUsers.createQueryBuilder()
+					.update(GymUsers)
+					.set({ isGrouped: true })
+					.where({ id: gymUserId})
+					.execute()
+					
+				let groupMap = new GroupMap()
+				groupMap.gymUserId = gymUserId
+				groupMap.groupId = group.id
+				await groupMap.save()
+				
+			}
 			
-			groupMaps.push(groupMap)
+			return group
 		}
-		// FIXME:
-		console.log("after for each")
-		return groupMaps
+		catch(error){
+			return {}
+	}
 	}
 	@GQL.Mutation(returns => Groups)
 	public async addGroups(

@@ -1,29 +1,44 @@
 import * as GQL from "type-graphql"
 import GymUsers from "@positron/models/gymUsers"
 import GymUserMode from "@positron/models/gymUserMode"
+import User from "@positron/models/user"
+import Transaction from "@positron/models/transaction"
 
 @GQL.Resolver(of => GymUsers)
 export default class GymUsersResolver {
+	@GQL.FieldResolver(returns => User, { nullable: true })
+	public async user(@GQL.Root() gymUser: GymUsers) {
+		return User.findOne({ where: { active: 1, id: gymUser.userId } })
+	}
+	@GQL.FieldResolver(returns => GymUserMode, { nullable: true })
+	public async mode(@GQL.Root() gymUser: GymUsers) {
+		return GymUserMode.findOne({ where: { active: 1, id: gymUser.mode } })
+	}
+	@GQL.FieldResolver(returns => Transaction, { nullable: true })
+	public async transaction(@GQL.Root() gymUser: GymUsers) {
+		return Transaction.findOne({ where: { active: 1, id: gymUser.transaction } })
+	}
 
 	@GQL.Query(returns => [GymUsers,])
 	public async gymUsers() {
 		return GymUsers.find({ where: { active: 1 } })
 	}
-	@GQL.Mutation(returns => String)
+
+	@GQL.Mutation(returns => Boolean)
 	public async activateGymUsers(
-		@GQL.Arg("gymUserID", type => [Number,]) gymUserID: number[],
+		@GQL.Arg("userIDs", type => [Number,]) userIDs: number[],
 	){
 		try{
-			for (let i in gymUserID){
-				let gymUser = await GymUsers.find({ where: { id: gymUserID[i] } })
+			for (let i in userIDs){
+				let gymUser = await GymUsers.findOne({ where: { userId: userIDs[i] } })
 				if (gymUser === undefined) throw "invalid user"
 				let userMode = await GymUserMode.find({ where: { name: "ACTIVE" } })
 				gymUser[0].mode = userMode[0].id
 				await gymUser[0].save()
 			}
-			return "Success"
+			return true
 		}catch(error){
-			return "Error"
+			return false
 		}
 	}
 	

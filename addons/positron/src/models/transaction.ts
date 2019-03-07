@@ -64,7 +64,7 @@ export default class Transaction extends Base implements ITransaction{
 
 	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
-	public offer!: number
+	public offer?: number
 
 	@GQL.Field(type => [ Number, ], { nullable: true })
 	@DB.Column("simple-array", { nullable: true })

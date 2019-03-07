@@ -70,12 +70,12 @@ export default class User extends Base implements IUser {
 	@DB.Column("varchar", { length: 30, nullable: true })
 	public homeNumber?: string
 	
-	@GQL.Field(type => String)
+	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { default: null })
 	@Validate.IsEmail()
 	public email?: string
 	
-	@GQL.Field(type => Number, { nullable: true })
+	// @GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
 	public address?: number
 	

@@ -1,9 +1,5 @@
 import { IEntityBase } from "@classes/interface/IEntityBase"
-
-export enum PASSWORD_PREFERENCE {
-	PIN = "PIN",
-	PASSWORD = "PASSWORD",
-}
+import { PASSWORD_PREFERENCE } from "@classes/enum/misc"
 
 export interface IAdminUsers extends IEntityBase {
 	/**
@@ -14,17 +10,17 @@ export interface IAdminUsers extends IEntityBase {
 	 */
 	userId : number,
 	username: string,
-	password: string,
-	pin: string,
+	password?: string,
+	pin?: string,
 	/**
 	 * Preferred method of password
 	 *
 	 * @type {PASSWORD_PREFERENCE}
-	 * @memberof IUser
+	 * @memberof IAdminUsers
 	 */
 	passwordPreference: PASSWORD_PREFERENCE,
 	access: number,
-	refferedToIDs: number[],
-	permissions: object
+	referredToUsers?: number[],
+	permissions?: object
 	
 }

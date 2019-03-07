@@ -1,18 +1,42 @@
 import * as GQL from "type-graphql"
 import {GENDER} from "@classes/enum/misc"
-import User from "@positron/models/user"
+import User, { WdmsID } from "@positron/models/user"
 import Address from "@positron/models/address"
 import Member from "@positron/Biometric/Member"
 import * as DB from "typeorm"
 import Utils from "@classes/functions/utils"
+import ZonesAvailable from "@positron/models/zonesAvailable"
+import GymUsers from "@positron/models/gymUsers"
+import GymUserMode from "@positron/models/gymUserMode"
 
+export async function getUserIdForWdmsId(userId: number, zoneId: number): Promise<number>{
+	try{
+		let user = await User.find({ where: { id: userId } })
+		let wdmsId = user[0].wdmsId
+		if(wdmsId === undefined) throw "user is not added in wdms"
+		let index = wdmsId.findIndex((element) => {
+			return element.zoneID == zoneId
+		})
+		if(index == -1)  throw "user not found in wdms"
+		return wdmsId[index].userID
+	}
+	catch(err){
+		return 0
+	}
+}
 @GQL.Resolver(of => User)
 export default class UserResolver{
 	
+	@GQL.FieldResolver(returns => Address, {nullable: true})
+	public async address(@GQL.Root() user: User){
+		return Address.findOne({ where: { active: 1 , id: user.address} })
+	}
+
 	@GQL.Query(returns => [User,])
 	public async user() {
 		return User.find({ where: { active: 1 } })
 	}
+
 	@GQL.Mutation(returns => Boolean)
 	public async linkAddressUser(
 		@GQL.Arg("UserId") UserId: number,
@@ -44,14 +68,14 @@ export default class UserResolver{
 	public async isEmailExists(
 		@GQL.Arg("email") email: string,
 	){
-		let user = await User.find({ where: { email: email } })
-		console.log(user)
-		return user === undefined
+		return undefined !== await User.findOne({ where: { email } })
 	}
 
 	@GQL.Query(returns => Boolean)
-	public async isMobileExists() {
-		
+	public async isMobileExists(
+		@GQL.Arg("mobile") mobile: string,
+	) {
+		return undefined !== await User.findOne({ where: { mobile } })
 	}
 
 	@GQL.Mutation(returns => User)
@@ -116,6 +140,23 @@ export default class UserResolver{
 
 		await user.save()
 		return user
+	}
+
+	@GQL.Query(returns => Boolean)
+	public async enrollUser(
+		@GQL.Arg("userId") userId: number,
+	){
+		try{
+			let zone = await ZonesAvailable.find({ where: { zoneName: "Unfreezed"}})
+			let zoneID = zone[0].zoneId
+			let id = await getUserIdForWdmsId(userId, zoneID)
+			if(!id) throw "user not added to wdms"
+			Member.ScanFingerprint(id.toString())
+			return true
+		}
+		catch(err){
+			return false
+		}
 	}
 
 }

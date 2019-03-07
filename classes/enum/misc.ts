@@ -16,3 +16,8 @@ export enum DURATION{
 	DAY = "DAY",
 	YEAR = "YEAR",
 }
+
+export enum PASSWORD_PREFERENCE {
+	PIN = "PIN",
+	PASSWORD = "PASSWORD",
+}

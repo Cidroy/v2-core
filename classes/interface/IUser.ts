@@ -1,11 +1,6 @@
 import { GENDER } from "@classes/enum/misc"
 import { IEntityBase } from "@classes/interface/IEntityBase"
 
-export enum PASSWORD_PREFERENCE{
-	PIN= "PIN",
-	PASSWORD= "PASSWORD",
-}
-
 /**
  * Base interface for all user types
  *
@@ -42,7 +37,7 @@ export interface IUser extends IEntityBase{
 	/**
 	 * References Address.id for primary address
 	 *
-	 * @type {string}
+	 * @type {number}
 	 * @memberof IUser
 	 */
 	address?: number,

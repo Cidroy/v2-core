@@ -4,6 +4,6 @@ export default interface IPayment extends IEntityBase{
 	mode : number
 	receipt : string
 	amount : number
-	transacionId?: string
+	transacionId?: number
 	adjustment : number
 }

@@ -14,9 +14,9 @@ export default class Payment extends Base implements IPayment{
 	@DB.Column("varchar")
 	public receipt! : string
 
-	@GQL.Field(type => String,{nullable: true})
-	@DB.Column("varchar")
-	public transacionId? : string
+	@GQL.Field(type => Number ,{nullable: true})
+	@DB.Column("integer", { nullable: true })
+	public transacionId? : number
 	
 	@GQL.Field(type => Number)
 	@DB.Column("integer")

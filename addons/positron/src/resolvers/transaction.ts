@@ -6,6 +6,7 @@ import GymUsers from "@positron/models/gymUsers"
 import GymUserMode from "@positron/models/gymUserMode"
 import GymPackage from "@positron/models/gymPackage"
 import moment = require("moment")
+import User from "@positron/models/user"
 
 @GQL.Resolver(of => Transaction)
 export default class TransactionResolver{
@@ -33,7 +34,7 @@ export default class TransactionResolver{
 		transaction.packageMagnitude = packageMagnitude
 		if(!start)transaction.start = new Date()
 		else transaction.start = start
-		if(offer)transaction.offer = offer
+		transaction.offer = ~<number>offer && offer || undefined
 		if(gymUser)transaction.gymUser = gymUser
 		if(payment)transaction.payment = payment
 		if(membershipType)transaction.membershipType = membershipType
@@ -46,12 +47,13 @@ export default class TransactionResolver{
 		return transaction
 	}
 
-	@GQL.Mutation(returns => String)
+	@GQL.Mutation(returns => Boolean)
 	public async linkTransactionPay(
 		@GQL.Arg("paymentId") paymentId: number,
 		@GQL.Arg("transactionId") transactionId: number,
 	){
 		try{
+			//FIXME: 2 way linking not yet done also, check for true transaction id
 			let payment = await Payment.createQueryBuilder()
 				.select(["id", "receipt", "amount",])
 				.where({ id: paymentId })
@@ -61,20 +63,24 @@ export default class TransactionResolver{
 
 			let transaction = await Transaction.createQueryBuilder()
 								.update(Transaction)
-				.set({ amount: payment[0].amount, receipt: payment[0].receipt  })
+				.set({ amount: payment[0].amount, receipt: payment[0].receipt, payment: paymentId })
 				.where({id: transactionId})
 				.execute()
 			if (transaction === undefined) throw "Invalid trsancation"
+			return true
 		}catch(error){
-			throw "Linking Transaction to pay error"
+			return false
 		}
 	}
 	@GQL.Mutation(returns => Boolean)
-	public async linkTransactionGymUser(
-		@GQL.Arg("gymUserId") gymUserId: number,
+	public async linkTransactionUser(
+		@GQL.Arg("userId") userId: number,
 		@GQL.Arg("transactionId") transactionId: number,
 	){
 		try{
+			let gymuser = await GymUsers.find({ where: { userId: userId } })
+			if (gymuser === undefined) throw "Invalid user"
+			let gymUserId = gymuser[0].id
 			
 			let transaction = await Transaction.createQueryBuilder()
 								.update(Transaction)

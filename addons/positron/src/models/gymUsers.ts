@@ -16,7 +16,7 @@ export default class GymUsers extends Base implements IGymUsers {
 	@DB.Column("integer",{nullable:false , unique: true})
 	public userId!: number
 	
-	@GQL.Field(type => Number, { nullable: true })
+	// @GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", {nullable: true})
 	public mode?: number
 	
@@ -68,7 +68,7 @@ export default class GymUsers extends Base implements IGymUsers {
 	@DB.Column("integer", { nullable: true })
 	public balance?: number
 	
-	@GQL.Field(type => Number)
+	// @GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })
 	public transaction?: number
 	

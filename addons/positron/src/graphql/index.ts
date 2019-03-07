@@ -1,6 +1,5 @@
 import * as TGQL from "type-graphql"
 import OptionsResolver from "@positron/resolvers/options"
-import ClientResolver from "@positron/resolvers/client"
 import UserResolver from "@positron/resolvers/user"
 import TransactionResolver from "@positron/resolvers/transaction"
 import FreezeRulesResolver from "@positron/resolvers/FreezeRules"
@@ -39,11 +38,12 @@ import UTMSourceResolver from "@positron/resolvers/utmSource"
 import ZonesAvailableResolver from "@positron/resolvers/zonesAvailable"
 import GymOffersResolver from "@positron/resolvers/gymOffers"
 import GymOffersLogicResolver from "@positron/resolvers/gymOffersLogic"
+import AdminUsersResolver from "@positron/resolvers/adminUsers"
+import GymUserHealthResolver from "@positron/resolvers/gymUserHealth"
 
 export default class GQL{
 	private static Resolvers = [
 		OptionsResolver,
-		ClientResolver,
 		UserResolver,
 		TransactionResolver,
 		FreezeRulesResolver,
@@ -81,6 +81,8 @@ export default class GQL{
 		ZonesAvailableResolver,
 		GymOffersResolver,
 		GymOffersLogicResolver,
+		AdminUsersResolver,
+		GymUserHealthResolver,
 	]
 
 	public static async Schema(){
