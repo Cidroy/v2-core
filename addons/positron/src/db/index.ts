@@ -1,4 +1,4 @@
-import { createConnection, Connection } from "typeorm"
+import { createConnection, Connection, ConnectionOptions } from "typeorm"
 import { Logger } from "@classes/CONSOLE"
 import entities from "@positron/db/entities"
 import migrations from "@positron/db/migrations"
@@ -7,10 +7,10 @@ import { TDatabaseConnectionOptions } from "@positron/db/misc"
 
 let config: {
 	databaseOptions: TDatabaseConnectionOptions | null,
-	prefix: string,
+	entityPrefix: string,
 } = {
 	databaseOptions: null,
-	prefix: "p_",
+	entityPrefix: "p_",
 }
 
 let cache: {
@@ -57,9 +57,9 @@ export class Database {
 		}
 	}
 
-	public static async SetConnection(options: TDatabaseConnectionOptions){
+	public static async SetConnection(options: TDatabaseConnectionOptions & ConnectionOptions){
 		try {
-			options = <any>{ ...options, prefix: Database.config.prefix }
+			options = { ...options, entityPrefix: Database.config.entityPrefix }
 			Database.log.verbose("try connection", options)
 			let connection = await createConnection({
 				...options,
