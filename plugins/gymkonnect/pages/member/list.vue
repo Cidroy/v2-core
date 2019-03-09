@@ -50,7 +50,7 @@
 					<!-- FIXME: checkbox not working, make ui look like this is selected -->
 					<td><v-checkbox v-model="props.members" primary hide-details /></td>
 					<td>{{ props.item.badgenumber }}</td>
-					<td>{{ props.item.mode }}</td>
+					<td>{{ UserMode(props.item.mode) }}</td>
 					<td>{{ props.item.name }}</td>
 					<td>{{ props.item.endDate }}</td>
 					<td>{{ props.item.membership }}</td>

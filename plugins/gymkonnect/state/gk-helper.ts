@@ -20,6 +20,7 @@ export type TGQLTimeSlot = TGQLBasic & { startTime: string, endTime: string, }
 export type TGQLPaymentModes = TGQLBasic & { requireTransactionId: boolean }
 // FIXME: choose proper duration in next pull
 export type TGQLPackages = TGQLBasic & { count: number, duration: string }
+export type TGQLUserMode = TGQLBasic
 export default class GKHelper{
 	public static async GetOccupations(): Promise<TGQLOccupations[]>{
 		let response = await GQLClient.query<{
@@ -36,6 +37,13 @@ export default class GKHelper{
 			`,
 		)
 		return response.data.occupations
+	}
+
+	public static async GetUserModes(): Promise<TGQLUserMode[]>{
+		let response = await GQLClient.query<{ userModes: TGQLUserMode[] }>(
+			gql`query gymUserModes{ userModes: gymUserModes{ id, name, description } }`
+		)
+		return response.data.userModes
 	}
 
 	public static async GetCategories(): Promise<TGQLCategories[]>{

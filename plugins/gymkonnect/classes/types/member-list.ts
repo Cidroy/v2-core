@@ -1,7 +1,9 @@
+import { USER_MODE } from "@classes/enum/user-mode"
+
 export type TMemberListTableItems = {
 	id: number | string,
 	badgenumber: string,
-	mode: string,
+	mode: USER_MODE,
 	name: string,
 	membership: string,
 	package: string,

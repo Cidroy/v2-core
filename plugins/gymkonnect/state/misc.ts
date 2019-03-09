@@ -1,6 +1,6 @@
 import { VuexModule, Module, getModule, MutationAction } from "vuex-module-decorators"
 import store from "@/state/store"
-import GKHelper, { TGQLOccupations, TGQLCategories, TGQLIDProofs, TGQLGroupings, TGQLBodyTypes, TGQLOrganizationTypes, TGQLPackages, TGQLPurposes, TGQLMembershipTypes, TGQLPaymentModes, TGQLBloodGroup, TGQLTimeSlot, TGQLUTMSource, TGQLDoor, TGQLOffer } from "./gk-helper"
+import GKHelper, { TGQLOccupations, TGQLCategories, TGQLIDProofs, TGQLGroupings, TGQLBodyTypes, TGQLOrganizationTypes, TGQLPackages, TGQLPurposes, TGQLMembershipTypes, TGQLPaymentModes, TGQLBloodGroup, TGQLTimeSlot, TGQLUTMSource, TGQLDoor, TGQLOffer, TGQLUserMode } from "./gk-helper"
 import { Logger } from "@classes/CONSOLE"
 
 const Console = new Logger("gk/vuex")
@@ -26,6 +26,7 @@ let _gk_timeSlots: TGQLTimeSlot[] = []
 let _gk_utmSources: TGQLUTMSource[] = []
 let _gk_doors: TGQLDoor[] = []
 let _gk_offers: TGQLOffer[] = []
+let _gk_userModes: TGQLUserMode[] = []
 
 @Module({ dynamic: true, store, name: "Misc" })
 class Gymkonnect extends VuexModule {
@@ -45,7 +46,25 @@ class Gymkonnect extends VuexModule {
 	 * @readonly
 	 * @memberof Misc
 	 */
-	public get GK_OCCUPATION() { return id => this._gk_occupations.find(i => i.id === id) }
+	public get GK_OCCUPATION() { return (id: string | number) => this._gk_occupations.find(i => i.id === id) }
+
+	private _gk_userModes = _gk_userModes
+
+	/**
+	 * Get all OCCUPATIONS
+	 *
+	 * @readonly
+	 * @memberof Misc
+	 */
+	public get GK_USER_MODES() { return this._gk_userModes }
+
+	/**
+	 * Get OCCUPATION by ID
+	 *
+	 * @readonly
+	 * @memberof Misc
+	 */
+	public get GK_USER_MODE() { return (key: string | number, element: keyof TGQLUserMode = "id") => this._gk_userModes.find(i => i["id"] === key) }
 
 	private _gk_categories = _gk_categories
 
@@ -63,7 +82,7 @@ class Gymkonnect extends VuexModule {
 	 * @readonly
 	 * @memberof Misc
 	 */
-	public get GK_CATEGORY() { return id => this._gk_categories.find(i => i.id === id) }
+	public get GK_CATEGORY() { return (id: string | number) => this._gk_categories.find(i => i.id === id) }
 
 	private _gk_idTypes = _gk_idTypes
 
@@ -81,7 +100,7 @@ class Gymkonnect extends VuexModule {
 	 * @readonly
 	 * @memberof Misc
 	 */
-	public get GK_ID_TYPE() { return id => this._gk_idTypes.find(i => i.id === id) }
+	public get GK_ID_TYPE() { return (id: string | number) => this._gk_idTypes.find(i => i.id === id) }
 
 	private _gk_bodyTypes = _gk_bodyTypes
 
@@ -99,7 +118,7 @@ class Gymkonnect extends VuexModule {
 	 * @readonly
 	 * @memberof Misc
 	 */
-	public get GK_BODY_TYPE() { return id => this._gk_bodyTypes.find(i => i.id === id) }
+	public get GK_BODY_TYPE() { return (id: string | number) => this._gk_bodyTypes.find(i => i.id === id) }
 
 	private _gk_groupings = _gk_groupings
 
@@ -117,7 +136,7 @@ class Gymkonnect extends VuexModule {
 	 * @readonly
 	 * @memberof Misc
 	 */
-	public get GK_GROUPING() { return id => this._gk_groupings.find(i => i.id === id) }
+	public get GK_GROUPING() { return (id: string | number) => this._gk_groupings.find(i => i.id === id) }
 
 	private _gk_purposes = _gk_purposes
 
@@ -135,7 +154,7 @@ class Gymkonnect extends VuexModule {
 	 * @readonly
 	 * @memberof Misc
 	 */
-	public get GK_PURPOSE() { return id => this._gk_purposes.find(i => i.id === id) }
+	public get GK_PURPOSE() { return (id: string | number) => this._gk_purposes.find(i => i.id === id) }
 
 	private _gk_membershipTypes = _gk_membershipTypes
 	/**
@@ -152,7 +171,7 @@ class Gymkonnect extends VuexModule {
 	 * @readonly
 	 * @memberof Misc
 	 */
-	public get GK_MEMBERSHIP_TYPE() { return id => this._gk_membershipTypes.find(i => i.id === id) }
+	public get GK_MEMBERSHIP_TYPE() { return (id: string | number) => this._gk_membershipTypes.find(i => i.id === id) }
 
 	private _gk_packages = _gk_packages
 	/**
@@ -169,7 +188,7 @@ class Gymkonnect extends VuexModule {
 	 * @readonly
 	 * @memberof Misc
 	 */
-	public get GK_PACKAGE() { return id => this._gk_packages.find(i => i.id === id) }
+	public get GK_PACKAGE() { return (id: string | number) => this._gk_packages.find(i => i.id === id) }
 
 	private _gk_timeSlots = _gk_timeSlots
 	/**
@@ -186,7 +205,7 @@ class Gymkonnect extends VuexModule {
 	 * @readonly
 	 * @memberof Misc
 	 */
-	public get GK_TIME_SLOT() { return id => this._gk_timeSlots.find(i => i.id === id) }
+	public get GK_TIME_SLOT() { return (id: string | number) => this._gk_timeSlots.find(i => i.id === id) }
 
 	private _gk_doors = _gk_doors
 	/**
@@ -203,7 +222,7 @@ class Gymkonnect extends VuexModule {
 	 * @readonly
 	 * @memberof Misc
 	 */
-	public get GK_DOOR() { return id => this._gk_doors.find(i => i.id === id) }
+	public get GK_DOOR() { return (id: string | number) => this._gk_doors.find(i => i.id === id) }
 
 	private _gk_utmSources = _gk_utmSources
 	/**
@@ -220,7 +239,7 @@ class Gymkonnect extends VuexModule {
 	 * @readonly
 	 * @memberof Misc
 	 */
-	public get GK_UTM_SOURCE() { return id => this._gk_utmSources.find(i => i.id === id) }
+	public get GK_UTM_SOURCE() { return (id: string | number) => this._gk_utmSources.find(i => i.id === id) }
 
 	private _gk_organizationTypes = _gk_organizationTypes
 	/**
@@ -237,7 +256,7 @@ class Gymkonnect extends VuexModule {
 	 * @readonly
 	 * @memberof Misc
 	 */
-	public get GK_ORGANIZATION_TYPE() { return id => this._gk_organizationTypes.find(i => i.id === id) }
+	public get GK_ORGANIZATION_TYPE() { return (id: string | number) => this._gk_organizationTypes.find(i => i.id === id) }
 
 	private _gk_paymentModes = _gk_paymentModes
 	/**
@@ -254,7 +273,7 @@ class Gymkonnect extends VuexModule {
 	 * @readonly
 	 * @memberof Misc
 	 */
-	public get GK_PAYMENT_MODE() { return id => this._gk_paymentModes.find(i => i.id === id) }
+	public get GK_PAYMENT_MODE() { return (id: string | number) => this._gk_paymentModes.find(i => i.id === id) }
 
 	private _gk_bloodGroups = _gk_bloodGroups
 	/**
@@ -271,7 +290,7 @@ class Gymkonnect extends VuexModule {
 	 * @readonly
 	 * @memberof Misc
 	 */
-	public get GK_BLOOD_GROUP() { return id => this._gk_bloodGroups.find(i => i.id === id) }
+	public get GK_BLOOD_GROUP() { return (id: string | number) => this._gk_bloodGroups.find(i => i.id === id) }
 
 	private _gk_offers = _gk_offers
 	/**
@@ -288,7 +307,7 @@ class Gymkonnect extends VuexModule {
 	 * @readonly
 	 * @memberof Misc
 	 */
-	public get GK_ALL_OFFER() { return id => this._gk_offers.find(i => i.id === id) }
+	public get GK_ALL_OFFER() { return (id: string | number) => this._gk_offers.find(i => i.id === id) }
 
 	private _gk_spaplan = _gk_spaplan
 	public get GK_SPA_PLAN() { return this._gk_spaplan }
@@ -313,6 +332,7 @@ class Gymkonnect extends VuexModule {
 			"_gk_timeSlots",
 			"_gk_utmSources",
 			"_gk_offers",
+			"_gk_userModes",
 		]
 	})
 	public async GK_Initialize() {
@@ -346,12 +366,14 @@ class Gymkonnect extends VuexModule {
 				XutmSources,
 				Xdoors,
 				Xoffers,
+				XuserModes,
 			] = await Promise.all([
 				GKHelper.GetBloodGroups(),
 				GKHelper.GetTimeSlots(),
 				GKHelper.GetUTMSources(),
 				GKHelper.GetDoors(),
 				GKHelper.GetAllOffers(),
+				GKHelper.GetUserModes(),
 			])
 			_gk_occupations = Xoccupations
 			_gk_categories = Xcategories
@@ -368,6 +390,7 @@ class Gymkonnect extends VuexModule {
 			_gk_utmSources = XutmSources
 			_gk_doors = Xdoors
 			_gk_offers = Xoffers
+			_gk_userModes = XuserModes
 			return {
 				_gk_bloodGroups,
 				_gk_bodyTypes,
@@ -384,6 +407,7 @@ class Gymkonnect extends VuexModule {
 				_gk_timeSlots,
 				_gk_utmSources,
 				_gk_offers,
+				_gk_userModes,
 			}
 		} catch (error) {
 			Console.error("Misc Store failed to initialize", error)
