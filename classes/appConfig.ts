@@ -49,7 +49,7 @@ export default class AppConfig {
 		writeFileSync(AppConfig.file, json5.stringify(AppConfig.cache, null, 4))
 	}
 
-	public static async has(name: string): Promise<boolean> {
+	public static async Has(name: string): Promise<boolean> {
 		if (AppConfig.cache === undefined) AppConfig.Initialize()
 		AppConfig.log.verbose(`get ${name}`)
 		if ((<{}>AppConfig.cache).hasOwnProperty(name)){
@@ -68,6 +68,21 @@ export default class AppConfig {
 		}
 		else if (defaults !== undefined){
 			AppConfig.log.verbose("used default")
+			return defaults
+		}
+		else throw `Unable to fetch AppConfig for ${name}`
+	}
+
+	public static async GetSet<T>(name: string, defaults?: T): Promise<T> {
+		if (AppConfig.cache === undefined) AppConfig.Initialize()
+		AppConfig.log.verbose(`get ${name}`)
+		if ((<{}>AppConfig.cache).hasOwnProperty(name)){
+			AppConfig.log.verbose("used cache")
+			return <T>(<{}>AppConfig.cache)[name]
+		}
+		else if (defaults !== undefined){
+			AppConfig.log.verbose("used default and saving")
+			AppConfig.Set(name, defaults)
 			return defaults
 		}
 		else throw `Unable to fetch AppConfig for ${name}`

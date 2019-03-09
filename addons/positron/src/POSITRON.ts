@@ -8,6 +8,7 @@ import AppConfig from "@classes/appConfig"
 import { Server } from "@positron/server"
 import { INSTALL_STEP } from "@positron/lib/misc"
 import { version } from "@positron/../package.local.json"
+import { Tunnel } from "@positron/lib/localtunnel"
 
 export declare const module: any
 
@@ -58,10 +59,19 @@ export class Positron {
 			})
 		}
 		this.log.verbose("starting server")
-		await this.server.start()
+		let [ allowTunnel, ] = await Promise.all([
+			AppConfig.GetSet("positron/allow-tunnel", false),
+			this.server.start(),
+		])
 		this.log.okay("SERVER READY")
 		this.log.info(`REST: http://localhost:${config.config.port}`)
 		if (Database.Connected) this.log.info(`GQL : http://localhost:${config.config.port}/gql`)
+		/**
+		 * Fire up localtunnel only if appconfig."positron/allow-tunnel" === true
+		 */
+		if(allowTunnel) Tunnel.Start(config.config.port)
+			.then(url => this.log.info(`TUNNEL: ${url}`))
+			.catch(e => {})
 	}
 
 	private async stopServer(){
