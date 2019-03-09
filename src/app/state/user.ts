@@ -1,7 +1,7 @@
 import { VuexModule, Module, getModule, MutationAction } from "vuex-module-decorators"
 import store from "@/state/store"
-import { PASSWORD_PREFERENCE } from "@classes/interface/IUser"
 import { TUserStoreUsers } from "@/classes/types/user"
+import { PASSWORD_PREFERENCE } from "@classes/enum/misc"
 
 let loggedin = false
 let users: TUserStoreUsers[] = []

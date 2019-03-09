@@ -3,6 +3,7 @@ import { Registration } from "./member/registration"
 import { Permissions } from "../../permission"
 import { Messages } from "./messages"
 import { Members } from "./members"
+import { MemberGroups } from "./member-groups"
 
 const Gymkonnect = {
 	existsEmail,
@@ -13,6 +14,7 @@ const Gymkonnect = {
 	Messages,
 	Members,
 	Health,
+	MemberGroups,
 }
 
 export default Gymkonnect

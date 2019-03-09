@@ -11,6 +11,11 @@ export const Permissions = {
 		description: "Allow to Register a member",
 		access: "default"
 	},
+	MEMBER_GROUP_RENAME : {
+		permission: { [NAMESPACE]: "member-group|rename" },
+		description: "Rename a group",
+		access: "default"
+	},
 	MEMBER_RENEW : {
 		permission: { [NAMESPACE]: "member|renew" },
 		description: "Allow to renew a member",

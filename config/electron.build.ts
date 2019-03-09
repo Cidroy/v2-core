@@ -14,7 +14,7 @@ const config: electronPackager.Options = {
 	prune: true,
 	dir: resolve(""),
 	icon: resolve("static/icons/icon"),
-	ignore: /(^\/(\.[a-z]+|~\$[a-z]+|tsconfig|tslint|classes|package-lock|typescript|addons|README|yarn|build|bin|config|logs|src|server|static|test|dist\/web|dist\/positron))|\.gitkeep/,
+	ignore: /(^\/(\.[a-z]+|~\$[a-z]+|tsconfig|plugins|types|docs|tslint|classes|package-lock|typescript|addons|README|yarn|build|bin|config|logs|src|server|static|test|dist\/web|dist\/positron))|\.gitkeep/,
 	out: resolve("bin"),
 	overwrite: true,
 	appCopyright: "© " + (new Date()).getUTCFullYear + " " + _package.author,

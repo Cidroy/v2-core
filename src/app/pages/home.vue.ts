@@ -2,7 +2,7 @@ import { Component, Vue, Watch } from "vue-property-decorator"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/layout.vue"
 import systemInformation from "@/components/system-information.vue"
-import { NotificationStore } from "@plugins/1-core/state/notifications"
+import { NotificationStore } from "@plugins/core/state/notifications"
 import uuid from "uuid"
 import { DeviceStore } from "@plugins/gymkonnect/state/device"
 import router from "@/routes"
@@ -29,5 +29,11 @@ export default class HomePage extends Vue {
 		title: uuid(),
 		subtitle: "octavious"
 	}) }
-	private test_2() { DeviceStore.gkFPSync() }
+	private test_2() {
+		// DeviceStore.gkFPSync()
+		// @ts-ignore
+		this.$refs.focusMe.focus()
+		// @ts-ignore
+		console.log(this.$refs)
+	}
 }

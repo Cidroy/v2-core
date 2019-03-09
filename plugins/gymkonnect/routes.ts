@@ -21,7 +21,7 @@ export const Routes = {
 	MEMBER_REGISTRATION_FINALIZE: {
 		path: "/gk/member-registration-finalize",
 		name: "gk/member-registration-finalize",
-		component: () => lazyLoadView("/member/registration/finalize"),
+		component: () => lazyLoadView("/member/registration-finalize"),
 		props: true,
 	},
 	MEMBER_RENEWAL: {

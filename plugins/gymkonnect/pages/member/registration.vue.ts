@@ -51,7 +51,7 @@ export default class MemberRegistrationPage extends Vue {
 	private get allowAddPeople() { return this.usersCount < this.GROUPINGS[this.groupIndex].max }
 	private get allowDeletePeople() { return this.usersCount > this.GROUPINGS[this.groupIndex].min }
 
-	private users: { [index: string]: TMRegistration } = {}
+	private users: Record<string, TMRegistration> = {}
 	private usersCount = 0
 
 	private getIndex(indexStr: string) { return Object.keys(this.users).indexOf(indexStr) + 1 }
@@ -105,7 +105,13 @@ export default class MemberRegistrationPage extends Vue {
 	private async pay(paymentData: PaymentDetail) {
 		this.paying = true
 		let result = await Gymkonnect.Registration.makePayments(this.clientIds, this.transactionData, paymentData, this.grouping)
-		router.push({ name: Routes.MEMBER_REGISTRATION_FINALIZE.name })
+		router.push({
+			name: Routes.MEMBER_REGISTRATION_FINALIZE.name,
+			params: <any>{
+				...result,
+				users: this.users
+			}
+		})
 		this.paying = false
 	}
 

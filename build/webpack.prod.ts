@@ -39,22 +39,6 @@ const webpackProdConfig: webpack.Configuration = {
 				sourceMap: true
 			}),
 		],
-		splitChunks: {
-			name: true,
-			cacheGroups: {
-				commons: {
-					test: /[\\/]node_modules[\\/]/,
-					name: "vendors",
-					chunks: "all"
-				},
-				styles: {
-					name: "styles",
-					test: /\.css$/,
-					chunks: "all",
-					enforce: true
-				}
-			}
-		}
 	},
 	plugins: [
 		// Compress extracted CSS. We are using this plugin so that possible

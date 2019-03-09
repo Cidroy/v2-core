@@ -3,7 +3,12 @@ import json5 from "json5"
 import { Logger } from "@classes/CONSOLE"
 import os from "os"
 
-let cache
+const defaultCache = {
+	createdAt: new Date(),
+	lastModified: new Date(),
+	lastModification: "",
+}
+let cache: typeof defaultCache
 // TODO: filename based on project name
 const productName = "gymkonnect"
 export default class AppConfig {
@@ -18,12 +23,10 @@ export default class AppConfig {
 		if (process.env.NODE_ENV === "development") return "dist/appConfig.json5"
 		else return `${AppConfig.DataFolder}/${productName}.w+boson`
 	}
-	
+
 	public static get DataFolder() { return os.homedir() + `/${productName}` }
 
-	private static readonly defaultCache = {
-		lastModified: new Date(),
-	}
+	private static readonly defaultCache = defaultCache
 
 	private static get cache() { return cache || AppConfig.defaultCache }
 	private static set cache(value){ cache = value }
@@ -38,10 +41,22 @@ export default class AppConfig {
 		AppConfig.log.verbose(AppConfig.cache)
 	}
 
-	public static async Save() {
+	public static async Save(modification = "") {
 		if (AppConfig.cache === undefined) AppConfig.Initialize()
 		AppConfig.log.verbose("save")
+		AppConfig.cache.lastModified = new Date()
+		AppConfig.cache.lastModification = modification
 		writeFileSync(AppConfig.file, json5.stringify(AppConfig.cache, null, 4))
+	}
+
+	public static async has(name: string): Promise<boolean> {
+		if (AppConfig.cache === undefined) AppConfig.Initialize()
+		AppConfig.log.verbose(`get ${name}`)
+		if ((<{}>AppConfig.cache).hasOwnProperty(name)){
+			AppConfig.log.verbose("used cache")
+			return true
+		}
+		return false
 	}
 
 	public static async Get<T>(name: string, defaults?: T): Promise<T> {
@@ -61,7 +76,7 @@ export default class AppConfig {
 	public static async Set<T>(name: string, value: T): Promise<boolean> {
 		if (AppConfig.cache === undefined) AppConfig.Initialize();
 		(<{}>AppConfig.cache)[name] = value
-		await AppConfig.Save()
+		await AppConfig.Save(name)
 		return true
 	}
 

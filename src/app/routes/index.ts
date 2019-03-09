@@ -8,7 +8,7 @@ import routes from "./routes"
 import { UserStore } from "@/state/user"
 import { ApplicationStore } from "@/state/application"
 import { UserClient } from "@/classes/clients/user"
-import { PASSWORD_PREFERENCE } from "@classes/interface/IUser"
+import { PASSWORD_PREFERENCE } from "@classes/enum/misc"
 
 Vue.use(VueRouter)
 Vue.use(VueMeta, {

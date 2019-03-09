@@ -21,7 +21,7 @@
 						</v-flex>
 						<v-flex xs12 lg6 class="px-2">
 							<v-text-field color="orange darken-2" v-model="dobFormatted" @blur="dob = parseDate(dobFormatted)" @click:prepend="dobMenu = true" label="Date of Joining" placeholder="DD/MM/YYYY" prepend-icon="event" mask="##/##/####" return-masked-value persistent-hint />
-							<v-menu ref="dobMenu" :close-on-content-click="false" v-model="dobMenu" lazy transition="scale-transition" >
+							<v-menu v-model="dobMenu" ref="dobMenu" :close-on-content-click="false" lazy transition="scale-transition" >
 								<div slot="activator" data-id="dob"/>
 								<v-date-picker v-model="dob" no-title @input="dobMenu = false"  color="orange darken-2"/>
 							</v-menu>
@@ -39,7 +39,7 @@
 						</v-flex>
 
 						<v-flex xs12 class="px-2">
-							<v-text-field v-model="badgenumber" label="Member ID" placeholder="Enter or Generate Member Id" prepend-icon="fas fa-hashtag">
+							<v-text-field v-model="badgenumber" label="Badge Number" :rules="rules.memberId" placeholder="Enter or Generate Member Id" prepend-icon="fas fa-hashtag">
 								<v-fade-transition slot="append">
 									<v-btn dark :loading="loading" :disabled="loading" color="secondary" @click.native.stop="generateMemberId">Generate</v-btn>
 								</v-fade-transition>

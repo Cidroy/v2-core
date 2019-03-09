@@ -52,7 +52,30 @@ let rendererConfig: webpack.Configuration = {
 		libraryTarget: "commonjs2",
 		path: resolve("dist/electron")
 	},
-	target: "electron-renderer"
+	target: "electron-renderer",
+	optimization: {
+		splitChunks: {
+			name: true,
+			cacheGroups: {
+				vendor: {
+					test: /[\\/]node_modules[\\/]/,
+					chunks: "all",
+					name(module){
+						const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1]
+						return `vendor.${packageName.replace("@", "")}`
+					},
+					enforce: true,
+					minSize: 102400,
+				},
+				styles: {
+					name: "styles",
+					test: /\.css$/,
+					chunks: "all",
+					enforce: true
+				}
+			}
+		}
+	}
 }
 
 /**

@@ -3,8 +3,10 @@ import Layout from "@/layouts/layout.vue"
 import { Component, Vue } from "vue-property-decorator"
 import SendMessageFab from "@plugins/gymkonnect/components/send-message/fab.vue"
 import { Permissions as gymkonnect } from "@plugins/gymkonnect/permission"
-import { TMemberListTableHeader } from "@plugins/gymkonnect/classes/types/member-list"
 import { MembersListStore } from "@plugins/gymkonnect/state/member-list"
+import { USER_MODE } from "@classes/enum/user-mode"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
+import { TGQLUserMode } from "@plugins/gymkonnect/state/gk-helper"
 
 @Component({
 	// @ts-ignore
@@ -47,9 +49,9 @@ export default class Home extends Vue {
 			// FIXME: add actions
 			true ? { icon: "person", name: "Profile", action: () => { } } : false,
 			!this.tableItems[index].enrolled ? { icon: "border_horizontal", name: "Enroll", action: () => { } } : false,
-			["FREEZED", "ACTIVE",].includes(this.tableItems[index].mode) ? { iconClass: "far", icon: "fa-snowflake", name: this.tableItems[index].mode === "FREEZED" ? "Unfreeze" : "Freeze", action: () => { } } : false,
-			this.tableItems[index].mode === "PREBOOKED" ? { icon: "alarm_on", name: "Prebook Enroll", action: () => { } } : false,
-			true ? { icon: "block", name: this.tableItems[index].mode === "BLOCKED"?"Unblock":"Block", action: () => { } } : false,
+			[ USER_MODE.FREEZE , USER_MODE.ACTIVE, ].includes(this.tableItems[index].mode) ? { iconClass: "far", icon: "fa-snowflake", name: this.tableItems[index].mode === USER_MODE.FREEZE ? "Unfreeze" : "Freeze", action: () => { } } : false,
+			this.tableItems[index].mode === USER_MODE.PREBOOK ? { icon: "alarm_on", name: "Prebook Enroll", action: () => { } } : false,
+			true ? { icon: "block", name: this.tableItems[index].mode === USER_MODE.BANNED?"Unblock":"Block", action: () => { } } : false,
 		].filter( i => !!i )
 	}
 	private memberContextMenuClicked(e: MouseEvent, id: string | number) {
@@ -65,4 +67,8 @@ export default class Home extends Vue {
 	private get tableHeaders() { return MembersListStore.GK_M_MEMBERS_TABLE_HEADING }
 	private get tableItems() { return MembersListStore.GK_M_MEMBERS }
 	private get refreshing() { return MembersListStore.GK_M_MEMBERS_LOADING }
+
+	private UserMode(name: string | number){
+		return (<TGQLUserMode>GymkonnectStore.GK_USER_MODES.find(i => i.name === name)).description
+	}
 }

@@ -1,11 +1,11 @@
 import { Component, Vue } from "vue-property-decorator"
 import { ApplicationStore } from "@/state/application"
-import { Permissions } from "@plugins/1-core/permission"
+import { Permissions } from "@plugins/core/permission"
 
-import NotificationPanel from "@plugins/1-core/components/notifications.vue"
-import ProfilePanel from "@plugins/1-core/components/profile-panel.vue"
-import NavbarSearch from "@plugins/1-core/components/navbar-search.vue"
-import AppFooter from "@plugins/1-core/components/footer.vue"
+import NotificationPanel from "@plugins/core/components/notifications.vue"
+import ProfilePanel from "@plugins/core/components/profile-panel.vue"
+import NavbarSearch from "@plugins/core/components/navbar-search.vue"
+import AppFooter from "@plugins/core/components/footer.vue"
 
 @Component({
 	// @ts-ignore

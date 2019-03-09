@@ -2,12 +2,12 @@ import appConfig from "@/app.config"
 import Layout from "@/layouts/layout.vue"
 import { Component, Vue, Watch } from "vue-property-decorator"
 import logo from "@/assets/images/splash-logo.png"
-import { PASSWORD_PREFERENCE } from "@classes/interface/IUser"
+import { PASSWORD_PREFERENCE } from "@classes/enum/misc"
 import { UserStore } from "@/state/user"
 import { alert } from "@/components/toast"
 import { UserClient } from "@/classes/clients/user"
 import { Logger } from "@classes/CONSOLE"
-import { exit } from "@plugins/1-core/classes/actions"
+import { exit } from "@plugins/core/classes/actions"
 
 const Console = new Logger(`gk/${__filename}`)
 
