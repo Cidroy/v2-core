@@ -5,7 +5,10 @@
 			<v-btn @click.native.stop="test_1">Test 1</v-btn>
 			<v-btn @click.native.stop="test_2">Test 2</v-btn>
 			<v-flex xs12 md6 class="text-xs-center centered">
-				<img id="logo" max-width="100%" max-height="100px" class="logo" src="~@/assets/images/logo.png" alt="Vuetifyjs">
+				<img height="100px" src="~@/assets/images/logo.png" alt="Vuetifyjs" />
+			</v-flex>
+			<v-flex xs12>
+				<v-text-field label="looky looky i am the crooky" ref="focusMe"/>
 			</v-flex>
 			<v-flex xs10 class="mt-3">
 				<v-card>
@@ -42,7 +45,7 @@
 		</v-layout>
 		<v-layout row wrap justify-center id="wrapper">
 			<v-flex xs12 md6 class="text-xs-center centered">
-				<img id="logo" max-width="100%" max-height="100px" class="logo" src="~@/assets/images/logo.png" alt="Vuetifyjs">
+				<img height="100px" src="~@/assets/images/logo.png" alt="Vuetifyjs" />
 			</v-flex>
 			<v-flex xs10 class="mt-3">
 				<v-card>
@@ -79,7 +82,7 @@
 		</v-layout>
 		<v-layout row wrap justify-center id="wrapper">
 			<v-flex xs12 md6 class="text-xs-center centered">
-				<img id="logo" max-width="100%" max-height="100px" class="logo" src="~@/assets/images/logo.png" alt="Vuetifyjs">
+				<img height="100px" src="~@/assets/images/logo.png" alt="Vuetifyjs" />
 			</v-flex>
 			<v-flex xs10 class="mt-3">
 				<v-card>

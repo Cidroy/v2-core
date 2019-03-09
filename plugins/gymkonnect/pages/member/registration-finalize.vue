@@ -16,14 +16,16 @@
 		</v-toolbar>
 		<v-alert :value="true" class="white--text green font-weight-bold" type="success" dark> {{ usersCount }} New Member{{ usersCount>1?"s":"" }} Registered </v-alert>
 		<v-container>
-			<v-card v-if="Group && $permission(PERMISSIONS.gymkonnect.MEMBER_GROUP_RENAME)" class="mb-4 elevation-5">
-				<v-layout row wrap>
-					<v-flex xs12>
-						<v-text-field v-model="Group.name" label="Group Name" class="px-4" color="orange darken-2">
-							<v-icon slot="prepend-inner" class="pt-2" left >people</v-icon>
+			<v-card class="mb-4 elevation-5">
+				<v-layout row wrap class="px-4">
+					<v-flex xs12 v-if="Group && $permission(PERMISSIONS.gymkonnect.MEMBER_GROUP_RENAME)">
+						<v-text-field v-model="Group.name" label="Group Name" class="px-2" color="orange darken-2">
+							<v-icon slot="prepend" class="pt-2" >people</v-icon>
 							<v-btn @click="renameGroup" block outline slot="append"> <v-icon>save</v-icon> Rename </v-btn>
 						</v-text-field>
 					</v-flex>
+					<v-flex xs6 class="px-2"> <v-text-field :value="formatDate(transactions[0].start.split('T')[0])" prepend-icon="event" label="Start Date" readonly tabindex="-1" color="orange darken-2" /></v-flex>
+					<v-flex xs6 class="px-2"> <v-text-field :value="formatDate(transactions[0].endExtendedDate.split('T')[0])" prepend-icon="event" label="End Date" readonly tabindex="-1" color="orange darken-2" /></v-flex>
 				</v-layout>
 			</v-card>
 			<template v-for="(user, index) in Users">

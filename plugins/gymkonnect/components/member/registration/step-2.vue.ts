@@ -4,7 +4,6 @@ import IAddress from "@classes/interface/IAddress"
 import AddressStore from "@plugins/gymkonnect/state/addresses"
 import empty from "@/components/empty.vue"
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
-import moment from "moment"
 
 @Component({
 	// @ts-ignore
@@ -118,10 +117,14 @@ export default class MRegistrationStep2 extends Vue {
 	@Emit("nextStep") public nextStep() { return true }
 	@Emit("cancel") public cancel() { return true }
 
-	private autofocus = false
+	private focused = false
 	private focus(isVisible: boolean) {
-		// @ts-ignore
-		this.autofocus = isVisible
+		if(this.focused) return
+		if(isVisible){
+			// @ts-ignore
+			this.$refs.autofocus.focus()
+			this.focused = true
+		}
 	}
 
 	@Prop({ type: Boolean, default: false }) public saving !: boolean

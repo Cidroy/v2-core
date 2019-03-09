@@ -16,6 +16,7 @@ import Gymkonnect from "@plugins/gymkonnect/classes/clients"
 	},
 	created() {
 		this.onValueChange()
+		this.generateMemberId()
 	}
 })
 // @ts-ignore
@@ -36,7 +37,7 @@ export default class MRegistrationStep1 extends Vue {
 
 	private dob = new Date().toISOString().substr(0, 10)
 	private dobFormatted = this.formatDate(this.dob)
-	private dobMenu = true
+	private dobMenu = false
 	@Watch("dob") private onDobChanged() { this.dobFormatted = this.formatDate(this.dob) }
 
 	private occupation: string | number = GymkonnectStore.GK_OCCUPATIONS[0].id
@@ -50,6 +51,7 @@ export default class MRegistrationStep1 extends Vue {
 		return {
 			firstName: [v => !!v || "First Name is required",],
 			idNumber: [v => !!v || "ID Number is required",],
+			memberId: [v => v!==0 || "Please generate badgenumber",],
 		}
 	}
 

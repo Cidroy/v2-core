@@ -1,10 +1,10 @@
 <template>
-	<v-card color="transparent">
+	<v-card color="transparent" v-observe-visibility="focus">
 		<v-layout row wrap>
 			<v-form lazy-validation ref="form" v-model="formValid">
 				<v-layout row wrap>
 					<v-flex xs12 lg6 class="px-2">
-						<v-text-field prepend-icon="fas fa-mobile-alt" v-model="mobile" :rules="rules.mobile" label="Mobile Number" :mask="mask.mobile" :prefix="mobilePrefix" required ref="autofocus" color="orange darken-2" autofocus v-observe-visibility="focus">
+						<v-text-field prepend-icon="fas fa-mobile-alt" v-model="mobile" :rules="rules.mobile" label="Mobile Number" :mask="mask.mobile" :prefix="mobilePrefix" required ref="autofocus" color="orange darken-2" autofocus>
 							<v-fade-transition slot="append" leave-absolute >
 								<v-progress-circular v-if="validatingMobile" size="15" color="orange darken-2" indeterminate />
 							</v-fade-transition>

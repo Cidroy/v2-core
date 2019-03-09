@@ -59,6 +59,8 @@ export const Health = {
 
 	async addInitialHealth(id: string | number, height: number, weight: number, bodyType: string | number, bloodGroup: string | number): Promise<string|number>{
 		try {
+			height = typeof height === "string"? parseFloat(height): height
+			weight = typeof weight === "string"? parseFloat(weight): weight
 			let response = await GQLClient.mutate<{ initialHealth: { id: string | number } }>(
 				gql`
 					mutation addGymUserHealth(

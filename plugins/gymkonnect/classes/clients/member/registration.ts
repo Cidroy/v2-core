@@ -158,7 +158,8 @@ async function linkAddressUser(address: string | number, user: string | number):
 async function addMember(userData: TMRegistration): Promise<string|number> {
 	type TResult = {
 		user: {
-			id: string,
+			id: string | number,
+			badgenumber: string | number,
 			createdAt: string,
 			author: string,
 		}
@@ -186,6 +187,7 @@ async function addMember(userData: TMRegistration): Promise<string|number> {
 					$middleName: String
 					$firstName: String!
 					$mobile: String!
+					$badgenumber: String
 				){
 					user: addUser(
 						emergencyName: $emergencyName,
@@ -205,8 +207,10 @@ async function addMember(userData: TMRegistration): Promise<string|number> {
 						middleName: $middleName,
 						firstName: $firstName,
 						mobile: $mobile,
+						badgenumber: $badgenumber,
 					){
 						id
+						badgenumber
 						createdAt
 						author
 					}
@@ -231,6 +235,7 @@ async function addMember(userData: TMRegistration): Promise<string|number> {
 				middleName: userData.middleName,
 				firstName: userData.firstName,
 				mobile: userData.mobile,
+				badgenumber: userData.badgenumber.toString()
 			}
 		)
 		let [response, address,] = await Promise.all([
@@ -661,11 +666,11 @@ async function makePayments(
 		return {
 			id: gymUserID,
 			...transactionResult,
-			paymentId
+			paymentId,
 		}
 	}
 
-	let promises: Promise<any>[] = []
+	let promises: ReturnType<typeof promiseMaker>[] = []
 	clients.forEach(id => promises.push(promiseMaker(id)) )
 	let group : {
 		id: string | number

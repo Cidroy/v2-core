@@ -29,5 +29,11 @@ export default class HomePage extends Vue {
 		title: uuid(),
 		subtitle: "octavious"
 	}) }
-	private test_2() { DeviceStore.gkFPSync() }
+	private test_2() {
+		// DeviceStore.gkFPSync()
+		// @ts-ignore
+		this.$refs.focusMe.focus()
+		// @ts-ignore
+		console.log(this.$refs)
+	}
 }
