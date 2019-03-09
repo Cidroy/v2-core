@@ -8,10 +8,13 @@ import Utils from "@classes/functions/utils"
 import ZonesAvailable from "@positron/models/zonesAvailable"
 import GymUsers from "@positron/models/gymUsers"
 import GymUserMode from "@positron/models/gymUserMode"
+import { Logger } from "@classes/CONSOLE"
 
-export async function getUserIdForWdmsId(userId: number, zoneId: number): Promise<number>{
+const Console = new Logger(`gql-resolver/user`)
+export async function getWdmsIdForUserId(userId: number, zoneId: number): Promise<number>{
 	try{
 		let user = await User.find({ where: { id: userId } })
+		if(user.length == 0) throw "User not added yet"
 		let wdmsId = user[0].wdmsId
 		if(wdmsId === undefined) throw "user is not added in wdms"
 		let index = wdmsId.findIndex((element) => {
@@ -142,19 +145,21 @@ export default class UserResolver{
 		return user
 	}
 
-	@GQL.Query(returns => Boolean)
+	@GQL.Mutation(returns => Boolean)
 	public async enrollUser(
 		@GQL.Arg("userId") userId: number,
 	){
 		try{
 			let zone = await ZonesAvailable.find({ where: { zoneName: "Unfreezed"}})
+			if(zone.length == 0) throw "door not added"
 			let zoneID = zone[0].zoneId
-			let id = await getUserIdForWdmsId(userId, zoneID)
+			let id = await getWdmsIdForUserId(userId, zoneID)
 			if(!id) throw "user not added to wdms"
 			Member.ScanFingerprint(id.toString())
 			return true
 		}
-		catch(err){
+		catch(error){
+			Console.error(error)
 			return false
 		}
 	}

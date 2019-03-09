@@ -63,13 +63,15 @@ export default class GymUserHealthResolver {
 	public async addGymUserHealth(
 		@GQL.Arg("weight") weight: number,
 		@GQL.Arg("height") height: number,
-		@GQL.Arg("bodyType") bodyType: number
+		@GQL.Arg("bodyType") bodyType: number,
+		@GQL.Arg("bloodGroup", { nullable: true }) bloodGroup: number
 		
 	) {
 		let gymUserHealth = new GymUserHealth()
 		gymUserHealth.weight = weight
 		gymUserHealth.height = height
 		gymUserHealth.bodyType = bodyType
+		bloodGroup && (gymUserHealth.bodyType = bodyType)
 
 		await gymUserHealth.save()
 		return gymUserHealth

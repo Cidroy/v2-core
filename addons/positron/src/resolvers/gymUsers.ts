@@ -3,9 +3,16 @@ import GymUsers from "@positron/models/gymUsers"
 import GymUserMode from "@positron/models/gymUserMode"
 import User from "@positron/models/user"
 import Transaction from "@positron/models/transaction"
+import { Logger } from "@classes/CONSOLE"
 
+const Console = new Logger(`gql-resolver/gymUsers`)
 @GQL.Resolver(of => GymUsers)
 export default class GymUsersResolver {
+	@GQL.FieldResolver(returns => Boolean, { nullable: true })
+	public async enrolled(@GQL.Root() gymUser: GymUsers) {
+		// let user =  User.findOne({ where: { active: 1, id: gymUser.userId } })
+		return Math.random() >= 0.5
+	}
 	@GQL.FieldResolver(returns => User, { nullable: true })
 	public async user(@GQL.Root() gymUser: GymUsers) {
 		return User.findOne({ where: { active: 1, id: gymUser.userId } })
@@ -14,14 +21,22 @@ export default class GymUsersResolver {
 	public async mode(@GQL.Root() gymUser: GymUsers) {
 		return GymUserMode.findOne({ where: { active: 1, id: gymUser.mode } })
 	}
+
 	@GQL.FieldResolver(returns => Transaction, { nullable: true })
 	public async transaction(@GQL.Root() gymUser: GymUsers) {
 		return Transaction.findOne({ where: { active: 1, id: gymUser.transaction } })
 	}
-
+	
 	@GQL.Query(returns => [GymUsers,])
 	public async gymUsers() {
 		return GymUsers.find({ where: { active: 1 } })
+	}
+
+	@GQL.Query(returns => GymUsers)
+	public async gymUserDetails(
+		@GQL.Arg("userId") userId: number
+	) {
+		return GymUsers.findOne({ where: { active: 1, userId: userId} })
 	}
 
 	@GQL.Mutation(returns => Boolean)
@@ -66,10 +81,11 @@ export default class GymUsersResolver {
 		@GQL.Arg("agreement", { nullable: true }) agreement?: number,
 		@GQL.Arg("doj", { nullable: true }) doj?: Date,
 	) {
-		let userMode = await GymUserMode.find({where: {name: "TEMPORARY"}})
+		let userMode = await GymUserMode.findOne({where: {name: "TEMPORARY"}})
+		if(userMode == undefined) throw " Mode doesn't exist"
 		let gymUsers = new GymUsers()
 		gymUsers.userId = userId
-		gymUsers.mode = (mode) ? mode : userMode[0].id
+		gymUsers.mode = (mode) ? mode : userMode.id
 		if(isGrouped)gymUsers.isGrouped = isGrouped
 		if (enquiryInitial) gymUsers.enquiryInitial = enquiryInitial
 		if (enquiryRecent) gymUsers.enquiryRecent = enquiryRecent

@@ -21,5 +21,9 @@ export default class GymUserHealth extends Base implements IGymUserHealth {
 	@GQL.Field(type => Number)
 	@DB.Column("integer")
 	public bodyType!: number
+
+	@GQL.Field(type => Number, { nullable: true })
+	@DB.Column("integer", {nullable: true})
+	public bloodGroup?: number
 	
 }

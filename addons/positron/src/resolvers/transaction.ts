@@ -1,19 +1,28 @@
 import * as GQL from "type-graphql"
 import Transaction from "@positron/models/transaction"
 import Payment from "@positron/models/payments"
-import * as DB from "typeorm"
 import GymUsers from "@positron/models/gymUsers"
 import GymUserMode from "@positron/models/gymUserMode"
 import GymPackage from "@positron/models/gymPackage"
 import moment = require("moment")
-import User from "@positron/models/user"
+import MembershipType from "@positron/models/membershipType"
+import { Logger } from "@classes/CONSOLE"
 
+const Console = new Logger(`gql-resolver/transaction`)
 @GQL.Resolver(of => Transaction)
 export default class TransactionResolver{
 
 	@GQL.Query(returns => [Transaction,])
 	public async transactions() {
 		return Transaction.find({ where: { active: 1 } })
+	}
+	@GQL.FieldResolver(returns => MembershipType, { nullable: true })
+	public async membership(@GQL.Root() transaction: Transaction) {
+		return MembershipType.findOne({ where: { active: 1, id: transaction.membershipType } })
+	}
+	@GQL.FieldResolver(returns => GymPackage, { nullable: true })
+	public async packagesType(@GQL.Root() transaction: Transaction) {
+		return GymPackage.findOne({ where: { active: 1, id: transaction.packages } })
 	}
 
 	@GQL.Mutation(returns => Transaction)
@@ -79,7 +88,7 @@ export default class TransactionResolver{
 	){
 		try{
 			let gymuser = await GymUsers.find({ where: { userId: userId } })
-			if (gymuser === undefined) throw "Invalid user"
+			if (gymuser.length == 0) throw "Invalid user"
 			let gymUserId = gymuser[0].id
 			
 			let transaction = await Transaction.createQueryBuilder()

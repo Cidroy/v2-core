@@ -2,6 +2,7 @@ import * as GQL from "type-graphql"
 import * as DB from "typeorm"
 import LockedBadgenumbers from "@positron/models/lockedBadgenumbers"
 import LockedBadgenumbersResolver from "@positron/resolvers/lockedBadgenumbers"
+import Utils from "@classes/functions/utils"
 
 type user= {
 	name: string,
@@ -16,16 +17,19 @@ export default class miscResolver {
 	) {
 		try{
 			let entityManager = DB.getManager()
-			let userinfo = await entityManager.query("select 1 from userinfo where badgenumber= ?", [badgenumber,])
+			console.log(badgenumber)
+			let userinfo = await entityManager.query("select 1 from userinfo where badgenumber= ?", [Utils.appendZeroesToBadgenumber(badgenumber.toString()),])
 			// FIXME: delete from lockedbadgenumber here
 			let lockedBadgenumber =await LockedBadgenumbers.find({ where: { badgenumber: badgenumber } })
-			let isBadgenumberAvailable = userinfo === undefined && lockedBadgenumber === undefined
-			return isBadgenumberAvailable
+			console.log(userinfo !== undefined)
+			console.log(lockedBadgenumber.length == 0)
+			let isBadgenumberAvailable = userinfo !== undefined && (lockedBadgenumber.length == 0)
 			if(isBadgenumberAvailable){
 				let badgenumberToBeLocked = new LockedBadgenumbers()
 				badgenumberToBeLocked.badgenumber = badgenumber
 				await badgenumberToBeLocked.save()
 			}
+			return isBadgenumberAvailable
 		}
 		catch(error){
 			console.log(error)

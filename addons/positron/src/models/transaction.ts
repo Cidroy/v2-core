@@ -15,15 +15,15 @@ export default class Transaction extends Base implements ITransaction{
 	public mode?: number
 
 	@GQL.Field(type => Date)
-	@DB.Column("date")
+	@DB.Column("datetime")
 	public start!: Date
 
 	@GQL.Field(type => Date)
-	@DB.Column("date")
+	@DB.Column("datetime")
 	public end!: Date
 
 	@GQL.Field(type => Date)
-	@DB.Column("date")
+	@DB.Column("datetime")
 	public endExtendedDate!: Date
 
 	@GQL.Field(type => Number, { nullable: true })

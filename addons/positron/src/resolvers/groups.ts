@@ -42,8 +42,8 @@ export default class GroupsResolver {
 			return group
 		}
 		catch(error){
-			return {}
-	}
+			throw error
+		}
 	}
 	@GQL.Mutation(returns => Groups)
 	public async addGroups(

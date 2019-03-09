@@ -4,4 +4,5 @@ export default interface IGymUserHealth extends IEntityBase {
 	weight: number
 	height: number
 	bodyType: number
+	bloodGroup?: number
 }
