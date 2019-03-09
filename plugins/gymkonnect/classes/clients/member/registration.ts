@@ -629,14 +629,14 @@ async function makePayments(
 	groupingId: string|number
 ){
 	let isGrouped = !!clients.length
-	const promiseMaker = async (gymUser: string|number) => {
+	const promiseMaker = async (gymUserID: string|number) => {
 		let transactionPromise = addTransaction({
 			membershipType: transactionData.membershipType,
 			offer: paymentData.offer,
 			start: moment(transactionData.doj).toDate(),
 			packages: transactionData.packageType,
 			packageMagnitude: transactionData.packageMagnitude,
-			gymUser,
+			gymUser: gymUserID,
 		})
 		let paymentPromise = addPayment({
 			amount: paymentData.amount,
@@ -645,7 +645,7 @@ async function makePayments(
 		})
 		let gymUserPromise = addGymUser({
 			doj: moment(transactionData.doj).toDate(),
-			userId: gymUser,
+			userId: gymUserID,
 			referredOther: transactionData.utmSource || "",
 			isGrouped,
 		})
@@ -656,10 +656,10 @@ async function makePayments(
 		])
 		let [ linkedTransactionPay, linkedTransactionUser, ] = await Promise.all([
 			linkTransactionPay(transactionResult.id, paymentId),
-			linkTransactionUser(transactionResult.id, gymUser),
+			linkTransactionUser(transactionResult.id, gymUserID),
 		])
 		return {
-			id: gymUser,
+			id: gymUserID,
 			...transactionResult,
 			paymentId
 		}
@@ -673,14 +673,42 @@ async function makePayments(
 		population: number
 	} | null = null
 	if(isGrouped) group = await createGroupGymUsers(clients, groupingId)
-	let result = await Promise.all(promises)
-	return [ result, group, ]
+	let transactions = await Promise.all(promises)
+	return { transactions, group, }
 }
 
-async function scanFingerprint(clientId: string | number): Promise<boolean>{
-	await sleep(500)
-	alert("Please look for <h1>0000000</h1> and enroll", "info")
-	return true
+async function scanFingerprint(userId: string | number):Promise<boolean>{
+	try {
+		let userResponse = await GQLClient.query<{
+			user: {
+				id: string | number,
+				user: { badgenumber: string | number, }
+			}
+		}>(
+			gql`
+				query gymUserDetails( $userId: Float! ){
+					user: gymUserDetails( userId: $userId ){
+						id
+						user{ badgenumber }
+					}
+				}
+			`,
+			{ userId, }
+		)
+		if (userResponse.errors) throw userResponse.errors
+		if (!userResponse.data) throw "Unable to start scanning fingerprint. Invalid User details."
+		let response = await GQLClient.mutate<{ scanning: boolean }>(
+			gql`mutation enrollUser( $userId: Float! ){ scanning: enrollUser(userId: $userId) }`,
+			{ userId, }
+		)
+		if (response.errors) throw response.errors
+		if (!response.data) throw "Unable to start scanning fingerprint"
+		alert(`Please look for <h1>${userResponse.data.user.user.badgenumber}</h1> and enroll`, "success")
+		return response.data.scanning
+	} catch (error) {
+		Console.error(error)
+		throw error.toString()
+	}
 }
 
 export const Registration = {

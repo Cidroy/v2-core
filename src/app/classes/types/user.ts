@@ -1,4 +1,4 @@
-import { PASSWORD_PREFERENCE } from "@classes/interface/IUser"
+import { PASSWORD_PREFERENCE } from "@classes/enum/misc"
 
 export type TUserStoreUsers = {
 	name: string,

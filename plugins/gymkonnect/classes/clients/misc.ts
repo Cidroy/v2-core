@@ -1,6 +1,5 @@
 import GQLClient, { gql } from "@/utils/graphql"
 import { Logger } from "@classes/CONSOLE"
-import { sleep } from "@classes/misc"
 
 let Console = new Logger("gk-client/registration")
 
@@ -56,10 +55,63 @@ export async function existsMobile(mobile: string): Promise<boolean> {
 	}
 }
 
-export class Health {
-	public static async addInitialHealth(id: string | number, height: number, weight: number, bodyType: string | number, bloodGroup: string | number): Promise<string|number>{
-		await sleep(2000)
-		// throw "Unable to save Health"
-		return 1
+export const Health = {
+
+	async addInitialHealth(id: string | number, height: number, weight: number, bodyType: string | number, bloodGroup: string | number): Promise<string|number>{
+		try {
+			let response = await GQLClient.mutate<{ initialHealth: { id: string | number } }>(
+				gql`
+					mutation addGymUserHealth(
+						$bloodGroup: Float
+						$bodyType: Float!
+						$height: Float!
+						$weight: Float!
+					){
+						initialHealth: addGymUserHealth(
+							bloodGroup: $bloodGroup
+							bodyType: $bodyType
+							height: $height
+							weight: $weight
+						){
+							id
+						}
+					}
+				`,
+				{
+					bloodGroup,
+					bodyType,
+					height,
+					weight,
+				}
+			)
+			if (response.errors) throw response.errors
+			if (!response.data) throw "Unable to Add Initial Health Details"
+
+			let linked = await GQLClient.mutate<{ linked: boolean }>(
+				gql`
+					mutation linkHealthGymUser(
+						$healthId: Float!
+						$userId: Float!
+					){
+						linked: linkHealthGymUser(
+							healthId: $healthId
+							userId: $userId
+						)
+					}
+				`,
+				{
+					healthId: response.data.initialHealth.id,
+					userId: id,
+				}
+			)
+			if (linked.errors) throw linked.errors
+			if (!linked.data) throw "Unable to Link Health Details to the User"
+
+			return response.data.initialHealth.id
+		} catch (error) {
+			Console.error(error)
+			throw error.toString()
+		}
 	}
+
 }

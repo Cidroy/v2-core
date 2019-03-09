@@ -1,4 +1,4 @@
-import { PASSWORD_PREFERENCE } from "@classes/interface/IUser"
+import { PASSWORD_PREFERENCE } from "@classes/enum/misc"
 import { UserStore } from "@/state/user"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
 import { ApplicationStore } from "@/state/application"
