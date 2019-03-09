@@ -2,7 +2,7 @@ import { VuexModule, Module, getModule, MutationAction, Action } from "vuex-modu
 import store from "@/state/store"
 import { TMenu } from "@classes/types/application"
 import _ from "lodash"
-import { Permissions } from "@plugins/1-core/permission"
+import { Permissions } from "@plugins/core/permission"
 import { UserStore } from "./user"
 
 let appMenu: TMenu[] = []
