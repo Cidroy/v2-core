@@ -76,6 +76,7 @@ export class Positron {
 
 	private async stopServer(){
 		this.log.verbose("stop server")
+		Tunnel.Close()
 		await Promise.all([
 			this.server.httpServer.close(),
 			this.server.httpsServer.close(),
