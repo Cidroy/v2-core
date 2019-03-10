@@ -4,9 +4,11 @@ import Layout from "@/layouts/layout.vue"
 import systemInformation from "@/components/system-information.vue"
 import { NotificationStore } from "@plugins/core/state/notifications"
 import uuid from "uuid"
-import { DeviceStore } from "@plugins/gymkonnect/state/device"
-import router from "@/routes"
+import AppConfig from "@classes/appConfig"
+import Printer from "@electron/printer"
+import { Logger } from "@classes/CONSOLE"
 
+const Console = new Logger(`core/home.vue`)
 @Component({
 	// @ts-ignore
 	components: {
@@ -21,7 +23,13 @@ import router from "@/routes"
 // @ts-ignore
 export default class HomePage extends Vue {
 	private async test() {
-		router.push({name: "login"})
+		const pdfPath = AppConfig.DataFolder + "/reports/registration-blank"
+		Console.info("saving", pdfPath, Printer.TEMPLATE_EXTENSION)
+		const pdf = await Printer.renderAndPrintPDF("gymkonnect/registration-blank", pdfPath, {
+			dateTime: new Date()
+		})
+		const { shell } = require("electron")
+		Console.log({pdf, open: shell.openItem(pdf)})
 	}
 	private test_1() { NotificationStore.newNotification({
 		time: new Date(),

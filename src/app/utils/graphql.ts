@@ -99,8 +99,7 @@ export default class GQLClient{
 	public static async Initialize(force: boolean = false){
 		if(!force && client) return true
 		GQLClient.log.verbose("initialize")
-		GQLClient.config = await AppConfig.Get(GQLClient.Namespace, GQLClient.config)
-		if(!AppConfig.Has(GQLClient.Namespace)) await AppConfig.Set(GQLClient.Namespace, GQLClient.config)
+		GQLClient.config = await AppConfig.GetSet(GQLClient.Namespace, GQLClient.config)
 
 		cache = new InMemoryCache()
 		link = new BatchHttpLink({

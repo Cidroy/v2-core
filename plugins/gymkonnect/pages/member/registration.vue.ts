@@ -15,7 +15,12 @@ import paymentSingle from "@plugins/gymkonnect/components/payment/modal-single.v
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
 import router from "@/routes"
 import { Routes } from "@plugins/gymkonnect/routes"
+import Printer from "@electron/printer"
+import { Logger } from "@classes/CONSOLE"
+import AppConfig from "@classes/appConfig"
+import { sleep } from "@classes/misc"
 
+const Console = new Logger(`gymkonnect/registration.vue`)
 @Component({
 	// @ts-ignore
 	components: {
@@ -115,4 +120,21 @@ export default class MemberRegistrationPage extends Vue {
 		this.paying = false
 	}
 
+	private printingBlank = false
+	private async printBlank(){
+		this.printingBlank = true
+		try{
+			// TODO: seperate all printers
+			const pdfPath = AppConfig.DataFolder + "/reports/registration-blank"
+			Console.info("saving", pdfPath, Printer.TEMPLATE_EXTENSION)
+			const pdf = await Printer.renderAndPrintPDF("gymkonnect/registration-blank", pdfPath, {
+				dateTime: new Date()
+			})
+			const { shell } = require("electron")
+			let open = shell.openItem(pdf)
+			Console.log({pdf, open})
+			if(open) await sleep(1000)
+		} catch(error){ Console.error(error) }
+		this.printingBlank =false
+	}
 }

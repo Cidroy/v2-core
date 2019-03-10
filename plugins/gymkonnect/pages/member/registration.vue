@@ -6,7 +6,7 @@
 				<v-flex xs12 md5>
 					<v-layout justify-end>
 						<v-tooltip left>
-							<v-btn outline slot="activator"> <v-icon>print</v-icon> </v-btn>
+							<v-btn outline slot="activator" :disabled="printingBlank" :loading="printingBlank" @click.native.stop="printBlank"> <v-icon>print</v-icon> </v-btn>
 							<span>Print Blank Form</span>
 						</v-tooltip>
 					</v-layout>
