@@ -1,15 +1,38 @@
 import * as GQL from "type-graphql"
 import * as DB from "typeorm"
 import LockedBadgenumbers from "@positron/models/lockedBadgenumbers"
-import LockedBadgenumbersResolver from "@positron/resolvers/lockedBadgenumbers"
 import Utils from "@classes/functions/utils"
+import { PASSWORD_PREFERENCE } from "@classes/enum/misc"
+import { Logger } from "@classes/CONSOLE"
 
-type user= {
-	name: string,
-	badgenumber: string,
-}
+const Console = new Logger(`gql-resolver/misc`)
+GQL.registerEnumType(PASSWORD_PREFERENCE, {
+	name: "PASSWORD_PREFERENCE"
+})
+
 @GQL.Resolver()
 export default class miscResolver {
+
+	@GQL.Query(returns => Boolean)
+	public async test(
+		@GQL.Arg("username") username: string,
+		@GQL.Arg("password") password: string,
+		@GQL.Arg("preference") preference: PASSWORD_PREFERENCE,
+		@GQL.Ctx() { req: { session }, req }: GQLContext,
+	): Promise<boolean>{
+		Console.log(JSON.stringify(req, undefined, 4))
+		if(username==="1" && password==="1") session!.counter = 987
+		else throw "Invalid username or password"
+		Console.log({ username, password, preference, session, })
+		return true
+	}
+
+	@GQL.Query(returns => Number, { nullable: true })
+	public async whoAmI(
+		@GQL.Ctx() { req: { session } }: GQLContext
+	){
+		return session!.counter
+	}
 
 	@GQL.Query(returns =>String)
 	public async isBadgenumberValid(

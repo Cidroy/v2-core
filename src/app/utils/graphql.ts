@@ -1,6 +1,6 @@
 import { ApolloClient, OperationVariables, QueryOptions, MutationOptions, SubscriptionOptions, ApolloQueryResult } from "apollo-client"
 import { InMemoryCache, NormalizedCacheObject } from "apollo-cache-inmemory"
-import { HttpLink } from "apollo-link-http"
+import { BatchHttpLink } from "apollo-link-batch-http"
 import { Logger } from "@classes/CONSOLE"
 import AppConfig from "@classes/appConfig"
 import { PORTS } from "@classes/ports"
@@ -10,7 +10,7 @@ import { gql as _gql } from "apollo-server-core"
 export const gql = _gql
 
 let cache: InMemoryCache,
-	link: HttpLink,
+	link: BatchHttpLink,
 	client: ApolloClient<NormalizedCacheObject>
 
 /**
@@ -103,8 +103,9 @@ export default class GQLClient{
 		if(!AppConfig.Has(GQLClient.Namespace)) await AppConfig.Set(GQLClient.Namespace, GQLClient.config)
 
 		cache = new InMemoryCache()
-		link = new HttpLink({
-			uri: GQLClient.uri
+		link = new BatchHttpLink({
+			uri: GQLClient.uri,
+			credentials: "include",
 		})
 		client = new ApolloClient({
 			link,

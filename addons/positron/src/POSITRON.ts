@@ -50,7 +50,8 @@ export class Positron {
 			this.log.verbose("creating gql schema")
 			let apollo = new ApolloServer({
 				schema: await GQL.Schema(),
-				playground: true
+				playground: true,
+				context: GQL.Context
 			})
 			this.log.verbose("adding gql")
 			apollo.applyMiddleware({

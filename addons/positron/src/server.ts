@@ -2,6 +2,7 @@ import * as API from "@tsed/common"
 import Controllers from "@positron/controllers"
 import path from "path"
 import cors from "cors"
+import session from "express-session"
 
 import config from "../config"
 import { Logger } from "@classes/CONSOLE"
@@ -18,19 +19,18 @@ declare global {
 
 @API.ServerSettings({
 	rootDir: __dirname,
-	acceptMimes: [ "application/json", ],
+	acceptMimes: ["application/json",],
 	mount: Controllers,
 	port: config.config.port,
 	componentsScan: [],
-	uploadDir: path.resolve(__dirname , "/assets"),
+	uploadDir: path.resolve(__dirname, "/assets"),
 })
-export class Server extends API.ServerLoader{
+export class Server extends API.ServerLoader {
 	private log = new Logger("positron/api")
 
-	public $onMountingMiddlewares(){
+	public $onMountingMiddlewares() {
 		this.log.verbose("mounting middleware")
 		let bodyParser = require("body-parser")
-		const session = require("express-session")
 		const MemoryStore = require("memorystore")(session)
 
 		this
@@ -38,6 +38,7 @@ export class Server extends API.ServerLoader{
 			.use(bodyParser.urlencoded({ extended: true }))
 			.use(cors())
 			.use(session({
+				name: "positron",
 				saveUninitialized: false,
 				cookie: { maxAge: 86400000 },
 				store: new MemoryStore({ checkPeriod: 86400000, }),
@@ -46,7 +47,7 @@ export class Server extends API.ServerLoader{
 			}))
 	}
 
-	public addControllersList(list: { [K: string]: any }){
+	public addControllersList(list: { [K: string]: any }) {
 		for (const endpoint in list) {
 			if (list.hasOwnProperty(endpoint)) {
 				const controllers = list[endpoint]
@@ -55,9 +56,9 @@ export class Server extends API.ServerLoader{
 		}
 	}
 
-	public get controllersList(){ return Controllers }
+	public get controllersList() { return Controllers }
 
-	constructor(args: { verbose: boolean }){
+	constructor(args: { verbose: boolean }) {
 		super()
 		let debug = args.verbose ? args.verbose : false
 		this.log.verbose({ debug })
@@ -67,7 +68,7 @@ export class Server extends API.ServerLoader{
 				debug,
 				logRequest: debug,
 				disableRoutesSummary: !debug,
-				format: debug ? `${this.log.prefix}%[%d{[yyyy-MM-dd hh:mm:ss,SSS}] %p%] %m`: "-"
+				format: debug ? `${this.log.prefix}%[%d{[yyyy-MM-dd hh:mm:ss,SSS}] %p%] %m` : "-"
 			}
 		})
 	}

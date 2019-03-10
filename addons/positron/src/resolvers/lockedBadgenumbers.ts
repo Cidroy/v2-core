@@ -6,6 +6,7 @@ export default class LockedBadgenumbersResolver {
 
 	@GQL.Query(returns => Boolean)
 	public async LockedBadgenumbers() {
+		// FIXME: Nikhil WTF is this!
 		let result =  LockedBadgenumbers.find({ where: { badgenumber: "9" } })
 		return result !== undefined
 	}

@@ -85,6 +85,10 @@ export default class GQL{
 		GymUserHealthResolver,
 	]
 
+	private static Loaders = {
+		// FIXME: data loaders here
+	}
+
 	public static async Schema(){
 		try {
 			return await TGQL.buildSchema({
@@ -99,4 +103,17 @@ export default class GQL{
 
 	// FIXME: type checks are incorrect
 	private static authChecker: TGQL.AuthChecker<string> = ({ root, args, context, info }, roles) => Permission(<any>roles)
+
+	public static Context({ req, res }: { req: Express.Request, res: Express.Response }){
+		return {
+			req,
+			res,
+			session: req.session,
+			loaders: GQL.Loaders,
+		}
+	}
+}
+
+declare global {
+	interface GQLContext extends ReturnType<typeof GQL.Context>{}
 }
