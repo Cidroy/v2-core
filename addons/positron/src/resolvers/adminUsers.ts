@@ -23,6 +23,11 @@ export default class AdminUsersResolver {
 		}
 		
 	}
+	@GQL.Query(returns => Boolean)
+	public async logout(
+	) {
+		return true
+	}
 	
 	@GQL.Mutation(returns => AdminUsers)
 	public async addAdminUsers(
