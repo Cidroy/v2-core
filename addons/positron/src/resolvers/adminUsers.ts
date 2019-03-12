@@ -1,7 +1,9 @@
 import * as GQL from "type-graphql"
 import AdminUsers from "@positron/models/adminUsers"
 import { PASSWORD_PREFERENCE } from "@classes/enum/misc"
+import { Logger } from "@classes/CONSOLE"
 
+const Console = new Logger(`gql-resolvers/admin-users`)
 @GQL.Resolver(of => AdminUsers)
 export default class AdminUsersResolver {
 
@@ -9,26 +11,39 @@ export default class AdminUsersResolver {
 	public async loginUsers() {
 		return AdminUsers.find({ where: { active: 1 } })
 	}
+
 	@GQL.Query(returns => Boolean)
 	public async login(
 		@GQL.Arg("username") username: string,
 		@GQL.Arg("password", { nullable: true }) password: string,
-		@GQL.Arg("pin", { nullable: true }) pin: string,
-		@GQL.Arg("type", {nullable: false}) type: PASSWORD_PREFERENCE,
+		@GQL.Arg("type", type => PASSWORD_PREFERENCE) type: PASSWORD_PREFERENCE,
+		@GQL.Ctx() { session } : GQLContext
 	) {
-		if(type == PASSWORD_PREFERENCE.PASSWORD){
-			return undefined !== await AdminUsers.findOne({ where: { active: 1, password: password , username: username} })
-		}else{
-			return undefined !== await AdminUsers.findOne({ where: { active: 1, pin: pin, username: username } })
-		}
-		
+		let user = await AdminUsers.findOne({
+			where: {
+				active: 1,
+				username,
+				[type.toLowerCase()]: password,
+			},
+		})
+		if (!user) throw `Invalid Username or ${type.toLowerCase()}`
+		session.username = user.username
+		return true
 	}
+
+	@GQL.Query(returns => String, { nullable: true })
+	public async whoAmI(
+		@GQL.Ctx() ctx : GQLContext
+	){
+		return ctx.session!.username
+	}
+
 	@GQL.Query(returns => Boolean)
 	public async logout(
 	) {
 		return true
 	}
-	
+
 	@GQL.Mutation(returns => AdminUsers)
 	public async addAdminUsers(
 		@GQL.Arg("userId") userId: number,

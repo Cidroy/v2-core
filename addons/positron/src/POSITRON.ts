@@ -40,6 +40,7 @@ export class Positron {
 
 	private config = {
 		verbose: false,
+		id: "none",
 		version,
 	}
 
@@ -47,17 +48,8 @@ export class Positron {
 
 	private async startServer() {
 		if(Database.Connected){
-			this.log.verbose("creating gql schema")
-			let apollo = new ApolloServer({
-				schema: await GQL.Schema(),
-				playground: true,
-				context: GQL.Context
-			})
 			this.log.verbose("adding gql")
-			apollo.applyMiddleware({
-				path: "/gql",
-				app: this.server.expressApp,
-			})
+			this.server.addMiddleware(await GQL.Middleware())
 		}
 		this.log.verbose("starting server")
 		let [ allowTunnel, ] = await Promise.all([
@@ -132,15 +124,23 @@ export class Positron {
 
 	public static Neutron: Neutron
 
-	constructor(args: any) {
-		this.log = new Logger(this.Namespace)
+	constructor(args: PositronConstructorOptions) {
+		this.log = new Logger(`core#${args.id}/positron`)
 		this.log.info("new instance")
 		this.log.info({ args })
 		this.config.verbose = args.verbose?args.verbose: this.config.verbose
+		this.config.id = args.id
 		Logger.Verbose = this.config.verbose
 
 		this.server = new Server(this.config)
 		Positron.Neutron = new Neutron(this.config)
 		this.server.addControllersList(Positron.Neutron.Server.controllersList)
+	}
+}
+
+declare global {
+	type PositronConstructorOptions = {
+		verbose: boolean,
+		id: string,
 	}
 }

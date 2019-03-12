@@ -6,14 +6,19 @@ import session from "express-session"
 
 import config from "../config"
 import { Logger } from "@classes/CONSOLE"
+import uuid from "uuid"
+
+const DefaultSession = {
+	id: "",
+	counter: 0,
+	username: "Mr. Nobody",
+}
+
+type TDefaultSession = typeof DefaultSession
 
 declare global {
 	namespace Express {
-		interface Session {
-			// FIXME: make this a dynamic implementation
-			id: string
-			counter: number
-		}
+		interface Session extends TDefaultSession{}
 	}
 }
 
@@ -26,7 +31,10 @@ declare global {
 	uploadDir: path.resolve(__dirname, "/assets"),
 })
 export class Server extends API.ServerLoader {
-	private log = new Logger("positron/api")
+	private log: Logger
+
+	private middlewares: any[] = []
+	public addMiddleware(middleware: any){ this.middlewares.push(middleware) }
 
 	public $onMountingMiddlewares() {
 		this.log.verbose("mounting middleware")
@@ -39,12 +47,14 @@ export class Server extends API.ServerLoader {
 			.use(cors())
 			.use(session({
 				name: "positron",
-				saveUninitialized: false,
+				saveUninitialized: true,
 				cookie: { maxAge: 86400000 },
 				store: new MemoryStore({ checkPeriod: 86400000, }),
 				// FIXME: use some sort of config
 				secret: "positron-server"
 			}))
+
+		this.middlewares.forEach(middleware => this.use(middleware))
 	}
 
 	public addControllersList(list: { [K: string]: any }) {
@@ -58,9 +68,11 @@ export class Server extends API.ServerLoader {
 
 	public get controllersList() { return Controllers }
 
-	constructor(args: { verbose: boolean }) {
+	constructor(args: { verbose: boolean, id?: string }) {
 		super()
 		let debug = args.verbose ? args.verbose : false
+		let id = args.id || uuid()
+		this.log = new Logger(`api#${id}/positron`)
 		this.log.verbose({ debug })
 		this.setSettings({
 			debug,
@@ -68,8 +80,14 @@ export class Server extends API.ServerLoader {
 				debug,
 				logRequest: debug,
 				disableRoutesSummary: !debug,
-				format: debug ? `${this.log.prefix}%[%d{[yyyy-MM-dd hh:mm:ss,SSS}] %p%] %m` : "-"
+				format: debug ? `${this.log.prefix.replace(" >>> ", " ")}%[%d{[yyyy-MM-dd hh:mm:ss,SSS}] %p%] %m >>> ` : "-"
 			}
+		})
+
+		// Set default session
+		this.addMiddleware((req: Express.Request, res: Express.Response, next: Express.NextFunction)=>{
+			if(!req.session) req.session = <Express.Session>DefaultSession
+			next()
 		})
 	}
 }

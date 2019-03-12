@@ -1,5 +1,6 @@
 import { Positron } from "@positron/POSITRON"
 import { Logger } from "@classes/CONSOLE"
+import uuid from "uuid"
 
 export class MainProcess {
 	private static positron: Positron
@@ -9,6 +10,7 @@ export class MainProcess {
 	public static async main(args) {
 		this.log.info("main()")
 		MainProcess.args = args
+		args["id"] = uuid().substr(0, 10)
 		MainProcess.positron = new Positron(args)
 		MainProcess.positron.main()
 		this.log.okay("main()")
@@ -19,14 +21,14 @@ export class MainProcess {
 		await MainProcess.positron.destroy()
 		this.log.okay("destroy")
 	}
-	
+
 	public static async restart() {
 		this.log.info("restart")
 		await MainProcess.destroy()
 		await MainProcess.main(MainProcess.args)
 		this.log.okay("restart")
 	}
-	
+
 	public static async shutdown() {
 		this.log.info("shutdown")
 		try { MainProcess.destroy() } catch (error) { MainProcess.log.error(error) }

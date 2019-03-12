@@ -1,4 +1,8 @@
 import * as TGQL from "type-graphql"
+import { ApolloServer } from "apollo-server-express"
+import express from "express"
+import { Logger } from "@classes/CONSOLE"
+
 import OptionsResolver from "@positron/resolvers/options"
 import UserResolver from "@positron/resolvers/user"
 import TransactionResolver from "@positron/resolvers/transaction"
@@ -41,6 +45,7 @@ import GymOffersLogicResolver from "@positron/resolvers/gymOffersLogic"
 import AdminUsersResolver from "@positron/resolvers/adminUsers"
 import GymUserHealthResolver from "@positron/resolvers/gymUserHealth"
 
+const Console = new Logger(`gql/positron`)
 export default class GQL{
 	private static Resolvers = [
 		OptionsResolver,
@@ -89,6 +94,8 @@ export default class GQL{
 		// FIXME: data loaders here
 	}
 
+	private static get URI(){ return "/gql" }
+
 	public static async Schema(){
 		try {
 			return await TGQL.buildSchema({
@@ -96,7 +103,7 @@ export default class GQL{
 				authChecker: GQL.authChecker
 			})
 		} catch (error) {
-			console.error("GraphQL Schema generation failed", error)
+			Console.error("GraphQL Schema generation failed", error)
 			throw "GraphQL Schema generation failed"
 		}
 	}
@@ -104,13 +111,30 @@ export default class GQL{
 	// FIXME: type checks are incorrect
 	private static authChecker: TGQL.AuthChecker<string> = ({ root, args, context, info }, roles) => Permission(<any>roles)
 
-	public static Context({ req, res }: { req: Express.Request, res: Express.Response }){
+	public static Context({ req }: { req: Express.Request }){
+		const session: Express.Session = req.session!
 		return {
 			req,
-			res,
-			session: req.session,
+			session,
 			loaders: GQL.Loaders,
 		}
+	}
+
+	public static async Middleware(){
+		Console.verbose("creating gql schema")
+		let apollo = new ApolloServer({
+			schema: await GQL.Schema(),
+			context: GQL.Context,
+			playground: true,
+			formatResponse(response: any){ Console.verbose("response", response); return response },
+			formatError(error: any){ Console.error(error); return error },
+		})
+		let app = express()
+		apollo.applyMiddleware({
+			app,
+			path: GQL.URI,
+		})
+		return app
 	}
 }
 

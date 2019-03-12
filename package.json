@@ -8,7 +8,7 @@
 	"scripts": {
 		"docs:positron": "cd addons/positron/docs && gitbook serve",
 		"dev:positron-webpack": "ts-node -r tsconfig-paths/register addons/positron/build/dev.ts",
-		"dev:positron": "nodemon --verbose --config addons/positron/nodemon.json addons/positron/src/index.dev.ts -- --verbose",
+		"dev:positron": "nodemon --inspect --verbose --config addons/positron/nodemon.json addons/positron/src/index.dev.ts -- --verbose",
 		"build:positron": "ts-node -r tsconfig-paths/register addons/positron/build/build.ts",
 		"start:positron": "npm run build:positron && node dist/positron/index.js --verbose",
 		"release:positron": "ts-node -r tsconfig-paths/register build/addons/positron.ts",

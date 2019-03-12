@@ -12,7 +12,8 @@ export class Neutron extends BiometricDevices{
 	private server: Server
 
 	private config = {
-		verbose: false
+		verbose: false,
+		id: "none"
 	}
 
 	public get Server(){ return this.server }
@@ -36,13 +37,14 @@ export class Neutron extends BiometricDevices{
 			this.log.error("server failed to start.", error)
 		}
 	}
-	
-	constructor(args: any) {
+
+	constructor(args: PositronConstructorOptions) {
 		super()
-		this.log = new Logger(this.Namespace)
+		this.log = new Logger(`core#${args.id}/neutron`)
 		this.log.info("new instance")
 		this.log.info({ args })
 		this.config.verbose = args.verbose ? args.verbose : this.config.verbose
+		this.config.id = args.id
 		// FIXME: auto verbose
 		Logger.Verbose = this.config.verbose
 

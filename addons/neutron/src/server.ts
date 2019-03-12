@@ -5,6 +5,7 @@ import cors from "cors"
 
 import config from "../config"
 import { Logger } from "@classes/CONSOLE"
+import uuid from "uuid"
 
 @API.ServerSettings({
 	rootDir: __dirname,
@@ -16,7 +17,7 @@ import { Logger } from "@classes/CONSOLE"
 	uploadDir: path.resolve(__dirname, "/assets"),
 })
 export class Server extends API.ServerLoader{
-	private log = new Logger("neutron/api")
+	private log: Logger
 
 	public $onMountingMiddlewares() {
 		this.log.verbose("mounting middleware")
@@ -39,9 +40,11 @@ export class Server extends API.ServerLoader{
 
 	public get controllersList() { return Controllers }
 
-	constructor(args: { verbose: boolean }) {
+	constructor(args: PositronConstructorOptions) {
 		super()
 		let debug = args.verbose ? args.verbose : false
+		let id = args.id || uuid()
+		this.log = new Logger(`api#${id}/neutron`)
 		this.log.verbose(this.settings)
 		this.setSettings({
 			debug,
@@ -49,7 +52,7 @@ export class Server extends API.ServerLoader{
 				debug,
 				logRequest: debug,
 				disableRoutesSummary: !debug,
-				format: debug ? `${this.log.prefix}%[%d{[yyyy-MM-dd hh:mm:ss,SSS}] %p%] %m` : "-"
+				format: debug ? `${this.log.prefix.replace(" >>> ", " ")}%[%d{[yyyy-MM-dd hh:mm:ss,SSS}] %p%] %m >>> ` : "-"
 			}
 		})
 	}
