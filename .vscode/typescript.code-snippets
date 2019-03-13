@@ -149,7 +149,7 @@
 		"body": [
 			"import { Logger } from \"@classes/CONSOLE\"",
 			"",
-			"const Console = new Logger(`${1:namespace}/${2:$TM_FILENAME_BASE}`)",
+			"const Console = new Logger(`${2:$TM_FILENAME_BASE}/${1:namespace}`)",
 		],
 		"description": "Custom Console Logger"
 	}

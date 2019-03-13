@@ -26,7 +26,7 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
 	ApplicationStore.setAppRouterLoading(true)
 	// FIXME: remove this before production
-	if(!UserStore.USER_LOGGEDIN) await UserClient.Login("","",PASSWORD_PREFERENCE.PASSWORD, to.name)
+	// if(!UserStore.USER_LOGGEDIN) await UserClient.Login("","",PASSWORD_PREFERENCE.PASSWORD, to.name)
 	if (!(to.meta && to.meta.noAuth) && !UserStore.USER_LOGGEDIN) next({ name: "login" })
 	else next()
 })

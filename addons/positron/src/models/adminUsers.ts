@@ -25,11 +25,11 @@ export default class AdminUsers extends Base implements IAdminUsers {
 	@DB.Column("varchar", { length: 30 })
 	public username!: string
 
-	@GQL.Field(type => String,{nullable: true})
+	// @GQL.Field(type => String,{nullable: true})
 	@DB.Column("varchar",{nullable: true})
 	public password?: string
 
-	@GQL.Field(type => String,{nullable: true})
+	// @GQL.Field(type => String,{nullable: true})
 	@DB.Column("varchar",{nullable: true})
 	public pin?: string
 

@@ -40,7 +40,7 @@ export class Server extends API.ServerLoader{
 
 	public get controllersList() { return Controllers }
 
-	constructor(args: PositronConstructorOptions) {
+	constructor(args: { verbose: boolean, id: string, }) {
 		super()
 		let debug = args.verbose ? args.verbose : false
 		let id = args.id || uuid()
@@ -52,7 +52,7 @@ export class Server extends API.ServerLoader{
 				debug,
 				logRequest: debug,
 				disableRoutesSummary: !debug,
-				format: debug ? `${this.log.prefix.replace(" >>> ", " ")}%[%d{[yyyy-MM-dd hh:mm:ss,SSS}] %p%] %m >>> ` : "-"
+				format: debug ? `${this.log.prefix.replace(" >>> ", " ")}%[%d{[yyyy-MM-dd hh:mm:ss,SSS}] %p%] >>> %m` : "-"
 			}
 		})
 	}

@@ -11,7 +11,9 @@ import uuid from "uuid"
 const DefaultSession = {
 	id: "",
 	counter: 0,
-	username: "Mr. Nobody",
+	user: {
+		id: 0,
+	},
 }
 
 type TDefaultSession = typeof DefaultSession
@@ -80,7 +82,7 @@ export class Server extends API.ServerLoader {
 				debug,
 				logRequest: debug,
 				disableRoutesSummary: !debug,
-				format: debug ? `${this.log.prefix.replace(" >>> ", " ")}%[%d{[yyyy-MM-dd hh:mm:ss,SSS}] %p%] %m >>> ` : "-"
+				format: debug ? `${this.log.prefix.replace(" >>> ", " ")}%[%d{[yyyy-MM-dd hh:mm:ss,SSS}] %p%] >>> %m` : "-"
 			}
 		})
 

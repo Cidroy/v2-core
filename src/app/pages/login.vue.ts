@@ -9,7 +9,7 @@ import { UserClient } from "@/classes/clients/user"
 import { Logger } from "@classes/CONSOLE"
 import { exit } from "@plugins/core/classes/actions"
 
-const Console = new Logger(`gk/${__filename}`)
+const Console = new Logger(`login.vue/core`)
 
 @Component({
 	// @ts-ignore
@@ -36,7 +36,7 @@ export default class LoginPage extends Vue {
 	private async loadUsers(){
 		this.loadingUsers = true
 		try {
-			await UserStore.InitializeUsers()
+			await UserStore.InitializeLoginUsers()
 		} catch (error) { alert(error.toString(), "error") }
 		this.loadingUsers = false
 	}
@@ -60,6 +60,7 @@ export default class LoginPage extends Vue {
 		try {
 			await UserClient.Login(this.username, this.password, this.passwordPreference)
 		} catch (error) {
+			Console.error(error)
 			alert(error.toString(), "error")
 		}
 		this.loggingIn = false

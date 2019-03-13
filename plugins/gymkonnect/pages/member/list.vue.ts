@@ -36,7 +36,7 @@ export default class Home extends Vue {
 	private expand = false
 
 	private async refresh() {
-		MembersListStore.InitializeGKMMembers()
+		await MembersListStore.InitializeGKMMembers()
 	}
 
 	private showMemberContextMenu = false

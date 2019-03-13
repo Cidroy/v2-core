@@ -27,20 +27,27 @@ export default class AdminUsersResolver {
 			},
 		})
 		if (!user) throw `Invalid Username or ${type.toLowerCase()}`
-		session.username = user.username
+		session.user = { id: user.id }
+		if (user.passwordPreference!==type){
+			user.passwordPreference = type
+			user.save()
+		}
 		return true
 	}
 
-	@GQL.Query(returns => String, { nullable: true })
-	public async whoAmI(
-		@GQL.Ctx() ctx : GQLContext
-	){
-		return ctx.session!.username
+	@GQL.Query(returns => AdminUsers, { nullable: true })
+	public async whoAmI( @GQL.Ctx() { session } : GQLContext ){
+		if(session.user && session.user.id){
+			let user = await AdminUsers.findOne(session.user.id)
+			if(user) return user
+		}
+		throw "You are not Loggedin"
 	}
 
 	@GQL.Query(returns => Boolean)
-	public async logout(
-	) {
+	public async logout( @GQL.Ctx() { session } : GQLContext ) {
+		delete session["user"]
+		session.destroy(err => {})
 		return true
 	}
 

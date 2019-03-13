@@ -3,7 +3,9 @@ import store from "@/state/store"
 import { TMemberListTableItems } from "../classes/types/member-list"
 import Gymkonnect from "../classes/clients"
 import { sleep } from "@classes/misc"
+import { Logger } from "@classes/CONSOLE"
 
+const Console = new Logger(`member-list/gk-store`)
 let _gk_m_members: TMemberListTableItems[] = []
 let _gk_m_members_loading = false
 
@@ -39,8 +41,11 @@ class MembersList extends VuexModule {
 		await this.mutateGKMMembersLoading(true)
 		await sleep(2000)
 		let result = await Gymkonnect.Members.getAllMembersForRegistrationList()
-		await this.mutateGKMMembers(result)
-		await this.mutateGKMMembersLoading(false)
+		Console.okay("B")
+		await this.mutateGKMMembers(result),
+		Console.okay("D")
+		await this.mutateGKMMembersLoading(false),
+		Console.okay("E")
 		return true
 	}
 }

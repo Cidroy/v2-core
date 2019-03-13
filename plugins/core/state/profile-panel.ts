@@ -2,6 +2,7 @@ import { VuexModule, Module, getModule, MutationAction } from "vuex-module-decor
 import store from "@/state/store"
 import { TProfilePanelAction } from "../classes/types/misc"
 import { logout, exit } from "../classes/actions"
+import { UserStore } from "@/state/user"
 
 let profilePanelList: TProfilePanelAction[] = [
 	{ text: "Logout", action: logout, icon: "fa-sign-out-alt", iconClass: "fas" },
@@ -19,10 +20,9 @@ class ProfilePanel extends VuexModule {
 	}
 
 	public get PROFILE_PANEL_USER() {
-		// FIXME: URGENT get name from system
 		return {
-			name: "Rinzler",
-			type: "God"
+			name: UserStore.USER ? UserStore.USER.name: "Guest",
+			type: UserStore.USER ? UserStore.USER.userType: "Guest"
 		}
 	}
 
