@@ -27,9 +27,21 @@ export async function getWdmsIdForUserId(userId: number, zoneId: number): Promis
 		return 0
 	}
 }
+@GQL.ObjectType()
+export class FindGymUser extends User{
+	@GQL.Field(type => String)
+	public foundBy !: string
+}
 @GQL.Resolver(of => User)
 export default class UserResolver{
 	
+	@GQL.FieldResolver(returns =>String)
+	public async name(@GQL.Root() user: User) {
+		return `${user.firstName} ${user.middleName || ""} ${user.lastName || ""}`
+			.replace(/\s+/, " ")
+			.trimRight()
+	}
+
 	@GQL.FieldResolver(returns => Address, {nullable: true})
 	public async address(@GQL.Root() user: User){
 		return Address.findOne({ where: { active: 1 , id: user.address} })
@@ -40,6 +52,25 @@ export default class UserResolver{
 		return User.find({ where: { active: 1 } })
 	}
 
+	@GQL.Query(returns => FindGymUser)
+	public async FindGymUsers(
+		@GQL.Arg("keys", type => [String,]) keys: string[],
+		@GQL.Arg("value") value: string
+	) {
+		let gymUsers: Partial<FindGymUser>[] = []
+		let tempUser = new User()
+		for (let key = 0; key < keys.length; key++) {
+			if(tempUser.hasOwnProperty(key)){
+				//FIXME: make sure it matches the datatype
+				// @ts-ignore
+				let users: Partial<FindGymUser>[] = await User.find({ [key]: DB.Like(`%${value}%`) })
+				// FIXME: Don't use map, use mySQL query for this
+				users = users.map(user => ({ ...user, foundBy: value }))
+				gymUsers = [ ...gymUsers, ...users, ]
+			}
+		}
+		return gymUsers
+	}
 	@GQL.Mutation(returns => Boolean)
 	public async linkAddressUser(
 		@GQL.Arg("UserId") UserId: number,

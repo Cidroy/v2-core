@@ -6,6 +6,7 @@ import Transaction from "@positron/models/transaction"
 import { Logger } from "@classes/CONSOLE"
 
 const Console = new Logger(`gql-resolver/gymUsers`)
+
 @GQL.Resolver(of => GymUsers)
 export default class GymUsersResolver {
 	@GQL.FieldResolver(returns => Boolean, { nullable: true })
