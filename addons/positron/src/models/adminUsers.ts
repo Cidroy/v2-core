@@ -40,7 +40,7 @@ export default class AdminUsers extends Base implements IAdminUsers {
 	})
 	public passwordPreference: PASSWORD_PREFERENCE = PASSWORD_PREFERENCE.PASSWORD
 
-	@GQL.Field(type => Number)
+	// @GQL.Field(type => Number)
 	@DB.Column("integer")
 	public access: number = 0
 
