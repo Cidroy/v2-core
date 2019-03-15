@@ -38,14 +38,13 @@ class MembersList extends VuexModule {
 	}
 
 	@Action({}) public async InitializeGKMMembers() {
-		await this.mutateGKMMembersLoading(true)
-		await sleep(2000)
+		await Promise.all([
+			this.mutateGKMMembersLoading(true),
+			sleep(1000),
+		])
 		let result = await Gymkonnect.Members.getAllMembersForRegistrationList()
-		Console.okay("B")
-		await this.mutateGKMMembers(result),
-		Console.okay("D")
-		await this.mutateGKMMembersLoading(false),
-		Console.okay("E")
+		await this.mutateGKMMembers(result)
+		await this.mutateGKMMembersLoading(false)
 		return true
 	}
 }

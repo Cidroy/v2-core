@@ -4,6 +4,7 @@ import { Permissions } from "../../permission"
 import { Messages } from "./messages"
 import { Members } from "./members"
 import { MemberGroups } from "./member-groups"
+import { Renewal } from "./member/renewal"
 
 const Gymkonnect = {
 	existsEmail,
@@ -15,6 +16,7 @@ const Gymkonnect = {
 	Members,
 	Health,
 	MemberGroups,
+	Renewal,
 }
 
 export default Gymkonnect

@@ -27,6 +27,7 @@ class User extends VuexModule {
 	}
 
 	@Action({}) public async Login() {
+		Console.verbose("set login info")
 		let response = await GQLClient.query<{ user: TUserStoreUser }>(gql`
 			query whoAmI{ user: whoAmI{
 				id

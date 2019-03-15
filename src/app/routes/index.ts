@@ -9,7 +9,9 @@ import { UserStore } from "@/state/user"
 import { ApplicationStore } from "@/state/application"
 import { UserClient } from "@/classes/clients/user"
 import { PASSWORD_PREFERENCE } from "@classes/enum/misc"
+import { Logger } from "@classes/CONSOLE"
 
+const Console = new Logger(`router/core`)
 Vue.use(VueRouter)
 Vue.use(VueMeta, {
 	// The component option name that vue-meta looks for meta info on.
@@ -26,7 +28,8 @@ const router = new VueRouter({
 router.beforeEach(async (to, from, next) => {
 	ApplicationStore.setAppRouterLoading(true)
 	// FIXME: remove this before production
-	// if(!UserStore.USER_LOGGEDIN) await UserClient.Login("","",PASSWORD_PREFERENCE.PASSWORD, to.name)
+	Console.verbose(from.name, "=>", to.name)
+	if(!UserStore.USER_LOGGEDIN) await UserClient.Login("root","0000",PASSWORD_PREFERENCE.PIN, to.name)
 	if (!(to.meta && to.meta.noAuth) && !UserStore.USER_LOGGEDIN) next({ name: "login" })
 	else next()
 })

@@ -9,6 +9,7 @@ import GQLClient, { gql } from "@/utils/graphql"
 const Console = new Logger(`gk/user`)
 export class UserClient{
 	public static async Login(username: string, password: string, preference: PASSWORD_PREFERENCE, redirectTo: string = "index"){
+		Console.verbose("try login")
 		let response
 		try {
 			response = await GQLClient.query<{ login: boolean }>(
@@ -33,7 +34,7 @@ export class UserClient{
 			throw "Invalid Username or Password"
 		}
 		if(!response.data.login) throw "Could not login"
-
+		Console.verbose("login init")
 		await UserStore.Login()
 		await Promise.all([
 			GymkonnectStore.GK_Initialize(),

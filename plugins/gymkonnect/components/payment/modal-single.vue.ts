@@ -47,7 +47,7 @@ export default class SinglePaymentModal extends Vue {
 			.then(transactionPrice => { this.transactionPrice = transactionPrice })
 			.catch(e => { Console.error(e) })
 
-		Gymkonnect.Registration.getAdmissionFee()
+		this.addAdmissionFee && Gymkonnect.Registration.getAdmissionFee()
 			.then(admissionFeePrice => { this.admissionFeePrice = admissionFeePrice })
 			.catch(e => { Console.error(e) })
 
@@ -74,7 +74,7 @@ export default class SinglePaymentModal extends Vue {
 	private admissionFee = "Admission Fee"
 	private admissionFeePrice = 0
 	private get admissionFeeQty() { return 1 }
-	private get admissionFeeAmount() { return this.admissionFeeQty * this.admissionFeePrice }
+	private get admissionFeeAmount() { return this.addAdmissionFee? this.admissionFeeQty * this.admissionFeePrice: 0 }
 
 	private get membership() {
 		let temp = GymkonnectStore.GK_MEMBERSHIP_TYPE(this.transaction.membershipType)
@@ -140,4 +140,7 @@ export default class SinglePaymentModal extends Vue {
 			offer: <string>this.offer,
 		}
 	}
+
+	@Prop({ type: Boolean, default : false }) public addAdmissionFee !: boolean
+	@Prop({ type: String, default : "Credit Bill" }) public billTitle !: string
 }

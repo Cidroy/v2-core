@@ -27,7 +27,7 @@ export default class Spa extends Vue {
 	private occupation = GymkonnectStore.GK_OCCUPATIONS[0]
 	private get Occupations() { return GymkonnectStore.GK_OCCUPATIONS }
 
-	private get spaPlan() { return GymkonnectStore.GK_SPA_PLAN[0] }
+	private get spaPlan() { return GymkonnectStore.GK_SPA_PLANS[0] }
 
 	private get rules() {
 		return {

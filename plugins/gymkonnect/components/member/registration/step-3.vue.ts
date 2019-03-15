@@ -39,10 +39,12 @@ export default class MRegistrationStep3 extends Vue {
 	private doj = new Date().toISOString().substr(0, 10)
 	private dojFormatted = this.formatDate(this.doj)
 	private dojMenu = false
-	private get _minDoj() { return this.allowBackDating ? new Date(1947, 7, 16) : new Date() }
 	@Watch("doj") private onDateChanged() { this.dojFormatted = this.formatDate(this.doj) }
+	private get _minDoj() { return this.allowBackDating ? this.dojRange.start : new Date() }
 	private get minDoj() { return moment(this._minDoj).toISOString().substr(0, 10) }
 	private allowBackDating = false
+	private get _maxDoj(){ return this.dojRange.end }
+	private get maxDoj(){ return this.dojRange.end? moment(this._maxDoj).toISOString().substr(0,10): undefined }
 	private get getDateFormatted() { return this.formatDate(this.doj) }
 
 	private get userData() {
@@ -120,4 +122,6 @@ export default class MRegistrationStep3 extends Vue {
 		})
 		this.priceLoading = false
 	}
+
+	@Prop({ type: Object, default: () => ({ start: new Date(1947, 7, 16), end: undefined }) }) public dojRange !: { start: Date, end?: Date }
 }

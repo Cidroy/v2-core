@@ -12,6 +12,7 @@
 					<v-flex xs12 md8>
 						<v-card class="pa-4 my-4 elevation-10">
 							<v-layout row wrap>
+								<v-flex xs12 class="mb-4"> <h1 class="text-xs-center font-weight-regular"> <u>{{ billTitle }}</u> </h1> </v-flex>
 								<v-flex xs12 sm6 md4 lg4>
 									<v-text-field box v-model="receipt" color="orange darken-2" prepend-icon="fas fa-receipt" label="Receipt No." />
 								</v-flex>
@@ -39,7 +40,7 @@
 								<v-divider />
 								<v-divider />
 								<v-divider />
-								<v-layout row wrap>
+								<v-layout v-if="addAdmissionFee" row wrap>
 									<v-flex xs12 md6 class="px-2"> <v-text-field :value="admissionFee" prepend-icon="fas fa-info-circle" readonly tabindex="-1" color="orange darken-2"/> </v-flex>
 									<v-flex xs6 md1 class="px-2"> <v-text-field :value="transactionQty" readonly tabindex="-1" color="orange darken-2"/> </v-flex>
 									<v-flex xs6 md2 class="px-2"> <v-text-field :value="admissionFeePrice" prefix="₹" readonly tabindex="-1" color="orange darken-2"/> </v-flex>

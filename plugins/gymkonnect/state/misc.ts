@@ -1,9 +1,9 @@
 import { VuexModule, Module, getModule, MutationAction } from "vuex-module-decorators"
 import store from "@/state/store"
-import GKHelper, { TGQLOccupations, TGQLCategories, TGQLIDProofs, TGQLGroupings, TGQLBodyTypes, TGQLOrganizationTypes, TGQLPackages, TGQLPurposes, TGQLMembershipTypes, TGQLPaymentModes, TGQLBloodGroup, TGQLTimeSlot, TGQLUTMSource, TGQLDoor, TGQLOffer, TGQLUserMode } from "./gk-helper"
+import GKHelper, { TGQLOccupations, TGQLCategories, TGQLIDProofs, TGQLGroupings, TGQLBodyTypes, TGQLOrganizationTypes, TGQLPackages, TGQLPurposes, TGQLMembershipTypes, TGQLPaymentModes, TGQLBloodGroup, TGQLTimeSlot, TGQLUTMSource, TGQLDoor, TGQLOffer, TGQLUserMode, TGQLSpaPlan } from "./gk-helper"
 import { Logger } from "@classes/CONSOLE"
 
-const Console = new Logger("gk/vuex")
+const Console = new Logger("store/gk")
 
 let _gk_occupations: TGQLOccupations[] = []
 let _gk_categories: TGQLCategories[] = []
@@ -11,11 +11,6 @@ let _gk_idTypes: TGQLIDProofs[] = []
 let _gk_groupings: TGQLGroupings[] = []
 let _gk_bodyTypes: TGQLBodyTypes[] = []
 let _gk_organizationTypes: TGQLOrganizationTypes[] = []
-let _gk_spaplan = [
-	"one",
-	"two",
-
-]
 let _gk_regType = []
 let _gk_packages: TGQLPackages[] = []
 let _gk_purposes: TGQLPurposes[] = []
@@ -27,6 +22,7 @@ let _gk_utmSources: TGQLUTMSource[] = []
 let _gk_doors: TGQLDoor[] = []
 let _gk_offers: TGQLOffer[] = []
 let _gk_userModes: TGQLUserMode[] = []
+let _gk_spaplans: TGQLSpaPlan[] = []
 
 @Module({ dynamic: true, store, name: "Misc" })
 class Gymkonnect extends VuexModule {
@@ -309,8 +305,9 @@ class Gymkonnect extends VuexModule {
 	 */
 	public get GK_ALL_OFFER() { return (id: string | number) => this._gk_offers.find(i => i.id === id) }
 
-	private _gk_spaplan = _gk_spaplan
-	public get GK_SPA_PLAN() { return this._gk_spaplan }
+	private _gk_spaplans = _gk_spaplans
+	public get GK_SPA_PLANS() { return this._gk_spaplans }
+	public get GK_SPA_PLAN() { return (id: string|number) => this._gk_spaplans.find(i => i.id===id) }
 
 	private _gk_regType = _gk_regType
 	public get GK_REGISTRATION_TYPE() { return this._gk_regType }
@@ -333,9 +330,11 @@ class Gymkonnect extends VuexModule {
 			"_gk_utmSources",
 			"_gk_offers",
 			"_gk_userModes",
+			"_gk_spaplans",
 		]
 	})
 	public async GK_Initialize() {
+		Console.verbose("initializing")
 		try {
 			let [
 				Xoccupations,
@@ -367,6 +366,7 @@ class Gymkonnect extends VuexModule {
 				Xdoors,
 				Xoffers,
 				XuserModes,
+				Xspaplans,
 			] = await Promise.all([
 				GKHelper.GetBloodGroups(),
 				GKHelper.GetTimeSlots(),
@@ -374,6 +374,7 @@ class Gymkonnect extends VuexModule {
 				GKHelper.GetDoors(),
 				GKHelper.GetAllOffers(),
 				GKHelper.GetUserModes(),
+				GKHelper.GetSpaPlans(),
 			])
 			_gk_occupations = Xoccupations
 			_gk_categories = Xcategories
@@ -391,6 +392,7 @@ class Gymkonnect extends VuexModule {
 			_gk_doors = Xdoors
 			_gk_offers = Xoffers
 			_gk_userModes = XuserModes
+			_gk_spaplans = Xspaplans
 			return {
 				_gk_bloodGroups,
 				_gk_bodyTypes,
@@ -408,6 +410,7 @@ class Gymkonnect extends VuexModule {
 				_gk_utmSources,
 				_gk_offers,
 				_gk_userModes,
+				_gk_spaplans,
 			}
 		} catch (error) {
 			Console.error("Misc Store failed to initialize", error)

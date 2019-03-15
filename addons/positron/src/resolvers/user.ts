@@ -29,7 +29,7 @@ export async function getWdmsIdForUserId(userId: number, zoneId: number): Promis
 }
 @GQL.Resolver(of => User)
 export default class UserResolver{
-	
+
 	@GQL.FieldResolver(returns => Address, {nullable: true})
 	public async address(@GQL.Root() user: User){
 		return Address.findOne({ where: { active: 1 , id: user.address} })
@@ -83,7 +83,7 @@ export default class UserResolver{
 
 	@GQL.Mutation(returns => User)
 	public async addUser(
-		
+
 		@GQL.Arg("mobile") mobile : string,
 		@GQL.Arg("firstName") firstName : string,
 		// @GQL.Arg("wdmsId", type => [String,], { nullable: true }) wdmsId? : object,
@@ -106,7 +106,7 @@ export default class UserResolver{
 		@GQL.Arg("emergencyName", { nullable: true }) emergencyName ? : string,
 		@GQL.Arg("emergencyNumber", { nullable: true }) emergencyNumber ? : string,
 	){
-		
+
 		let user = new User()
 		user.firstName = firstName
 		user.mobile = mobile
@@ -117,8 +117,8 @@ export default class UserResolver{
 			let entityManager = DB.getManager()
 			let userinfo = await entityManager.query("select userId, company_id from userinfo where badgenumber= ?", [Utils.appendZeroesToBadgenumber(badgenumber),])
 			let wdmsId = {
-				zoneID: <number>userinfo[0].company_id,
-				userID: <number>userinfo[0].userId
+				zoneID: userinfo[0]?userinfo[0].company_id: 0,
+				userID: userinfo[0]?userinfo[0].userId: 0
 			}
 			user.wdmsId = [wdmsId,]
 

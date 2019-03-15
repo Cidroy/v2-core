@@ -21,6 +21,7 @@ export type TGQLPaymentModes = TGQLBasic & { requireTransactionId: boolean }
 // FIXME: choose proper duration in next pull
 export type TGQLPackages = TGQLBasic & { count: number, duration: string }
 export type TGQLUserMode = TGQLBasic
+export type TGQLSpaPlan = TGQLBasic
 export default class GKHelper{
 	public static async GetOccupations(): Promise<TGQLOccupations[]>{
 		let response = await GQLClient.query<{
@@ -251,6 +252,34 @@ export default class GKHelper{
 			`,
 		)
 		return response.data.doors
+	}
+
+	public static async GetSpaPlans(): Promise<TGQLSpaPlan[]> {
+		return [
+			{
+				id: 1,
+				name: "One",
+				description: "",
+			},
+			{
+				id: 1,
+				name: "One",
+				description: "",
+			},
+		]
+		// FIXME: make gql query
+		let response = await GQLClient.query<{ plans: TGQLSpaPlan[] }>(
+			gql`
+				query Plans{
+					plans: SpaPlans{
+						id
+						name
+						description
+					}
+				}
+			`,
+		)
+		return response.data.plans
 	}
 
 }

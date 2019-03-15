@@ -1,127 +1,83 @@
 import { Component, Vue, Watch } from "vue-property-decorator"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/layout.vue"
-import stepOne from "@plugins/gymkonnect/components/member/registration/step-1.vue"
+import Gymkonnect from "@plugins/gymkonnect/classes/clients"
+import { Logger } from "@classes/CONSOLE"
+import { PaymentDetail } from "@plugins/gymkonnect/classes/types/payment"
+import MRegistrationStepFinished from "@plugins/gymkonnect/components/member/registration/step-finished.vue"
+import MRegistrationStep3 from "@plugins/gymkonnect/components/member/registration/step-3.vue"
+import SinglePaymentModal from "@plugins/gymkonnect/components/payment/modal-single.vue"
+import router from "@/routes"
 
+const Console = new Logger(`renewal.vue/gk`)
 @Component({
 	// @ts-ignore
 	components: {
 		Layout,
-		stepOne,
+		MRegistrationStepFinished,
+		MRegistrationStep3,
+		SinglePaymentModal,
 	},
 	page: {
-		title: "Home",
-		meta: [{ name: "description", content: appConfig.description, },],
+		title: "Membership Renewal",
+		meta: [{ name: "Renew Membership Plans", content: appConfig.description, },],
 	},
+	created(){
+		this.Initialize()
+	}
 })
 // @ts-ignore
-export default class Home extends Vue {
-
-	private userData = {
-		firstName: "",
-		middleName: "",
-		lastName: "",
+export default class MembershipRenewalPage extends Vue {
+	private async Initialize(){
+		this.clientData = await Gymkonnect.Renewal.defaultInfo()
 	}
 
-	private valid: boolean = false
-	private importDialog = false
-	private checkbox = []
-	private search = ""
-	private selected = null
-	private CBTypeMem = null
-	private CBMemDuration = null
-	private firstname = ""
-	private email = ""
-	private phone = ""
-	private phoneRules = [
-		v => !!v || "Number is required",
-		v => v.length <= 10,
-	]
-
-	private emailRules = [
-		v => (v || "").match(/@/) || "Please enter a valid email",
-	]
-	private nameRules = [
-		v => !!v || "Name is required",
-		v => v.length <= 30 || "Name must be less than 30 characters",
-	]
-	private row = null
-	private e1 = 0
-	private date = new Date().toISOString().substr(0, 10)
-	private dateFormatted = this.formatDate(this.date)
-	private radioGroup1 = "radio-1"
-	private radioGroup2 = "radio-4"
-	private menu1 = false
-	private menu4 = false
-	private select = []
-	private purposes = [
-		"General Fitness",
-		"Lose Fat",
-		"Gain Muscle",
-		"Tone Up",
-		"Sports Oriented",
-		"Lifestyle",
-		"Transform",
-		"Specialized Training",
-	]
-	private loader = null
-	private radios = "radio-7"
-	private test = "Monthly"
-	private loading = false
-	private dialog = false
-
-	private items = [
-		"Programming",
-		"Design",
-		"Vue",
-		"Vuetify",
-	]
-	private Category = [
-		"student",
-		"Senior Citizen",
-		"Professionals",
-		"Buisness Man",
-	]
-	private idProof = [
-		"Aadhaar Card",
-		"Passport",
-		"License",
-		"Pan Card",
-	]
-	private bodyType = [
-		"endomorph",
-		"ectomorph",
-		"mesomorph",
-	]
-	private cards = [
-		{ src: "https://cdn.vuetifyjs.com/images/cards/plane.jpg", flex: 10 },
-	]
-
-	@Watch("date")
-	private onDateChanged() {
-		this.dateFormatted = this.formatDate(this.date)
+	private readonly label = "Search by Mobile Number or Badge Number"
+	private clientId: string | number = ""
+	@Watch("clientId") private async onClientIdChange(){
+		this.clientDataLoading = true
+		this.clientData = await Gymkonnect.Renewal.info(this.clientId)
+		this.clientDataLoading = false
 	}
-
-	@Watch("select")
-	private onSelectMax(val) {
-		if (val.length > 3) {
-			// @ts-ignore
-			this.$nextTick(() => this.select.pop())
+	private get clientName(){
+		let client = this.Clients.find(client => client.id === this.clientId)
+		return client? client.name : "Invalid"
+	}
+	private clientDataLoading = false
+	private clientSearch = ""
+	private clientSearching = false
+	@Watch("clientSearch") private async onClientSearch(){
+		if (this.clientSearch && this.clientSearch.length >=3 && this.clientSearch.length%3===0){
+			this.clientSearching = true
+			this.clients = await Gymkonnect.Members.find(this.clientSearch, [ "badgenumber", "mobile", "firstName", "middleName", "lastName", ])
+			this.clientSearching = false
 		}
 	}
-
-	private get getDateFormatted() {
-		return this.formatDate(this.date)
+	private clients: Unpacked<ReturnType<typeof Gymkonnect.Members.find>> = []
+	private get Clients(){
+		return this.clients.filter(client => client.name.toLowerCase().includes(this.clientSearch.toLowerCase())
+			|| client.badgenumber!.includes(this.clientSearch)
+			|| client.mobile!.includes(this.clientSearch)
+		)
 	}
 
-	private formatDate(date) {
-		// if (!date) return null
-		const [year, month, day,] = date.split("-")
-		return `${day}/${month}/${year}`
+	// @ts-ignore
+	private clientData: Unpacked<ReturnType<typeof Gymkonnect.Renewal.defaultInfo>> = 0
+	@Watch("clientData") private onClientDataChange(){ this.transactionData = this.clientData.transaction }
+	private transactionData: Unpacked<ReturnType<typeof Gymkonnect.Renewal.defaultInfo>>["transaction"] = this.clientData.transaction
+	private get grouping(){ return this.clientData.grouping }
+	private get usersCount(){ return this.clientData.usersCount }
+	private get Client(){ return this.clientData.client }
+	private get dojRange(){ return this.clientData.dojRange }
+
+	private paying = false
+	private paymentModel = false
+	private payed = false
+	private async pay(paymentData: PaymentDetail) {
+		this.paying = true
+		this.paying = false
+		this.payed = true
 	}
-	private parseDate(date) {
-		if (!date) return null
-		const [day, month, year,] = date.split("/")
-		return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`
-	}
+
+	private goBackSimon() { this.clientId = "" }
 }
