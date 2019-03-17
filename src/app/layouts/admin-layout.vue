@@ -48,13 +48,13 @@
 		</v-navigation-drawer>
 
 		<v-toolbar color="orange darken-4" dark app :clipped-left="$vuetify.breakpoint.mdAndUp" fixed transition="slide-y-transition">
-			<span class="hidden-sm-and-down title font-weight-black" style="width: 190px">{{ appName }}</span>
+			<span class="hidden-sm-and-down title font-weight-black app-drag" style="width: 190px">{{ appName }}</span>
 			<v-toolbar-title style="width: 100px" class="ml-0 pl-3">
 				<v-toolbar-side-icon @click.stop="menuDrawer = !menuDrawer"></v-toolbar-side-icon>
 			</v-toolbar-title>
-			<v-spacer></v-spacer>
+			<v-spacer class="app-drag" />
 			<navbar-search v-if="$permission(PERMISSIONS.maple.NAVBAR_SEARCH)" />
-			<v-spacer></v-spacer>
+			<v-spacer class="app-drag" />
 			<notification-panel v-if="$permission(PERMISSIONS.maple.NOTIFICATION_VIEW)" />
 			<profile-panel />
 		</v-toolbar>
@@ -66,3 +66,7 @@
 		<app-footer transition="slide-y-reverse-transition"/>
 	</div>
 </template>
+
+<style>
+.app-drag{ -webkit-app-region: drag; }
+</style>

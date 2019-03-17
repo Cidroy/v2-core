@@ -1,4 +1,4 @@
-import { Component, Vue, Watch } from "vue-property-decorator"
+import { Component, Vue, Watch, Prop, Emit } from "vue-property-decorator"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/layout.vue"
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
@@ -7,7 +7,11 @@ import { PaymentDetail } from "@plugins/gymkonnect/classes/types/payment"
 import MRegistrationStepFinished from "@plugins/gymkonnect/components/member/registration/step-finished.vue"
 import MRegistrationStep3 from "@plugins/gymkonnect/components/member/registration/step-3.vue"
 import SinglePaymentModal from "@plugins/gymkonnect/components/payment/modal-single.vue"
-import router from "@/routes"
+import { alert } from "@/components/toast"
+import { defaultRegistrationStep3User } from "@plugins/gymkonnect/classes/types/registration"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
+import { formatDate } from "@/utils/misc"
+import moment from "moment"
 
 const Console = new Logger(`renewal.vue/gk`)
 @Component({
@@ -28,18 +32,32 @@ const Console = new Logger(`renewal.vue/gk`)
 })
 // @ts-ignore
 export default class MembershipRenewalPage extends Vue {
+	private formatDate(date: string) { return formatDate(date) }
+	private error = ""
 	private async Initialize(){
 		this.clientData = await Gymkonnect.Renewal.defaultInfo()
+		this.clientId = this.value
 	}
 
 	private readonly label = "Search by Mobile Number or Badge Number"
+	@Prop({ type: [ String, Number, ], default: "" }) public value !: string | number
+	@Watch("value") private onValueChange(){ this.clientId = this.value }
+	@Emit("input") public inputEmitter(){ return this.clientId }
 	private clientId: string | number = ""
 	@Watch("clientId") private async onClientIdChange(){
+		if(!this.clientId) return
 		this.clientDataLoading = true
-		this.clientData = await Gymkonnect.Renewal.info(this.clientId)
+		try {
+			this.clientData = await Gymkonnect.Renewal.info(this.clientId)
+		} catch (error) {
+			Console.error(error)
+			await alert(error.toString(), "error")
+		}
 		this.clientDataLoading = false
+		this.inputEmitter()
 	}
 	private get clientName(){
+		if(this.value) return ""
 		let client = this.Clients.find(client => client.id === this.clientId)
 		return client? client.name : "Invalid"
 	}
@@ -55,29 +73,62 @@ export default class MembershipRenewalPage extends Vue {
 	}
 	private clients: Unpacked<ReturnType<typeof Gymkonnect.Members.find>> = []
 	private get Clients(){
-		return this.clients.filter(client => client.name.toLowerCase().includes(this.clientSearch.toLowerCase())
+		return this.clients.filter(client => client.name.toLowerCase().includes(this.clientSearch?this.clientSearch.toLowerCase():"")
 			|| client.badgenumber!.includes(this.clientSearch)
 			|| client.mobile!.includes(this.clientSearch)
 		)
 	}
+	private get Current(){
+		return {
+			Membership: GymkonnectStore.GK_MEMBERSHIP_TYPE(this.clientData.transaction.membershipType),
+			Package: GymkonnectStore.GK_PACKAGE(this.clientData.transaction.packageType),
+			StartDate: this.clientData.transaction.start,
+			EndDate: this.clientData.transaction.end,
+		}
+	}
 
 	// @ts-ignore
 	private clientData: Unpacked<ReturnType<typeof Gymkonnect.Renewal.defaultInfo>> = 0
-	@Watch("clientData") private onClientDataChange(){ this.transactionData = this.clientData.transaction }
-	private transactionData: Unpacked<ReturnType<typeof Gymkonnect.Renewal.defaultInfo>>["transaction"] = this.clientData.transaction
+	@Watch("clientData") private onClientDataChange(){
+		this.transactionData = this.clientData.transaction
+	}
+	private transactionData: Unpacked<ReturnType<typeof Gymkonnect.Renewal.defaultInfo>>["transaction"] = {
+		...defaultRegistrationStep3User,
+		start: moment().toISOString().substr(0,10),
+		end: moment().toISOString().substr(0,10)
+	}
 	private get grouping(){ return this.clientData.grouping }
+	private get GroupName(){
+		let grouping = GymkonnectStore.GK_GROUPING(this.grouping)
+		return grouping? grouping.name: "None"
+	}
+	private get Group(){ return this.clientData.group }
 	private get usersCount(){ return this.clientData.usersCount }
-	private get Client(){ return this.clientData.client }
+	private get Client(){ return { ...this.clientData.client, ...this.clientData.transaction } }
 	private get dojRange(){ return this.clientData.dojRange }
 
 	private paying = false
 	private paymentModel = false
-	private payed = false
+	private paymentId: string | number = 0
+	private get payed(){ return !!(this.paymentId && this.transactionId) }
+	private transactionId: string | number = 0
 	private async pay(paymentData: PaymentDetail) {
 		this.paying = true
+		try {
+			let result = await Gymkonnect.Renewal.renew(
+				this.clientId,
+				this.transactionData,
+				paymentData,
+				this.grouping
+			)
+			this.paymentId = result.paymentId
+			this.transactionId = result.transactionId
+		} catch (error) { alert(error.toString(), "error") }
 		this.paying = false
-		this.payed = true
 	}
 
 	private goBackSimon() { this.clientId = "" }
+	private print(){
+		// TODO:
+	}
 }

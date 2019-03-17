@@ -29,7 +29,7 @@ export default class User extends Base implements IUser {
 	@GQL.Field(type => [WdmsID,])
 	@DB.Column("simple-json", { nullable: true})
 	public wdmsId?: WdmsID[]
-	
+
 	@GQL.Field(type => String)
 	@DB.Column("varchar", { length: 30 })
 	public firstName!: string
@@ -37,22 +37,22 @@ export default class User extends Base implements IUser {
 	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { length: 30, nullable: true  })
 	public middleName?: string
-	
+
 	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { length: 30, nullable: true  })
 	public lastName?: string
-	
+
 	@GQL.Field(type => Date)
-	@DB.Column("date", {default : null})
+	@DB.Column("datetime", {default : null})
 	public dob?: Date
-	
+
 	@GQL.Field(type => GENDER)
 	@DB.Column({
 		type: "enum",
 		enum: GENDER
 	})
 	public gender?: GENDER
-	
+
 	@GQL.Field(type => String)
 	@DB.Column("varchar", { length: 30, nullable: false, unique: true })
 	@Validate.IsPhoneNumber("IN")
@@ -69,46 +69,46 @@ export default class User extends Base implements IUser {
 	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { length: 30, nullable: true })
 	public homeNumber?: string
-	
+
 	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { default: null })
 	@Validate.IsEmail()
 	public email?: string
-	
+
 	// @GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
 	public address?: number
-	
+
 	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
 	public IDType?: number
-	
+
 	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public IDNumber?: string
-	
+
 	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public imagePath?: string
-	
+
 	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
 	public occupation?: number
-	
+
 	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
 	public organization?: number
-	
+
 	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
 	public category?: number
-	
+
 	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public emergencyName?: string
-	
+
 	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public emergencyNumber?: string
-	
+
 }

@@ -16,9 +16,9 @@
 						<template v-slot:item="{ item }">
 							<v-avatar v-text="item.name.charAt(0)" size="30" color="orange darken-4" class="white--text font-weight-light"/>
 							<v-list-tile-content class="ml-2 my-2">
-								<v-list-tile-title> {{ item.name }} <v-icon small class="mr-1">phone</v-icon> <span v-html="item.mobile.replace(clientSearch, clientSearch.bold())"/> </v-list-tile-title>
+								<v-list-tile-title> {{ item.name }} <v-icon small class="mr-1">phone</v-icon> <span v-html="clientSearch?item.mobile.replace(clientSearch, clientSearch.bold()):item.mobile"/> </v-list-tile-title>
 								<v-list-tile-sub-title>
-									<v-icon class="fas mr-1" small>fa-hashtag</v-icon> <span v-html="item.badgenumber.replace(clientSearch, clientSearch.bold())"/>
+									<v-icon class="fas mr-1" small>fa-hashtag</v-icon> <span v-html="clientSearch?item.badgenumber.replace(clientSearch, clientSearch.bold()):item.badgenumber"/>
 								</v-list-tile-sub-title>
 							</v-list-tile-content>
 						</template>
@@ -33,16 +33,57 @@
 			</v-layout>
 			<div v-else>
 				<v-layout row wrap class="pa-4">
-					<v-flex xs12 class="elevation-10 mb-4"> <m-registration-step-finished :value="Client" /> </v-flex>
-					<v-flex xs12 class="elevation-10 mb-4"> <m-registration-step-3 v-model="transactionData" :group="grouping" :quantity="usersCount" :doj-range="dojRange" /> </v-flex>
+					<v-flex xs12 class="elevation-10 mb-4">
+						<m-registration-step-finished :value="Client" >
+							<div v-if="!!Group.members.length" class="mb-4">
+								<v-divider />
+								<v-layout row wrap class="mt-2 px-2">
+									<v-flex xs12>
+										<h2> <v-icon left>people</v-icon> {{ GroupName }} with </h2>
+										<v-list two-line>
+											<!-- TODO: add context menu same as member-list -->
+											<v-list-tile v-for="member in Group.members" :key="member.id" v-show="member.id!==clientId" @click="false">
+												<v-avatar v-text="member.name.charAt(0)" size="30" color="orange darken-4" class="white--text font-weight-light"/>
+												<v-list-tile-content class="ml-2 my-2">
+													<v-list-tile-title>
+														<v-flex>
+															{{ member.name }}
+															<v-icon class="fas ml-4" small>fa-hashtag</v-icon> <span v-text="member.badgenumber"/>
+														</v-flex>
+													</v-list-tile-title>
+													<v-list-tile-sub-title>
+														<v-icon small class="mr-1">phone</v-icon> <span v-text="member.mobile"/>
+													</v-list-tile-sub-title>
+												</v-list-tile-content>
+												<v-list-tile-action>
+													<span > <v-icon small>history</v-icon> Ends on: {{ formatDate(member.end) }} </span>
+												</v-list-tile-action>
+											</v-list-tile>
+										</v-list>
+									</v-flex>
+								</v-layout>
+							</div>
+							<v-divider />
+							<v-layout row wrap class="mt-2 px-2">
+								<v-flex xs12> <h2> <v-icon left>timer</v-icon> Current Package </h2> </v-flex>
+								<v-flex xs12 md6 class="px-2"> <v-text-field :value="Current.Membership.name" label="Current Membership" tabindex="-1" prepend-icon="fas fa-info-circle" readonly /> </v-flex>
+								<v-flex xs12 md6 class="px-2"> <v-text-field :value="Current.Package.name" label="Current Package" tabindex="-1" prepend-icon="fas fa-calendar-alt" readonly /> </v-flex>
+								<v-flex xs12 md6 class="px-2"> <v-text-field :value="formatDate(Current.StartDate)" label="Package Start Date" tabindex="-1" prepend-icon="event" readonly /> </v-flex>
+								<v-flex xs12 md6 class="px-2"> <v-text-field :value="formatDate(Current.EndDate)" label="Package End Date" tabindex="-1" prepend-icon="event" readonly /> </v-flex>
+							</v-layout>
+						</m-registration-step-finished>
+					</v-flex>
+					<v-flex xs12 class="elevation-10 mb-4"> <m-registration-step-3 v-model="transactionData" :group="grouping" :quantity="usersCount" :dojRange="dojRange"  @error="(e) => { error = e }"/> </v-flex>
 				</v-layout>
-				<v-footer height="auto" color="primary lighten-1" >
-					<v-layout justify-center row justify-end align-end class="px-4 py-2">
-						<v-spacer />
-						<v-btn v-if="payed" outline> <v-icon left>print</v-icon> Print Reciept </v-btn>
-						<v-btn v-else :loading="paying" :disable="paying" color="orange darken-4" class="white--text" @click.native.stop="paymentModel = true"> <v-icon class="fas" left>fa-cash-register</v-icon> Make Payment </v-btn>
-					</v-layout>
-				</v-footer>
+				<v-slide-y-reverse-transition>
+					<v-footer v-if="!error" height="auto" color="primary lighten-1" >
+						<v-layout justify-center row justify-end align-end class="px-4 py-2">
+							<v-spacer />
+							<v-btn v-if="payed" outline @click.native.stop="print"> <v-icon left>print</v-icon> Print Reciept </v-btn>
+							<v-btn v-else :loading="paying" :disable="paying" color="orange darken-4" class="white--text" @click.native.stop="paymentModel = true"> <v-icon class="fas" left>fa-cash-register</v-icon> Make Payment </v-btn>
+						</v-layout>
+					</v-footer>
+				</v-slide-y-reverse-transition>
 				<single-payment-modal v-model="paymentModel" :users="{ renew: Client }" :transaction="transactionData" :group="grouping" @pay="data => pay(data)" bill-title="Membership Renewal Bill"/>
 			</div>
 		</v-slide-y-transition>

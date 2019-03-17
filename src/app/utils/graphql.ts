@@ -110,6 +110,11 @@ export default class GQLClient{
 			link,
 			cache,
 			connectToDevTools: true,
+			defaultOptions: {
+				query: { errorPolicy: "all" },
+				watchQuery: { errorPolicy: "all" },
+				mutate: { errorPolicy: "all" },
+			}
 		})
 		GQLClient.log.verbose("initialized")
 		return true

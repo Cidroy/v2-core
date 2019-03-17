@@ -37,6 +37,8 @@ const Console = new Logger(`gymkonnect/registration.vue`)
 })
 // @ts-ignore
 export default class MemberRegistrationPage extends Vue {
+	private error = ""
+
 	private transactionData: TMRegistrationStep3 & TMRegistrationStep4 = {
 		...defaultRegistrationStep3User,
 		...defaultRegistrationStep4User,

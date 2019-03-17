@@ -15,11 +15,11 @@ export default class GymUsers extends Base implements IGymUsers {
 	@GQL.Field(type => Number)
 	@DB.Column("integer",{nullable:false , unique: true})
 	public userId!: number
-	
+
 	// @GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", {nullable: true})
 	public mode?: number
-	
+
 	@GQL.Field(type => Boolean, { description: "Entity exists", nullable: true })
 	@DB.Column("tinyint", { default: false, nullable: true})
 	public isGrouped! : boolean
@@ -27,19 +27,19 @@ export default class GymUsers extends Base implements IGymUsers {
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })
 	public enquiryInitial?: number
-	
+
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })
 	public enquiryRecent?: number
-	
+
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })
 	public healthJoining?: number
-	
+
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })
 	public healthCurrent?: number
-	
+
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })
 	public referredByAdmin?: number
@@ -47,51 +47,55 @@ export default class GymUsers extends Base implements IGymUsers {
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })
 	public referredByUser?: number
-	
+
 	@GQL.Field(type => [Number,])
 	@DB.Column("simple-array", { nullable: true })
 	public referredTo?: number[]
-	
+
 	@GQL.Field(type => String)
 	@DB.Column("varchar", { nullable: true })
 	public referredOther?: string
-	
+
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })
 	public transferFrom?: number
-	
+
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })
 	public transferTo?: number
-	
+
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })
 	public balance?: number
-	
+
 	// @GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })
 	public transaction?: number
-	
+
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })
 	public diet?: number
-	
+
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })
 	public personalTraining?: number
-	
+
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })
 	public counselling?: number
-	
+
 	@GQL.Field(type => String)
-	@DB.Column("time", { nullable: true })
+	@DB.Column("varchar", { nullable: true })
 	public preferredTime?: string
-	
+
+	@GQL.Field(type => Number)
+	@DB.Column("integer", { nullable: true })
+	public timeSlot ?: number
+
 	@GQL.Field(type => Number)
 	@DB.Column("integer", { nullable: true })
 	public agreement?: number
-	
+
 	@GQL.Field(type => Date)
 	@DB.Column("date", { nullable: true })
 	public doj?: Date

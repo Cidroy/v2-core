@@ -1,6 +1,8 @@
 import * as GQL from "type-graphql"
 import GymPrices from "@positron/models/gymPrices"
+import { Logger } from "@classes/CONSOLE"
 
+const Console = new Logger(`gymPrices/gk-resolver`)
 @GQL.Resolver(of => GymPrices)
 export default class GymPricesResolver {
 
@@ -35,8 +37,8 @@ export default class GymPricesResolver {
 		}
 		Object.keys(where).forEach(key => where[key] === undefined && delete where[key])
 		let gymPrices = await GymPrices.find({ where })
-		if(gymPrices === undefined ) throw "Invalid Price"
-		console.log(gymPrices)
+		if(gymPrices === undefined || gymPrices.length===0 ) throw "This Combination is not supported"
+		Console.verbose(gymPrices)
 		return gymPrices[0] === undefined ? 0 : gymPrices[0].price
 	}
 
@@ -53,7 +55,7 @@ export default class GymPricesResolver {
 		@GQL.Arg("counsellorType", { nullable: true }) counsellorType: number,
 		@GQL.Arg("trainerType", { nullable: true }) trainerType: number,
 		@GQL.Arg("timeSlot", { nullable: true }) timeSlot: number,
-		
+
 	) {
 		let gymPrices = new GymPrices()
 		if(name)gymPrices.name = name

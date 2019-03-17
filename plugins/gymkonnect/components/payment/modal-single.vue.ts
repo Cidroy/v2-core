@@ -61,7 +61,11 @@ export default class SinglePaymentModal extends Vue {
 	}
 
 	private receipt = "1"
-	private get userFullName() { return `${this.primaryUser.firstName} ${this.primaryUser.middleName} ${this.primaryUser.lastName}` }
+	private get userFullName() {
+		return `${this.primaryUser.firstName || ""} ${this.primaryUser.middleName || ""} ${this.primaryUser.lastName || ""}`
+			.replace(/\s+/, " ")
+			.trimRight()
+	}
 	private get badgenumber() { return this.primaryUser.badgenumber }
 	private get mobileNumber() { return this.primaryUser.mobile }
 	private get whatsappNumber() { return this.primaryUser.whatsappNumber }
@@ -95,7 +99,7 @@ export default class SinglePaymentModal extends Vue {
 	private transactionPrice = 0
 	private get transactionAmount() { return this.packageMagnitude * this.transactionPrice }
 
-	private offer: string | boolean = false
+	private offer: string | boolean | number = false
 	private get OFFERS() { return GymkonnectStore.GK_ALL_OFFERS }
 
 	private paymentMode = GymkonnectStore.GK_PAYMENT_MODES[0].id

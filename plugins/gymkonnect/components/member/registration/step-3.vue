@@ -37,6 +37,9 @@
 				</v-flex>
 			</v-layout>
 		</v-form>
+		<v-slide-y-reverse-transition>
+			<v-alert v-if="!!error" color="red darken-3" type="error" :value="true" >{{ error }}</v-alert>
+		</v-slide-y-reverse-transition>
 		<v-card-actions>
 			<v-layout row wrap>
 				<v-flex xs12 lg3> <v-text-field v-model="packageMagnitude" type="number" label="Quantity" color="orange darken-2" :min="1" :max="packageMagnitudeMax" /> </v-flex>

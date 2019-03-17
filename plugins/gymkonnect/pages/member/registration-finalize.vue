@@ -24,8 +24,8 @@
 							<v-btn @click="renameGroup" block outline slot="append"> <v-icon>save</v-icon> Rename </v-btn>
 						</v-text-field>
 					</v-flex>
-					<v-flex xs6 class="px-2"> <v-text-field :value="formatDate(transactions[0].start.split('T')[0])" prepend-icon="event" label="Start Date" readonly tabindex="-1" color="orange darken-2" /></v-flex>
-					<v-flex xs6 class="px-2"> <v-text-field :value="formatDate(transactions[0].endExtendedDate.split('T')[0])" prepend-icon="event" label="End Date" readonly tabindex="-1" color="orange darken-2" /></v-flex>
+					<v-flex xs6 class="px-2"> <v-text-field :value="formatDate(moment(transactions[0].start).toISOString().substr(0,10))" prepend-icon="event" label="Start Date" readonly tabindex="-1" color="orange darken-2" /></v-flex>
+					<v-flex xs6 class="px-2"> <v-text-field :value="formatDate(moment(transactions[0].endExtendedDate).toISOString().substr(0,10))" prepend-icon="event" label="End Date" readonly tabindex="-1" color="orange darken-2" /></v-flex>
 				</v-layout>
 			</v-card>
 			<template v-for="(user, index) in Users">

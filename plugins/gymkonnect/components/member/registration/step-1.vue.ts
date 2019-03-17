@@ -7,7 +7,9 @@ import { TMRegistrationStep1, defaultRegistrationStep1User } from "@plugins/gymk
 import addUserPhoto from "@plugins/gymkonnect/components/add-user-photo.vue"
 
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
+import { Logger } from "@classes/CONSOLE"
 
+const Console = new Logger(`step-1.vue/registration/gk`)
 @Component({
 	// @ts-ignore
 	components: {
@@ -115,8 +117,8 @@ export default class MRegistrationStep1 extends Vue {
 		this.loading = true
 		try {
 			this.badgenumber = (await Gymkonnect.generateBadgenumber())[0]
-			console.log(this.badgenumber)
-		} catch (e) { console.log(e) }
+			Console.verbose("generated badgenumber",this.badgenumber)
+		} catch (e) { Console.error(e) }
 		this.loading = false
 	}
 

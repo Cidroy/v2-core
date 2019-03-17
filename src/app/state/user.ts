@@ -38,7 +38,7 @@ class User extends VuexModule {
 			} }
 		`)
 		try {
-			if (response.errors) throw response.errors
+			if (response.errors) throw response.errors[0].message
 			CORE_user = { ...response.data.user, userType: "God" }
 			CORE_loggedin = true
 		} catch (error) {
@@ -66,7 +66,7 @@ class User extends VuexModule {
 					users: loginUsers{ name: username, preference: passwordPreference }
 				}
 			`)
-			if (response.errors) throw response.errors
+			if (response.errors) throw response.errors[0].message
 			users = response.data.users
 		} catch (error) {
 			alert(error.toString(), "error")

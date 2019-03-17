@@ -9,6 +9,7 @@ import Gymkonnect from "@plugins/gymkonnect/classes/clients"
 import { Routes } from "@plugins/gymkonnect/routes"
 import { Permissions as gymkonnect } from "@plugins/gymkonnect/permission"
 import { formatDate } from "@/utils/misc"
+import moment from "moment"
 
 type TTransactions = Unpacked<ReturnType<typeof Gymkonnect.Registration.makePayments>>["transactions"]
 type TGroup = Unpacked<ReturnType<typeof Gymkonnect.Registration.makePayments>>["group"]
@@ -37,7 +38,8 @@ const TUserGenerator = (user: TMRegistration, previous: TUser | {} = {}): TUser 
 })
 // @ts-ignore
 export default class RegistrationFinalizePage extends Vue {
-	private formatDate(date){ return formatDate(date) }
+	private get moment(){ return moment }
+	private get formatDate(){ return formatDate }
 
 	private get PERMISSIONS(){ return { gymkonnect } }
 
