@@ -208,8 +208,26 @@ async function renew(
 	}
 }
 
+async function prebookEnroll(clientId: string | number, transactionId: string | number):Promise<boolean>{
+	// TODO:
+	if(1) return true
+	try {
+		let response = await GQLClient.mutate<{ enrolled: boolean }>(
+			gql``,
+			{}
+		)
+		if (response.errors) throw response.errors[0].message
+		if (!response.data) throw "Unable to prebook enroll"
+		return response.data.enrolled
+	} catch (error) {
+		Console.error(error)
+		throw error.toString()
+	}
+}
+
 export const Renewal = {
 	info,
 	defaultInfo,
 	renew,
+	prebookEnroll,
 }

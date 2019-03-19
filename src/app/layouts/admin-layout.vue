@@ -48,9 +48,11 @@
 		</v-navigation-drawer>
 
 		<v-toolbar color="orange darken-4" dark app :clipped-left="$vuetify.breakpoint.mdAndUp" fixed transition="slide-y-transition">
+			<!-- FIXME: [Karthik] make this icon inline with title, class "app-drag" is important on title -->
+			<!-- <v-img :src="logo" height="40" width="40" contain /> -->
 			<span class="hidden-sm-and-down title font-weight-black app-drag" style="width: 190px">{{ appName }}</span>
 			<v-toolbar-title style="width: 100px" class="ml-0 pl-3">
-				<v-toolbar-side-icon @click.stop="menuDrawer = !menuDrawer"></v-toolbar-side-icon>
+				<v-toolbar-side-icon @click.stop="menuDrawer = !menuDrawer" />
 			</v-toolbar-title>
 			<v-spacer class="app-drag" />
 			<navbar-search v-if="$permission(PERMISSIONS.maple.NAVBAR_SEARCH)" />

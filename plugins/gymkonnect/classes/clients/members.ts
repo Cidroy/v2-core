@@ -19,6 +19,7 @@ async function getAllMembersForRegistrationList(): Promise<TMemberListTableItems
 			mobile: string,
 		},
 		transaction: {
+			id: string | number
 			membership: { id: number | string, name: string }
 			package: { id: number | string, name: string }
 			endDate: string
@@ -33,6 +34,7 @@ async function getAllMembersForRegistrationList(): Promise<TMemberListTableItems
 					mode{ name, description }
 					user{ id, firstName, middleName, lastName, badgenumber, mobile, }
 					transaction{
+						id
 						membership{ id, name, }
 						package: packagesType{ id, name }
 						endDate: endExtendedDate
@@ -54,6 +56,9 @@ async function getAllMembersForRegistrationList(): Promise<TMemberListTableItems
 		endDate: user.transaction?formatDate(user.transaction.endDate.split("T")[0]): "Unavailable",
 		mobile: user.user?user.user.mobile:"Unavailable",
 		enrolled: user.enrolled || false,
+		transaction: {
+			id: user.transaction? user.transaction.id: "0",
+		}
 	}))
 	return users
 }
