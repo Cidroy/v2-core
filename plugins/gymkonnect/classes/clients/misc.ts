@@ -54,6 +54,23 @@ export async function existsMobile(mobile: string): Promise<boolean> {
 	}
 }
 
+export async function receiptNumber():Promise<number | string>{
+	try {
+		// TODO:
+		// let response = await GQLClient.query<{ receipt: number | string }>(
+		// 	gql``,
+		// 	{}
+		// )
+		// if (response.errors) throw response.errors[0].message
+		// if (!response.data) throw "Unable to get receipt number"
+		// return response.data.receipt
+		return "1"
+	} catch (error) {
+		Console.error(error)
+		throw error.toString()
+	}
+}
+
 export const Health = {
 
 	async addInitialHealth(id: string | number, height: number, weight: number, bodyType: string | number, bloodGroup: string | number): Promise<string|number>{

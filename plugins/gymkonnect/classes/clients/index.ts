@@ -1,12 +1,14 @@
-import { generateBadgenumber, existsEmail, existsMobile, Health } from "./misc"
+import { generateBadgenumber, existsEmail, existsMobile, Health, receiptNumber } from "./misc"
 import { Registration } from "./member/registration"
 import { Permissions } from "../../permission"
 import { Messages } from "./messages"
 import { Members } from "./members"
 import { MemberGroups } from "./member-groups"
 import { Renewal } from "./member/renewal"
+import { Freezing } from "./member/freezing"
 
 const Gymkonnect = {
+	receiptNumber,
 	existsEmail,
 	existsMobile,
 	Registration,
@@ -17,6 +19,7 @@ const Gymkonnect = {
 	Health,
 	MemberGroups,
 	Renewal,
+	Freezing,
 }
 
 export default Gymkonnect

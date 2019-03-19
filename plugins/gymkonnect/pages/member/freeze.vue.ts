@@ -1,12 +1,16 @@
-import { Component, Vue, Watch } from "vue-property-decorator"
-import moment from "moment"
+import { Component, Vue, Watch, Prop, Emit } from "vue-property-decorator"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/layout.vue"
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
 import { Logger } from "@classes/CONSOLE"
 import { PaymentDetail } from "@plugins/gymkonnect/classes/types/payment"
 import MRegistrationStepFinished from "@plugins/gymkonnect/components/member/registration/step-finished.vue"
-import SinglePaymentModal from "@plugins/gymkonnect/components/payment/modal-single.vue"
+import { alert } from "@/components/toast"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
+import { formatDate, parseDate } from "@/utils/misc"
+import moment, { Moment } from "moment"
+import FreezePaymentModal from "@plugins/gymkonnect/components/payment/modal-freeze.vue"
+import { TFreezeTransaction } from "@plugins/gymkonnect/classes/types/freeze"
 
 const Console = new Logger(`freeze.vue/gk`)
 @Component({
@@ -14,7 +18,7 @@ const Console = new Logger(`freeze.vue/gk`)
 	components: {
 		Layout,
 		MRegistrationStepFinished,
-		SinglePaymentModal,
+		FreezePaymentModal,
 	},
 	page: {
 		title: "Membership Freezing",
@@ -26,18 +30,33 @@ const Console = new Logger(`freeze.vue/gk`)
 })
 // @ts-ignore
 export default class MembershipFreezingPage extends Vue {
+	private get formatDate() { return formatDate }
+	private get parseDate() { return parseDate }
+	private error = ""
 	private async Initialize() {
 		this.clientData = await Gymkonnect.Renewal.defaultInfo()
+		this.clientId = this.value
 	}
 
 	private readonly label = "Search by Mobile Number or Badge Number"
+	@Prop({ type: [String, Number,], default: "" }) public value !: string | number
+	@Watch("value") private onValueChange() { this.clientId = this.value }
+	@Emit("input") public inputEmitter() { return this.clientId }
 	private clientId: string | number = ""
 	@Watch("clientId") private async onClientIdChange() {
+		if (!this.clientId) return
 		this.clientDataLoading = true
-		this.clientData = await Gymkonnect.Renewal.info(this.clientId)
+		try {
+			this.clientData = await Gymkonnect.Renewal.info(this.clientId)
+		} catch (error) {
+			Console.error(error)
+			await alert(error.toString(), "error")
+		}
 		this.clientDataLoading = false
+		this.inputEmitter()
 	}
 	private get clientName() {
+		if (this.value) return ""
 		let client = this.Clients.find(client => client.id === this.clientId)
 		return client ? client.name : "Invalid"
 	}
@@ -53,94 +72,150 @@ export default class MembershipFreezingPage extends Vue {
 	}
 	private clients: Unpacked<ReturnType<typeof Gymkonnect.Members.find>> = []
 	private get Clients() {
-		return this.clients.filter(client => client.name.toLowerCase().includes(this.clientSearch.toLowerCase())
+		return this.clients.filter(client => client.name.toLowerCase().includes(this.clientSearch ? this.clientSearch.toLowerCase() : "")
 			|| client.badgenumber!.includes(this.clientSearch)
 			|| client.mobile!.includes(this.clientSearch)
 		)
 	}
+	private get Current() {
+		return {
+			Membership: GymkonnectStore.GK_MEMBERSHIP_TYPE(this.clientData.transaction.membershipType),
+			Package: GymkonnectStore.GK_PACKAGE(this.clientData.transaction.packageType),
+			StartDate: this.clientData.transaction.start,
+			EndDate: this.clientData.transaction.end,
+		}
+	}
 
 	// @ts-ignore
 	private clientData: Unpacked<ReturnType<typeof Gymkonnect.Renewal.defaultInfo>> = 0
-	@Watch("clientData") private onClientDataChange() { this.transactionData = this.clientData.transaction }
-	private transactionData: Unpacked<ReturnType<typeof Gymkonnect.Renewal.defaultInfo>>["transaction"] = this.clientData.transaction
+	@Watch("clientData") private onClientDataChange() {
+		this.XfreezeStartMin = this.clientData.transaction.start
+		this.XfreezeEndMax = this.clientData.transaction.end
+	}
 	private get grouping() { return this.clientData.grouping }
+	private get GroupName() {
+		let grouping = GymkonnectStore.GK_GROUPING(this.grouping)
+		return grouping ? grouping.name : "None"
+	}
+	private get Group() { return this.clientData.group }
 	private get usersCount() { return this.clientData.usersCount }
-	private get Client() { return this.clientData.client }
-	private get dojRange() { return this.clientData.dojRange }
+	private get Client() { return { ...this.clientData.client, ...this.clientData.transaction } }
+
+	private get TransactionId(){ return this.clientData.transaction.id }
 
 	private paying = false
 	private paymentModel = false
-	private payed = false
+	private paymentId: string | number = 0
+	private get payed() { return !!(this.paymentId && this.transactionId) }
+	private transactionId: string | number = 0
+
 	private async pay(paymentData: PaymentDetail) {
 		this.paying = true
+		try {
+			throw "Not implemented"
+		} catch (error) { alert(error.toString(), "error") }
 		this.paying = false
-		this.payed = true
 	}
 
 	private goBackSimon() { this.clientId = "" }
-
-	private freeze1 = false
-	private freeze2 = false
-	private minPeriod = 5
-	private startDate = new Date().toISOString().substr(0, 10)
-	private minStartDate = new Date().toISOString().substr(0, 10)
-	private startDateFormatted = this.formatDate(this.startDate)
-	private endDate = new Date().toISOString().substr(0, 10)
-	private endDateFormatted = this.formatDate(this.endDate)
-	private snackbar = false
-	private y = "top"
-	private x = "right"
-	private mode = ""
-	private timeout = 6000
-	private freezingPeriod = []
-
-	private get period() {
-		let a = moment(this.endDate)
-		let b = moment(this.startDate)
-		return a.diff(b, "days")
+	private print() {
+		// TODO:
 	}
 
-	private get minEndDate() {
-		return moment(this.startDate).add(this.minPeriod + 1, "days").toISOString().substr(0, 10)
+	private get MinimumPeriod() { return this.noMinimumPeriod ? 1 : 5 }
+	private get MaximumPeriod() {
+		let diff = moment(this.freezeEndMax).diff(this.freezeStart, "days") + 1
+		return this.ignoreRemainingRestrictions ? diff : this.RemainingFreezeDays
+	}
+	private noMinimumPeriod = false
+	@Watch("noMinimumPeriod") private onNoMinimumPeriodChange(){
+		this.freezingPeriod = Math.max(this.freezingPeriod, this.MinimumPeriod)
+	}
+	private get RemainingFreezeCount() { return 1 }
+	private get RemainingFreezeDays() { return 15 }
+	private ignoreRemainingRestrictions = false
+	@Watch("ignoreRemainingRestrictions") private onIgnoreRemainingRestrictionsChange(){
+		this.freezingPeriod = Math.min(this.freezingPeriod, this.RemainingFreezeDays, this.MaximumPeriod)
 	}
 
-	@Watch("minEndDate")
-	private onMinEndDateChanged(newVal, oldVal) {
-		this.endDate = moment.max(moment(this.endDate), moment(newVal)).add(1, "days").toISOString().substr(0, 10)
+	private allowBackDating = false
+
+	private freezingPeriod = this.MinimumPeriod
+	@Watch("freezingPeriod") private onFreezePeriodChange() {
+		if (moment(this.freezeEnd).diff(this.freezeStart, "days") + 1 !== this.freezingPeriod)
+		this.freezeEnd = moment(this.freezeStart).add(this.freezingPeriod, "days").toISOString().substr(0,10)
 	}
 
-	@Watch("minStartDate")
-	private onMinStartDateChanged(newVal, oldVal) {
-		this.startDate = moment.max(moment(this.startDate), moment(newVal)).add(1, "days").toISOString().substr(0, 10)
+	private freezeStart = new Date().toISOString().substr(0, 10)
+	private freezeStartFormatted = this.formatDate(this.freezeStart)
+	private freezeStartMenu = false
+	@Watch("freezeStart") private onFreezeStartChanged() { this.freezeStartFormatted = this.formatDate(this.freezeStart) }
+	private XfreezeStartMin = new Date().toISOString().substr(0, 10)
+	private get freezeStartMin() { return this.allowBackDating? this.XfreezeStartMin: moment().toISOString().substr(0,10) }
+	private get freezeStartMax() {
+		return moment.max([
+			moment(this.freezeEndMax).subtract(this.MinimumPeriod, "days"),
+			moment(this.XfreezeStartMin),
+		]).toISOString().substr(0,10)
+	}
+	@Watch("freezeStartMin")
+	@Watch("freezeStartMax")
+	private onFreezeStartRangeChange(){
+		let freezeStart = moment(this.freezeStart)
+		freezeStart = moment.min([
+			moment.max([ freezeStart, moment(this.freezeStartMin), ]),
+			moment(this.freezeStartMax),
+		])
+		this.freezeStart = freezeStart.add(1, "day").toISOString().substr(0,10)
 	}
 
-	@Watch("startDate")
-	private onStartDateChanged() {
-		this.startDateFormatted = this.formatDate(this.startDate)
+	private freezeEnd = moment().add(this.freezingPeriod - 1, "days").toISOString().substr(0, 10)
+	private freezeEndFormatted = this.formatDate(this.freezeEnd)
+	private freezeEndMenu = false
+	@Watch("freezeEnd") private onFreezeEndChanged() { this.freezeEndFormatted = this.formatDate(this.freezeEnd) }
+	private get freezeEndMin() { return moment(this.freezeStart).add(this.MinimumPeriod, "days").toISOString().substr(0,10) }
+	private XfreezeEndMax = new Date(2019, 11, 31).toISOString().substr(0, 10)
+	private get freezeEndMax() { return this.XfreezeEndMax }
+	@Watch("freezeEndMin")
+	@Watch("freezeEndMax")
+	private onFreezeEndRangeChange() {
+		let freezeEnd = moment(this.freezeEnd)
+		freezeEnd = moment.min([
+			moment.max([freezeEnd, moment(this.freezeEndMin),]),
+			moment(this.freezeEndMax),
+		])
+		this.freezeEnd = freezeEnd.add(1, "day").toISOString().substr(0, 10)
 	}
 
-	@Watch("endDate")
-	private onEndDateChanged() {
-		this.endDateFormatted = this.formatDate(this.endDate)
+	@Watch("freezeStart")
+	@Watch("freezeEnd")
+	private onFreezeRangeChange(){
+		this.freezingPeriod = moment(this.freezeEnd).diff(this.freezeStart, "days") + 1
 	}
 
-	private get getStartDateFormatted() {
-		return this.formatDate(this.startDate)
-	}
-	private get getEndDateFormatted() {
-		return this.formatDate(this.endDate)
+	private FreezeWarning = ""
+	private FreezeError = ""
+
+	@Watch("freezeStart")
+	@Watch("freezeEnd")
+	@Watch("freezingPeriod")
+	private onFreezeRangePeriodChange(){
+		this.FreezeError = ""
+		this.FreezeWarning = ""
+		if(this.ignoreRemainingRestrictions){
+			if (this.freezingPeriod > this.RemainingFreezeDays) this.FreezeWarning = "Freezing period exceeds the recommended limit"
+
+		} else {
+			if (this.freezingPeriod > this.RemainingFreezeDays) this.FreezeError = "Freezing period is more than the remaining Freezing period"
+			if (this.RemainingFreezeCount < 1) this.FreezeError = "No more Freezing available"
+		}
 	}
 
-	// FIXME: use from utils!
-	private formatDate(date) {
-		// if (!date) return null
-		const [year, month, day,] = date.split("-")
-		return `${day}/${month}/${year}`
+	private get TransactionData(): TFreezeTransaction{
+		return {
+			start: this.freezeStart,
+			end: this.freezeEnd,
+			period: this.freezingPeriod,
+		}
 	}
-	private parseDate(date) {
-		if (!date) return null
-		const [day, month, year,] = date.split("/")
-		return `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`
-	}
-
 }

@@ -15,6 +15,7 @@ const defaultInfo = async () => {
 	} = await import("../../types/registration")
 	return {
 		transaction: {
+			id: 0 as string| number,
 			...defaultRegistrationStep3User,
 			start: moment().toISOString().substr(0,10),
 			end: moment().toISOString().substr(0,10),
@@ -50,6 +51,7 @@ async function info(clientId: string | number): Promise<TRenewalInfo> {
 				client: Partial<TRenewalInfo["client"]> & { category: string | number },
 				timeSlot: string | number,
 				transaction: {
+					id: string,
 					start: string,
 					end: string,
 					membershipType: string | number,
@@ -93,6 +95,7 @@ async function info(clientId: string | number): Promise<TRenewalInfo> {
 						}
 						timeSlot
 						transaction{
+							id,
 							start
 							end: endExtendedDate
 							membershipType
@@ -126,6 +129,7 @@ async function info(clientId: string | number): Promise<TRenewalInfo> {
 		if (!response.data) throw "Unable to det renewal Info"
 		return {
 			transaction: {
+				id: response.data.data.transaction.id,
 				category: response.data.data.client.category,
 				doj: moment(response.data.data.transaction.end).toISOString().substr(0, 10),
 				membershipType: response.data.data.transaction.membershipType,

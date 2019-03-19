@@ -15,13 +15,18 @@ const Console = new Logger("gk/payment/modal-single")
 	// @ts-ignore
 	components: { Layout, },
 	created() {
+		this.Initialize()
 		this.computePrimaryUser()
 	},
 })
 // @ts-ignore
 export default class SinglePaymentModal extends Vue {
-	private formatDate(date) { return formatDate(date) }
-	private parseDate(date) { return formatDate(date) }
+	private get formatDate() { return formatDate }
+	private get parseDate() { return parseDate }
+
+	private async Initialize(){
+		this.receipt = await Gymkonnect.receiptNumber()
+	}
 
 	private primaryUser: TMRegistration = defaultRegistrationUser
 	private get enforcer() {
@@ -60,7 +65,7 @@ export default class SinglePaymentModal extends Vue {
 			.catch(e => { Console.error(e) })
 	}
 
-	private receipt = "1"
+	private receipt: string | number = "1"
 	private get userFullName() {
 		return `${this.primaryUser.firstName || ""} ${this.primaryUser.middleName || ""} ${this.primaryUser.lastName || ""}`
 			.replace(/\s+/, " ")
