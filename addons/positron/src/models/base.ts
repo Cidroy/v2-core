@@ -2,7 +2,6 @@ import { IModification, IEntityBase } from "@classes/interface/IEntityBase"
 import * as GQL from "type-graphql"
 import * as DB from "typeorm"
 import { Positron } from "@positron/POSITRON"
-import uuid = require("uuid")
 
 @GQL.ObjectType()
 export class Modifications implements IModification{

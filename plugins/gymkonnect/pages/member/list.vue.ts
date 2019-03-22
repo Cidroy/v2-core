@@ -25,6 +25,7 @@ import { gotoProfile, enroll, freezeUnfreeze, renew, preebookEnroll, blockUnbloc
 })
 // @ts-ignore
 export default class Home extends Vue {
+	
 	private get PERMISSIONS() { return { gymkonnect } }
 
 	// FIXME: dynamic list
@@ -52,9 +53,13 @@ export default class Home extends Vue {
 			// FIXME: add actions
 			true ? { icon: "person", name: "Profile", action: () => { gotoProfile(clientId) } } : false,
 			!this.tableItems[index].enrolled ? { icon: "border_horizontal", name: "Enroll", action: () => { enroll(clientId) } } : false,
-			[USER_MODE.FREEZE, USER_MODE.ACTIVE,].includes(this.tableItems[index].mode) ? { iconClass: "far", icon: "fa-snowflake", name: this.tableItems[index].mode === USER_MODE.FREEZE ? "Unfreeze" : "Freeze", action: () => { freezeUnfreeze(clientId) } } : false,
+			[USER_MODE.FREEZE, USER_MODE.ACTIVE,].includes(this.tableItems[index].mode) ? { iconClass: "far", icon: "fa-snowflake", name: this.tableItems[index].mode === USER_MODE.FREEZE ? "Unfreeze" : "Freeze",
+				action: () => { freezeUnfreeze(clientId, this.tableItems.find(i => i.id===clientId)!.mode) }
+			} : false,
 			![USER_MODE.BANNED, USER_MODE.ENQUIRY, USER_MODE.TEMPORARY,].includes(this.tableItems[index].mode) ? { iconClass: "far", icon: "autorenew", name: "Renew", action: () => { renew(clientId) } } : false,
-			this.tableItems[index].mode === USER_MODE.PREBOOK ? { icon: "alarm_on", name: "Prebook Enroll", action: () => { preebookEnroll(clientId) } } : false,
+			this.tableItems[index].mode === USER_MODE.PREBOOK ? { icon: "alarm_on", name: "Prebook Enroll", action: () => {
+				preebookEnroll(clientId, this.tableItems.find(i => i.id===clientId)!.transaction.id)
+			} } : false,
 			true ? { icon: "block", name: this.tableItems[index].mode === USER_MODE.BANNED ? "Unblock" : "Block", action: () => { blockUnblock(clientId) } } : false,
 		].filter(i => !!i)
 	}
@@ -75,4 +80,5 @@ export default class Home extends Vue {
 	private UserMode(name: string | number) {
 		return (<TGQLUserMode>GymkonnectStore.GK_USER_MODES.find(i => i.name === name)).description
 	}
+
 }

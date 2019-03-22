@@ -133,15 +133,16 @@ class DevServer extends BuildHelper{
 			let devServer = new WebpackDevServer(<webpack.Compiler>this._compilers[conf], {
 				contentBase: DevServer.resolve("/"),
 				quiet: true,
-				// @ts-ignore
 				before(app, ctx) {
-					app.use(that._hotMiddlewares[conf])
+					app.use(<any>that._hotMiddlewares[conf])
+					// @ts-ignore
 					ctx.middleware.waitUntilValid(() => { res() })
 				}
 			})
 			return devServer
 		} catch (error) {
 			DevServer.console.error("Create Dev Server", error)
+			throw error
 		}
 	}
 

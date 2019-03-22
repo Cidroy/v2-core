@@ -86,15 +86,15 @@ const baseConfig: webpack.Configuration = {
 				type: "javascript/auto",
 			},
 			{
-				test: /\.vue$/,
-				loader: "vue-loader",
-				options: vueLoaderConfig
-			},
-			{
 				test: /\.((j|t)sx?)$/,
 				loader: "babel-loader",
 				exclude: /node_modules/,
 				include: RESOLVE_PATHS,
+			},
+			{
+				test: /\.vue$/,
+				loader: "vue-loader",
+				options: vueLoaderConfig
 			},
 			{
 				test: /\.node$/,

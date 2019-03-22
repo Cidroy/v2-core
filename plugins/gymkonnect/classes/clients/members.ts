@@ -3,7 +3,6 @@ import GQLClient, { gql } from "@/utils/graphql"
 import { USER_MODE } from "@classes/enum/user-mode"
 import { formatDate } from "@/utils/misc"
 import { IUser } from "@classes/interface/IUser"
-import { sleep } from "@classes/misc"
 import { Logger } from "@classes/CONSOLE"
 
 const Console = new Logger(`members/gk-client`)
@@ -19,6 +18,7 @@ async function getAllMembersForRegistrationList(): Promise<TMemberListTableItems
 			mobile: string,
 		},
 		transaction: {
+			id: string | number
 			membership: { id: number | string, name: string }
 			package: { id: number | string, name: string }
 			endDate: string
@@ -33,6 +33,7 @@ async function getAllMembersForRegistrationList(): Promise<TMemberListTableItems
 					mode{ name, description }
 					user{ id, firstName, middleName, lastName, badgenumber, mobile, }
 					transaction{
+						id
 						membership{ id, name, }
 						package: packagesType{ id, name }
 						endDate: endExtendedDate
@@ -54,6 +55,9 @@ async function getAllMembersForRegistrationList(): Promise<TMemberListTableItems
 		endDate: user.transaction?formatDate(user.transaction.endDate.split("T")[0]): "Unavailable",
 		mobile: user.user?user.user.mobile:"Unavailable",
 		enrolled: user.enrolled || false,
+		transaction: {
+			id: user.transaction? user.transaction.id: "0",
+		}
 	}))
 	return users
 }
@@ -85,7 +89,28 @@ async function find( value: string, keys: (keyof IUser)[] = [ "id", ]): Promise<
 	}
 }
 
+async function info(clientId: string | number){
+	// TODO: [Vicky]
+	if(1){
+		const { defaultRegistrationStep1User, defaultRegistrationStep2User } = await import("../types/registration")
+		return { ...defaultRegistrationStep1User, ...defaultRegistrationStep2User }
+	}
+	try {
+		let response = await GQLClient.query<{}>(
+			gql``,
+			{}
+		)
+		if (response.errors) throw response.errors[0].message
+		if (!response.data) throw "Unable to get member info"
+		return response.data
+	} catch (error) {
+		Console.error(error)
+		throw error.toString()
+	}
+}
+
 export const Members = {
 	getAllMembersForRegistrationList,
 	find,
+	info,
 }

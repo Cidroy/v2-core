@@ -13,13 +13,13 @@
 				</v-flex>
 			</v-layout>
 			<v-layout slot="extension" class="px-2">
-				<v-flex xs12 md6>
+				<v-flex xs12 md10>
 					<v-radio-group :prepend-icon="usersCount===1?'person':'people'" label="Registration Type" v-model="grouping" row>
 						<v-radio v-for="(grouping, index) in GROUPINGS" :label="grouping.name" :value="grouping.id" :key="index" color="orange darken-2"/>
 					</v-radio-group>
 				</v-flex>
-				<v-flex xs12 md6 v-if="allowAddPeople || allowDeletePeople"> <h3 class="text-xs-right py-2">{{ usersCount }} / {{ this.GROUPINGS[this.groupIndex].max }} People</h3> </v-flex>
-				<v-flex xs12 md6 v-else> <h3 class="text-xs-right py-2">{{ usersCount }} People</h3> </v-flex>
+				<v-flex xs12 md2 v-if="allowAddPeople || allowDeletePeople"> <h3 class="text-xs-right py-2">{{ usersCount }} / {{ this.GROUPINGS[this.groupIndex].max }} People</h3> </v-flex>
+				<v-flex xs12 md2 v-else> <h3 class="text-xs-right py-2">{{ usersCount }} {{ usersCount===1?"Person":"People" }}</h3> </v-flex>
 			</v-layout>
 		</v-toolbar>
 		<v-layout row wrap class="pa-4">

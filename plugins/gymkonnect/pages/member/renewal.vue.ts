@@ -95,7 +95,8 @@ export default class MembershipRenewalPage extends Vue {
 	private transactionData: Unpacked<ReturnType<typeof Gymkonnect.Renewal.defaultInfo>>["transaction"] = {
 		...defaultRegistrationStep3User,
 		start: moment().toISOString().substr(0,10),
-		end: moment().toISOString().substr(0,10)
+		end: moment().toISOString().substr(0,10),
+		id: 0,
 	}
 	private get grouping(){ return this.clientData.grouping }
 	private get GroupName(){

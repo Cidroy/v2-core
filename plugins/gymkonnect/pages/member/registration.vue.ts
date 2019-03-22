@@ -94,7 +94,7 @@ export default class MemberRegistrationPage extends Vue {
 
 	private completedSteppers: (number | string)[] = []
 	private clientIds: (number | string)[] = []
-	private stepperComplete(stepperId, clientId) {
+	private stepperComplete(stepperId: string, clientId: string | number) {
 		this.completedSteppers.push(stepperId)
 		this.clientIds.push(clientId)
 		this.users[stepperId].id = clientId
