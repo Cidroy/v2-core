@@ -1,5 +1,6 @@
 import { app, ipcMain, BrowserWindow } from "electron"
 import electron from "electron-util"
+import parseArgs from "minimist"
 
 import * as util from "@@/config/util"
 import { Window, WindowSize } from "@electron/window"
@@ -8,11 +9,13 @@ import { Logger } from "@classes/CONSOLE"
 import AppConfig from "@classes/appConfig"
 import ParticleAccelerator from "@classes/ParticleAccelerator"
 import Printer from "@electron/printer"
+import loadDevtools from "./load-devtools"
 
 const request = require("request-promise-native").defaults({ simple: false })
 
 const Console = new Logger("electron/main")
-
+const Args = parseArgs(process.argv.slice(2))
+if(Args.inspect) loadDevtools()
 /**
  * Set `__static` path to static files in production
  * https://simulatedgreg.gitbooks.io/electron-vue/content/en/using-static-assets.html
@@ -146,7 +149,8 @@ class Application {
 		} catch (error) {
 			Console.error("Abnormal Exit :", error)
 		}
-		app.quit()
+		// app.quit()
+		process.exit()
 	}
 
 	public async initialize(): Promise<void> {
@@ -162,9 +166,11 @@ class Application {
 		//#region start application
 		try {
 			await this.windows.splash.show()
+			if(Args.inspect) this.windows.splash._.webContents.openDevTools()
 			Console.info("Showing Splashscreen")
 			if(await this.beforeMain()){
 				await this.windows.main.show()
+				if(Args.inspect) this.windows.main._.webContents.openDevTools()
 				Console.info("Showing Mainscreen")
 				this.windows.splash.close()
 				Console.info("Closed Splashscreen")

@@ -160,7 +160,7 @@ const baseConfig: webpack.Configuration = {
 		// extract css into its own file
 		new MiniCssExtractPlugin({
 			filename: "[name].css",
-			chunkFilename: "css/[name].[id].css"
+			chunkFilename: "css/[name].css"
 		}),
 	]
 }

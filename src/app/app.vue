@@ -15,6 +15,6 @@
 </template>
 
 <style>
-@import url("assets/fonts/icons/material-icons.css");
+/* @import url("assets/fonts/icons/material-icons.css"); */
 /* Global CSS */
 </style>

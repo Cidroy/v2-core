@@ -69,7 +69,7 @@ class DevServer extends BuildHelper{
 	private startMain() {
 		return new Promise((res, rej) => {
 			try {
-				(<webpack.Entry>this._mainConfig.entry).main = [DevServer.resolve("src/electron/index.dev.js"),].concat((<webpack.Entry>this._mainConfig.entry).main)
+				(<webpack.Entry>this._mainConfig.entry).main = [DevServer.resolve("src/electron/index.dev.ts"),].concat((<webpack.Entry>this._mainConfig.entry).main)
 
 				const compiler = webpack(mainConfig)
 				compiler.plugin("watch-run", (compilation, done) => {
