@@ -3,7 +3,6 @@ import GQLClient, { gql } from "@/utils/graphql"
 import { USER_MODE } from "@classes/enum/user-mode"
 import { formatDate } from "@/utils/misc"
 import { IUser } from "@classes/interface/IUser"
-import { sleep } from "@classes/misc"
 import { Logger } from "@classes/CONSOLE"
 
 const Console = new Logger(`members/gk-client`)
@@ -90,7 +89,28 @@ async function find( value: string, keys: (keyof IUser)[] = [ "id", ]): Promise<
 	}
 }
 
+async function info(clientId: string | number){
+	// TODO: [Vicky]
+	if(1){
+		const { defaultRegistrationStep1User, defaultRegistrationStep2User } = await import("../types/registration")
+		return { ...defaultRegistrationStep1User, ...defaultRegistrationStep2User }
+	}
+	try {
+		let response = await GQLClient.query<{}>(
+			gql``,
+			{}
+		)
+		if (response.errors) throw response.errors[0].message
+		if (!response.data) throw "Unable to get member info"
+		return response.data
+	} catch (error) {
+		Console.error(error)
+		throw error.toString()
+	}
+}
+
 export const Members = {
 	getAllMembersForRegistrationList,
 	find,
+	info,
 }

@@ -1,5 +1,6 @@
 <template>
 	<div>
+		<!-- TODO: [Karthik] implement mini-varient with tooltip on mini mode -->
 		<v-navigation-drawer fixed :clipped="$vuetify.breakpoint.mdAndUp" app v-model="menuDrawer" transition="slide-x-transition">
 			<v-list dense>
 				<template v-for="menu in menus">
