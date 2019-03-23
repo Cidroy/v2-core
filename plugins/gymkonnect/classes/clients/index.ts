@@ -6,6 +6,7 @@ import { Members } from "./members"
 import { MemberGroups } from "./member-groups"
 import { Renewal } from "./member/renewal"
 import { Freezing } from "./member/freezing"
+import { Booking } from "./bookings"
 
 const Gymkonnect = {
 	receiptNumber,
@@ -20,6 +21,7 @@ const Gymkonnect = {
 	MemberGroups,
 	Renewal,
 	Freezing,
+	Booking,
 }
 
 export default Gymkonnect

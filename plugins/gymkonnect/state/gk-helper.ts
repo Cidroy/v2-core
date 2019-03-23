@@ -8,6 +8,7 @@ export type TGQLOccupations = TGQLBasic
 export type TGQLCategories = TGQLBasic
 export type TGQLIDProofs = TGQLBasic
 export type TGQLGroupings = TGQLBasic & { count: number, min: number, max: number, }
+export type TGQLSpaGroupings = TGQLBasic & { count: number, min: number, max: number, }
 export type TGQLBodyTypes = TGQLBasic
 export type TGQLOrganizationTypes = TGQLBasic
 export type TGQLPurposes = TGQLBasic
@@ -21,7 +22,7 @@ export type TGQLPaymentModes = TGQLBasic & { requireTransactionId: boolean }
 // FIXME: choose proper duration in next pull
 export type TGQLPackages = TGQLBasic & { count: number, duration: string }
 export type TGQLUserMode = TGQLBasic
-export type TGQLSpaPlan = TGQLBasic
+export type TGQLSpaAmenities = TGQLBasic
 export default class GKHelper{
 	public static async GetOccupations(): Promise<TGQLOccupations[]>{
 		let response = await GQLClient.query<{
@@ -78,6 +79,24 @@ export default class GKHelper{
 
 	public static async GetGroupings(): Promise<TGQLGroupings[]>{
 		let response = await GQLClient.query<{ groupings: TGQLGroupings[] }>(
+			gql`
+				query Groupings{
+					groupings{
+						id
+						name
+						min: minCount
+						max: maxCount
+						count: defaultCount
+					}
+				}
+			`,
+		)
+		return response.data.groupings
+	}
+
+	public static async GetSpaGroupings(): Promise<TGQLSpaGroupings[]>{
+		// FIXME: [Nikhil] change this to spa grouping
+		let response = await GQLClient.query<{ groupings: TGQLSpaGroupings[] }>(
 			gql`
 				query Groupings{
 					groupings{
@@ -254,24 +273,16 @@ export default class GKHelper{
 		return response.data.doors
 	}
 
-	public static async GetSpaPlans(): Promise<TGQLSpaPlan[]> {
+	public static async GetSpaAmenities(): Promise<TGQLSpaAmenities[]> {
 		return [
-			{
-				id: 1,
-				name: "One",
-				description: "",
-			},
-			{
-				id: 1,
-				name: "One",
-				description: "",
-			},
+			{ id: 1, name: "Spa", description: "" },
+			{ id: 2, name: "Jaquzzi", description: "" },
 		]
-		// FIXME: make gql query
-		let response = await GQLClient.query<{ plans: TGQLSpaPlan[] }>(
+		// FIXME: [Nikhil] make gql query
+		let response = await GQLClient.query<{ amenities: TGQLSpaAmenities[] }>(
 			gql`
-				query Plans{
-					plans: SpaPlans{
+				query SpaAmenities{
+					amenities: SpaAmenities{
 						id
 						name
 						description
@@ -279,7 +290,7 @@ export default class GKHelper{
 				}
 			`,
 		)
-		return response.data.plans
+		return response.data.amenities
 	}
 
 }
