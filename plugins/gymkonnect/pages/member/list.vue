@@ -45,10 +45,11 @@
 					</v-flex>
 				</v-layout>
 			</div>
-			<template slot="items" slot-scope="props">
-				<tr @contextmenu="e => memberContextMenuClicked(e, props.item.id)">
+			<template v-slot:items="props">
+				<!-- <tr @contextmenu="e => memberContextMenuClicked(e, props.item.id)"> -->
 					<!-- FIXME: checkbox not working, make ui look like this is selected -->
-					<td><v-checkbox v-model="props.members" primary hide-details /></td>
+					<!-- <v-checkbox :value="props.members" :key="props.members" :label="props.members" v-model = checkboxes[].checked -->
+					<th><v-checkbox v-model="props.members" primary hide-details> </v-checkbox></th>
 					<td>{{ props.item.badgenumber }}</td>
 					<td>{{ UserMode(props.item.mode) }}</td>
 					<td>{{ props.item.name }}</td>
@@ -62,7 +63,7 @@
 							<span v-text="props.item.enrolled?'Enrolled':'Not Enrolled'"/>
 						</v-tooltip>
 					</td>
-				</tr>
+				<!-- </tr> -->
 			</template>
 		</v-data-table>
 		<v-menu v-model="showMemberContextMenu" :position-x="memberContextMenuPoint.x" :position-y="memberContextMenuPoint.y" absolute offset-y>

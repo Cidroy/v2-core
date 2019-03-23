@@ -25,6 +25,7 @@ import { gotoProfile, enroll, freezeUnfreeze, renew, preebookEnroll, blockUnbloc
 })
 // @ts-ignore
 export default class Home extends Vue {
+	
 	private get PERMISSIONS() { return { gymkonnect } }
 
 	// FIXME: dynamic list
@@ -75,4 +76,5 @@ export default class Home extends Vue {
 	private UserMode(name: string | number) {
 		return (<TGQLUserMode>GymkonnectStore.GK_USER_MODES.find(i => i.name === name)).description
 	}
+
 }
