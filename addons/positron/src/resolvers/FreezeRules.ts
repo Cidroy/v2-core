@@ -13,18 +13,18 @@ export default class FreezeRulesResolver{
 	public async addFreezeRules(
 		@GQL.Arg("packages") packages : number,
 		@GQL.Arg("category") category : number,
-		@GQL.Arg("grouping") grouping : number,
+		@GQL.Arg("grouping", { nullable: true }) grouping : number,
 		@GQL.Arg("programme") programme : number,
-		@GQL.Arg("count") count : number,
+		@GQL.Arg("count", { nullable: true }) count : number,
 		@GQL.Arg("minDays") minDays : number,
 		@GQL.Arg("maxDays") maxDays : number
 	){
 		let gymFreezeRules = new GymFreezeRules()
 		gymFreezeRules.packages = packages
 		gymFreezeRules.category = category
-		gymFreezeRules.grouping = grouping
 		gymFreezeRules.programme = programme
-		gymFreezeRules.count = count
+		count && (gymFreezeRules.count = count)
+		grouping && (gymFreezeRules.grouping = grouping)
 		gymFreezeRules.minDays = minDays
 		gymFreezeRules.maxDays = maxDays
 

@@ -14,17 +14,17 @@ export default class GymFreezeRules extends Base implements IGymFreezeRules{
 	@DB.Column("integer")
 	public category!: number
 
-	@GQL.Field(type => Number)
-	@DB.Column("integer")
-	public grouping!: number
+	@GQL.Field(type => Number, { nullable: true })
+	@DB.Column("integer", { nullable: true })
+	public grouping?: number
 
 	@GQL.Field(type => Number)
 	@DB.Column("integer")
 	public programme!: number
 
-	@GQL.Field(type => Number)
-	@DB.Column("integer")
-	public count!: number
+	@GQL.Field(type => Number, { nullable: true })
+	@DB.Column("integer", {nullable: true})
+	public count?: number
 
 	@GQL.Field(type => Number)
 	@DB.Column("integer")

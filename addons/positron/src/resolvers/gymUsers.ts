@@ -4,8 +4,11 @@ import GymUserMode from "@positron/models/gymUserMode"
 import User from "@positron/models/user"
 import Transaction from "@positron/models/transaction"
 import { Logger } from "@classes/CONSOLE"
+import GroupMap from "@positron/models/groupMap"
+import Groups from "@positron/models/groups"
 
 const Console = new Logger(`gql-resolver/gymUsers`)
+
 @GQL.Resolver(of => GymUsers)
 export default class GymUsersResolver {
 	@GQL.FieldResolver(returns => Boolean, { nullable: true })
@@ -17,6 +20,7 @@ export default class GymUsersResolver {
 	public async user(@GQL.Root() gymUser: GymUsers) {
 		return User.findOne({ where: { active: 1, id: gymUser.userId } })
 	}
+	
 	@GQL.FieldResolver(returns => GymUserMode, { nullable: true })
 	public async mode(@GQL.Root() gymUser: GymUsers) {
 		return GymUserMode.findOne({ where: { active: 1, id: gymUser.mode } })

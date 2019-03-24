@@ -4,6 +4,11 @@ import { PASSWORD_PREFERENCE } from "@classes/enum/misc"
 import { Logger } from "@classes/CONSOLE"
 
 const Console = new Logger(`gql-resolvers/admin-users`)
+let userType = {
+	3000 : "GymKonnect Admin",
+	2000 : "Gym Admin",
+	1000 : "Trainer"
+}
 @GQL.Resolver(of => AdminUsers)
 export default class AdminUsersResolver {
 
@@ -33,6 +38,11 @@ export default class AdminUsersResolver {
 			user.save()
 		}
 		return true
+	}
+
+	@GQL.FieldResolver(returns => String, { nullable: true })
+	public async access(@GQL.Root() user: AdminUsers) {
+		return userType[user.access]
 	}
 
 	@GQL.Query(returns => AdminUsers, { nullable: true })
