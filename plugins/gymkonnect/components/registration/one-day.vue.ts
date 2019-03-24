@@ -25,8 +25,8 @@ const Console = new Logger(`spa-booking.vue/gk`)
 		SpaBookingModal,
 	},
 	page : {
-		title: "Spa Booking",
-		meta: [ { name: "Spa Booking", content: appConfig.description, }, ],
+		title: "One Day Registration",
+		meta: [{ name: "One Day Registration", content: appConfig.description, }, ],
 	},
 	created(){
 		this.reCalculateAmount()
@@ -34,7 +34,7 @@ const Console = new Logger(`spa-booking.vue/gk`)
 	}
 })
 // @ts-ignore
-export default class SpaBooking extends Vue{
+export default class OneDayRegistration extends Vue{
 	private get formatDate() { return formatDate }
 	private get parseDate() { return parseDate }
 

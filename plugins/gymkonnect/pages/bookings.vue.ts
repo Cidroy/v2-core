@@ -16,8 +16,6 @@ export default class BookingPage extends Vue {
 		// TODO:
 	}
 
-	private bookingTab = "spa-booking"
-
 	// TODO: [Karthik] Icons
 	private get BookingTypes(): Record<string, { name: string, slug: string, icon?: string }> {
 		return {
@@ -25,4 +23,6 @@ export default class BookingPage extends Vue {
 			GROUND: { name: "Ground", slug: "ground-booking", icon: "apps" },
 		}
 	}
+
+	private bookingTab = Object.values(this.BookingTypes)[0].slug
 }

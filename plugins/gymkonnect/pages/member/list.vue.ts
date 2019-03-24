@@ -57,7 +57,7 @@ export default class MemberListPage extends Vue {
 			[USER_MODE.FREEZE, USER_MODE.ACTIVE,].includes(this.tableItems[index].mode) ? { iconClass: "far", icon: "fa-snowflake", name: this.tableItems[index].mode === USER_MODE.FREEZE ? "Unfreeze" : "Freeze",
 				action: () => { freezeUnfreeze(clientId, this.tableItems.find(i => i.id===clientId)!.mode) }
 			} : false,
-			![USER_MODE.BANNED, USER_MODE.ENQUIRY, USER_MODE.TEMPORARY,].includes(this.tableItems[index].mode) ? { iconClass: "far", icon: "autorenew", name: "Renew", action: () => { renew(clientId) } } : false,
+			![USER_MODE.BANNED, USER_MODE.ENQUIRY, USER_MODE.TEMPORARY,].includes(this.tableItems[index].mode) ? { iconClass: "", icon: "autorenew", name: "Renew", action: () => { renew(clientId) } } : false,
 			this.tableItems[index].mode === USER_MODE.PREBOOK ? { icon: "alarm_on", name: "Prebook Enroll", action: () => {
 				preebookEnroll(clientId, this.tableItems.find(i => i.id===clientId)!.transaction.id)
 			} } : false,
