@@ -30,7 +30,7 @@ class DevServer extends BuildHelper{
 		try {
 			this._mainConfig = mainConfig
 			this._otherConfigs = otherConfig
-			
+
 			this._compilers = {
 				renderer: null,
 				splashscreen: null,
@@ -133,6 +133,7 @@ class DevServer extends BuildHelper{
 			let devServer = new WebpackDevServer(<webpack.Compiler>this._compilers[conf], {
 				contentBase: DevServer.resolve("/"),
 				quiet: true,
+				// @ts-ignore
 				before(app, ctx) {
 					app.use(<any>that._hotMiddlewares[conf])
 					// @ts-ignore
@@ -149,10 +150,17 @@ class DevServer extends BuildHelper{
 	private startElectron() {
 		try {
 			this._electronProcess = spawn(electron.toString(), ["--inspect=5858", DevServer.resolve("dist/electron/main.js"), ])
-	
+
 			this._electronProcess.stdout.on("data", data => { DevServer.log("Electron", data, "blue", true) })
-			this._electronProcess.stderr.on("data", data => { DevServer.log("Electron", data, "red") })
-			
+			this._electronProcess.stderr.on("data", data => {
+				// refer : https://github.com/sindresorhus/run-electron
+				// Example: 2018-08-10 22:48:42.866 Electron[90311:4883863] *** WARNING: Textured window <AtomNSWindow: 0x7fb75f68a770>
+				if (/\d+-\d+-\d+ \d+:\d+:\d+\.\d+ Electron(?: Helper)?\[\d+:\d+] /.test(data)) return
+				// Example: [90789:0810/225804.894349:ERROR:CONSOLE(105)] "Uncaught (in promise) Error: Could not instantiate: ProductRegistryImpl.Registry", source: chrome-devtools://devtools/bundled/inspector.js (105)
+				if (/\[\d+:\d+\/|\d+\.\d+:ERROR:CONSOLE\(\d+\)\]/.test(data)) return
+				DevServer.log("Electron", data, "red")
+			})
+
 			this._electronProcess.on("close", () => {
 				if (!this._manualRestart){
 					DevServer.console.done("Live Server Exited")

@@ -220,6 +220,7 @@ class Application {
 		if(!onlyInstance){
 			Console.log("quitting because we are instance 2. There is no place for 2nd place in this world")
 			app.quit()
+			process.exit()
 		} else {
 			app.on("second-instance", (event, argv,  workingDirectory) => {
 				Console.verbose("second-instance", { argv, workingDirectory })

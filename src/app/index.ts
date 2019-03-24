@@ -5,9 +5,9 @@ import Axios from "axios"
 
 import "vuetify/dist/vuetify.min.css"
 import "@/components/app.css"
-import "@fortawesome/fontawesome-free/css/all.min.css"
-import "@fortawesome/fontawesome-free/css/brands.min.css"
 import "@/assets/fonts/icons/material-icons.css"
+import "@/assets/fonts/fontawesome/all.css"
+import "@/assets/fonts/fontawesome/brands.css"
 
 import { MainProcess } from "@/MainProcess"
 import { theme } from "@@/config/theme"
