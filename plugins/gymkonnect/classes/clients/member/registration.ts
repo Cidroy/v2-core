@@ -235,7 +235,7 @@ async function addMember(userData: TMRegistration): Promise<string|number> {
 				middleName: userData.middleName,
 				firstName: userData.firstName,
 				mobile: userData.mobile,
-				badgenumber: userData.badgenumber.toString()
+				badgenumber: userData.badgenumber ?userData.badgenumber.toString(): undefined,
 			}
 		)
 		let [response, address,] = await Promise.all([

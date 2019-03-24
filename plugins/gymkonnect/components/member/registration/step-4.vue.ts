@@ -54,4 +54,6 @@ export default class MRegistrationStep4 extends Vue {
 	@Watch("allowedDoors")
 	@Watch("purposes")
 	private doInputEmit() { this.inputEmitter() }
+
+	@Prop({ type: Array, default: () => ([]) }) public exclude !: string[]
 }

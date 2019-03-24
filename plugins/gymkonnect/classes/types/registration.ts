@@ -5,7 +5,7 @@ import AddressStore from "@plugins/gymkonnect/state/addresses"
 
 export type TMRegistrationStep1 = {
 	id: number| string
-	badgenumber: number| string
+	badgenumber?: number| string
 	firstName: string
 	middleName: string
 	lastName: string

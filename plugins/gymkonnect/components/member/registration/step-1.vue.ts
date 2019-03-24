@@ -75,7 +75,7 @@ export default class MRegistrationStep1 extends Vue {
 	@Emit("nextStep") public nextStep() { return true }
 	@Emit("cancel") public cancel() { return true }
 
-	private badgenumber: string | number = 1
+	private badgenumber?: string | number = undefined
 
 	private get userData(): TMRegistrationStep1 {
 		return {
@@ -114,6 +114,7 @@ export default class MRegistrationStep1 extends Vue {
 	@Prop({ type: Boolean, default: false }) public Readonly !: boolean
 
 	private async generateMemberId() {
+		if(this.exclude.includes("badgenumber")) return
 		this.loading = true
 		try {
 			this.badgenumber = (await Gymkonnect.generateBadgenumber())[0]
@@ -123,4 +124,5 @@ export default class MRegistrationStep1 extends Vue {
 	}
 
 	@Prop({ type: Boolean, default: false }) public saving !: boolean
+	@Prop({ type: Array, default: () => ([]) }) public exclude !: string[]
 }
