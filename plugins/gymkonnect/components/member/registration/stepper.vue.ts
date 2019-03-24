@@ -45,7 +45,7 @@ export default class MemberRegistrationStepper extends Vue {
 	private async finish() {
 		this.saving = true
 		try {
-			let id = await Gymkonnect.Registration.addMember(this.userDataComputed)
+			let id = await Gymkonnect.MemberRegistration.addMember(this.userDataComputed)
 			this.userData.id = id
 			this.inputEmitter()
 			this.finishedEmitter(id)

@@ -42,7 +42,7 @@ export default class SinglePaymentModal extends Vue {
 		this.transactionQty = Object.keys(this.users).length
 		this.packageMagnitude = this.transaction.packageMagnitude
 
-		Gymkonnect.Registration.getAmount({
+		Gymkonnect.MemberRegistration.getAmount({
 			membershipType: this.primaryUser.membershipType,
 			packageType: this.primaryUser.packageType,
 			timeSlot: this.primaryUser.timeSlot,
@@ -52,11 +52,11 @@ export default class SinglePaymentModal extends Vue {
 			.then(transactionPrice => { this.transactionPrice = transactionPrice })
 			.catch(e => { Console.error(e) })
 
-		this.addAdmissionFee && Gymkonnect.Registration.getAdmissionFee()
+		this.addAdmissionFee && Gymkonnect.MemberRegistration.getAdmissionFee()
 			.then(admissionFeePrice => { this.admissionFeePrice = admissionFeePrice })
 			.catch(e => { Console.error(e) })
 
-		Gymkonnect.Registration.getEndDate({
+		Gymkonnect.MemberRegistration.getEndDate({
 			startDate: moment(this.transaction.doj).toDate(),
 			packages: this.transaction.packageType,
 			packageMagnitude: this.transaction.packageMagnitude

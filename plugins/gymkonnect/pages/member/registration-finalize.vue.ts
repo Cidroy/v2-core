@@ -11,8 +11,8 @@ import { Permissions as gymkonnect } from "@plugins/gymkonnect/permission"
 import { formatDate } from "@/utils/misc"
 import moment from "moment"
 
-type TTransactions = Unpacked<ReturnType<typeof Gymkonnect.Registration.makePayments>>["transactions"]
-type TGroup = Unpacked<ReturnType<typeof Gymkonnect.Registration.makePayments>>["group"]
+type TTransactions = Unpacked<ReturnType<typeof Gymkonnect.MemberRegistration.makePayments>>["transactions"]
+type TGroup = Unpacked<ReturnType<typeof Gymkonnect.MemberRegistration.makePayments>>["group"]
 type TUser = TMRegistration & TMRegistrationHealth & { healthInitial: string | number }
 const TUserGenerator = (user: TMRegistration, previous: TUser | {} = {}): TUser => ({
 	healthInitial: 0,
@@ -107,7 +107,7 @@ export default class RegistrationFinalizePage extends Vue {
 		try {
 			let key = Object.keys(this.Users).find(k => this.Users[k].id === id)
 			if (!key) throw "Invalid User"
-			await Gymkonnect.Registration.scanFingerprint(id)
+			await Gymkonnect.MemberRegistration.scanFingerprint(id)
 			this.usersEnrolled.push(id)
 		} catch (error) { alert(error.toString(), "error") }
 		this.userEnrollingFP = false

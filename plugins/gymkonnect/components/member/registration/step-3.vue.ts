@@ -124,7 +124,7 @@ export default class MRegistrationStep3 extends Vue {
 		this.priceLoading = true
 		try {
 			this.error = ""
-			this.subTotal = this.packageMagnitude * await Gymkonnect.Registration.getAmount({
+			this.subTotal = this.packageMagnitude * await Gymkonnect.MemberRegistration.getAmount({
 				membershipType: this.membershipType,
 				packageType: this.packageType,
 				timeSlot: this.timeSlot,

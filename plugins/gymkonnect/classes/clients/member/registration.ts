@@ -721,7 +721,7 @@ async function scanFingerprint(userId: string | number):Promise<boolean>{
 	}
 }
 
-export const Registration = {
+export const MemberRegistration = {
 	getAmount,
 	addMember,
 	makePayments,

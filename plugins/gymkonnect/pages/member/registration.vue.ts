@@ -111,7 +111,7 @@ export default class MemberRegistrationPage extends Vue {
 	private paying = false
 	private async pay(paymentData: PaymentDetail) {
 		this.paying = true
-		let result = await Gymkonnect.Registration.makePayments(this.clientIds, this.transactionData, paymentData, this.grouping)
+		let result = await Gymkonnect.MemberRegistration.makePayments(this.clientIds, this.transactionData, paymentData, this.grouping)
 		router.push({
 			name: Routes.MEMBER_REGISTRATION_FINALIZE.name,
 			params: <any>{
