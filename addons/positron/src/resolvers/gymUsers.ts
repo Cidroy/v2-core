@@ -4,13 +4,24 @@ import GymUserMode from "@positron/models/gymUserMode"
 import User from "@positron/models/user"
 import Transaction from "@positron/models/transaction"
 import { Logger } from "@classes/CONSOLE"
-import GroupMap from "@positron/models/groupMap"
 import Groups from "@positron/models/groups"
+import GroupMap from "@positron/models/groupMap"
 
 const Console = new Logger(`gql-resolver/gymUsers`)
 
 @GQL.Resolver(of => GymUsers)
 export default class GymUsersResolver {
+	@GQL.FieldResolver(returns => Groups, { nullable: true })
+	public async userGroupDetails(@GQL.Root() gymUser: GymUsers) {
+		if (gymUser.isGrouped) {
+			let groupMap = await GroupMap.findOne({ where: { active: 1, gymUserId: gymUser.id } })
+			if (groupMap === undefined) throw "No group found for this user"
+			return Groups.findOne({ where: { active: 1, gymUserId: groupMap.groupId } })
+		} else {
+			return null
+		}
+	}
+
 	@GQL.FieldResolver(returns => Boolean, { nullable: true })
 	public async enrolled(@GQL.Root() gymUser: GymUsers) {
 		// let user =  User.findOne({ where: { active: 1, id: gymUser.userId } })
@@ -30,7 +41,7 @@ export default class GymUsersResolver {
 	public async transaction(@GQL.Root() gymUser: GymUsers) {
 		return Transaction.findOne({ where: { active: 1, id: gymUser.transaction } })
 	}
-	
+
 	@GQL.Query(returns => [GymUsers,])
 	public async gymUsers() {
 		return GymUsers.find({ where: { active: 1 } })
@@ -60,7 +71,7 @@ export default class GymUsersResolver {
 			return false
 		}
 	}
-	
+
 	@GQL.Mutation(returns => GymUsers)
 	public async addGymUser(
 		@GQL.Arg("userId") userId: number,
@@ -82,6 +93,7 @@ export default class GymUsersResolver {
 		@GQL.Arg("personalTraining", { nullable: true }) personalTraining?: number,
 		@GQL.Arg("counselling", { nullable: true }) counselling?: number,
 		@GQL.Arg("preferredTime", { nullable: true }) preferredTime?: string,
+		@GQL.Arg("timeSlot", { nullable: true }) timeSlot?: number,
 		@GQL.Arg("agreement", { nullable: true }) agreement?: number,
 		@GQL.Arg("doj", { nullable: true }) doj?: Date,
 	) {
@@ -107,6 +119,7 @@ export default class GymUsersResolver {
 		if (personalTraining) gymUsers.personalTraining = personalTraining
 		if (counselling) gymUsers.counselling = counselling
 		if (preferredTime) gymUsers.preferredTime = preferredTime
+		if (timeSlot) gymUsers.timeSlot = timeSlot
 		if (agreement) gymUsers.agreement = agreement
 		if (doj) gymUsers.doj = doj
 

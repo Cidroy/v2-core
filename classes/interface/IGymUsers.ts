@@ -76,10 +76,11 @@ export default interface IGymUsers extends IEntityBase {
 	/**
 	 * References availableTime.id
 	 *
-	 * @type {Date}
+	 * @type {Date-Date}
 	 * @memberof IGymUsers
 	 */
 	preferredTime?: string,
+	timeSlot?: number,
 	/**
 	 * References agreement.id
 	 *

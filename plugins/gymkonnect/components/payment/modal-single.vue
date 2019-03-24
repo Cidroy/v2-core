@@ -1,17 +1,18 @@
 <template>
 	<v-dialog v-model="showModal" fullscreen hide-overlay transition="dialog-bottom-transition">
-		<v-card>
-			<v-toolbar fixed color="orange darken-2">
+		<v-card class="grey darken-4">
+			<v-toolbar fixed color="orange darken-4">
 				<v-toolbar-title class="white--text"><v-icon dark class="fas" left large>fa-cash-register</v-icon> Payment</v-toolbar-title>
 				<v-spacer />
 				<v-btn icon dark @click="showModal = false"> <v-icon>close</v-icon> </v-btn>
 			</v-toolbar>
-			<v-card-text class="mt-4 pt-4">
+			<v-card-text class="mt-5 pt-4">
 				<v-layout row wrap>
 					<v-flex xs12 md2/>
 					<v-flex xs12 md8>
 						<v-card class="pa-4 my-4 elevation-10">
 							<v-layout row wrap>
+								<v-flex xs12 class="mb-4"> <h1 class="text-xs-center font-weight-regular"> <u>{{ billTitle }}</u> </h1> </v-flex>
 								<v-flex xs12 sm6 md4 lg4>
 									<v-text-field box v-model="receipt" color="orange darken-2" prepend-icon="fas fa-receipt" label="Receipt No." />
 								</v-flex>
@@ -39,9 +40,9 @@
 								<v-divider />
 								<v-divider />
 								<v-divider />
-								<v-layout row wrap>
+								<v-layout v-if="addAdmissionFee" row wrap>
 									<v-flex xs12 md6 class="px-2"> <v-text-field :value="admissionFee" prepend-icon="fas fa-info-circle" readonly tabindex="-1" color="orange darken-2"/> </v-flex>
-									<v-flex xs6 md1 class="px-2"> <v-text-field :value="transactionQty" readonly tabindex="-1" color="orange darken-2"/> </v-flex>
+									<v-flex xs6 md1 class="px-2"> <v-text-field :value="1" readonly tabindex="-1" color="orange darken-2"/> </v-flex>
 									<v-flex xs6 md2 class="px-2"> <v-text-field :value="admissionFeePrice" prefix="₹" readonly tabindex="-1" color="orange darken-2"/> </v-flex>
 									<v-flex xs6 md3 class="px-2"> <v-text-field :value="admissionFeeAmount" prefix="₹" readonly tabindex="-1" color="orange darken-2"/> </v-flex>
 								</v-layout>
@@ -72,11 +73,11 @@
 								</v-layout>
 								<v-layout row wrap>
 									<v-flex xs12 md6>
-										<v-select v-model="offer" color="orange darken-2" prepend-icon="fas fa-bolt" :items="OFFERS" item-name="name" item-value="id" label="Offers" />
+										<v-select v-model="offer" :items="OFFERS" item-text="name" item-value="id" label="Offers" color="orange darken-2" prepend-icon="fas fa-bolt" />
 									</v-flex>
 									<v-flex xs12 md1/>
 									<v-flex xs12 md2 class="px-2 py-4"> <span class="title">Discount</span> </v-flex>
-									<v-flex xs6 md3 class="px-2"> <v-text-field v-model="discount" type="number" :min="0" prefix="₹-" label="Discount Amount" box color="orange darken-2"/> </v-flex>
+									<v-flex xs6 md3 class="px-2"> <v-text-field v-model="discount" type="number" :min="0" :max="subTotal" prefix="₹-" label="Discount Amount" box color="orange darken-2"/> </v-flex>
 								</v-layout>
 								<v-layout row wrap>
 									<v-flex xs12 md7/>

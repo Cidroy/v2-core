@@ -86,15 +86,15 @@ const baseConfig: webpack.Configuration = {
 				type: "javascript/auto",
 			},
 			{
-				test: /\.vue$/,
-				loader: "vue-loader",
-				options: vueLoaderConfig
-			},
-			{
 				test: /\.((j|t)sx?)$/,
 				loader: "babel-loader",
 				exclude: /node_modules/,
 				include: RESOLVE_PATHS,
+			},
+			{
+				test: /\.vue$/,
+				loader: "vue-loader",
+				options: vueLoaderConfig
 			},
 			{
 				test: /\.node$/,
@@ -160,7 +160,7 @@ const baseConfig: webpack.Configuration = {
 		// extract css into its own file
 		new MiniCssExtractPlugin({
 			filename: "[name].css",
-			chunkFilename: "css/[name].[id].css"
+			chunkFilename: "css/[name].css"
 		}),
 	]
 }

@@ -1,7 +1,7 @@
 import GQLClient, { gql } from "@/utils/graphql"
 import { Logger } from "@classes/CONSOLE"
 
-let Console = new Logger("gk-client/registration")
+let Console = new Logger("misc/gk-client")
 
 export async function generateBadgenumber(quantity: number = 1): Promise<(string|number)[]>{
 	let result = await GQLClient.query<{ badges: (string | number)[]}>(
@@ -9,7 +9,6 @@ export async function generateBadgenumber(quantity: number = 1): Promise<(string
 		{ quantity, },
 		{ fetchPolicy: "no-cache", }
 	)
-	console.log(result)
 	return result.data.badges
 }
 
@@ -25,7 +24,7 @@ export async function existsEmail(email: string): Promise<boolean> {
 			gql` query isEmailExists( $email: String! ){ exists: isEmailExists(email: $email) } `,
 			{ email, }
 		)
-		if (response.errors) throw response.errors
+		if (response.errors) throw response.errors[0].message
 		if (!response.data) throw "Unable to verify if email exists"
 		return response.data.exists
 	} catch (error) {
@@ -46,9 +45,26 @@ export async function existsMobile(mobile: string): Promise<boolean> {
 			gql` query isMobileExists( $mobile: String! ){ exists: isMobileExists(mobile: $mobile) } `,
 			{ mobile, }
 		)
-		if (response.errors) throw response.errors
+		if (response.errors) throw response.errors[0].message
 		if (!response.data) throw "Unable to verify if mobile exists"
 		return response.data.exists
+	} catch (error) {
+		Console.error(error)
+		throw error.toString()
+	}
+}
+
+export async function receiptNumber():Promise<number | string>{
+	try {
+		// TODO:
+		// let response = await GQLClient.query<{ receipt: number | string }>(
+		// 	gql``,
+		// 	{}
+		// )
+		// if (response.errors) throw response.errors[0].message
+		// if (!response.data) throw "Unable to get receipt number"
+		// return response.data.receipt
+		return "1"
 	} catch (error) {
 		Console.error(error)
 		throw error.toString()
@@ -86,7 +102,7 @@ export const Health = {
 					weight,
 				}
 			)
-			if (response.errors) throw response.errors
+			if (response.errors) throw response.errors[0].message
 			if (!response.data) throw "Unable to Add Initial Health Details"
 
 			let linked = await GQLClient.mutate<{ linked: boolean }>(

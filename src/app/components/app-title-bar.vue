@@ -5,8 +5,5 @@
 </template>
 
 <style>
-.app-drag{
-	-webkit-app-region: drag;
-	height: 100%;
-}
+.app-drag{ -webkit-app-region: drag; }
 </style>

@@ -7,7 +7,9 @@ import { TMRegistrationStep1, defaultRegistrationStep1User } from "@plugins/gymk
 import addUserPhoto from "@plugins/gymkonnect/components/add-user-photo.vue"
 
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
+import { Logger } from "@classes/CONSOLE"
 
+const Console = new Logger(`step-1.vue/registration/gk`)
 @Component({
 	// @ts-ignore
 	components: {
@@ -73,7 +75,7 @@ export default class MRegistrationStep1 extends Vue {
 	@Emit("nextStep") public nextStep() { return true }
 	@Emit("cancel") public cancel() { return true }
 
-	private badgenumber: string | number = 1
+	private badgenumber?: string | number = undefined
 
 	private get userData(): TMRegistrationStep1 {
 		return {
@@ -112,13 +114,15 @@ export default class MRegistrationStep1 extends Vue {
 	@Prop({ type: Boolean, default: false }) public Readonly !: boolean
 
 	private async generateMemberId() {
+		if(this.exclude.includes("badgenumber")) return
 		this.loading = true
 		try {
 			this.badgenumber = (await Gymkonnect.generateBadgenumber())[0]
-			console.log(this.badgenumber)
-		} catch (e) { console.log(e) }
+			Console.verbose("generated badgenumber",this.badgenumber)
+		} catch (e) { Console.error(e) }
 		this.loading = false
 	}
 
 	@Prop({ type: Boolean, default: false }) public saving !: boolean
+	@Prop({ type: Array, default: () => ([]) }) public exclude !: string[]
 }

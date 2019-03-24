@@ -12,7 +12,7 @@
 				</v-layout>
 			</v-flex>
 
-			<v-flex xs12 px-2>
+			<v-flex xs12 px-2 v-if="!exclude.includes('toc')">
 				<v-layout align-end justify-start reverse fill-height>
 					<v-checkbox v-model="toc" color="orange darken-2">
 						<div slot="label">

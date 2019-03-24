@@ -1,10 +1,25 @@
 import * as GQL from "type-graphql"
+import * as DB from "typeorm"
 import Groups from "@positron/models/groups"
 import GroupMap from "@positron/models/groupMap"
 import GymUsers from "@positron/models/gymUsers"
+import { Logger } from "@classes/CONSOLE"
 
+const Console = new Logger(`groups/gk-resolvers`)
 @GQL.Resolver(of => Groups)
 export default class GroupsResolver {
+	@GQL.FieldResolver(returns => [GymUsers,])
+	public async groupMembers(@GQL.Root() group: Groups){
+		// FIXME: [NIKHIL] giving incorrect data
+		let membersMap = await GroupMap.find({
+			select: ["id",],
+			where: { groupId: group.id, }
+		})
+		let userIDs: (string | number)[] = []
+		membersMap.forEach(m => userIDs.push(m.id))
+		Console.okay({ group, membersMap, userIDs })
+		return await GymUsers.find({ id: DB.In(userIDs) })
+	}
 
 	@GQL.Query(returns => [Groups,])
 	public async Groups() {
@@ -31,14 +46,14 @@ export default class GroupsResolver {
 					.set({ isGrouped: true })
 					.where({ id: gymUserId})
 					.execute()
-					
+
 				let groupMap = new GroupMap()
 				groupMap.gymUserId = gymUserId
 				groupMap.groupId = group.id
 				await groupMap.save()
-				
+
 			}
-			
+
 			return group
 		}
 		catch(error){

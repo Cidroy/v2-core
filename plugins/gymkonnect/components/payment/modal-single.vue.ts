@@ -15,13 +15,18 @@ const Console = new Logger("gk/payment/modal-single")
 	// @ts-ignore
 	components: { Layout, },
 	created() {
+		this.Initialize()
 		this.computePrimaryUser()
 	},
 })
 // @ts-ignore
 export default class SinglePaymentModal extends Vue {
-	private formatDate(date) { return formatDate(date) }
-	private parseDate(date) { return formatDate(date) }
+	private get formatDate() { return formatDate }
+	private get parseDate() { return parseDate }
+
+	private async Initialize(){
+		this.receipt = await Gymkonnect.receiptNumber()
+	}
 
 	private primaryUser: TMRegistration = defaultRegistrationUser
 	private get enforcer() {
@@ -37,7 +42,7 @@ export default class SinglePaymentModal extends Vue {
 		this.transactionQty = Object.keys(this.users).length
 		this.packageMagnitude = this.transaction.packageMagnitude
 
-		Gymkonnect.Registration.getAmount({
+		Gymkonnect.MemberRegistration.getAmount({
 			membershipType: this.primaryUser.membershipType,
 			packageType: this.primaryUser.packageType,
 			timeSlot: this.primaryUser.timeSlot,
@@ -47,11 +52,11 @@ export default class SinglePaymentModal extends Vue {
 			.then(transactionPrice => { this.transactionPrice = transactionPrice })
 			.catch(e => { Console.error(e) })
 
-		Gymkonnect.Registration.getAdmissionFee()
+		this.addAdmissionFee && Gymkonnect.MemberRegistration.getAdmissionFee()
 			.then(admissionFeePrice => { this.admissionFeePrice = admissionFeePrice })
 			.catch(e => { Console.error(e) })
 
-		Gymkonnect.Registration.getEndDate({
+		Gymkonnect.MemberRegistration.getEndDate({
 			startDate: moment(this.transaction.doj).toDate(),
 			packages: this.transaction.packageType,
 			packageMagnitude: this.transaction.packageMagnitude
@@ -60,8 +65,12 @@ export default class SinglePaymentModal extends Vue {
 			.catch(e => { Console.error(e) })
 	}
 
-	private receipt = "1"
-	private get userFullName() { return `${this.primaryUser.firstName} ${this.primaryUser.middleName} ${this.primaryUser.lastName}` }
+	private receipt: string | number = "1"
+	private get userFullName() {
+		return `${this.primaryUser.firstName || ""} ${this.primaryUser.middleName || ""} ${this.primaryUser.lastName || ""}`
+			.replace(/\s+/, " ")
+			.trimRight()
+	}
 	private get badgenumber() { return this.primaryUser.badgenumber }
 	private get mobileNumber() { return this.primaryUser.mobile }
 	private get whatsappNumber() { return this.primaryUser.whatsappNumber }
@@ -74,7 +83,7 @@ export default class SinglePaymentModal extends Vue {
 	private admissionFee = "Admission Fee"
 	private admissionFeePrice = 0
 	private get admissionFeeQty() { return 1 }
-	private get admissionFeeAmount() { return this.admissionFeeQty * this.admissionFeePrice }
+	private get admissionFeeAmount() { return this.addAdmissionFee? this.admissionFeeQty * this.admissionFeePrice: 0 }
 
 	private get membership() {
 		let temp = GymkonnectStore.GK_MEMBERSHIP_TYPE(this.transaction.membershipType)
@@ -95,7 +104,7 @@ export default class SinglePaymentModal extends Vue {
 	private transactionPrice = 0
 	private get transactionAmount() { return this.packageMagnitude * this.transactionPrice }
 
-	private offer: string | boolean = false
+	private offer: string | boolean | number = false
 	private get OFFERS() { return GymkonnectStore.GK_ALL_OFFERS }
 
 	private paymentMode = GymkonnectStore.GK_PAYMENT_MODES[0].id
@@ -140,4 +149,7 @@ export default class SinglePaymentModal extends Vue {
 			offer: <string>this.offer,
 		}
 	}
+
+	@Prop({ type: Boolean, default : false }) public addAdmissionFee !: boolean
+	@Prop({ type: String, default : "Credit Bill" }) public billTitle !: string
 }

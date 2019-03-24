@@ -4,7 +4,7 @@ import Payment from "@positron/models/payments"
 import GymUsers from "@positron/models/gymUsers"
 import GymUserMode from "@positron/models/gymUserMode"
 import GymPackage from "@positron/models/gymPackage"
-import moment = require("moment")
+import moment from "moment"
 import MembershipType from "@positron/models/membershipType"
 import { Logger } from "@classes/CONSOLE"
 

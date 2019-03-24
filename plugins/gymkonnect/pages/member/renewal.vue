@@ -1,164 +1,91 @@
 <template>
 	<Layout>
-		<v-layout row>
-			<v-flex xs12 md7>
-				<h1 class="text-md-right text-xs-center"> Membership Renewal</h1>
-			</v-flex>
-			<v-flex xs12 md5>
-				<v-layout justify-end>
-					<v-tooltip left>
-						<v-btn outline slot="activator">
-							<v-icon>print</v-icon>
-						</v-btn>
-						<span>Print Blank Form</span>
-					</v-tooltip>
-				</v-layout>
-			</v-flex>
-		</v-layout>
-
-		<v-card class="mb-2" color="transparent">
-			<v-layout class="pt-2" row wrap>
-				<v-flex xs12 pl-4>
-					<v-radio-group prepend-icon="people" label="Registration Type" v-model="radioGroup1" row>
-						<v-radio label="Solo" value="radio-1"></v-radio>
-						<v-radio label="Couple" value="radio-2"></v-radio>
-						<v-radio label="Group" value="radio-3"></v-radio>
-					</v-radio-group>
-				</v-flex>	
-				<v-flex xs2>
-					<v-subheader class="title">Mobile No</v-subheader>
-				</v-flex>
-				<v-flex xs4>
-					<v-text-field label="Enter Mobile No" v-model="phone" :rules="phoneRules" single-line solo color="orange darken-2" mask="##########"></v-text-field>
-				</v-flex>
-				<v-spacer></v-spacer>
-				<v-flex xs3 class="pr-4">
-					<v-text-field box prepend-icon="fas fa-id-badge" value="7384" label="Member ID" readonly ></v-text-field>
+		<v-toolbar>
+			<v-layout row>
+				<v-flex v-if="clientId" xs1 class="py-3"> <v-btn icon float @click="goBackSimon"><v-icon>arrow_back</v-icon></v-btn> </v-flex>
+				<v-flex xs11 class="py-4"> <h1 class="text-xs-center"> <v-icon left>autorenew</v-icon> Membership Renewal </h1> </v-flex>
+			</v-layout>
+		</v-toolbar>
+		<v-slide-y-transition mode="out-in">
+			<v-layout v-if="!clientId" row wrap class="pa-4">
+				<v-flex xs12>
+					<v-autocomplete v-model="clientId" :items="Clients" :search-input.sync="clientSearch" :loading="clientSearching" clearable item-text="name" item-value="id" prepend-icon="search" :label="label" :placeholder="label" autofocus no-filter color="orange darken-2" auto-select-first>
+						<v-list-tile slot="no-data">
+							<v-list-tile-title v-text="'No User Found'"/>
+						</v-list-tile>
+						<template #item="{ item }">
+							<v-avatar v-text="item.name.charAt(0)" size="30" color="orange darken-4" class="white--text font-weight-light"/>
+							<v-list-tile-content class="ml-2 my-2">
+								<v-list-tile-title> {{ item.name }} <v-icon small class="mr-1">phone</v-icon> <span v-html="clientSearch?item.mobile.replace(clientSearch, clientSearch.bold()):item.mobile"/> </v-list-tile-title>
+								<v-list-tile-sub-title>
+									<v-icon class="fas mr-1" small>fa-hashtag</v-icon> <span v-html="clientSearch?item.badgenumber.replace(clientSearch, clientSearch.bold()):item.badgenumber"/>
+								</v-list-tile-sub-title>
+							</v-list-tile-content>
+						</template>
+					</v-autocomplete>
 				</v-flex>
 			</v-layout>
-			<v-divider></v-divider>
-			
-			<v-expansion-panel focusable>
-				<v-expansion-panel-content>
-					<div slot="header" class="title">Personal Details</div>
-					<v-card class="px-2">
-						<step-one v-model="userData" Readonly/>
-					</v-card>
-				</v-expansion-panel-content>
-
-				<v-expansion-panel-content>
-					<div slot="header" class="title">Contact Details</div>
-					<v-card>
-						<v-layout row wrap class="pl-4">
-							<v-flex xs3 lg4 class="pr-2">
-								<v-text-field prepend-icon="fas fa-mobile-alt" v-model="phone" :rules="phoneRules" label="Mobile Number" mask="phone" required></v-text-field>
-							</v-flex>
-							<v-flex xs3 lg4 class="pl-2">
-								<v-text-field prepend-icon="fab fa-whatsapp" label="Whatsapp Number" mask="phone"></v-text-field>
-							</v-flex>
-							<v-flex xs3 lg4>
-								<v-checkbox label="Not Same As Phone Number"></v-checkbox>
-							</v-flex>
-
-							<v-flex xs3 lg4 class="pr-2">
-								<v-text-field prepend-icon="fas fa-phone" label="Home Number" mask="phone"></v-text-field>
-							</v-flex>
-							<v-flex xs3 lg4 class="pl-2">
-								<v-text-field prepend-icon="fas fa-building" label="Office Number" mask="phone"></v-text-field>
-							</v-flex>
-
-							<v-flex xs6 lg6>
-								<v-text-field prepend-icon="fas fa-envelope" v-model="email" :rules="emailRules" label="Email address" type="email"></v-text-field>
-							</v-flex>
-
-							<v-flex xs12 lg12>
-								<v-card class="mb-2 mt-4 pa-2 pr-4" height="100px" elevation="0">
-									<h3 class="pl-4">Incase Of Emergency</h3>
-									<v-layout row wrap class="pl-4">
-										<v-flex xs12 lg5 class="pr-2">
-											<v-text-field label="Contact Name"></v-text-field>
-										</v-flex>
-										<v-flex xs12 lg5 class="pl-2">
-											<v-text-field label="Contact Number" mask="phone"></v-text-field>
-										</v-flex>
-									</v-layout>
-								</v-card>
-							</v-flex>
-						</v-layout>
-						<div class="right">
-							<v-btn dark>Cancel</v-btn>
-							<v-btn dark color="orange darken-4"> NEXT </v-btn>
-						</div>
-					</v-card>
-				</v-expansion-panel-content>
-
-				<v-expansion-panel-content>
-					<div slot="header" class="title">Package Details</div>
-					<v-card height="370px">
-						<h3 class="pl-4 pt-2">Type Of Membership</h3>
-						<v-layout class="pl-4" row wrap xs6>
-							<v-checkbox v-model="CBTypeMem" class="ml-4" label="Gold" value="Gold"></v-checkbox>
-							<v-checkbox v-model="CBTypeMem" label="Platinum" value="Platinum"></v-checkbox>
-						</v-layout>
-						<v-divider></v-divider>
-						<h3 class="pl-4 pt-2">Membership Duration</h3>
-						<v-layout class="pl-4" row wrap>
-							<v-checkbox v-model="CBMemDuration" class="ml-4" label="Monthly" value="Monthly"></v-checkbox>
-							<v-checkbox v-model="CBMemDuration" label="Quaterly" value="Quaterly"></v-checkbox>
-							<v-checkbox v-model="CBMemDuration" label="Half-Yearly" value="Half-Yearly"></v-checkbox>
-							<v-checkbox v-model="CBMemDuration" label="Yearly" value="Yearly"></v-checkbox>
-						</v-layout>
-						<v-divider></v-divider>
-						<v-layout class="pl-4" row wrap>
-							<v-flex xs6>
-								<v-radio-group label="Preferable Time Slot" v-model="radios" :mandatory="false" row>
-										<v-radio label="Peak Hours" value="radio-7"></v-radio>
-										<v-radio label="Off-Peak Hours" value="radio-8"></v-radio>
-								</v-radio-group>
-							</v-flex>
-						
-							<v-flex xs3>
-								<v-menu ref="menu4" :close-on-content-click="false" v-model="menu4" :nudge-right="40" lazy transition="scale-transition"
-								 offset-y full-width>
-									<v-text-field slot="activator" v-model="dateFormatted" label="Date of Joining" hint="DD/MM/YYYY"
-									 persistent-hint prepend-icon="event" @blur="date = parseDate(dateFormatted)"></v-text-field>
-									<v-date-picker v-model="date" no-title @input="menu4 = false"></v-date-picker>
-								</v-menu>
-							</v-flex>
-
-							<v-flex xs12 class="pt-2 pl-2">
-								<span class="title font-weight-regular">Change Door Access</span>
-								<v-layout align-start row>
-									<v-checkbox label="Gym Mens Section" value="Gym Mens Section"></v-checkbox>
-									<v-checkbox label="Gym Ladies Section" value="Gym Ladies Section"></v-checkbox>
-									<v-checkbox label="Full Gym Section" value="Full Gym Section"></v-checkbox>
-									<v-checkbox label="SPA" value="SPA"></v-checkbox>
+			<v-layout v-else-if="clientDataLoading" row wrap class="pa-4">
+				<v-flex xs12 style="padding-top:25vh"> <h1 class="text-xs-center"> <v-icon large left>person</v-icon> {{ clientName }}</h1> </v-flex>
+				<v-flex xs1 md4/>
+				<v-flex xs10 md4> <v-progress-linear :indeterminate="true" color="orange darken-2" /> </v-flex>
+				<v-flex xs1 md4/>
+			</v-layout>
+			<div v-else>
+				<v-layout row wrap class="pa-4">
+					<v-flex xs12 class="elevation-10 mb-4">
+						<m-registration-step-finished :value="Client" >
+							<div v-if="!!Group.members.length" class="mb-4">
+								<v-divider />
+								<v-layout row wrap class="mt-2 px-2">
+									<v-flex xs12>
+										<h2> <v-icon left>people</v-icon> {{ GroupName }} with </h2>
+										<v-list two-line>
+											<!-- TODO: add context menu same as member-list -->
+											<v-list-tile v-for="member in Group.members" :key="member.id" v-show="member.id!==clientId" @click="false">
+												<v-avatar v-text="member.name.charAt(0)" size="30" color="orange darken-4" class="white--text font-weight-light"/>
+												<v-list-tile-content class="ml-2 my-2">
+													<v-list-tile-title>
+														<v-flex>
+															{{ member.name }}
+															<v-icon class="fas ml-4" small>fa-hashtag</v-icon> <span v-text="member.badgenumber"/>
+														</v-flex>
+													</v-list-tile-title>
+													<v-list-tile-sub-title>
+														<v-icon small class="mr-1">phone</v-icon> <span v-text="member.mobile"/>
+													</v-list-tile-sub-title>
+												</v-list-tile-content>
+												<v-list-tile-action>
+													<span > <v-icon small>history</v-icon> Ends on: {{ formatDate(member.end) }} </span>
+												</v-list-tile-action>
+											</v-list-tile>
+										</v-list>
+									</v-flex>
 								</v-layout>
-							</v-flex>
+							</div>
+							<v-divider />
+							<v-layout row wrap class="mt-2 px-2">
+								<v-flex xs12> <h2> <v-icon left>timer</v-icon> Current Package </h2> </v-flex>
+								<v-flex xs12 md6 class="px-2"> <v-text-field :value="Current.Membership.name" label="Current Membership" tabindex="-1" prepend-icon="fas fa-info-circle" readonly /> </v-flex>
+								<v-flex xs12 md6 class="px-2"> <v-text-field :value="Current.Package.name" label="Current Package" tabindex="-1" prepend-icon="fas fa-calendar-alt" readonly /> </v-flex>
+								<v-flex xs12 md6 class="px-2"> <v-text-field :value="formatDate(Current.StartDate)" label="Package Start Date" tabindex="-1" prepend-icon="event" readonly /> </v-flex>
+								<v-flex xs12 md6 class="px-2"> <v-text-field :value="formatDate(Current.EndDate)" label="Package End Date" tabindex="-1" prepend-icon="event" readonly /> </v-flex>
+							</v-layout>
+						</m-registration-step-finished>
+					</v-flex>
+					<v-flex xs12 class="elevation-10 mb-4"> <m-registration-step-3 v-model="transactionData" :group="grouping" :quantity="usersCount" :dojRange="dojRange"  @error="(e) => { error = e }"/> </v-flex>
+				</v-layout>
+				<v-slide-y-reverse-transition>
+					<v-footer v-if="!error" height="auto" color="primary lighten-1" >
+						<v-layout justify-center row justify-end align-end class="px-4 py-2">
+							<v-spacer />
+							<v-btn v-if="payed" outline @click.native.stop="print"> <v-icon left>print</v-icon> Print Reciept </v-btn>
+							<v-btn v-else :loading="paying" :disable="paying" color="orange darken-4" class="white--text" @click.native.stop="paymentModel = true"> <v-icon class="fas" left>fa-cash-register</v-icon> Make Payment </v-btn>
 						</v-layout>
-						
-						<div class="right">
-							<v-btn dark>Cancel</v-btn>
-							<v-dialog v-model="dialog" persistent max-width="400px">
-								<v-btn dark slot="activator" color="orange darken-4" class="mb-2">Submit</v-btn>
-								<v-card>
-									<v-toolbar card dark color="orange darken-4" height="50px">
-										<v-toolbar-title>Alert!</v-toolbar-title>
-									</v-toolbar>
-									<v-card-text>
-										<label class="title">Do you want to Proceed for payments?</label>
-									</v-card-text>
-									<v-card-actions>
-										<v-spacer></v-spacer>
-										<v-btn dark color="orange darken-4" @click="dialog = false" to="/payment">Yes</v-btn>
-										<v-btn dark @click="dialog = false">No</v-btn>
-									</v-card-actions>
-								</v-card>
-							</v-dialog>
-						</div>
-					</v-card>
-				</v-expansion-panel-content>
-			</v-expansion-panel>
-		</v-card>		
+					</v-footer>
+				</v-slide-y-reverse-transition>
+				<single-payment-modal v-model="paymentModel" :users="{ renew: Client }" :transaction="transactionData" :group="grouping" @pay="data => pay(data)" bill-title="Membership Renewal Bill"/>
+			</div>
+		</v-slide-y-transition>
 	</Layout>
 </template>

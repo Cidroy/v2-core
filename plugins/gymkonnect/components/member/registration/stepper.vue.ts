@@ -9,6 +9,7 @@ import stepTwo from "@plugins/gymkonnect/components/member/registration/step-2.v
 import stepFinished from "@plugins/gymkonnect/components/member/registration/step-finished.vue"
 
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
+import { alert } from "@/components/toast"
 
 @Component({
 	// @ts-ignore
@@ -44,19 +45,21 @@ export default class MemberRegistrationStepper extends Vue {
 	private async finish() {
 		this.saving = true
 		try {
-			let id = await Gymkonnect.Registration.addMember(this.userDataComputed)
+			let id = await Gymkonnect.MemberRegistration.addMember(this.userDataComputed)
 			this.userData.id = id
 			this.inputEmitter()
 			this.finishedEmitter(id)
 			this.finished = true
 		} catch (error) {
 			this.error = error.toString()
+			alert(error.toString(), "error")
 		}
 		this.saving = false
 	}
 
 	private get GROUPINGS() { return GymkonnectStore.GK_GROUPINGS }
 
-	@Prop({ type: Boolean, default: false }) private showDelete !: boolean
+	@Prop({ type: Boolean, default: false }) public showDelete !: boolean
 	@Emit("deleteStepper") public deleteStepper() { return true }
+	@Prop({ type: Array, default: () => ([]) }) public exclude !: string[]
 }

@@ -19,14 +19,14 @@ class MembersList extends VuexModule {
 	}
 	public get GK_M_MEMBERS_TABLE_HEADING() {
 		return [
-			{ text: "BadgeNumber", align: "left", value: "badgenumber" },
-			{ text: "Status", value: "mode" },
-			{ text: "Name", value: "name" },
-			{ text: "Due Date", value: "endDate", },
-			{ text: "Membership", value: "membership" },
-			{ text: "Package", value: "package" },
-			{ text: "Mobile No.", value: "mobile" },
-			{ text: "Enorll Status", value: "enrolled" },
+			{ text: "Badge", align: "left", value: "badgenumber", width: "100px", },
+			{ text: "Status", value: "mode", width: "100px", },
+			{ text: "Name", value: "name", width: "200px", },
+			{ text: "Due Date", value: "endDate", width: "10%", },
+			{ text: "Membership", value: "membership", width: "10%", },
+			{ text: "Package", value: "package", width: "10%", },
+			{ text: "Mobile No.", value: "mobile", width: "10%", },
+			{ text: "Enrolled", value: "enrolled", width: "100px", },
 		]
 	}
 
@@ -38,14 +38,13 @@ class MembersList extends VuexModule {
 	}
 
 	@Action({}) public async InitializeGKMMembers() {
-		await this.mutateGKMMembersLoading(true)
-		await sleep(2000)
+		await Promise.all([
+			this.mutateGKMMembersLoading(true),
+			sleep(1000),
+		])
 		let result = await Gymkonnect.Members.getAllMembersForRegistrationList()
-		Console.okay("B")
-		await this.mutateGKMMembers(result),
-		Console.okay("D")
-		await this.mutateGKMMembersLoading(false),
-		Console.okay("E")
+		await this.mutateGKMMembers(result)
+		await this.mutateGKMMembersLoading(false)
 		return true
 	}
 }

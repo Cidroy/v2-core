@@ -10,6 +10,9 @@ export type TMemberListTableItems = {
 	endDate: string,
 	mobile: string,
 	enrolled: boolean,
+	transaction: {
+		id: string | number
+	}
 }
 
 export type TMemberListTableHeader = {

@@ -1,6 +1,6 @@
-const isNotInstalled = () => false
+export const isNotInstalled = () => false
 
-type  ILanguage =
+export type  ILanguage =
 				  "en-US"
 				| "hi-IN"
 				// | "ko-IN"
@@ -24,7 +24,7 @@ const SupportedLanguages: ISupportedLanguages  = {
 	// русский: "ru-RU",
 }
 
-class i18n {
+export class i18n {
 	private static locale: ILanguage = "en-US"
 
 	public static get default(): ILanguage { return "en-US" }
@@ -43,10 +43,4 @@ class i18n {
 	public static async initialize() {
 		// load config from file accordingly
 	}
-}
-
-export {
-	isNotInstalled,
-	i18n,
-	ILanguage
 }

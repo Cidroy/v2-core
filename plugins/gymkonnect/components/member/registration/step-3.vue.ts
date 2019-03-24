@@ -6,14 +6,20 @@ import { formatDate, parseDate } from "@/utils/misc"
 import { TMRegistrationStep3, defaultRegistrationStep3User } from "@plugins/gymkonnect/classes/types/registration"
 
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
+import { Logger } from "@classes/CONSOLE"
 
+const Console = new Logger(`step-3.vue/registration/gk`)
 @Component({
 	// @ts-ignore
 	components: { Layout, },
 	created() {
-		this.membershipType = this.MEMBERSHIP_TYPES[0].id
-		this.packageType = this.PACKAGES[0].id
-		this.timeSlot = this.TIME_SLOTS[0].id
+		if(this.value){
+			this.onValueChange()
+		} else {
+			this.membershipType = this.MEMBERSHIP_TYPES[0].id
+			this.packageType = this.PACKAGES[0].id
+			this.timeSlot = this.TIME_SLOTS[0].id
+		}
 		this.recalculateSubTotal()
 	}
 })
@@ -21,6 +27,9 @@ import Gymkonnect from "@plugins/gymkonnect/classes/clients"
 export default class MRegistrationStep3 extends Vue {
 	private formatDate(date: string) { return formatDate(date) }
 	private parseDate(date: string) { return parseDate(date) }
+	private error = ""
+	@Watch("error") private onError(){ this.errorEmitter()  }
+	@Emit("error") public errorEmitter(){ return this.error }
 
 	private formValid = true
 
@@ -39,10 +48,12 @@ export default class MRegistrationStep3 extends Vue {
 	private doj = new Date().toISOString().substr(0, 10)
 	private dojFormatted = this.formatDate(this.doj)
 	private dojMenu = false
-	private get _minDoj() { return this.allowBackDating ? new Date(1947, 7, 16) : new Date() }
 	@Watch("doj") private onDateChanged() { this.dojFormatted = this.formatDate(this.doj) }
+	private get _minDoj() { return this.allowBackDating ? new Date(1947, 7, 16) : this.dojRange.start }
 	private get minDoj() { return moment(this._minDoj).toISOString().substr(0, 10) }
 	private allowBackDating = false
+	private get _maxDoj(){ return this.dojRange.end }
+	private get maxDoj(){ return this.dojRange.end? moment(this._maxDoj).toISOString().substr(0,10): undefined }
 	private get getDateFormatted() { return this.formatDate(this.doj) }
 
 	private get userData() {
@@ -111,13 +122,21 @@ export default class MRegistrationStep3 extends Vue {
 	@Watch("quantity")
 	private async recalculateSubTotal() {
 		this.priceLoading = true
-		this.subTotal = this.packageMagnitude * await Gymkonnect.Registration.getAmount({
-			membershipType: this.membershipType,
-			packageType: this.packageType,
-			timeSlot: this.timeSlot,
-			category: this.category,
-			group: this.group
-		})
+		try {
+			this.error = ""
+			this.subTotal = this.packageMagnitude * await Gymkonnect.MemberRegistration.getAmount({
+				membershipType: this.membershipType,
+				packageType: this.packageType,
+				timeSlot: this.timeSlot,
+				category: this.category,
+				group: this.group
+			})
+		} catch (error) {
+			Console.error(error)
+			this.error = error.toString()
+		}
 		this.priceLoading = false
 	}
+
+	@Prop({ type: Object, default: () => ({ start: new Date(1947, 7, 16), end: undefined }) }) public dojRange !: { start: Date, end?: Date }
 }

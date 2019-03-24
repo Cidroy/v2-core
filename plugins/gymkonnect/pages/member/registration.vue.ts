@@ -37,6 +37,8 @@ const Console = new Logger(`gymkonnect/registration.vue`)
 })
 // @ts-ignore
 export default class MemberRegistrationPage extends Vue {
+	private error = ""
+
 	private transactionData: TMRegistrationStep3 & TMRegistrationStep4 = {
 		...defaultRegistrationStep3User,
 		...defaultRegistrationStep4User,
@@ -92,7 +94,7 @@ export default class MemberRegistrationPage extends Vue {
 
 	private completedSteppers: (number | string)[] = []
 	private clientIds: (number | string)[] = []
-	private stepperComplete(stepperId, clientId) {
+	private stepperComplete(stepperId: string, clientId: string | number) {
 		this.completedSteppers.push(stepperId)
 		this.clientIds.push(clientId)
 		this.users[stepperId].id = clientId
@@ -109,7 +111,7 @@ export default class MemberRegistrationPage extends Vue {
 	private paying = false
 	private async pay(paymentData: PaymentDetail) {
 		this.paying = true
-		let result = await Gymkonnect.Registration.makePayments(this.clientIds, this.transactionData, paymentData, this.grouping)
+		let result = await Gymkonnect.MemberRegistration.makePayments(this.clientIds, this.transactionData, paymentData, this.grouping)
 		router.push({
 			name: Routes.MEMBER_REGISTRATION_FINALIZE.name,
 			params: <any>{

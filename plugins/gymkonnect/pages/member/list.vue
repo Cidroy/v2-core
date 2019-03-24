@@ -31,8 +31,8 @@
 				</v-flex>
 			</v-layout>
 		</v-toolbar>
-		<v-data-table v-model="members" :headers="tableHeaders" :items="tableItems" :search="search" item-key="id"  select-all class="elevation-1">
-			<div slot="no-data">
+		<v-data-table v-model="members" :headers="tableHeaders" :items="tableItems" :search="search" :pagination.sync="tablePagination" item-key="id"  select-all class="elevation-1">
+			<template #no-data>
 				<v-layout row wrap justify-center align-center class="py-4">
 					<v-spacer />
 					<v-flex align-center v-if="refreshing" class="pa-4">
@@ -44,11 +44,16 @@
 						<h3 v-text="'No Users'" />
 					</v-flex>
 				</v-layout>
-			</div>
-			<template slot="items" slot-scope="props">
+			</template>
+			<template #headers="props">
+				<tr>
+					<th> <v-checkbox  @click.stop="tableToggleAll" :input-value="props.all" :indeterminate="props.indeterminate" primary hide-details color="orange darken-2"/> </th>
+					<th v-for="header in props.headers" @click="tableChangeSort(header.value)" :key="header.text" :class="['column sortable', 'text-truncate', tablePagination.descending ? 'desc' : 'asc', header.value === tablePagination.sortBy ? 'active' : '']" :style="header.width?`max-width:${header.width}; width:${header.width}; min-width:${header.width}`:''" > {{ header.text }} <v-icon small>arrow_upward</v-icon> </th>
+				</tr>
+			</template>
+			<template #items="props">
 				<tr @contextmenu="e => memberContextMenuClicked(e, props.item.id)">
-					<!-- FIXME: checkbox not working, make ui look like this is selected -->
-					<td><v-checkbox v-model="props.members" primary hide-details /></td>
+					<th><v-checkbox v-model="props.selected" primary hide-details color="orange darken-2"/></th>
 					<td>{{ props.item.badgenumber }}</td>
 					<td>{{ UserMode(props.item.mode) }}</td>
 					<td>{{ props.item.name }}</td>

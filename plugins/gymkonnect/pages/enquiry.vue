@@ -1,75 +1,43 @@
 <template>
 	<Layout>
-		<h1 class="text-md-center">Enquiry</h1>
-		<v-card class="mb-2" color="transparent" height="630px">
-			<v-layout row wrap class="pl-4">
-				<v-flex  class="px-1">
-					<v-text-field color="orange darken-2" prepend-icon="fas fa-user" v-model="firstname" :rules="nameRules" counter maxlength="15" label="First Name" required></v-text-field>
-				</v-flex>
-				<v-flex  class="px-1">
-					<v-text-field color="orange darken-2" counter maxlength="15" label="Middle Name"></v-text-field>
-				</v-flex>
-				<v-flex  class="px-1 pr-4">
-					<v-text-field color="orange darken-2" counter maxlength="15" label="Last Name"></v-text-field>
+		<v-toolbar extended>
+			<v-layout row>
+				<v-flex xs12 md7> <h1 class="text-md-right text-xs-center"> Enquiry </h1> </v-flex>
+				<v-flex xs12 md5>
+					<v-layout justify-end>
+						<v-tooltip left>
+							<v-btn outline slot="activator" :disabled="printingBlank" :loading="printingBlank" @click.native.stop="printBlank"> <v-icon>print</v-icon> </v-btn>
+							<span>Print Blank Form</span>
+						</v-tooltip>
+					</v-layout>
 				</v-flex>
 			</v-layout>
-
-			<v-layout row wrap class="pl-4">
-				<v-flex xs12 lg6>
-					<v-radio-group prepend-icon="fas fa-transgender-alt" label="Gender" v-model="radioGroup2" row>
-						<v-radio color="orange darken-2" label="Male" value="radio-4"></v-radio>
-						<v-radio color="orange darken-2" label="Female" value="radio-5"></v-radio>
-						<v-radio color="orange darken-2" label="Others" value="radio-6"></v-radio>
+			<v-layout slot="extension" class="px-2">
+				<v-flex xs12 md9>
+					<v-radio-group :prepend-icon="usersCount===1?'person':'people'" label="Registration Type" v-model="grouping" row>
+						<v-radio v-for="(grouping, index) in GROUPINGS" :label="grouping.name" :value="grouping.id" :key="index" color="orange darken-2"/>
 					</v-radio-group>
 				</v-flex>
-
-				<v-flex xs12 lg6 class="pr-4">
-					<v-combobox color="orange darken-2" prepend-icon="work" :items="items" label="Occupation"></v-combobox>
+				<v-flex xs12 md3 v-if="allowAddPeople || allowDeletePeople">
+					<h3 class="text-xs-right py-2">
+						<v-btn small flat icon :disabled="!allowDeletePeople" @click.native.stop="deletePeople(secondaryStepperIndex)"> <v-icon>remove</v-icon> </v-btn>
+						{{ usersCount }} / {{ this.GROUPINGS[this.groupIndex].max }} People
+						<v-btn small flat icon :disabled="!allowAddPeople" @click.native.stop="addPeople"> <v-icon>add</v-icon> </v-btn>
+					</h3>
 				</v-flex>
+				<v-flex xs12 md2 v-else> <h3 class="text-xs-right py-2">{{ usersCount }} {{ usersCount===1?"Person":"People" }}</h3> </v-flex>
 			</v-layout>
-
-			<v-layout row wrap class="pl-4">
-				<v-flex xs3 lg4 class="pr-2">
-					<v-text-field color="orange darken-2" prepend-icon="fas fa-mobile-alt" v-model="phone" :rules="phoneRules" label="Mobile Number" mask="phone" required></v-text-field>
-				</v-flex>
-				<v-flex xs3 lg4 class="pl-2">
-					<v-text-field color="orange darken-2" prepend-icon="fab fa-whatsapp" label="Whatsapp Number" mask="phone"></v-text-field>
-				</v-flex>
-				<v-flex xs3 lg4>
-					<v-checkbox color="orange darken-2" label="Same As Phone Number"></v-checkbox>
-				</v-flex>
+		</v-toolbar>
+		<v-layout row wrap class="pa-4 pb-5">
+			<v-flex xs12 class="pb-4"> <stepper v-model="users[primaryStepperIndex]" class="elevation-10" @deleteStepper="()=>{ deleteStepper(primaryStepperIndex) }" @finished="clientId => stepperComplete(primaryStepperIndex, clientId)" :exclude="['badgenumber']"/> </v-flex>
+			<v-flex xs12 class="elevation-10 mb-4"> <step-three v-model="transactionData" :group="grouping" :quantity="usersCount" @error="(e) => { error = e }" /> </v-flex>
+			<v-flex xs12 class="elevation-10 mb-4"> <step-four v-model="transactionData" :exclude="['toc']"/> </v-flex>
+		</v-layout>
+		<v-footer v-if="allSteppersComplete" height="auto" color="primary lighten-1" absolute bottom>
+			<v-layout justify-center row justify-end align-end class="px-4 py-2">
+				<v-spacer />
+				<v-btn :loading="saving" :disable="saving" color="orange darken-4" class="white--text" @click.native.stop="save"> <v-icon left>save</v-icon> Save </v-btn>
 			</v-layout>
-
-			<v-layout row wrap class="pl-4">
-				<v-flex xs12 lg6 class="pr-2">
-					<v-textarea color="orange darken-2" prepend-icon="place" name="input-7-1" label="Residential Address"></v-textarea>
-				</v-flex>
-				<v-flex xs6 lg6 class="pr-4">
-					<v-text-field color="orange darken-2" prepend-icon="fas fa-envelope" v-model="email" :rules="emailRules" label="Email address" type="email"></v-text-field>
-				</v-flex>
-			</v-layout>
-			<v-flex xs12 lg6 class="pl-4 pt-2">
-				<v-combobox color="orange darken-2" v-model="select" :items="purposes" label="Purpose of Joining Gym" multiple chips hint="Maximum 3 choices"
-				 persistent-hint clearable deletable-chips></v-combobox>
-			</v-flex>
-			<h3 class="pl-4 pt-4">Type Of Membership</h3>
-			<v-layout row wrap xs6 class="pl-4">
-				<v-checkbox color="orange darken-2" class="ml-4" label="Gold"></v-checkbox>
-				<v-checkbox color="orange darken-2" label="Platinum"></v-checkbox>
-			</v-layout>
-			<h3 class="pl-4">Membership Duration</h3>
-			<v-layout row wrap class="pl-4">
-				<v-checkbox color="orange darken-2" class="ml-4" label="Monthly"></v-checkbox>
-				<v-checkbox color="orange darken-2" label="Quaterly"></v-checkbox>
-				<v-checkbox color="orange darken-2" label="Half-Yearly"></v-checkbox>
-				<v-checkbox color="orange darken-2" label="Yearly"></v-checkbox>
-			</v-layout>
-			<v-card width="100%" height="50px" color="transparent">
-				<div class="right pr-2"> 
-					<v-btn dark>Cancel</v-btn>
-					<v-btn dark color="orange darken-4" class="mb-2">Submit</v-btn>
-				</div>
-			</v-card>
-		</v-card>
+		</v-footer>
 	</Layout>
 </template>

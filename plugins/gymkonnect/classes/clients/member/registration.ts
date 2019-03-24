@@ -8,7 +8,7 @@ import moment from "moment"
 import { sleep } from "@classes/misc"
 import { alert } from "@/components/toast"
 
-let Console = new Logger("gk-client/registration")
+let Console = new Logger("registration/gk-client")
 
 /**
  * Get Amount per person based on parameters
@@ -57,7 +57,7 @@ async function getAmount(details: {
 				timeSlot: details.timeSlot,
 			}
 		)
-		if (response.errors) throw response.errors
+		if (response.errors) throw response.errors[0].message
 		if (!response.data.price) throw "Unable to fetch price"
 		return response.data.price
 	} catch (error) {
@@ -118,7 +118,7 @@ async function addAddress(address: Partial<IAddress>): Promise<number | string> 
 				receiver: address.receiver,
 			}
 		)
-		if (response.errors) throw response.errors
+		if (response.errors) throw response.errors[0].message
 		if (!response.data) throw "Unable to save Address"
 		return response.data.address.id
 	} catch (error) { throw error }
@@ -140,7 +140,7 @@ async function linkAddressUser(address: string | number, user: string | number):
 			`,
 			{ address, user, }
 		)
-		if (response.errors) throw response.errors
+		if (response.errors) throw response.errors[0].message
 		if (!response.data) throw "Unable to save Address to user"
 		return response.data.linked
 	} catch (error) { throw error }
@@ -235,7 +235,7 @@ async function addMember(userData: TMRegistration): Promise<string|number> {
 				middleName: userData.middleName,
 				firstName: userData.firstName,
 				mobile: userData.mobile,
-				badgenumber: userData.badgenumber.toString()
+				badgenumber: userData.badgenumber ?userData.badgenumber.toString(): undefined,
 			}
 		)
 		let [response, address,] = await Promise.all([
@@ -253,7 +253,7 @@ async function addMember(userData: TMRegistration): Promise<string|number> {
 				receiver: userData.firstName + userData.middleName + userData.lastName,
 			}),
 		])
-		if (response.errors) throw response.errors
+		if (response.errors) throw response.errors[0].message
 		if (!response.data) throw "Unable to add user"
 		await linkAddressUser(address, response.data.user.id)
 		return response.data.user.id
@@ -277,6 +277,7 @@ async function addGymUser(details:{
 	referredOther: string,
 	isGrouped: boolean,
 	userId: string|number,
+	timeSlot: string | number,
 }):Promise<string|number>{
 	try {
 		let response = await GQLClient.mutate<{user : { id:string|number }}>(
@@ -286,12 +287,14 @@ async function addGymUser(details:{
 					$referredOther: String
 					$isGrouped: Boolean
 					$userId: Float!
+					$timeSlot: Float!
 				){
 					user: addGymUser(
 						doj: $doj
 						referredOther: $referredOther
 						isGrouped: $isGrouped
 						userId: $userId
+						timeSlot: $timeSlot
 					){
 						id
 					}
@@ -302,9 +305,10 @@ async function addGymUser(details:{
 				referredOther: details.referredOther,
 				isGrouped: details.isGrouped,
 				userId: details.userId,
+				timeSlot: details.timeSlot,
 			}
 		)
-		if (response.errors) throw response.errors
+		if (response.errors) throw response.errors[0].message
 		if (!response.data) throw "Unable to add gym user"
 		return response.data.user.id
 	} catch (error) {
@@ -333,7 +337,7 @@ async function linkTransactionUser(transactionId: string| number, userId: string
 				userId,
 			}
 		)
-		if (response.errors) throw response.errors
+		if (response.errors) throw response.errors[0].message
 		if (!response.data) throw "Unable to link transaction to user"
 		return response.data.linked
 	} catch (error) {
@@ -351,7 +355,7 @@ async function getAdmissionFee() {
 	try {
 		Console.verbose("get admission fee")
 		let response = await GQLClient.query<{ price: number }>(gql` query AdmissionFee{ price: getPrice(name: "ADMISSION FEE") } `)
-		if (response.errors) throw response.errors
+		if (response.errors) throw response.errors[0].message
 		if (!response.data) throw "Unable to get admission fee"
 		return response.data.price
 	} catch (error) { throw error.toString() }
@@ -437,7 +441,7 @@ async function addTransaction(
 				packages: transaction.packages,
 			}
 		)
-		if (response.errors) throw response.errors
+		if (response.errors) throw response.errors[0].message
 		if (!response.data) throw "Unable to save transaction"
 		return response.data.transaction
 	} catch (error) {
@@ -490,7 +494,7 @@ async function addPayment(payment:{
 				mode: payment.mode,
 			}
 		)
-		if (response.errors) throw response.errors
+		if (response.errors) throw response.errors[0].message
 		if (!response.data) throw "Unable to save payment"
 		return response.data.payment.id
 	} catch (error) {
@@ -528,7 +532,7 @@ async function linkTransactionPay(
 				paymentId,
 			}
 		)
-		if (response.errors) throw response.errors
+		if (response.errors) throw response.errors[0].message
 		if (!response.data) throw "Unable to link transaction and payment"
 		return response.data.linked
 	} catch (error) {
@@ -570,7 +574,7 @@ async function createGroupGymUsers(userIDs: (string | number)[], groupingId: str
 				groupingId,
 			}
 		)
-		if (response.errors) throw response.errors
+		if (response.errors) throw response.errors[0].message
 		if (!response.data) throw "Unable to create group from users"
 		return response.data.group
 	} catch (error) {
@@ -618,7 +622,7 @@ async function getEndDate(details:{
 				fetchPolicy: "no-cache"
 			}
 		)
-		if (response.errors) throw response.errors
+		if (response.errors) throw response.errors[0].message
 		if (!response.data) throw "Unable to Get End Date"
 		return moment(response.data.end).toDate()
 	} catch (error) {
@@ -653,6 +657,7 @@ async function makePayments(
 			userId: gymUserID,
 			referredOther: transactionData.utmSource || "",
 			isGrouped,
+			timeSlot: transactionData.timeSlot,
 		})
 		let [ transactionResult, paymentId, gymUserId, ] = await Promise.all([
 			transactionPromise,
@@ -706,7 +711,7 @@ async function scanFingerprint(userId: string | number):Promise<boolean>{
 			gql`mutation enrollUser( $userId: Float! ){ scanning: enrollUser(userId: $userId) }`,
 			{ userId, }
 		)
-		if (response.errors) throw response.errors
+		if (response.errors) throw response.errors[0].message
 		if (!response.data) throw "Unable to start scanning fingerprint"
 		alert(`Please look for <h1>${userResponse.data.user.user.badgenumber}</h1> and enroll`, "success")
 		return response.data.scanning
@@ -716,7 +721,7 @@ async function scanFingerprint(userId: string | number):Promise<boolean>{
 	}
 }
 
-export const Registration = {
+export const MemberRegistration = {
 	getAmount,
 	addMember,
 	makePayments,

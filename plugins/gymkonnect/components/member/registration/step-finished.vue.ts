@@ -17,7 +17,11 @@ export default class MRegistrationStepFinished extends Vue{
 	private get firstName(){ return this.value.firstName }
 	private get middleName(){ return this.value.middleName }
 	private get lastName(){ return this.value.lastName }
-	private get fullName(){ return `${this.firstName} ${this.middleName} ${this.lastName}` }
+	private get fullName(){
+		return `${this.firstName || ""} ${this.middleName || ""} ${this.lastName || ""}`
+		.replace(/\s+/," ")
+		.trimRight()
+	}
 	private get dob(){ return this.value.dob }
 	private get dobFormattedDate() { return this.formatDate(this.dob) }
 	private get mobile(){ return this.value.mobile }
