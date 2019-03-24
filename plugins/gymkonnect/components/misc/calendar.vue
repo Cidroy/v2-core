@@ -4,7 +4,7 @@
 			<v-btn icon flat disabled class="my-3"> <v-icon class="orange--text text--darken-2">chevron_left</v-icon> </v-btn>
 			<v-flex xs6 sm3 md2>
 				<v-select v-model="calendarViewMode" :items="CalendarViewModes" :prepend-inner-icon="calendarViewModeIcon" item-text="name" item-value="type" item-avatar="icon" color="orange darken-2" class="pt-3" flat solo box no-hint>
-					<template v-slot:item="{ item }"> <span> <v-icon left :color="item.type===calendarViewMode?'orange darken-2':''">{{ item.icon }}</v-icon> {{ item.name }} </span> </template>
+					<template #item="{ item }"> <span> <v-icon left :color="item.type===calendarViewMode?'orange darken-2':''">{{ item.icon }}</v-icon> {{ item.name }} </span> </template>
 				</v-select>
 			</v-flex>
 			<v-spacer />

@@ -13,7 +13,7 @@
 						<v-list-tile slot="no-data">
 							<v-list-tile-title v-text="'No User Found'"/>
 						</v-list-tile>
-						<template v-slot:item="{ item }">
+						<template #item="{ item }">
 							<v-avatar v-text="item.name.charAt(0)" size="30" color="orange darken-4" class="white--text font-weight-light"/>
 							<v-list-tile-content class="ml-2 my-2">
 								<v-list-tile-title> {{ item.name }} <v-icon small class="mr-1">phone</v-icon> <span v-html="clientSearch?item.mobile.replace(clientSearch, clientSearch.bold()):item.mobile"/> </v-list-tile-title>

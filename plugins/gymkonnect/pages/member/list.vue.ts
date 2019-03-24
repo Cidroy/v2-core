@@ -8,6 +8,7 @@ import { USER_MODE } from "@classes/enum/user-mode"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
 import { TGQLUserMode } from "@plugins/gymkonnect/state/gk-helper"
 import { gotoProfile, enroll, freezeUnfreeze, renew, preebookEnroll, blockUnblock } from "@plugins/gymkonnect/classes/actions"
+import { TMemberListTableItems } from "@plugins/gymkonnect/classes/types/member-list"
 
 @Component({
 	// @ts-ignore
@@ -24,8 +25,8 @@ import { gotoProfile, enroll, freezeUnfreeze, renew, preebookEnroll, blockUnbloc
 	}
 })
 // @ts-ignore
-export default class Home extends Vue {
-	
+export default class MemberListPage extends Vue {
+
 	private get PERMISSIONS() { return { gymkonnect } }
 
 	// FIXME: dynamic list
@@ -34,7 +35,7 @@ export default class Home extends Vue {
 	private filter = this.FILTER_DEFAULT
 
 	private sendMessageFAB = false
-	private members: (string | number)[] = []
+	private members: TMemberListTableItems[] = []
 	private search = ""
 	private expand = false
 
@@ -73,9 +74,22 @@ export default class Home extends Vue {
 		this.$nextTick(() => { this.showMemberContextMenu = true })
 	}
 
+	private tablePagination: Record<string, any> = {}
 	private get tableHeaders() { return MembersListStore.GK_M_MEMBERS_TABLE_HEADING }
 	private get tableItems() { return MembersListStore.GK_M_MEMBERS }
 	private get refreshing() { return MembersListStore.GK_M_MEMBERS_LOADING }
+	private tableToggleAll() {
+		if (this.members.length) this.members = []
+		else this.members = this.tableItems.slice()
+	}
+	private tableChangeSort(column: string) {
+		if (this.tablePagination.sortBy === column) {
+			this.tablePagination.descending = !this.tablePagination.descending
+		} else {
+			this.tablePagination.sortBy = column
+			this.tablePagination.descending = false
+		}
+	}
 
 	private UserMode(name: string | number) {
 		return (<TGQLUserMode>GymkonnectStore.GK_USER_MODES.find(i => i.name === name)).description

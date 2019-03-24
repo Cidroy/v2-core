@@ -1,6 +1,6 @@
 <template>
 	<v-speed-dial v-if="$permission(permissions)" v-model="sendMessageFAB" class="mb-4" fixed bottom right direction="top" transition="slide-y-reverse-transition">
-		<template v-slot:activator>
+		<template #activator>
 			<v-btn v-model="sendMessageFAB" color="orange darken-4" dark fab class="pb-4">
 				<v-icon>send</v-icon>
 				<v-icon>close</v-icon>
