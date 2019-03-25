@@ -1,4 +1,4 @@
-import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 
 export type TSpaBookingArgs = {
 	group: string | number,

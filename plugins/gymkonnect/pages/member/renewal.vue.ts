@@ -9,7 +9,7 @@ import MRegistrationStep3 from "@plugins/gymkonnect/components/member/registrati
 import SinglePaymentModal from "@plugins/gymkonnect/components/payment/modal-single.vue"
 import { alert } from "@/components/toast"
 import { defaultRegistrationStep3User } from "@plugins/gymkonnect/classes/types/registration"
-import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import { formatDate } from "@/utils/misc"
 import moment from "moment"
 

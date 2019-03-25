@@ -4,6 +4,7 @@ import { USER_MODE } from "@classes/enum/user-mode"
 import { formatDate } from "@/utils/misc"
 import { IUser } from "@classes/interface/IUser"
 import { Logger } from "@classes/CONSOLE"
+import { TMRegistrationStep1, TMRegistrationStep2, TMRegistrationStep3 } from "../types/registration"
 
 const Console = new Logger(`members/gk-client`)
 async function getAllMembersForRegistrationList(): Promise<TMemberListTableItems[]> {
@@ -89,14 +90,34 @@ async function find( value: string, keys: (keyof IUser)[] = [ "id", ]): Promise<
 	}
 }
 
-async function info(clientId: string | number){
+type TMemberInfo = {
+	transaction: {
+		id: string | number,
+		start: string,
+		end: string,
+	} & TMRegistrationStep3
+} & TMRegistrationStep1 & TMRegistrationStep2
+async function info(clientId: string | number): Promise<TMemberInfo>{
 	// TODO: [Vicky]
 	if(1){
-		const { defaultRegistrationStep1User, defaultRegistrationStep2User } = await import("../types/registration")
-		return { ...defaultRegistrationStep1User, ...defaultRegistrationStep2User }
+		const {
+			defaultRegistrationStep1User,
+			defaultRegistrationStep2User,
+			defaultRegistrationStep3User,
+		} = await import("../types/registration")
+		return {
+			...defaultRegistrationStep1User,
+			...defaultRegistrationStep2User,
+			transaction: {
+				...defaultRegistrationStep3User,
+				id: 0,
+				start: new Date().toISOString().substr(0,10),
+				end: new Date().toISOString().substr(0,10),
+			}
+		}
 	}
 	try {
-		let response = await GQLClient.query<{}>(
+		let response = await GQLClient.query<TMemberInfo>(
 			gql``,
 			{}
 		)

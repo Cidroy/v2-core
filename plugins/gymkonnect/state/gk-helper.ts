@@ -12,6 +12,7 @@ export type TGQLSpaGroupings = TGQLBasic & { count: number, min: number, max: nu
 export type TGQLBodyTypes = TGQLBasic
 export type TGQLOrganizationTypes = TGQLBasic
 export type TGQLPurposes = TGQLBasic
+export type TGQLPTPurposes = TGQLBasic
 export type TGQLMembershipTypes = TGQLBasic
 export type TGQLBloodGroup = TGQLBasic
 export type TGQLUTMSource = TGQLBasic
@@ -21,8 +22,10 @@ export type TGQLTimeSlot = TGQLBasic & { startTime: string, endTime: string, }
 export type TGQLPaymentModes = TGQLBasic & { requireTransactionId: boolean }
 // FIXME: choose proper duration in next pull
 export type TGQLPackages = TGQLBasic & { count: number, duration: string }
+export type TGQLPTPackages = TGQLBasic & { count: number, duration: string }
 export type TGQLUserMode = TGQLBasic
 export type TGQLSpaAmenities = TGQLBasic
+export type TGQLPTTrainerType = TGQLBasic
 export default class GKHelper{
 	public static async GetOccupations(): Promise<TGQLOccupations[]>{
 		let response = await GQLClient.query<{
@@ -156,8 +159,55 @@ export default class GKHelper{
 		return response.data.gymPackages
 	}
 
+	public static async GetPTPackages(): Promise<TGQLPTPackages[]> {
+		// FIXME: [Nikhil] make this personal training packages
+		let response = await GQLClient.query<{ gymPackages: TGQLPTPackages[] }>(
+			gql`
+				query gymPackages{
+					gymPackages{
+						id
+						name
+						count
+						duration
+					}
+				}
+			`,
+		)
+		return response.data.gymPackages
+	}
+
 	public static async GetPurposes(): Promise<TGQLPurposes[]> {
 		let response = await GQLClient.query<{ gymPurposes: TGQLPurposes[] }>(
+			gql`
+				query gymPurposes{
+					gymPurposes{
+						id
+						name
+					}
+				}
+			`,
+		)
+		return response.data.gymPurposes
+	}
+
+	public static async GetPTPurposes(): Promise<TGQLPTPurposes[]> {
+		// FIXME: [Nikhil] make this personal training purposes
+		let response = await GQLClient.query<{ gymPurposes: TGQLPTPurposes[] }>(
+			gql`
+				query gymPurposes{
+					gymPurposes{
+						id
+						name
+					}
+				}
+			`,
+		)
+		return response.data.gymPurposes
+	}
+
+	public static async GetPTTrainerTypes(): Promise<TGQLPTTrainerType[]> {
+		// FIXME: [Nikhil] make this personal training purposes
+		let response = await GQLClient.query<{ gymPurposes: TGQLPTTrainerType[] }>(
 			gql`
 				query gymPurposes{
 					gymPurposes{

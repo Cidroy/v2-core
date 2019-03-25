@@ -1,28 +1,24 @@
 import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
-import moment from "moment"
 import appConfig from "@/app.config"
-import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
-import { defaultRegistrationStep1User, defaultRegistrationStep2User } from "@plugins/gymkonnect/classes/types/registration"
+import { defaultRegistrationStep1User, defaultRegistrationStep2User, defaultRegistrationStep3User } from "@plugins/gymkonnect/classes/types/registration"
 import { Logger } from "@classes/CONSOLE"
 import { alert } from "@/components/toast"
 import { formatDate, parseDate } from "@/utils/misc"
 import { PaymentDetail } from "@plugins/gymkonnect/classes/types/payment"
 
 import Layout from "@/layouts/layout.vue"
-import stepper from "@plugins/gymkonnect/components/member/registration/stepper.vue"
 import stepFinished from "@plugins/gymkonnect/components/member/registration/step-finished.vue"
-import SpaBookingModal from "../payment/modal-booking-spa.vue"
-import { TSpaBookingArgs } from "@plugins/gymkonnect/classes/types/bookings"
+import moment from "moment"
+import { TRPTTransation } from "@plugins/gymkonnect/classes/types/registrations"
 
 const Console = new Logger(`spa-booking.vue/gk`)
 @Component({
 	// @ts-ignore
 	components: {
 		Layout,
-		stepper,
 		stepFinished,
-		SpaBookingModal,
 	},
 	page : {
 		title: "Personal Training Registration",
@@ -43,6 +39,13 @@ export default class PersonalTrainingRegistration extends Vue{
 	private clientData: Unpacked<ReturnType<typeof Gymkonnect.Members.info>> = {
 		...defaultRegistrationStep1User,
 		...defaultRegistrationStep2User,
+		transaction: {
+			...defaultRegistrationStep3User,
+			id: 0,
+			start: new Date().toISOString().substr(0, 10),
+			end: new Date().toISOString().substr(0, 10),
+		}
+
 	}
 	@Watch("clientId") private async onClientIdChange() {
 		if (!this.clientId) return
@@ -83,13 +86,17 @@ export default class PersonalTrainingRegistration extends Vue{
 			|| client.mobile!.includes(this.clientSearch)
 		)
 	}
+	private get Current() {
+		return {
+			Membership: GymkonnectStore.GK_MEMBERSHIP_TYPE(this.clientData.transaction.membershipType),
+			Package: GymkonnectStore.GK_PACKAGE(this.clientData.transaction.packageType),
+			StartDate: this.clientData.transaction.start,
+			EndDate: this.clientData.transaction.end,
+		}
+	}
 	// #endregion
 
-	// #region registration
-	private stepperComplete(clientId: string | number) {
-		this.clientId = clientId
-	}
-
+	// #region booking
 	private doj = new Date().toISOString().substr(0, 10)
 	private dojFormatted = this.formatDate(this.doj)
 	private dojMenu = false
@@ -104,44 +111,61 @@ export default class PersonalTrainingRegistration extends Vue{
 	private attendeeCount = 0
 	private AttendeeMax = 0
 	private AttendeeMin = 0
-	private grouping = GymkonnectStore.GK_SPA_GROUPINGS[0].id
-	@Watch("grouping") private onGroupingChange(){
-		let grouping = GymkonnectStore.GK_SPA_GROUPING(this.grouping)!
+	private grouping = GymkonnectStore.GK_GROUPINGS[0].id
+	@Watch("grouping") private onGroupingChange() {
+		let grouping = GymkonnectStore.GK_GROUPING(this.grouping)!
 		this.attendeeCount = grouping.count
 		this.AttendeeMin = grouping.min
 		this.AttendeeMax = grouping.max
 	}
-	private get UsersCount() { return GymkonnectStore.GK_SPA_GROUPING(this.grouping)!.count }
+	private get UsersCount() { return GymkonnectStore.GK_GROUPING(this.grouping)!.count }
 	// TODO: [Vicky][Nikhil] implement spa grouping
-	private get GROUPINGS() { return GymkonnectStore.GK_SPA_GROUPINGS }
+	private get GROUPINGS() { return GymkonnectStore.GK_GROUPINGS }
 
-	private amenities: (string | number)[] = []
-	private get AMENITIES() { return GymkonnectStore.GK_SPA_AMENITIES }
+	private purposes = []
+	private get PURPOSES(){ return GymkonnectStore.GK_PT_PURPOSES }
+
+	private packagex = GymkonnectStore.GK_PT_PACKAGES[0].id
+	private get PACKAGES(){ return GymkonnectStore.GK_PT_PACKAGES }
+
+	private trainerType = GymkonnectStore.GK_PT_TRAINER_TYPES[0].id
+	private get TRAINER_TYPES(){ return GymkonnectStore.GK_PT_TRAINER_TYPES }
+
+	// TODO: [Nishant] Min max time ka concept chahiye ka prefferedtimes main?
+	private get MinPrefferedTime(){ return "06:00" }
+	private get MaxPrefferedTime(){ return "10:00" }
+	private timeFrom = this.MinPrefferedTime
+	private timeFromMenu = false
+	private timeTo = this.MaxPrefferedTime
+	private timeToMenu = false
 
 	private amount = 0
 	private priceLoading = false
 	@Watch("grouping")
-	@Watch("amenities")
 	@Watch("attendeeCount")
+	@Watch("purposes")
+	@Watch("packagex")
+	@Watch("trainerType")
 	@Watch("doj")
-	private async reCalculateAmount(){
+	private async reCalculateAmount() {
 		this.priceLoading = true
 		try {
 			this.error = ""
-			this.amount = await Gymkonnect.Booking.Spa.getAmount(this.transaction)
+			this.amount = await Gymkonnect.Registrations.PersonalTraining.getAmount(this.transaction)
 		} catch (error) {
 			Console.error(error)
 			this.error = error.toString()
 		}
 		this.priceLoading = false
 	}
-	private get transaction(): TSpaBookingArgs {
+	private get transaction(): TRPTTransation{
 		return {
-			group: this.grouping,
-			amenities: this.amenities,
-			attendeeCount: this.attendeeCount,
+			grouping: this.grouping,
+			attendees: this.attendeeCount,
+			purposes: this.purposes,
+			package: this.packagex,
+			trainerType: this.trainerType,
 			doj: this.doj,
-			amount: this.amount,
 		}
 	}
 	// #endregion
@@ -159,7 +183,8 @@ export default class PersonalTrainingRegistration extends Vue{
 	private async pay(paymentData?: PaymentDetail) {
 		this.paying = true
 		try {
-			let result = await Gymkonnect.Booking.Spa.pay(this.clientId, this.transaction, paymentData)
+			let result = await Gymkonnect.Registrations.PersonalTraining.pay(this.clientId, this.transaction, paymentData)
+			alert("Saved", "success")
 			// TODO: reset page to zero and goto top
 		} catch (error) {
 			Console.error(error)

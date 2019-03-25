@@ -1,7 +1,7 @@
 import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
 import moment from "moment"
 import Layout from "@/layouts/layout.vue"
-import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import { formatDate, parseDate } from "@/utils/misc"
 import { TMRegistrationStep3, defaultRegistrationStep3User } from "@plugins/gymkonnect/classes/types/registration"
 
@@ -138,5 +138,5 @@ export default class MRegistrationStep3 extends Vue {
 		this.priceLoading = false
 	}
 
-	@Prop({ type: Object, default: () => ({ start: new Date(1947, 7, 16), end: undefined }) }) public dojRange !: { start: Date, end?: Date }
+	@Prop({ type: Object, default: () => ({ start: new Date(), end: undefined }) }) public dojRange !: { start: Date, end?: Date }
 }

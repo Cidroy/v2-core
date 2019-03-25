@@ -1,6 +1,6 @@
 import { PASSWORD_PREFERENCE } from "@classes/enum/misc"
 import { UserStore } from "@/state/user"
-import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import { ApplicationStore } from "@/state/application"
 import { Logger } from "@classes/CONSOLE"
 import router from "@/routes"

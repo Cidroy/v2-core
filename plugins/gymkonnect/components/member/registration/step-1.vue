@@ -20,7 +20,7 @@
 							</v-radio-group>
 						</v-flex>
 						<v-flex xs12 lg6 class="px-2">
-							<v-text-field color="orange darken-2" v-model="dobFormatted" @blur="dob = parseDate(dobFormatted)" @click:prepend="dobMenu = true" label="Date of Joining" placeholder="DD/MM/YYYY" prepend-icon="event" mask="##/##/####" return-masked-value persistent-hint />
+							<v-text-field color="orange darken-2" v-model="dobFormatted" @blur="dob = parseDate(dobFormatted)" @click:prepend="dobMenu = true" label="Date of Birth" placeholder="DD/MM/YYYY" prepend-icon="event" mask="##/##/####" return-masked-value persistent-hint />
 							<v-menu v-model="dobMenu" ref="dobMenu" :close-on-content-click="false" lazy transition="scale-transition" >
 								<div slot="activator" data-id="dob"/>
 								<v-date-picker v-model="dob" no-title @input="dobMenu = false"  color="orange darken-2"/>
