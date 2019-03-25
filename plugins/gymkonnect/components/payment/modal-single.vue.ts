@@ -1,7 +1,7 @@
 import { Component, Vue, Prop, Watch, Emit } from "vue-property-decorator"
 import Layout from "@/layouts/layout.vue"
 import { formatDate, parseDate } from "@/utils/misc"
-import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import { TMRegistrationStep3, defaultRegistrationStep3User, TMRegistrationStep4, defaultRegistrationStep4User, TMRegistration, defaultRegistrationUser } from "@plugins/gymkonnect/classes/types/registration"
 import { PaymentDetail } from "@plugins/gymkonnect/classes/types/payment"
 

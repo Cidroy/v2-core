@@ -1,4 +1,4 @@
-import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import { GENDER, ADDRESS_TYPE } from "@classes/enum/misc"
 import IAddress from "@classes/interface/IAddress"
 import AddressStore from "@plugins/gymkonnect/state/addresses"

@@ -1,9 +1,9 @@
 import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
 import moment from "moment"
 import appConfig from "@/app.config"
-import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
-import { defaultRegistrationStep1User, defaultRegistrationStep2User } from "@plugins/gymkonnect/classes/types/registration"
+import { defaultRegistrationStep1User, defaultRegistrationStep2User, defaultRegistrationStep3User } from "@plugins/gymkonnect/classes/types/registration"
 import { Logger } from "@classes/CONSOLE"
 import { alert } from "@/components/toast"
 import { formatDate, parseDate } from "@/utils/misc"
@@ -43,6 +43,13 @@ export default class OneDayRegistration extends Vue{
 	private clientData: Unpacked<ReturnType<typeof Gymkonnect.Members.info>> = {
 		...defaultRegistrationStep1User,
 		...defaultRegistrationStep2User,
+		transaction: {
+			...defaultRegistrationStep3User,
+			id: 0,
+			start: new Date().toISOString().substr(0, 10),
+			end: new Date().toISOString().substr(0, 10),
+		}
+
 	}
 	@Watch("clientId") private async onClientIdChange() {
 		if (!this.clientId) return

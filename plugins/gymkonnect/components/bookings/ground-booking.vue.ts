@@ -1,5 +1,5 @@
 import { Component, Vue } from "vue-property-decorator"
-import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 
 // @ts-ignore
 @Component({})

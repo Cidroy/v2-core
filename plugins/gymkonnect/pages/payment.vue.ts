@@ -3,7 +3,7 @@ import moment from "moment"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/layout.vue"
 import { formatDate, parseDate } from "@/utils/misc"
-import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 
 @Component({
 	// @ts-ignore
