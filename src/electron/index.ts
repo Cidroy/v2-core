@@ -302,7 +302,7 @@ class Application {
 
 try {
 	Logger.Verbose = true
-	Console.okay("Core Thread Started")
+	Console.okay("Core Thread Started @", __dirname)
 	const App = new Application()
 	Console.okay("Core App Started")
 	App.SingleInstance()
