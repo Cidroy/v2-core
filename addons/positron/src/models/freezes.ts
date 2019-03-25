@@ -4,7 +4,7 @@ import * as GQL from "type-graphql"
 import IFreezes from "@classes/interface/IFreezes"
 
 @GQL.ObjectType()
-@DB.Entity("user_freezes")
+@DB.Entity()
 export default class Freezes extends Base implements IFreezes{
 	@GQL.Field(type => Number)
 	@DB.Column("integer")
@@ -12,11 +12,11 @@ export default class Freezes extends Base implements IFreezes{
 
 	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
-	public transaction?: number
+	public count?: number
 
 	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
-	public count?: number
+	public transaction?: number
 
 	@GQL.Field(type => Date)
 	@DB.Column("date")

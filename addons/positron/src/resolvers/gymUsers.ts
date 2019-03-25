@@ -31,6 +31,7 @@ export default class GymUsersResolver {
 	public async user(@GQL.Root() gymUser: GymUsers) {
 		return User.findOne({ where: { active: 1, id: gymUser.userId } })
 	}
+	
 	@GQL.FieldResolver(returns => GymUserMode, { nullable: true })
 	public async mode(@GQL.Root() gymUser: GymUsers) {
 		return GymUserMode.findOne({ where: { active: 1, id: gymUser.mode } })
