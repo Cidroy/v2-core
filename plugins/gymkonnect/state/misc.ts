@@ -16,7 +16,6 @@ let _gk_bodyTypes: TGQLBodyTypes[] = []
 let _gk_organizationTypes: TGQLOrganizationTypes[] = []
 let _gk_regType = []
 let _gk_packages: TGQLPackages[] = []
-let _gk_purposes: TGQLPurposes[] = []
 let _gk_membershipTypes: TGQLMembershipTypes[] = []
 let _gk_paymentModes: TGQLPaymentModes[] = []
 let _gk_bloodGroups: TGQLBloodGroup[] = []
@@ -26,6 +25,7 @@ let _gk_doors: TGQLDoor[] = []
 let _gk_offers: TGQLOffer[] = []
 let _gk_userModes: TGQLUserMode[] = []
 let _gk_spa_amenities: TGQLSpaAmenities[] = []
+let _gk_purposes: TGQLPurposes[] = []
 
 @Module({ dynamic: true, store, name: "Misc" })
 class Gymkonnect extends VuexModule {
