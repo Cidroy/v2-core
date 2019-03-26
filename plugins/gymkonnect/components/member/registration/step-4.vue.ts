@@ -1,5 +1,5 @@
 import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
-import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import { TMRegistrationStep4, defaultRegistrationStep4User } from "@plugins/gymkonnect/classes/types/registration"
 import empty from "@/components/empty.vue"
 

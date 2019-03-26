@@ -27,6 +27,11 @@ export async function getWdmsIdForUserId(userId: number, zoneId: number): Promis
 		return 0
 	}
 }
+@GQL.ObjectType()
+export class FindGymUser extends User{
+	@GQL.Field(type => String)
+	public foundBy !: string
+}
 @GQL.Resolver(of => User)
 export default class UserResolver {
 

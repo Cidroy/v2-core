@@ -1,6 +1,6 @@
 import { Logger } from "@classes/CONSOLE"
 import GQLClient, { gql } from "@/utils/graphql"
-import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import { sleep } from "@classes/misc"
 import moment from "moment"
 import { TMRegistrationStep3 } from "../../types/registration"

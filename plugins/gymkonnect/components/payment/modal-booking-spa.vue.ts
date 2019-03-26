@@ -2,7 +2,7 @@ import { Component, Vue, Prop, Watch, Emit } from "vue-property-decorator"
 import moment from "moment"
 import Layout from "@/layouts/layout.vue"
 import { formatDate, parseDate } from "@/utils/misc"
-import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import { PaymentDetail } from "@plugins/gymkonnect/classes/types/payment"
 import { TMRegistration } from "@plugins/gymkonnect/classes/types/registration"
 
