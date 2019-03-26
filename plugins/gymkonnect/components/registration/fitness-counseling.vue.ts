@@ -101,49 +101,8 @@ export default class FitnessCounselingRegistration extends Vue{
 	private get maxDoj() { return this.dojRange.end ? moment(this._maxDoj).toISOString().substr(0, 10) : undefined }
 	private get getDateFormatted() { return this.formatDate(this.doj) }
 
-	private attendeeCount = 0
-	private AttendeeMax = 0
-	private AttendeeMin = 0
-	private grouping = GymkonnectStore.GK_SPA_GROUPINGS[0].id
-	@Watch("grouping") private onGroupingChange(){
-		let grouping = GymkonnectStore.GK_SPA_GROUPING(this.grouping)!
-		this.attendeeCount = grouping.count
-		this.AttendeeMin = grouping.min
-		this.AttendeeMax = grouping.max
-	}
-	private get UsersCount() { return GymkonnectStore.GK_SPA_GROUPING(this.grouping)!.count }
-	// TODO: [Vicky][Nikhil] implement spa grouping
-	private get GROUPINGS() { return GymkonnectStore.GK_SPA_GROUPINGS }
-
-	private amenities: (string | number)[] = []
-	private get AMENITIES() { return GymkonnectStore.GK_SPA_AMENITIES }
-
-	private amount = 0
-	private priceLoading = false
-	@Watch("grouping")
-	@Watch("amenities")
-	@Watch("attendeeCount")
-	@Watch("doj")
-	private async reCalculateAmount(){
-		this.priceLoading = true
-		try {
-			this.error = ""
-			this.amount = await Gymkonnect.Booking.Spa.getAmount(this.transaction)
-		} catch (error) {
-			Console.error(error)
-			this.error = error.toString()
-		}
-		this.priceLoading = false
-	}
-	private get transaction(): TSpaBookingArgs {
-		return {
-			group: this.grouping,
-			amenities: this.amenities,
-			attendeeCount: this.attendeeCount,
-			doj: this.doj,
-			amount: this.amount,
-		}
-	}
+	private purposes = []
+	private get PURPOSES(){ return GymkonnectStore.GK_FC_PURPOSES }
 	// #endregion
 
 	// #region props
@@ -159,7 +118,6 @@ export default class FitnessCounselingRegistration extends Vue{
 	private async pay(paymentData?: PaymentDetail) {
 		this.paying = true
 		try {
-			let result = await Gymkonnect.Booking.Spa.pay(this.clientId, this.transaction, paymentData)
 			// TODO: reset page to zero and goto top
 		} catch (error) {
 			Console.error(error)
