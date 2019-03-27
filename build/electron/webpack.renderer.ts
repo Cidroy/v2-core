@@ -6,8 +6,11 @@ import webpackMerge from "webpack-merge"
 import BabiliWebpackPlugin from "babili-webpack-plugin"
 import CopyWebpackPlugin from "copy-webpack-plugin"
 import HtmlWebpackPlugin from "html-webpack-plugin"
+import WebpackPwaManifest from "webpack-pwa-manifest"
+import WorkboxPlugin from "workbox-webpack-plugin"
 
 import webpackBase, { resolve } from "~build/webpack.base"
+import { manifest } from "~/config/manifest"
 
 /**
  * List of node_modules to include in webpack bundle
@@ -46,6 +49,13 @@ let rendererConfig: webpack.Configuration = {
 		}),
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NoEmitOnErrorsPlugin(),
+		new WebpackPwaManifest(manifest),
+		new WorkboxPlugin.GenerateSW({
+			importWorkboxFrom: "local",
+			clientsClaim: true,
+			skipWaiting: true,
+			offlineGoogleAnalytics: true,
+		}),
 	],
 	output: {
 		filename: "js/[name].js",
