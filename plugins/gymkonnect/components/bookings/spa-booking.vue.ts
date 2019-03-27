@@ -1,9 +1,9 @@
 import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
 import moment from "moment"
 import appConfig from "@/app.config"
-import { GymkonnectStore } from "@plugins/gymkonnect/state/misc"
+import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
-import { defaultRegistrationStep1User, defaultRegistrationStep2User } from "@plugins/gymkonnect/classes/types/registration"
+import { defaultRegistrationStep1User, defaultRegistrationStep2User, defaultRegistrationStep3User } from "@plugins/gymkonnect/classes/types/registration"
 import { Logger } from "@classes/CONSOLE"
 import { alert } from "@/components/toast"
 import { formatDate, parseDate } from "@/utils/misc"
@@ -43,6 +43,13 @@ export default class SpaBooking extends Vue{
 	private clientData: Unpacked<ReturnType<typeof Gymkonnect.Members.info>> = {
 		...defaultRegistrationStep1User,
 		...defaultRegistrationStep2User,
+		transaction: {
+			...defaultRegistrationStep3User,
+			id: 0,
+			start: new Date().toISOString().substr(0, 10),
+			end: new Date().toISOString().substr(0, 10),
+		}
+
 	}
 	@Watch("clientId") private async onClientIdChange() {
 		if (!this.clientId) return
@@ -104,16 +111,17 @@ export default class SpaBooking extends Vue{
 	private attendeeCount = 0
 	private AttendeeMax = 0
 	private AttendeeMin = 0
-	private grouping = GymkonnectStore.GK_SPA_GROUPINGS[0].id
+	// TODO: [Nishant] do we need to have different groupings??
+	private grouping = GymkonnectStore.GK_GROUPINGS[0].id
 	@Watch("grouping") private onGroupingChange(){
-		let grouping = GymkonnectStore.GK_SPA_GROUPING(this.grouping)!
+		let grouping = GymkonnectStore.GK_GROUPING(this.grouping)!
 		this.attendeeCount = grouping.count
 		this.AttendeeMin = grouping.min
 		this.AttendeeMax = grouping.max
 	}
-	private get UsersCount() { return GymkonnectStore.GK_SPA_GROUPING(this.grouping)!.count }
+	private get UsersCount() { return GymkonnectStore.GK_GROUPING(this.grouping)!.count }
 	// TODO: [Vicky][Nikhil] implement spa grouping
-	private get GROUPINGS() { return GymkonnectStore.GK_SPA_GROUPINGS }
+	private get GROUPINGS() { return GymkonnectStore.GK_GROUPINGS }
 
 	private amenities: (string | number)[] = []
 	private get AMENITIES() { return GymkonnectStore.GK_SPA_AMENITIES }

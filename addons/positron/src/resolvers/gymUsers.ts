@@ -21,7 +21,7 @@ export default class GymUsersResolver {
 		if (gymUser.isGrouped) {
 			let groupMap = await GroupMap.findOne({ where: { active: 1, gymUserId: gymUser.id } })
 			if (groupMap === undefined) throw "No group found for this user"
-			return Groups.findOne({ where: { active: 1, gymUserId: groupMap.groupId } })
+			return Groups.findOne({ where: { active: 1, id: groupMap.groupId } })
 		} else {
 			return null
 		}
@@ -47,7 +47,6 @@ export default class GymUsersResolver {
 	public async user(@GQL.Root() gymUser: GymUsers) {
 		return User.findOne({ where: { active: 1, id: gymUser.userId } })
 	}
-	
 	@GQL.FieldResolver(returns => GymUserMode, { nullable: true })
 	public async mode(@GQL.Root() gymUser: GymUsers) {
 		return GymUserMode.findOne({ where: { active: 1, id: gymUser.mode } })

@@ -24,34 +24,82 @@
 					<v-flex xs10 md4> <v-progress-linear :indeterminate="true" color="orange darken-2" /> </v-flex>
 					<v-flex xs1 md4/>
 				</v-layout>
-				<step-finished v-else-if="clientId" :value="clientData" class="elevation-10"/>
-				<stepper v-else v-model="clientData" @finished="clientId => stepperComplete(clientId)" class="elevation-10"/>
+				<step-finished v-else-if="clientId" :value="clientData" class="elevation-10">
+						<v-divider />
+						<v-layout row wrap class="mt-2 px-2">
+							<v-flex xs12> <h2> <v-icon left>timer</v-icon> Current Package </h2> </v-flex>
+							<v-flex xs12 md6 class="px-2"> <v-text-field :value="Current.Membership.name" label="Current Membership" tabindex="-1" prepend-icon="fas fa-info-circle" readonly /> </v-flex>
+							<v-flex xs12 md6 class="px-2"> <v-text-field :value="Current.Package.name" label="Current Package" tabindex="-1" prepend-icon="fas fa-calendar-alt" readonly /> </v-flex>
+							<v-flex xs12 md6 class="px-2"> <v-text-field :value="formatDate(Current.StartDate)" label="Package Start Date" tabindex="-1" prepend-icon="event" readonly /> </v-flex>
+							<v-flex xs12 md6 class="px-2"> <v-text-field :value="formatDate(Current.EndDate)" label="Package End Date" tabindex="-1" prepend-icon="event" readonly /> </v-flex>
+						</v-layout>
+				</step-finished>
+				<v-layout row wrap class="pa-4" v-else>
+					<v-flex xs12 class="pa-4">
+						<h2 class="text-xs-center"> <v-icon left>warning</v-icon> Please select a Member</h2>
+					</v-flex>
+				</v-layout>
 			</v-flex>
 			<v-flex xs12 class="my-2 mt-4">
 				<v-card class="elevation-10 px-4" color="transparent">
 					<v-layout row wrap>
-						<v-flex xs12 md8>
+						<v-flex xs12 md9>
 							<v-radio-group :prepend-icon="UsersCount===1?'person':'people'" label="Booking for" v-model="grouping" row>
 								<v-radio v-for="(grouping, index) in GROUPINGS" :label="grouping.name" :value="grouping.id" :key="index" color="orange darken-2"/>
 							</v-radio-group>
 						</v-flex>
-						<v-flex xs12 md4 class="px-2">
-							<v-text-field color="orange darken-2" v-model="dojFormatted" @blur="doj = parseDate(dojFormatted)" @click:prepend="dojMenu = true" label="Attending on" placeholder="DD/MM/YYYY" prepend-icon="event" mask="##/##/####" return-masked-value persistent-hint />
+						<v-flex xs12 md3 class="px-2">
+							<v-text-field color="orange darken-2" v-model="dojFormatted" @blur="doj = parseDate(dojFormatted)" @click:prepend="dojMenu = true" label="Date of Joining" placeholder="DD/MM/YYYY" prepend-icon="event" mask="##/##/####" return-masked-value persistent-hint />
 							<v-menu ref="dojMenu" :close-on-content-click="false" v-model="dojMenu" :nudge-right="40" lazy transition="scale-transition" offset-y full-width>
 								<div slot="activator"/>
 								<v-date-picker v-model="doj" :min="minDoj" :max="maxDoj" no-title @input="dojMenu = false"  color="orange darken-2"/>
 							</v-menu>
 							<v-checkbox class="ma-0" label="Allow Back Dates" v-model="allowBackDating" color="orange"/>
 						</v-flex>
-						<!-- TODO: add time picker for preffered time slot -->
-						<v-flex xs12 class="mb-3"> <v-divider /> </v-flex>
+
+						<v-flex xs12 class="mb-2"> <v-divider/> </v-flex>
 						<v-flex xs12>
-							<h3> <v-icon left>add</v-icon> Amenities</h3>
-							<v-layout align-start row>
-								<v-checkbox v-for="(amenity, index) in AMENITIES" :key="index" v-model="amenities" :value="amenity.id" :label="amenity.name" color="orange darken-2"/>
+							<h3>Purpose for Personal Training</h3>
+							<v-layout align-start row wrap>
+								<v-flex v-for="(purpose, index) in PURPOSES" :key="index" xs12 sm6 md4> <v-checkbox v-model="purposes" :value="purpose.id" :label="purpose.name" color="orange darken-2"/> </v-flex>
+							</v-layout>
+						</v-flex>
+						<v-flex xs12 class="mb-2"> <v-divider/> </v-flex>
+						<v-flex xs12>
+							<h3>Personal Training Program</h3>
+							<v-radio-group v-model="packagex" row>
+								<v-radio v-for="(Xpackage, index) in PACKAGES" :label="Xpackage.name" :value="Xpackage.id" :key="index" color="orange darken-2"/>
+							</v-radio-group>
+						</v-flex>
+						<v-flex xs12 class="mb-2"> <v-divider/> </v-flex>
+						<v-flex xs12>
+							<h3>Trainer Type</h3>
+							<v-radio-group v-model="trainerType" row>
+								<v-radio v-for="(XtrainerType, index) in TRAINER_TYPES" :label="XtrainerType.name" :value="XtrainerType.id" :key="index" color="orange darken-2"/>
+							</v-radio-group>
+						</v-flex>
+						<v-flex xs12 class="mb-2"> <v-divider/> </v-flex>
+						<v-flex xs12>
+							<h3>Preffered Time</h3>
+							<v-layout row wrap>
+								<v-flex xs12 lg6 class="px-2">
+									<v-text-field color="orange darken-2" v-model="timeFrom" @click:prepend="timeFromMenu = true" label="From" prepend-icon="event" mask="##:##" return-masked-value persistent-hint />
+									<v-menu v-model="timeFromMenu" ref="timeFromMenu" :close-on-content-click="false" lazy transition="scale-transition" >
+										<div slot="activator" data-id="timeFrom"/>
+										<v-time-picker v-model="timeFrom" @input="timeFromMenu = false"  color="orange darken-2"/>
+									</v-menu>
+								</v-flex>
+								<v-flex xs12 lg6 class="px-2">
+									<v-text-field color="orange darken-2" v-model="timeTo" @click:prepend="timeToMenu = true" label="From" prepend-icon="event" mask="##:##" return-masked-value persistent-hint />
+									<v-menu v-model="timeToMenu" ref="timeToMenu" :close-on-content-click="false" lazy transition="scale-transition" >
+										<div slot="activator" data-id="timeTo"/>
+										<v-time-picker v-model="timeTo" @input="timeToMenu = false"  color="orange darken-2"/>
+									</v-menu>
+								</v-flex>
 							</v-layout>
 						</v-flex>
 					</v-layout>
+					<v-flex xs12 class="mb-2"> <v-divider/> </v-flex>
 					<v-slide-y-reverse-transition>
 						<v-alert v-if="!!error" color="red darken-3" type="error" :value="true" >{{ error }}</v-alert>
 					</v-slide-y-reverse-transition>
@@ -72,6 +120,5 @@
 				<v-btn :loading="paying" :disable="paying" color="orange darken-4" class="white--text" @click.native.stop="paymentModel = true"> <v-icon class="fas" left>fa-cash-register</v-icon> Make Payment </v-btn>
 			</v-layout>
 		</v-footer>
-		<spa-booking-modal v-model="paymentModel" :users="{ spaBooker: clientData }" :transaction="transaction" @pay="data => pay(data)" />
 	</div>
 </template>
