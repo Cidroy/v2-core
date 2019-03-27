@@ -4,6 +4,9 @@ import LockedBadgenumbers from "@positron/models/lockedBadgenumbers"
 import Utils from "@classes/functions/utils"
 import { PASSWORD_PREFERENCE } from "@classes/enum/misc"
 import { Logger } from "@classes/CONSOLE"
+import Device from "@positron/Biometric/device"
+import { SupportedBiometricDevice } from "@classes/enum/supported-biometric-devices"
+import { BIOMETRIC_DEVICE_CHECK_TYPE } from "@neutron/lib/IBiometric"
 
 const Console = new Logger(`gql-resolver/misc`)
 GQL.registerEnumType(PASSWORD_PREFERENCE, {
@@ -12,7 +15,6 @@ GQL.registerEnumType(PASSWORD_PREFERENCE, {
 
 @GQL.Resolver()
 export default class miscResolver {
-
 	@GQL.Query(returns => Boolean)
 	public async test(
 		@GQL.Arg("username") username: string,
@@ -33,6 +35,26 @@ export default class miscResolver {
 	){
 		return session!.counter
 	}
+
+	// @GQL.Query(returns => String, { nullable: true })
+	// public async deviceStatusAll(){
+	// 	return Device.ScanDevice(
+	// 		SupportedBiometricDevice.ZKTECO_K40_WDMS,
+	// 		{
+	// 		ssl: false,
+	// 		host: "localhost",
+	// 		port: 8081,
+	// 		DeviceName: "Entry",
+	// 		checkType: BIOMETRIC_DEVICE_CHECK_TYPE,
+	// 		serial: "0",
+	// 		ip: "0.0.0.0"
+	// 	},
+	// 	{
+	// 		"username": "admin",
+	// 		"password": "admin"
+	// 	}
+	// 	)
+	// }
 
 	@GQL.Query(returns =>String)
 	public async isBadgenumberValid(

@@ -8,9 +8,9 @@ import { Logger } from "@classes/CONSOLE"
 const Console = new Logger(`groups/gk-resolvers`)
 @GQL.Resolver(of => Groups)
 export default class GroupsResolver {
+
 	@GQL.FieldResolver(returns => [GymUsers,])
 	public async groupMembers(@GQL.Root() group: Groups){
-		// FIXME: [NIKHIL] giving incorrect data
 		let membersMap = await GroupMap.find({
 			select: ["id",],
 			where: { groupId: group.id, }
