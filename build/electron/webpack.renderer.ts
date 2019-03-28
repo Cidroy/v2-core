@@ -7,7 +7,7 @@ import BabiliWebpackPlugin from "babili-webpack-plugin"
 import CopyWebpackPlugin from "copy-webpack-plugin"
 import HtmlWebpackPlugin from "html-webpack-plugin"
 import WebpackPwaManifest from "webpack-pwa-manifest"
-import WorkboxPlugin from "workbox-webpack-plugin"
+// import WorkboxPlugin from "workbox-webpack-plugin"
 
 import webpackBase, { resolve } from "~build/webpack.base"
 import { manifest } from "~/config/manifest"
@@ -50,12 +50,22 @@ let rendererConfig: webpack.Configuration = {
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NoEmitOnErrorsPlugin(),
 		new WebpackPwaManifest(manifest),
-		new WorkboxPlugin.GenerateSW({
-			importWorkboxFrom: "local",
-			clientsClaim: true,
-			skipWaiting: true,
-			offlineGoogleAnalytics: true,
-		}),
+		// TODO: implement service worker
+		// BUG: workbox-sw.js is not recognised in dev mode, not sure for production
+		// new CopyWebpackPlugin([
+		// 	{
+		// 		from: resolve("build/helpers/workbox"),
+		// 		to: resolve("dist/electron/js/workbox"),
+		// 		ignore: [".*",]
+		// 	},
+		// ]),
+		// new WorkboxPlugin.GenerateSW({
+		// 	importWorkboxFrom: "local",
+		// 	// importsDirectory: "js/workbox",
+		// 	clientsClaim: true,
+		// 	skipWaiting: true,
+		// 	offlineGoogleAnalytics: true,
+		// }),
 	],
 	output: {
 		filename: "js/[name].js",
