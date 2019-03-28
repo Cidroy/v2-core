@@ -1,4 +1,5 @@
 import * as GQL from "type-graphql"
+import * as DB from "typeorm"
 import GymUsers from "@positron/models/gymUsers"
 import GymUserMode from "@positron/models/gymUserMode"
 import User from "@positron/models/user"
@@ -6,6 +7,10 @@ import Transaction from "@positron/models/transaction"
 import { Logger } from "@classes/CONSOLE"
 import Groups from "@positron/models/groups"
 import GroupMap from "@positron/models/groupMap"
+import {getWdmsIdForUserId} from "@positron/resolvers/user"
+import DoorRules from "@positron/models/doorRules"
+import ZonesAvailable from "@positron/models/zonesAvailable"
+import Member from "@positron/Biometric/Member"
 
 const Console = new Logger(`gql-resolver/gymUsers`)
 
@@ -24,9 +29,20 @@ export default class GymUsersResolver {
 
 	@GQL.FieldResolver(returns => Boolean, { nullable: true })
 	public async enrolled(@GQL.Root() gymUser: GymUsers) {
-		// let user =  User.findOne({ where: { active: 1, id: gymUser.userId } })
-		return Math.random() >= 0.5
+		// let user = await User.findOne({ where: { active: 1, id: gymUser.userId } })
+		let zone = await ZonesAvailable.findOne({ where: { active: 1, zoneName: "Unfreezed" } })
+		if( zone=== undefined )throw "zone does not exist"
+		let userinfoId = await getWdmsIdForUserId(gymUser.userId, zone.zoneId)
+		if (userinfoId === 0) return false
+		let entityManager = DB.getManager()
+		let userinfo = await entityManager.query("select IF(COUNT(template.userid)>0 , true,false) as enrolled_status from userinfo LEFT JOIN template on template.userid = userinfo.userid where userinfo.userid = ?",
+			[userinfoId,])
+		console.log(userinfo[0].enrolled_status,"========================================================================")
+		console.log(userinfo[0])
+		return !!parseInt(userinfo[0].enrolled_status)
+		// return Math.random() >= 0.5
 	}
+
 	@GQL.FieldResolver(returns => User, { nullable: true })
 	public async user(@GQL.Root() gymUser: GymUsers) {
 		return User.findOne({ where: { active: 1, id: gymUser.userId } })
@@ -60,6 +76,37 @@ export default class GymUsersResolver {
 		try{
 			for (let i in userIDs){
 				let gymUser = await GymUsers.findOne({ where: { userId: userIDs[i] } })
+				let user = await User.findOne({ where: { id: userIDs[i] } })
+				if(user === undefined) throw "User doesnt exist"
+				if (gymUser === undefined) throw "gym User doesnt exist"
+				let transaction = await Transaction.findOne({ where: { id: gymUser.transaction } })
+				if (transaction === undefined) throw "User's transaction doesnt exist"
+				let where = {
+					active: 1,
+					category: user.category,
+					gymProgramme: transaction.programme,
+					gymPackage: transaction.packages,
+					membershipType: transaction.membershipType,
+					// counsellorType: gymUser.co,
+					// trainerType: transaction.trai,
+					timeSlot: gymUser.timeSlot,
+				}
+				Object.keys(where).forEach(key => where[key] === undefined && delete where[key])
+				let doorRules = await DoorRules.find({ where })
+				if (doorRules === undefined) throw "Invalid zone"
+				console.log(doorRules)
+				let zoneIds = doorRules[0] === undefined ? [0,] : doorRules[0].zoneIds
+				// FIXME: [Vicky]
+				let unfreezedZone = await ZonesAvailable.findOne({ where: { active: 1, zoneName: "Unfreezed" } })
+				if (unfreezedZone === undefined) throw "Undefined zone"
+				let unfreezedId = await getWdmsIdForUserId(userIDs[i], unfreezedZone.zoneId)
+				for( let zoneId in zoneIds){
+					let zone = await ZonesAvailable.findOne({ where: { active: 1, zoneId: zoneId} })
+					if(zone=== undefined) throw "Undefined zone"
+					if(zone.zoneName== "Unfreezed") continue
+					// Member.AddMemberZone(unfreezedId, unfreezedZone)
+					// Member.AddMemberZone()
+				}
 				if (gymUser === undefined) throw "invalid user"
 				let userMode = await GymUserMode.find({ where: { name: "ACTIVE" } })
 				gymUser[0].mode = userMode[0].id

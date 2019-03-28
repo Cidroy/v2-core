@@ -6,6 +6,10 @@ import IDoorRules from "@classes/interface/IDoorRules"
 @DB.Entity()
 @GQL.ObjectType()
 export default class DoorRules extends Base implements IDoorRules {
+	@GQL.Field(type => [Number,])
+	@DB.Column("simple-json")
+	public zoneIds!: number[]
+
 	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
 	public category?: number
@@ -34,7 +38,4 @@ export default class DoorRules extends Base implements IDoorRules {
 	@DB.Column("integer", { nullable: true })
 	public trainerType?: number
 	
-	@GQL.Field(type => Number)
-	@DB.Column("integer")
-	public zoneId!: number
 }
