@@ -7,7 +7,7 @@ import GKHelper,
 		TGQLBloodGroup, TGQLTimeSlot, TGQLUTMSource, TGQLDoor, TGQLOffer,
 		TGQLUserMode, TGQLSpaAmenities, TGQLSpaGroupings, TGQLPTPackages, TGQLPTPurposes,
 		TGQLPTTrainerType,
-		TGQLFCPurposes
+	TGQLFCPurposes, TGQLFCCounsellor
 	}
 from "./gk-helper"
 import { Logger } from "@classes/CONSOLE"
@@ -37,6 +37,7 @@ let _gk_offers: TGQLOffer[] = []
 let _gk_userModes: TGQLUserMode[] = []
 let _gk_spa_amenities: TGQLSpaAmenities[] = []
 let _gk_pt_trainerType: TGQLPTTrainerType[] = []
+let _gk_fc_counsellor: TGQLFCCounsellor[] = []
 
 @Module({ dynamic: true, store, name: "Gymkonnect" })
 class Gymkonnect extends VuexModule {
@@ -399,6 +400,16 @@ class Gymkonnect extends VuexModule {
 	 */
 	public get GK_ALL_OFFERS() { return this._gk_offers }
 
+	private _gk_fc_counsellor = _gk_fc_counsellor
+
+	/**
+	 * Get all Counsellors
+	 *
+	 * @readonly
+	 * @memberof Gymkonnect
+	 */
+	public get GK_FC_COUNSELLOR() { return this._gk_fc_counsellor }
+
 	/**
 	 * Get ALL_OFFER by ID
 	 *
@@ -438,6 +449,7 @@ class Gymkonnect extends VuexModule {
 			"_gk_pt_packages",
 			"_gk_pt_trainerType",
 			"_gk_fc_purposes",
+			"_gk_fc_counsellor",
 		]
 	})
 	public async GK_Initialize() {
@@ -492,6 +504,7 @@ class Gymkonnect extends VuexModule {
 			let [
 				Xpt_trainerType,
 				Xfc_purposes,
+				Xfc_counsellor,
 			] = await Promise.all([
 				GKHelper.GetPTTrainerTypes(),
 				GKHelper.GetFCPurposes(),
@@ -519,6 +532,7 @@ class Gymkonnect extends VuexModule {
 			_gk_pt_packages = Xpt_packages
 			_gk_pt_trainerType = Xpt_trainerType
 			_gk_fc_purposes = Xfc_purposes
+			_gk_fc_counsellor = Xfc_counsellor
 			return {
 				_gk_bloodGroups,
 				_gk_bodyTypes,
@@ -542,6 +556,7 @@ class Gymkonnect extends VuexModule {
 				_gk_pt_packages,
 				_gk_pt_trainerType,
 				_gk_fc_purposes,
+				_gk_fc_counsellor
 			}
 		} catch (error) {
 			Console.error("Gymkonnect Store failed to initialize", error)

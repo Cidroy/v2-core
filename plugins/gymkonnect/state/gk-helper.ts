@@ -27,6 +27,7 @@ export type TGQLPTPackages = TGQLBasic & { count: number, duration: string }
 export type TGQLUserMode = TGQLBasic
 export type TGQLSpaAmenities = TGQLBasic
 export type TGQLPTTrainerType = TGQLBasic
+export type TGQLFCCounsellor = TGQLBasic
 export default class GKHelper{
 	public static async GetOccupations(): Promise<TGQLOccupations[]>{
 		let response = await GQLClient.query<{
@@ -212,6 +213,20 @@ export default class GKHelper{
 			gql`
 				query gymPurposes{
 					gymPurposes{
+						id
+						name
+					}
+				}
+			`,
+		)
+		return response.data.gymPurposes
+	}
+	public static async GetFCCounsellor(): Promise<TGQLFCCounsellor[]> {
+		// FIXME: [Nikhil] make this fitness councelling Counsellor
+		let response = await GQLClient.query<{ gymPurposes: TGQLFCCounsellor[] }>(
+			gql`
+				query gymCounsellor{
+					gymCounsellor{
 						id
 						name
 					}

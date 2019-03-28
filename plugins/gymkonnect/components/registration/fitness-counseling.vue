@@ -54,9 +54,7 @@
 						</v-flex>
 					<v-flex xs12 md8>
 						<v-radio-group label="Type of Counsellor:" row>
-							<v-radio  label="counsellor" value="radio-1" />
-							<v-radio label="counsellor2" value="radio-2" />
-							<v-radio label="counsellor3" value="radio-3" /> 
+							<v-radio v-for="(XtrainerType, index) in TRAINER_TYPES" :label="XtrainerType.name" :value="XtrainerType.id" :key="index" color="orange darken-2"/>
 						</v-radio-group>
 					</v-flex>
 					<v-flex xs12><v-text-field v-model="sessionCount" :min="MinSessionCount" :max="MaxSessionCount" type="number" label="No. of session"/></v-flex>
