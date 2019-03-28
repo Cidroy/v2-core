@@ -13,7 +13,7 @@ import Layout from "@/layouts/layout.vue"
 	},
 })
 // @ts-ignore
-export default class Home extends Vue {
+export default class testuserprofile extends Vue {
 	private active = 0
 	private tabsList = {
 		e: "Overview",

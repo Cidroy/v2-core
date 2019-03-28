@@ -5,9 +5,10 @@ import LockedBadgenumbers from "@positron/models/lockedBadgenumbers"
 export default class LockedBadgenumbersResolver {
 
 	@GQL.Query(returns => Boolean)
-	public async LockedBadgenumbers() {
-		// FIXME: Nikhil WTF is this!
-		let result =  LockedBadgenumbers.find({ where: { badgenumber: "9" } })
+	public async LockedBadgenumbers(
+		@GQL.Arg("badgenumber") badgenumber: number
+	) {
+		let result =  LockedBadgenumbers.find({ where: { badgenumber: badgenumber } })
 		return result !== undefined
 	}
 
