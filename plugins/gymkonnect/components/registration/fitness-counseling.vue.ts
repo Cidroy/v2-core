@@ -103,6 +103,8 @@ export default class FitnessCounselingRegistration extends Vue{
 		this.clientId = clientId
 	}
 
+	private get COUNSELLORS(){ return GymkonnectStore.GK_FC_COUNSELLOR }
+
 	private doj = new Date().toISOString().substr(0, 10)
 	private dojIndex = ""
 	private dojFormatted = this.formatDate(this.doj)

@@ -508,6 +508,7 @@ class Gymkonnect extends VuexModule {
 			] = await Promise.all([
 				GKHelper.GetPTTrainerTypes(),
 				GKHelper.GetFCPurposes(),
+				GKHelper.GetFCCounsellor(),
 			])
 			// let [] = await Promise.all([])
 			_gk_occupations = Xoccupations

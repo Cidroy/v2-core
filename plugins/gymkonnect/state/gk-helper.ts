@@ -223,6 +223,7 @@ export default class GKHelper{
 	}
 	public static async GetFCCounsellor(): Promise<TGQLFCCounsellor[]> {
 		// FIXME: [Nikhil] make this fitness councelling Counsellor
+		return []
 		let response = await GQLClient.query<{ gymPurposes: TGQLFCCounsellor[] }>(
 			gql`
 				query gymCounsellor{

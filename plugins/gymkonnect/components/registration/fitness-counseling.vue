@@ -8,14 +8,14 @@
 				<v-btn flat color="orange darken-2" @click="$refs.datePicker.save(doj)">OK</v-btn>
 			</v-date-picker>
 		</v-dialog>
-		<v-dialog ref="dialog" v-model="modal2" :return-value.sync="time" persistent lazy full-width width="290px">
+		<!-- <v-dialog ref="dialog" v-model="modal2" :return-value.sync="time" persistent lazy full-width width="290px">
 			<div slot="activator" />
 			<v-time-picker v-if="modal2" v-model="time" full-width landscape>
 				<v-spacer />
 				<v-btn flat color="primary" @click="modal2 = false">Cancel</v-btn>
 				<v-btn flat color="primary" @click="$refs.dialog.save(time)">OK</v-btn>
 			</v-time-picker>
-		</v-dialog>
+		</v-dialog> -->
 		<v-layout row wrap class="px-4 py-2">
 			<v-flex xs12 class="my-2">
 				<v-autocomplete v-model="clientId" :items="Clients" :search-input.sync="clientSearch" :loading="clientSearching" :label="label" clearable item-text="name" item-value="id" prepend-icon="search" :placeholder="label" autofocus no-filter color="orange darken-2" auto-select-first>
@@ -50,11 +50,11 @@
 							<h3> Purpose of taking counselling:</h3>
 							<v-layout align-start row>
 								<v-checkbox v-model="purposes" v-for="(purpose,index) in PURPOSES" :key="index" :value="purpose.id" :label="purpose.name" color="orange darken-2"/>
-							</v-layout>	
+							</v-layout>
 						</v-flex>
 					<v-flex xs12 md8>
 						<v-radio-group label="Type of Counsellor:" row>
-							<v-radio v-for="(XtrainerType, index) in TRAINER_TYPES" :label="XtrainerType.name" :value="XtrainerType.id" :key="index" color="orange darken-2"/>
+							<v-radio v-for="(XtrainerType, index) in COUNSELLORS" :label="XtrainerType.name" :value="XtrainerType.id" :key="index" color="orange darken-2"/>
 						</v-radio-group>
 					</v-flex>
 					<v-flex xs12><v-text-field v-model="sessionCount" :min="MinSessionCount" :max="MaxSessionCount" type="number" label="No. of session"/></v-flex>
@@ -69,7 +69,7 @@
 								<v-flex v-if="SessionsCount > MinSessionCount" xs1> <v-btn @click.native.stop="deleteSession(key)" icon small flat> <v-icon>cancel</v-icon> </v-btn> </v-flex>
 						</v-layout>
 					</v-flex>
-					</v-layout>		
+					</v-layout>
 				</v-card>
 			</v-flex>
 		</v-layout>
