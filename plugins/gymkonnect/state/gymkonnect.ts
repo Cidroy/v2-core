@@ -6,7 +6,8 @@ import GKHelper,
 		TGQLOrganizationTypes, TGQLPackages, TGQLPurposes, TGQLMembershipTypes, TGQLPaymentModes,
 		TGQLBloodGroup, TGQLTimeSlot, TGQLUTMSource, TGQLDoor, TGQLOffer,
 		TGQLUserMode, TGQLSpaAmenities, TGQLSpaGroupings, TGQLPTPackages, TGQLPTPurposes,
-		TGQLPTTrainerType
+		TGQLPTTrainerType,
+		TGQLFCPurposes
 	}
 from "./gk-helper"
 import { Logger } from "@classes/CONSOLE"
@@ -25,6 +26,7 @@ let _gk_packages: TGQLPackages[] = []
 let _gk_pt_packages: TGQLPTPackages[] = []
 let _gk_purposes: TGQLPurposes[] = []
 let _gk_pt_purposes: TGQLPTPurposes[] = []
+let _gk_fc_purposes: TGQLFCPurposes[] = []
 let _gk_membershipTypes: TGQLMembershipTypes[] = []
 let _gk_paymentModes: TGQLPaymentModes[] = []
 let _gk_bloodGroups: TGQLBloodGroup[] = []
@@ -181,6 +183,24 @@ class Gymkonnect extends VuexModule {
 	 * @memberof Gymkonnect
 	 */
 	public get GK_PURPOSE() { return (id: string | number) => this._gk_purposes.find(i => i.id === id) }
+
+	private _gk_fc_purposes = _gk_fc_purposes
+
+	/**
+	 * Get all PURPOSES
+	 *
+	 * @readonly
+	 * @memberof Gymkonnect
+	 */
+	public get GK_FC_PURPOSES() { return this._gk_fc_purposes }
+
+	/**
+	 * Get PURPOSE by ID
+	 *
+	 * @readonly
+	 * @memberof Gymkonnect
+	 */
+	public get GK_FC_PURPOSE() { return (id: string | number) => this._gk_fc_purposes.find(i => i.id === id) }
 
 	private _gk_pt_purposes = _gk_pt_purposes
 
@@ -417,6 +437,7 @@ class Gymkonnect extends VuexModule {
 			"_gk_pt_purposes",
 			"_gk_pt_packages",
 			"_gk_pt_trainerType",
+			"_gk_fc_purposes",
 		]
 	})
 	public async GK_Initialize() {
@@ -470,8 +491,10 @@ class Gymkonnect extends VuexModule {
 			])
 			let [
 				Xpt_trainerType,
+				Xfc_purposes,
 			] = await Promise.all([
 				GKHelper.GetPTTrainerTypes(),
+				GKHelper.GetFCPurposes(),
 			])
 			// let [] = await Promise.all([])
 			_gk_occupations = Xoccupations
@@ -495,6 +518,7 @@ class Gymkonnect extends VuexModule {
 			_gk_pt_purposes = Xpt_purposes
 			_gk_pt_packages = Xpt_packages
 			_gk_pt_trainerType = Xpt_trainerType
+			_gk_fc_purposes = Xfc_purposes
 			return {
 				_gk_bloodGroups,
 				_gk_bodyTypes,
@@ -517,6 +541,7 @@ class Gymkonnect extends VuexModule {
 				_gk_pt_purposes,
 				_gk_pt_packages,
 				_gk_pt_trainerType,
+				_gk_fc_purposes,
 			}
 		} catch (error) {
 			Console.error("Gymkonnect Store failed to initialize", error)

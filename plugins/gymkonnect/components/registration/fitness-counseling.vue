@@ -1,5 +1,21 @@
 <template>
 	<div>
+		<v-dialog ref="datePicker" v-model="dojMenu" :return-value.sync="doj" persistent lazy full-width width="460px">
+			<div slot="activator"/>
+			<v-date-picker v-model="doj" scrollable color="orange darken-2" :min="MinSessionDate" :max="MaxSessionDate" landscape>
+				<v-spacer />
+				<v-btn flat color="orange darken-2" @click="dojMenu = false">Cancel</v-btn>
+				<v-btn flat color="orange darken-2" @click="$refs.datePicker.save(doj)">OK</v-btn>
+			</v-date-picker>
+		</v-dialog>
+		<v-dialog ref="dialog" v-model="modal2" :return-value.sync="time" persistent lazy full-width width="290px">
+			<div slot="activator" />
+			<v-time-picker v-if="modal2" v-model="time" full-width landscape>
+				<v-spacer />
+				<v-btn flat color="primary" @click="modal2 = false">Cancel</v-btn>
+				<v-btn flat color="primary" @click="$refs.dialog.save(time)">OK</v-btn>
+			</v-time-picker>
+		</v-dialog>
 		<v-layout row wrap class="px-4 py-2">
 			<v-flex xs12 class="my-2">
 				<v-autocomplete v-model="clientId" :items="Clients" :search-input.sync="clientSearch" :loading="clientSearching" :label="label" clearable item-text="name" item-value="id" prepend-icon="search" :placeholder="label" autofocus no-filter color="orange darken-2" auto-select-first>
@@ -38,22 +54,23 @@
 						</v-flex>
 					<v-flex xs12 md8>
 						<v-radio-group label="Type of Counsellor:" row>
-							<v-radio  label="counsellor" :value="radio-1" />
-							<v-radio label="counsellor2" :value="radio-2" />
-							<v-radio label="counsellor3" :value="radio-3" /> 
+							<v-radio  label="counsellor" value="radio-1" />
+							<v-radio label="counsellor2" value="radio-2" />
+							<v-radio label="counsellor3" value="radio-3" /> 
 						</v-radio-group>
 					</v-flex>
-					<v-flex xs12 md6><v-text-field type="number" label="No. of session"/></v-flex>
-					<v-flex xs12 md4 class="px-2">
-							<v-text-field color="orange darken-2" v-model="dojFormatted" @blur="doj = parseDate(dojFormatted)" @click:prepend="dojMenu = true" label="Counselling Date" placeholder="DD/MM/YYYY" prepend-icon="event" mask="##/##/####" return-masked-value persistent-hint />
-							<v-menu ref="dojMenu" :close-on-content-click="false" v-model="dojMenu" :nudge-right="40" lazy transition="scale-transition" offset-y full-width>
-								<div slot="activator"/>
-								<v-date-picker v-model="doj" :min="minDoj" :max="maxDoj" no-title @input="dojMenu = false"  color="orange darken-2"/>
-							</v-menu>
-							<v-checkbox class="ma-0" label="Allow Back Dates" v-model="allowBackDating" color="orange"/>
-						</v-flex>
-
-
+					<v-flex xs12><v-text-field v-model="sessionCount" :min="MinSessionCount" :max="MaxSessionCount" type="number" label="No. of session"/></v-flex>
+					<v-flex xs12>
+						<v-layout row wrap class="hide-xs-lower">
+							<v-flex xs6> <h3 class="text-xs-center underline">Counselling Date</h3> </v-flex>
+							<v-flex xs6> <h3 class="text-xs-center underline">Counselling Time</h3> </v-flex>
+						</v-layout>
+						<v-layout row wrap v-for="(session, key) in sessions"  :key="`session-${key}`">
+								<v-flex xs12 md6 class="px-2"> <v-text-field v-model="sessions[key].dateFormatted" @blur="sessions[key].date = parseDate(sessions[key].dateFormatted)" @click:prepend="showDatePicker(key)" color="orange darken-2" prepend-icon="event" mask="##/##/####" return-masked-value persistent-hint /> </v-flex>
+								<v-flex xs11 md5 class="px-2"> <v-text-field v-model="sessions[key].time" @click:prepend="showTimePicker(key)" color="orange darken-2" prepend-icon="event" mask="##:##" return-masked-value /> </v-flex>
+								<v-flex v-if="SessionsCount > MinSessionCount" xs1> <v-btn @click.native.stop="deleteSession(key)" icon small flat> <v-icon>cancel</v-icon> </v-btn> </v-flex>
+						</v-layout>
+					</v-flex>
 					</v-layout>		
 				</v-card>
 			</v-flex>
@@ -65,6 +82,5 @@
 				<v-btn :loading="paying" :disable="paying" color="orange darken-4" class="white--text" @click.native.stop="paymentModel = true"> <v-icon class="fas" left>fa-cash-register</v-icon> Make Payment </v-btn>
 			</v-layout>
 		</v-footer>
-		<spa-booking-modal v-model="paymentModel" :users="{ spaBooker: clientData }" :transaction="transaction" @pay="data => pay(data)" />
 	</div>
 </template>

@@ -13,6 +13,7 @@ export type TGQLBodyTypes = TGQLBasic
 export type TGQLOrganizationTypes = TGQLBasic
 export type TGQLPurposes = TGQLBasic
 export type TGQLPTPurposes = TGQLBasic
+export type TGQLFCPurposes = TGQLBasic
 export type TGQLMembershipTypes = TGQLBasic
 export type TGQLBloodGroup = TGQLBasic
 export type TGQLUTMSource = TGQLBasic
@@ -193,6 +194,21 @@ export default class GKHelper{
 	public static async GetPTPurposes(): Promise<TGQLPTPurposes[]> {
 		// FIXME: [Nikhil] make this personal training purposes
 		let response = await GQLClient.query<{ gymPurposes: TGQLPTPurposes[] }>(
+			gql`
+				query gymPurposes{
+					gymPurposes{
+						id
+						name
+					}
+				}
+			`,
+		)
+		return response.data.gymPurposes
+	}
+
+	public static async GetFCPurposes(): Promise<TGQLFCPurposes[]> {
+		// FIXME: [Nikhil] make this fitness councelling purposes
+		let response = await GQLClient.query<{ gymPurposes: TGQLFCPurposes[] }>(
 			gql`
 				query gymPurposes{
 					gymPurposes{
