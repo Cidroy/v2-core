@@ -73,5 +73,5 @@ export default class GeneralPaymentModal extends Vue {
 	@Prop({ type: Number, default: 0 }) public Price !: number
 	@Prop({ type: Number, default: 0 }) public Amount !: number
 	@Prop({ type: String, default: "" }) public Description !: string
-	@Prop({ type: String, default : "Payment Reciept" }) public BillTitle !: string
+	@Prop({ type: String, default : "Payment Receipt" }) public BillTitle !: string
 }

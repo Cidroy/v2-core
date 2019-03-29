@@ -7,7 +7,7 @@
 				<v-flex xs12 md5>
 					<v-layout justify-end>
 						<v-tooltip left>
-							<v-btn outline slot="activator"> <v-icon left>print</v-icon> Print Reciept </v-btn>
+							<v-btn outline slot="activator"> <v-icon left>print</v-icon> Print Receipt </v-btn>
 							<span>Print List</span>
 						</v-tooltip>
 					</v-layout>
@@ -51,7 +51,7 @@
 							<v-spacer />
 						</template>
 						<!-- TODO: allow individual receipt printing -->
-						<!-- <v-btn v-if="usersCount>1" outline> <v-icon left>print</v-icon> Print Individual Reciept </v-btn> -->
+						<!-- <v-btn v-if="usersCount>1" outline> <v-icon left>print</v-icon> Print Individual Receipt </v-btn> -->
 						<v-spacer />
 						<v-btn @click="userEnrollFP(Users[index].id)" :outline="usersEnrolled.includes(Users[index].id)" :loading="userEnrollingFP===Users[index].id" :disabled="userEnrollingFP===Users[index].id" color="orange darken-4" dark> <v-icon left>border_horizontal</v-icon> Enroll Fingerprint </v-btn>
 					</v-card-actions>

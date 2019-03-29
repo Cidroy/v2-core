@@ -19,7 +19,8 @@
 		</v-toolbar>
 		<v-toolbar>
 			<v-layout row wrap pt-2>
-				<v-flex xs12 md6 lg3 px-2>
+				<!-- TODO: Implement filter -->
+				<v-flex v-if="false" xs12 md6 lg3 px-2>
 					<v-overflow-btn v-model="filter" :items="FILTERS" :label="FILTER_DEFAULT" color="orange darken-2">
 						<!-- FIXME: color does not change when selected, user `prepend-inner-icon` and fix this -->
 						<v-icon slot="prepend-inner" class="ma-2 mr-0">filter_list</v-icon>
@@ -31,7 +32,7 @@
 				</v-flex>
 			</v-layout>
 		</v-toolbar>
-		<v-data-table v-model="members" :headers="tableHeaders" :items="tableItems" :search="search" :pagination.sync="tablePagination" item-key="id"  select-all class="elevation-1">
+		<v-data-table v-model="members" :headers="tableHeaders" :items="tableItems" :search="search" :pagination.sync="tablePagination" :rowsPerPageItems="[30, 50, 100]" item-key="id"  select-all class="elevation-1">
 			<template #no-data>
 				<v-layout row wrap justify-center align-center class="py-4">
 					<v-spacer />

@@ -42,8 +42,8 @@ export default class User extends Base implements IUser {
 	@DB.Column("varchar", { length: 30, nullable: true  })
 	public lastName?: string
 
-	@GQL.Field(type => Date)
-	@DB.Column("datetime", {default : null})
+	@GQL.Field(type => Date, { nullable: true})
+	@DB.Column("datetime", { default : null, nullable: true})
 	public dob?: Date
 
 	@GQL.Field(type => GENDER)

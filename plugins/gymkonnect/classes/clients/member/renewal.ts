@@ -1,10 +1,10 @@
 import { Logger } from "@classes/CONSOLE"
 import GQLClient, { gql } from "@/utils/graphql"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
-import { sleep } from "@classes/misc"
 import moment from "moment"
 import { TMRegistrationStep3 } from "../../types/registration"
 import { PaymentDetail } from "../../types/payment"
+import { addTransaction, addPayment, linkTransactionPay, linkTransactionUser } from "./common"
 
 const Console = new Logger(`renewal/gk-client`)
 
@@ -126,7 +126,7 @@ async function info(clientId: string | number): Promise<TRenewalInfo> {
 			{ fetchPolicy: "network-only", }
 		)
 		if (response.errors) throw response.errors[0].message
-		if (!response.data) throw "Unable to det renewal Info"
+		if (!response.data) throw "Unable to get renewal Info"
 		return {
 			transaction: {
 				id: response.data.data.transaction.id,
@@ -152,7 +152,7 @@ async function info(clientId: string | number): Promise<TRenewalInfo> {
 				badgenumber: response.data.data.client.badgenumber!,
 				photo: response.data.data.client.photo!,
 				gender: response.data.data.client.gender!,
-				dob: moment(response.data.data.client.dob!).toISOString().substr(0, 10),
+				dob: (response.data.data.client.dob ? moment(response.data.data.client.dob) : moment()).toISOString().substr(0, 10),
 				occupation: response.data.data.client.occupation!,
 				idType: response.data.data.client.idType!,
 				idNumber: response.data.data.client.idNumber!,
@@ -189,19 +189,38 @@ async function renew(
 	transactionId: string | number,
 }> {
 	try {
-		// FIXME:
+		let [
+			transactionResult,
+			paymentId,
+		] = await Promise.all([
+			addTransaction({
+				membershipType: transactionData.membershipType,
+				offer: paymentData.offer,
+				start: moment(transactionData.doj).toDate(),
+				packages: transactionData.packageType,
+				packageMagnitude: transactionData.packageMagnitude,
+				gymUser: clientId,
+			}),
+			addPayment({
+				amount: paymentData.amount,
+				receipt: paymentData.receipt,
+				mode: paymentData.mode,
+			}),
+		])
+
+		let [
+			linkedTransactionPay,
+			// linkedTransactionUser,
+		] = await Promise.all([
+			linkTransactionPay(transactionResult.id, paymentId),
+			// linkTransactionUser(transactionResult.id, clientId),
+		])
+
 		return {
-			paymentId: 0,
-			transactionId: 0,
+			paymentId: paymentId,
+			transactionId: transactionResult.id,
 		}
 
-		let response: any = await GQLClient.mutate<{}>(
-			gql``,
-			{}
-		)
-		if (response.errors) throw response.errors[0].message
-		if (!response.data) throw "Unable to renew membership"
-		return response.data
 	} catch (error) {
 		Console.error(error)
 		throw error.toString()
@@ -209,15 +228,20 @@ async function renew(
 }
 
 async function prebookEnroll(clientId: string | number, transactionId: string | number):Promise<boolean>{
-	// TODO:
-	if(1) return true
+	// TODO: [Nikhil] we should use transaction to make sure that we are starting the right one
+	// because it may happen that electron and positron are out of sync
 	try {
 		let response = await GQLClient.mutate<{ enrolled: boolean }>(
-			gql``,
-			{}
+			gql`mutation activateGymUsers($ids: [Float!]!){ activateGymUsers(userIDs: $ids) }`,
+			{ ids: [ clientId, ] }
 		)
 		if (response.errors) throw response.errors[0].message
 		if (!response.data) throw "Unable to prebook enroll"
+		new Promise(async (resolve, reject) => {
+			const { MembersListStore } = await import("@plugins/gymkonnect/state/member-list")
+			MembersListStore.InitializeGKMMembers()
+			resolve()
+		})
 		return response.data.enrolled
 	} catch (error) {
 		Console.error(error)

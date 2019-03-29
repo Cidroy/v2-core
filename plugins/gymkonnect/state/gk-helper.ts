@@ -83,9 +83,11 @@ export default class GKHelper{
 	}
 
 	public static async GetGroupings(): Promise<TGQLGroupings[]>{
+		// FIXME: [Vicky] next commit
 		let response = await GQLClient.query<{ groupings: TGQLGroupings[] }>(
 			gql`
 				query Groupings{
+					# groupings(service: "GYM"){
 					groupings{
 						id
 						name
@@ -100,10 +102,11 @@ export default class GKHelper{
 	}
 
 	public static async GetSpaGroupings(): Promise<TGQLSpaGroupings[]>{
-		// FIXME: [Nikhil] change this to spa grouping
+		// FIXME: [Vicky] next commit
 		let response = await GQLClient.query<{ groupings: TGQLSpaGroupings[] }>(
 			gql`
 				query Groupings{
+					# groupings(service: "SPA"){
 					groupings{
 						id
 						name

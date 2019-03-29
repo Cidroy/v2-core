@@ -18,7 +18,6 @@ const Console = new Logger(`step-1.vue/registration/gk`)
 	},
 	created() {
 		this.onValueChange()
-		this.generateMemberId()
 	}
 })
 // @ts-ignore
@@ -113,7 +112,11 @@ export default class MRegistrationStep1 extends Vue {
 	@Prop({ type: Boolean, default: false }) public allowImportFromEnquiry !: boolean
 	@Prop({ type: Boolean, default: false }) public Readonly !: boolean
 
+	private autoGenerateMemberId = true
+
 	private async generateMemberId() {
+		// TODO: [Vicky] unlock badge if not used
+		// maybe make a store to lock session wide and unlock before exit/logout
 		if(this.exclude.includes("badgenumber")) return
 		this.loading = true
 		try {
