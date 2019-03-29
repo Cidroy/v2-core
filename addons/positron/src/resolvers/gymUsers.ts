@@ -75,8 +75,10 @@ export default class GymUsersResolver {
 	){
 		try{
 			for (let i in userIDs){
-				let gymUser = await GymUsers.findOne({ where: { userId: userIDs[i] } })
-				let user = await User.findOne({ where: { id: userIDs[i] } })
+				let [gymUser, user,] = await Promise.all([
+					GymUsers.findOne({ where: { userId: userIDs[i] } }),
+					User.findOne({ where: { id: userIDs[i] } }),
+				])
 				if(user === undefined) throw "User doesnt exist"
 				if (gymUser === undefined) throw "gym User doesnt exist"
 				let transaction = await Transaction.findOne({ where: { id: gymUser.transaction } })
@@ -95,10 +97,9 @@ export default class GymUsersResolver {
 				let doorRules = await DoorRules.find({ where })
 				if (doorRules === undefined) throw "Invalid zone"
 				console.log(doorRules)
-				let zoneIds = doorRules[0] === undefined ? [0,] : doorRules[0].zoneIds
-				// FIXME: [Vicky]
+				let zoneIds = doorRules[0] === undefined ? [] : doorRules[0].zoneIds
 				let unfreezedZone = await ZonesAvailable.findOne({ where: { active: 1, zoneName: "Unfreezed" } })
-				if (unfreezedZone === undefined) throw "Undefined zone"
+				if (unfreezedZone === undefined) throw "unfreezed zone not yet added"
 				let unfreezedId = await getWdmsIdForUserId(userIDs[i], unfreezedZone.zoneId)
 				for( let zoneId in zoneIds){
 					let zone = await ZonesAvailable.findOne({ where: { active: 1, zoneId: zoneId} })
@@ -109,12 +110,13 @@ export default class GymUsersResolver {
 				}
 				if (gymUser === undefined) throw "invalid user"
 				let userMode = await GymUserMode.find({ where: { name: "ACTIVE" } })
-				gymUser[0].mode = userMode[0].id
-				await gymUser[0].save()
+				gymUser.mode = userMode[0].id
+				await gymUser.save()
 			}
 			return true
 		}catch(error){
-			return false
+			Console.error(error)
+			throw error
 		}
 	}
 

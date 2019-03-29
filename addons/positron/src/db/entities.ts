@@ -40,6 +40,10 @@ import GymOffersLogic from "@positron/models/gymOffersLogic"
 import AdminUsers from "@positron/models/adminUsers"
 import GymUserHealth from "@positron/models/gymUserHealth"
 import DoorRules from "@positron/models/doorRules"
+import PTPurpose from "@positron/models/ptPurpose"
+import ServicesAvailable from "@positron/models/servicesAvailable"
+import PTPackages from "@positron/models/ptPackages"
+import Amenities from "@positron/models/amenities"
 
 export default [
 	Address,
@@ -82,4 +86,8 @@ export default [
 	AdminUsers,
 	GymUserHealth,
 	DoorRules,
+	PTPurpose,
+	ServicesAvailable,
+	PTPackages,
+	Amenities,
 ]

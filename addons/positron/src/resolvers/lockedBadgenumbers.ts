@@ -11,6 +11,19 @@ export default class LockedBadgenumbersResolver {
 		let result =  LockedBadgenumbers.find({ where: { badgenumber: badgenumber } })
 		return result !== undefined
 	}
+	@GQL.Mutation(returns => Boolean)
+	public async removeLockedBagenumber(
+		@GQL.Arg("badgenumber") badgenumber: number,
+	) {
+		try {
+			let lockedBadgenumber = await LockedBadgenumbers.findOne({ where: { badgenumber: badgenumber } })
+			if (lockedBadgenumber === undefined) throw "no such badgenumber exists"
+			lockedBadgenumber.remove()
+			return true
+		} catch {
+			return false
+		}
+	}
 
 	@GQL.Mutation(returns => LockedBadgenumbers)
 	public async addLockedBadgenumber(

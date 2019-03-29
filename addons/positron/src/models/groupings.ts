@@ -22,4 +22,8 @@ export default class Groupings extends Base implements IGroupings {
 	@DB.Column("integer", { nullable: false })
 	public maxCount!: number
 
+	@GQL.Field(type => Number)
+	@DB.Column("integer", { nullable: false })
+	public serviceType!: number
+
 }
