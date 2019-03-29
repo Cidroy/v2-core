@@ -87,6 +87,7 @@ export default class User extends Base implements IUser {
 	@DB.Column("varchar", { nullable: true })
 	public IDNumber?: string
 
+	// FIXME: [Nikhil] make this path to add the server location
 	@GQL.Field(type => String, { nullable: true })
 	@DB.Column("varchar", { nullable: true })
 	public imagePath?: string

@@ -7,6 +7,7 @@ import { PaymentDetail } from "@plugins/gymkonnect/classes/types/payment"
 import moment from "moment"
 import { alert } from "@/components/toast"
 import { addTransaction, addPayment, linkTransactionPay, linkTransactionUser } from "./common"
+import { encode_base64 } from "@classes/utils/base64"
 
 let Console = new Logger("registration/gk-client")
 
@@ -167,6 +168,14 @@ async function addMember(userData: TMRegistration): Promise<string|number> {
 	};
 
 	try {
+		let imageBase64: string | undefined = undefined
+		let imageExtension: string | undefined = undefined
+		if (userData.photo){
+			try {
+				imageBase64 = await encode_base64(userData.photo)
+				imageExtension = userData.photo.split(".").pop()
+			} catch (error) { }
+		}
 		let responsePromise = GQLClient.mutate<TResult>(
 			gql`
 				mutation AddUser(
@@ -174,7 +183,8 @@ async function addMember(userData: TMRegistration): Promise<string|number> {
 					$emergencyName: String
 					$occupation: Float
 					$category: Float
-					$imagePath: String
+					$imageBase64: String
+					$imageExtension: String
 					$IDNumber: String
 					$IDType: Float
 					$email: String
@@ -194,7 +204,8 @@ async function addMember(userData: TMRegistration): Promise<string|number> {
 						emergencyNumber: $emergencyNumber,
 						occupation: $occupation,
 						category: $category,
-						imagePath: $imagePath,
+						imageBase64: $imageBase64,
+						imageExtension: $imageExtension,
 						IDNumber: $IDNumber,
 						IDType: $IDType,
 						email: $email,
@@ -221,7 +232,8 @@ async function addMember(userData: TMRegistration): Promise<string|number> {
 				emergencyName: userData.emergencyContactName,
 				occupation: userData.occupation,
 				category: userData.category,
-				imagePath: userData.photo,
+				imageBase64,
+				imageExtension,
 				IDNumber: userData.idNumber,
 				IDType: userData.idType,
 				address: userData.address,

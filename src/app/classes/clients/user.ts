@@ -44,7 +44,7 @@ export class UserClient{
 	}
 
 	public static async Logout(){
-		let response = await GQLClient.query<{ logout: boolean }>(gql`query { logout }`,{})
+		let response = await GQLClient.query<{ logout: boolean }>(gql`query Login{ logout }`,{})
 		try {
 			if (response.errors) throw response.errors[0].message
 			if (!response.data.logout) throw "Could not logout"

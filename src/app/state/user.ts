@@ -43,7 +43,7 @@ class User extends VuexModule {
 			CORE_loggedin = true
 		} catch (error) {
 			Console.error("Login()", error)
-			await GQLClient.query<{ logout: boolean }>(gql`query { logout }`, {})
+			await GQLClient.query<{ logout: boolean }>(gql`query Logout{ logout }`, {})
 		}
 		await Promise.all([
 			this.CORE_setLoggedIn(CORE_loggedin),
