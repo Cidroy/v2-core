@@ -1,12 +1,21 @@
 import * as GQL from "type-graphql"
 import Groupings from "@positron/models/groupings"
+import ServicesAvailable from "@positron/models/servicesAvailable"
 
 @GQL.Resolver(of => Groupings)
 export default class GroupingsResolver {
 
 	@GQL.Query(returns => [Groupings,])
-	public async groupings() {
-		return Groupings.find({ where: { active: 1 } })
+	public async groupings(
+		@GQL.Arg("service", {nullable: true}) service: string,
+	) {
+		if(service){
+			let serviceType = await ServicesAvailable.findOne({ where: { active: 1, name: service  } })
+			if (serviceType === undefined) throw "service unavailable"
+			return Groupings.find({ where: { active: 1, serviceType: serviceType.id } })
+		} else{
+			return Groupings.find({ where: { active: 1 } })
+		}
 	}
 
 	@GQL.Mutation(returns => Groupings)
@@ -15,6 +24,7 @@ export default class GroupingsResolver {
 		@GQL.Arg("defaultCount") defaultCount: number,
 		@GQL.Arg("minCount") minCount: number,
 		@GQL.Arg("maxCount") maxCount: number,
+		@GQL.Arg("serviceType") serviceType: number,
 		
 	) {
 		let groupings = new Groupings()
@@ -22,6 +32,7 @@ export default class GroupingsResolver {
 		groupings.defaultCount = defaultCount
 		groupings.minCount = minCount
 		groupings.maxCount = maxCount
+		groupings.serviceType = serviceType
 		
 		await groupings.save()
 		return groupings

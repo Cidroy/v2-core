@@ -55,7 +55,7 @@ export default class miscResolver {
 	// 	}
 	// 	)
 	// }
-
+	
 	@GQL.Query(returns =>String)
 	public async isBadgenumberValid(
 		@GQL.Arg("badgenumber") badgenumber: number,

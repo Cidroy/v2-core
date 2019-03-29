@@ -5,4 +5,11 @@ export default interface IGroupings extends IEntityBase {
 	defaultCount: number
 	minCount: number
 	maxCount: number
+	/**
+	 * references servicesAvailable.id
+	 *
+	 * @type {number}
+	 * @memberof IGroupings
+	 */
+	serviceType: number
 }
