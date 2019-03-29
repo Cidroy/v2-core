@@ -1,15 +1,16 @@
 import { Component, Vue, Prop, Watch } from "vue-property-decorator"
-import Layout from "@/layouts/layout.vue"
+import moment from "moment"
 import { alert } from "@/components/toast"
 import router from "@/routes"
 import { TMRegistration, TMRegistrationHealth, defaultRegistrationUserHealth } from "@plugins/gymkonnect/classes/types/registration"
-import MRegistrationStepFinished from "@plugins/gymkonnect/components/member/registration/step-finished.vue"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
 import { Routes } from "@plugins/gymkonnect/routes"
 import { Permissions as gymkonnect } from "@plugins/gymkonnect/permission"
 import { formatDate } from "@/utils/misc"
-import moment from "moment"
+
+import Layout from "@/layouts/layout.vue"
+import MRegistrationStepFinished from "@plugins/gymkonnect/components/member/registration/step-finished.vue"
 
 type TTransactions = Unpacked<ReturnType<typeof Gymkonnect.MemberRegistration.makePayments>>["transactions"]
 type TGroup = Unpacked<ReturnType<typeof Gymkonnect.MemberRegistration.makePayments>>["group"]

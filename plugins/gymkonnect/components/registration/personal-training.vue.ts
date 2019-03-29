@@ -1,4 +1,5 @@
 import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
+import moment from "moment"
 import appConfig from "@/app.config"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
@@ -7,16 +8,17 @@ import { Logger } from "@classes/CONSOLE"
 import { alert } from "@/components/toast"
 import { formatDate, parseDate } from "@/utils/misc"
 import { PaymentDetail } from "@plugins/gymkonnect/classes/types/payment"
+import { TRPTTransation } from "@plugins/gymkonnect/classes/types/registrations"
 
 import Layout from "@/layouts/layout.vue"
 import stepFinished from "@plugins/gymkonnect/components/member/registration/step-finished.vue"
-import moment from "moment"
-import { TRPTTransation } from "@plugins/gymkonnect/classes/types/registrations"
+import GeneralPaymentModal from "../payment/modal-generic.vue"
 
 const Console = new Logger(`spa-booking.vue/gk`)
 @Component({
 	// @ts-ignore
 	components: {
+		GeneralPaymentModal,
 		Layout,
 		stepFinished,
 	},
@@ -108,21 +110,15 @@ export default class PersonalTrainingRegistration extends Vue{
 	private get maxDoj() { return this.dojRange.end ? moment(this._maxDoj).toISOString().substr(0, 10) : undefined }
 	private get getDateFormatted() { return this.formatDate(this.doj) }
 
-	private attendeeCount = 0
-	private AttendeeMax = 0
-	private AttendeeMin = 0
 	private grouping = GymkonnectStore.GK_GROUPINGS[0].id
 	@Watch("grouping") private onGroupingChange() {
 		let grouping = GymkonnectStore.GK_GROUPING(this.grouping)!
-		this.attendeeCount = grouping.count
-		this.AttendeeMin = grouping.min
-		this.AttendeeMax = grouping.max
 	}
 	private get UsersCount() { return GymkonnectStore.GK_GROUPING(this.grouping)!.count }
 	// TODO: [Vicky][Nikhil] implement spa grouping
 	private get GROUPINGS() { return GymkonnectStore.GK_GROUPINGS }
 
-	private purposes = []
+	private purposes: (string | number)[] = []
 	private get PURPOSES(){ return GymkonnectStore.GK_PT_PURPOSES }
 
 	private packagex = GymkonnectStore.GK_PT_PACKAGES[0].id
@@ -139,7 +135,12 @@ export default class PersonalTrainingRegistration extends Vue{
 	private timeTo = this.MaxPrefferedTime
 	private timeToMenu = false
 
-	private amount = 0
+	private get QuantityMin(){ return 1 }
+	private get QuantityMax(){ return 10 }
+	private quantity = this.QuantityMin
+
+	private price = 0
+	private get Amount(){ return this.price * this.quantity }
 	private priceLoading = false
 	@Watch("grouping")
 	@Watch("attendeeCount")
@@ -151,7 +152,7 @@ export default class PersonalTrainingRegistration extends Vue{
 		this.priceLoading = true
 		try {
 			this.error = ""
-			this.amount = await Gymkonnect.Registrations.PersonalTraining.getAmount(this.transaction)
+			this.price = await Gymkonnect.Registrations.PersonalTraining.getAmount(this.transaction)
 		} catch (error) {
 			Console.error(error)
 			this.error = error.toString()
@@ -161,7 +162,6 @@ export default class PersonalTrainingRegistration extends Vue{
 	private get transaction(): TRPTTransation{
 		return {
 			grouping: this.grouping,
-			attendees: this.attendeeCount,
 			purposes: this.purposes,
 			package: this.packagex,
 			trainerType: this.trainerType,
@@ -176,6 +176,18 @@ export default class PersonalTrainingRegistration extends Vue{
 	// #endregion
 
 	// #region payment
+	private get purposesString(){ return this.purposes.map(i => GymkonnectStore.GK_PT_PURPOSE(i)!.name).filter(i => !!i) }
+
+	private get PaymentDescription(){
+		let purposes = this.purposesString.join(", ")
+		let trainerType = GymkonnectStore.GK_PT_TRAINER_TYPE(this.trainerType)
+		let ret =
+			`Personal Training \n`
+			+ (purposes ?`${  "for " + purposes + " ," } \n`: "")
+			+ (trainerType ?`trainer type: ${ trainerType!.name }, \n` : "")
+			+ `preffered time: ${this.timeFrom} to ${this.timeTo} \n`
+		return ret
+	}
 	private paymentModel = false
 	private paymentCancelled() { }
 

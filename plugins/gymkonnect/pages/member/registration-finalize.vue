@@ -18,7 +18,7 @@
 		<v-container>
 			<v-card class="mb-4 elevation-5">
 				<v-layout row wrap class="px-4">
-					<v-flex xs12 v-if="Group && $permission(PERMISSIONS.gymkonnect.MEMBER_GROUP_RENAME)">
+					<v-flex xs12 v-if="Group && $permission(PERMISSIONS.gymkonnect.MEMBER_GROUP_RENAME)" v-show="Group && Group.population > 1">
 						<v-text-field v-model="Group.name" label="Group Name" class="px-2" color="orange darken-2">
 							<v-icon slot="prepend" class="pt-2" >people</v-icon>
 							<v-btn @click="renameGroup" block outline slot="append"> <v-icon>save</v-icon> Rename </v-btn>

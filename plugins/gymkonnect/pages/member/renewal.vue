@@ -39,8 +39,9 @@
 								<v-divider />
 								<v-layout row wrap class="mt-2 px-2">
 									<v-flex xs12>
-										<h2> <v-icon left>people</v-icon> {{ GroupName }} with </h2>
-										<v-list two-line>
+										<!-- TODO: [Vicky] make this component -->
+										<h2> <v-icon left>people</v-icon> {{ GroupName }} {{  Group.members.length > 1?"with":"" }} <small class="text--secondary" v-text="`(${Group.name})`"/> </h2>
+										<v-list two-line v-if="Group.members.length > 1">
 											<!-- TODO: add context menu same as member-list -->
 											<v-list-tile v-for="member in Group.members" :key="member.id" v-show="member.id!==clientId" @click="false">
 												<v-avatar v-text="member.name.charAt(0)" size="30" color="orange darken-4" class="white--text font-weight-light"/>

@@ -83,6 +83,14 @@
 		<!-- Set `__static` path to static files in production -->
 		<script>
 			if (process.env.NODE_ENV !== "development") window.__static = require("path").join(__dirname, "/static").replace(/\\/g, "\\\\")
+			// Check that service workers are registered
+			// TODO: Enable Service worker
+			/** if ('serviceWorker' in navigator) {
+				// Use the window load event to keep the page load performant
+				window.addEventListener('load', () => {
+					navigator.serviceWorker.register('/service-worker.js');
+				});
+			} **/
 		</script>
 
 		<!-- webpack builds are automatically injected -->

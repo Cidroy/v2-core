@@ -4,6 +4,8 @@ export type PaymentDetail = {
 	amount: number,
 	mode: string | number,
 	transactionId: string | number,
+	description?: string,
+	note ?: string,
 	receipt: string | number,
 	offer: string | number,
 }

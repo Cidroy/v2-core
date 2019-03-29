@@ -4,7 +4,7 @@ import { USER_MODE } from "@classes/enum/user-mode"
 import { formatDate } from "@/utils/misc"
 import { IUser } from "@classes/interface/IUser"
 import { Logger } from "@classes/CONSOLE"
-import { TMRegistrationStep1, TMRegistrationStep2, TMRegistrationStep3 } from "../types/registration"
+import { TMemberInfo } from "../types/misc"
 
 const Console = new Logger(`members/gk-client`)
 async function getAllMembersForRegistrationList(): Promise<TMemberListTableItems[]> {
@@ -90,13 +90,6 @@ async function find( value: string, keys: (keyof IUser)[] = [ "id", ]): Promise<
 	}
 }
 
-type TMemberInfo = {
-	transaction: {
-		id: string | number,
-		start: string,
-		end: string,
-	} & TMRegistrationStep3
-} & TMRegistrationStep1 & TMRegistrationStep2
 async function info(clientId: string | number): Promise<TMemberInfo>{
 	// TODO: [Vicky]
 	if(1){
