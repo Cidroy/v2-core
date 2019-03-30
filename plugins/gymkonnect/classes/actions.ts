@@ -10,6 +10,10 @@ export async function gotoProfile(clientId: string | number ){
 	// TODO:
 }
 
+export async function editRenewal(transactionId: string | number ){
+	// TODO:
+}
+
 export async function enroll(clientId: string | number ){
 	try {
 		Console.verbose("enroll", clientId)

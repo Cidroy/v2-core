@@ -24,19 +24,7 @@ class ReportsList extends VuexModule {
 		_gk_R_HEADING_RENEWALS = payload
 		return { _gk_R_HEADING_RENEWALS }
 	}
-	public get GK_R_TABLE_HEADING_RENEWALS() {
-		return [
-			{ text: "Badge", value: "badgenumber", align: "left", width: "100px", },
-			{ text: "Status", value: "mode", width: "100px", },
-			{ text: "Name", value: "name", width: "200px", },
-			{ text: "Due Date", value: "endDate", width: "10%", },
-			{ text: "Membership", value: "membership", width: "10%", },
-			{ text: "Package", value: "package", width: "10%", },
-			{ text: "Mobile No.", value: "mobile", width: "10%", },
-			{ text: "Enrolled", value: "enrolled", width: "100px", },
-		]
-		return this._gk_R_HEADING_RENEWALS
-	}
+	public get GK_R_TABLE_HEADING_RENEWALS() { return this._gk_R_HEADING_RENEWALS }
 
 	private _gk_R_loading_RENEWALS = _gk_R_loading_RENEWALS
 	public get GK_R_LOADING_RENEWALS() { return this._gk_R_loading_RENEWALS }

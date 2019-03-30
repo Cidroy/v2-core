@@ -166,7 +166,11 @@ export default class ReportsPage extends Vue {
 	private showMemberContextMenu = false
 	private memberContextMenuSelection: string | number = -1
 	private memberContextMenuPoint: Point = { x: 0, y: 0 }
-	private get memberContextMenu() { return ReportsListStore[this.REPORT.CONTEXTMENU](this.memberContextMenuSelection) }
+	private get memberContextMenu() {
+		return ReportsListStore[this.REPORT.CONTEXTMENU](
+			(<Array<any>>this.tableItems||[]).find(i => i.id === this.memberContextMenuSelection) || null
+		)
+	}
 	private memberContextMenuClicked(e: MouseEvent, id: string | number) {
 		e.preventDefault()
 		this.showMemberContextMenu = false

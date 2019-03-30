@@ -50,7 +50,7 @@
 			</template>
 			<template #headers="props">
 				<tr>
-					<th> <v-checkbox  @click.stop="tableToggleAll" :input-value="props.all" :indeterminate="props.indeterminate" primary hide-details color="orange darken-2"/> </th>
+					<th> <v-checkbox  @click.stop="tableToggleAll" :input-value="props.all" :indeterminate="props.indeterminate" primary hide-details color="orange darken-2" style="max-width:10px; width:10px; min-width:10px"/> </th>
 					<th v-for="header in props.headers" @click="tableChangeSort(header.value)" :key="header.text" :class="['column sortable', 'text-truncate', tablePagination.descending ? 'desc' : 'asc', header.value === tablePagination.sortBy ? 'active' : '']" :style="header.width?`max-width:${header.width}; width:${header.width}; min-width:${header.width}`:''" > {{ header.text }} <v-icon small>arrow_upward</v-icon> </th>
 				</tr>
 			</template>
