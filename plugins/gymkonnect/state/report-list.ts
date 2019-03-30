@@ -9,6 +9,10 @@ let _gk_R_RENEWALS = []
 let _gk_R_HEADING_RENEWALS = []
 let _gk_R_loading_RENEWALS = false
 
+let _gk_R_FREEZINGS = []
+let _gk_R_HEADING_FREEZINGS = []
+let _gk_R_loading_FREEZINGS = false
+
 @Module({ dynamic: true, store, name: "ReportsList" })
 class ReportsList extends VuexModule {
 
@@ -33,7 +37,7 @@ class ReportsList extends VuexModule {
 		return { _gk_R_loading_RENEWALS }
 	}
 
-	public get GK_R_contextmenu_RENEWALS() { return Gymkonnect.Reports.Renewals.CONTEXTMENU }
+	public get GK_R_contextmenu_RENEWALS() { return Gymkonnect.Reports.RENEWALS.CONTEXTMENU }
 
 	@Action({}) public async Initialize_GK_R_RENEWALS(payload: {
 		start?: string,
@@ -41,8 +45,8 @@ class ReportsList extends VuexModule {
 	}) {
 		await Promise.all([this.mutate_GK_R_Loading_RENEWALS(true),])
 		let [items, heading,] = await Promise.all([
-			Gymkonnect.Reports.Renewals.LIST(payload),
-			Gymkonnect.Reports.Renewals.TABLE_HEADING(),
+			Gymkonnect.Reports.RENEWALS.LIST(payload),
+			Gymkonnect.Reports.RENEWALS.TABLE_HEADING(),
 		])
 		await Promise.all([
 			this.mutate_GK_R_RENEWALS(items),
@@ -51,8 +55,48 @@ class ReportsList extends VuexModule {
 		await this.mutate_GK_R_Loading_RENEWALS(false)
 		return true
 	}
-
 	// #endregion RENEWALS
+
+	// #region FREEZINGS
+	private _gk_R_FREEZINGS = _gk_R_FREEZINGS
+	public get GK_R_FREEZINGS() { return this._gk_R_FREEZINGS }
+	@MutationAction({ mutate: ["_gk_R_FREEZINGS",] }) private async mutate_GK_R_FREEZINGS(payload) {
+		_gk_R_FREEZINGS = payload
+		return { _gk_R_FREEZINGS }
+	}
+	private _gk_R_HEADING_FREEZINGS = _gk_R_HEADING_FREEZINGS
+	@MutationAction({ mutate: ["_gk_R_HEADING_FREEZINGS",] }) private async mutate_GK_R_HEADING_FREEZINGS(payload) {
+		_gk_R_HEADING_FREEZINGS = payload
+		return { _gk_R_HEADING_FREEZINGS }
+	}
+	public get GK_R_TABLE_HEADING_FREEZINGS() { return this._gk_R_HEADING_FREEZINGS }
+
+	private _gk_R_loading_FREEZINGS = _gk_R_loading_FREEZINGS
+	public get GK_R_LOADING_FREEZINGS() { return this._gk_R_loading_FREEZINGS }
+	@MutationAction({ mutate: ["_gk_R_loading_FREEZINGS",] }) private async mutate_GK_R_Loading_FREEZINGS(payload: boolean) {
+		_gk_R_loading_FREEZINGS = payload
+		return { _gk_R_loading_FREEZINGS }
+	}
+
+	public get GK_R_contextmenu_FREEZINGS() { return Gymkonnect.Reports.FREEZINGS.CONTEXTMENU }
+
+	@Action({}) public async Initialize_GK_R_FREEZINGS(payload: {
+		start?: string,
+		end?: string,
+	}) {
+		await Promise.all([this.mutate_GK_R_Loading_FREEZINGS(true),])
+		let [items, heading,] = await Promise.all([
+			Gymkonnect.Reports.FREEZINGS.LIST(payload),
+			Gymkonnect.Reports.FREEZINGS.TABLE_HEADING(),
+		])
+		await Promise.all([
+			this.mutate_GK_R_FREEZINGS(items),
+			this.mutate_GK_R_HEADING_FREEZINGS(heading),
+		])
+		await this.mutate_GK_R_Loading_FREEZINGS(false)
+		return true
+	}
+	// #endregion FREEZINGS
 
 	public get GK_R_LOADING_ANY(){
 		return this._gk_R_loading_RENEWALS

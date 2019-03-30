@@ -19,6 +19,16 @@ const REPORT_TYPES = {
 		LOADING: "GK_R_LOADING_RENEWALS",
 		CONTEXTMENU: "GK_R_contextmenu_RENEWALS",
 	},
+	FREEZING: {
+		name: "Freezing Reports",
+		value: "FREEZING",
+		report: "FREEZINGS",
+		INITIALIZE: "Initialize_GK_R_FREEZINGS",
+		ITEMS: "GK_R_FREEZINGS",
+		TABLE_HEADING: "GK_R_TABLE_HEADING_FREEZINGS",
+		LOADING: "GK_R_LOADING_FREEZINGS",
+		CONTEXTMENU: "GK_R_contextmenu_FREEZINGS",
+	},
 }
 
 const TODAY = moment()
@@ -127,6 +137,9 @@ export default class ReportsPage extends Vue {
 	private report: keyof typeof REPORT_TYPES = "RENEWAL"
 	private get REPORT_TYPES() { return REPORT_TYPES }
 	private get REPORT(){ return this.REPORT_TYPES[this.report] }
+	@Watch("report") private onReportChange(){
+		this.refresh()
+	}
 
 	private timePeriod: keyof typeof TIME_PERIODS = "THIS_MONTH"
 	private get TIME_PERIODS(){ return TIME_PERIODS }

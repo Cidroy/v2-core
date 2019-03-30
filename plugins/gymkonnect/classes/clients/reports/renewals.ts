@@ -130,7 +130,7 @@ async function LIST(payload: {
 	return users
 }
 
-export const Renewals = {
+export const RENEWALS = {
 	TABLE_HEADING,
 	CONTEXTMENU,
 	LIST,

@@ -47,6 +47,10 @@ export async function freezeUnfreeze(clientId: string | number, mode: USER_MODE)
 	}
 }
 
+export async function cancelFreezing(freezingId: string | number){
+	// TODO:
+}
+
 export async function renew(clientId: string | number ){
 	Console.verbose("renew", clientId)
 	router.push({
