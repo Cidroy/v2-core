@@ -13,9 +13,15 @@ import Layout from "@/layouts/layout.vue"
 import stepper from "@plugins/gymkonnect/components/member/registration/stepper.vue"
 import stepFinished from "@plugins/gymkonnect/components/member/registration/step-finished.vue"
 import SpaBookingModal from "../payment/modal-booking-spa.vue"
-import { TSpaBookingArgs } from "@plugins/gymkonnect/classes/types/bookings"
+import uuid from "uuid"
 
 const Console = new Logger(`spa-booking.vue/gk`)
+
+type TSessions = Record<string, {
+	date: string,
+	dateFormatted: string,
+	time: string,
+}>
 @Component({
 	// @ts-ignore
 	components: {
@@ -30,7 +36,7 @@ const Console = new Logger(`spa-booking.vue/gk`)
 	},
 	created(){
 		this.reCalculateAmount()
-		this.onGroupingChange()
+		this.onSessionCountChange()
 	}
 })
 // @ts-ignore
@@ -97,10 +103,18 @@ export default class FitnessCounselingRegistration extends Vue{
 		this.clientId = clientId
 	}
 
+	private get COUNSELLORS(){ return GymkonnectStore.GK_FC_COUNSELLOR }
+
 	private doj = new Date().toISOString().substr(0, 10)
+	private dojIndex = ""
 	private dojFormatted = this.formatDate(this.doj)
 	private dojMenu = false
-	@Watch("doj") private onDateChanged() { this.dojFormatted = this.formatDate(this.doj) }
+	@Watch("doj") private onDateChanged() {
+		this.dojFormatted = this.formatDate(this.doj)
+		this.sessions[this.dojIndex].date = this.doj
+		this.sessions[this.dojIndex].dateFormatted = this.dojFormatted
+	}
+	// TODO: follow minSessionDate
 	private get _minDoj() { return this.allowBackDating ? new Date(1947, 7, 16) : this.dojRange.start }
 	private get minDoj() { return moment(this._minDoj).toISOString().substr(0, 10) }
 	private allowBackDating = false
@@ -108,47 +122,69 @@ export default class FitnessCounselingRegistration extends Vue{
 	private get maxDoj() { return this.dojRange.end ? moment(this._maxDoj).toISOString().substr(0, 10) : undefined }
 	private get getDateFormatted() { return this.formatDate(this.doj) }
 
-	private attendeeCount = 0
-	private AttendeeMax = 0
-	private AttendeeMin = 0
-	private grouping = GymkonnectStore.GK_SPA_GROUPINGS[0].id
-	@Watch("grouping") private onGroupingChange(){
-		let grouping = GymkonnectStore.GK_SPA_GROUPING(this.grouping)!
-		this.attendeeCount = grouping.count
-		this.AttendeeMin = grouping.min
-		this.AttendeeMax = grouping.max
+	private showDatePicker(index: string){
+		this.dojMenu = true
+		this.dojIndex = index
+		this.doj = this.sessions[index].date
 	}
-	private get UsersCount() { return GymkonnectStore.GK_SPA_GROUPING(this.grouping)!.count }
-	// TODO: [Vicky][Nikhil] implement spa grouping
-	private get GROUPINGS() { return GymkonnectStore.GK_SPA_GROUPINGS }
 
-	private amenities: (string | number)[] = []
-	private get AMENITIES() { return GymkonnectStore.GK_SPA_AMENITIES }
+	private purposes: (string | number)[] = []
+	private get PURPOSES(){ return GymkonnectStore.GK_FC_PURPOSES }
 
-	private amount = 0
+	// FIXME: [Vicky] get from gql
+	private get MinSessionCount(){ return 1 }
+	private get MaxSessionCount(){ return 10 }
+	private sessionCount = this.MinSessionCount
+	@Watch("sessionCount")
+	private onSessionCountChange(){
+		let SessionsCount = Object.keys(this.sessions).length
+		if(SessionsCount < this.sessionCount) this.sessions[uuid()] = this.DefaultSession.default
+		else if ( SessionsCount > this.sessionCount ){
+			let lastIndex = Object.keys(this.sessions).splice(-1)[0]
+			if(lastIndex!==undefined) delete this.sessions[lastIndex]
+		}
+		this.SessionsCount = Object.keys(this.sessions).length
+	}
+
+	// FIXME: [Vicky] get from gql
+	private get MinSessionDate(){ return new Date().toISOString().substr(0,10) }
+	private get MaxSessionDate(){ return new Date(2020, 11, 31).toISOString().substr(0,10) }
+	private get DefaultSession(): TSessions{
+		return {
+			default: {
+				date: this.MinSessionDate,
+				dateFormatted: formatDate(this.MinSessionDate),
+				time: "12:00",
+			}
+		}
+	}
+	private sessions: TSessions = {}
+	private SessionsCount = 0
+	private deleteSession(sessionIndex: string){
+		delete this.sessions[sessionIndex]
+		this.sessionCount --
+	}
+
 	private priceLoading = false
-	@Watch("grouping")
-	@Watch("amenities")
-	@Watch("attendeeCount")
-	@Watch("doj")
+	private amount = 0
+
+	@Watch("purposes")
 	private async reCalculateAmount(){
 		this.priceLoading = true
 		try {
 			this.error = ""
-			this.amount = await Gymkonnect.Booking.Spa.getAmount(this.transaction)
+			this.amount = await Gymkonnect.Registrations.FitnessCounseling.getAmount(this.transaction)
 		} catch (error) {
 			Console.error(error)
 			this.error = error.toString()
 		}
 		this.priceLoading = false
 	}
-	private get transaction(): TSpaBookingArgs {
+
+	private get transaction(){
 		return {
-			group: this.grouping,
-			amenities: this.amenities,
-			attendeeCount: this.attendeeCount,
-			doj: this.doj,
-			amount: this.amount,
+			purposes: this.purposes,
+			x: 1,
 		}
 	}
 	// #endregion
@@ -166,7 +202,6 @@ export default class FitnessCounselingRegistration extends Vue{
 	private async pay(paymentData?: PaymentDetail) {
 		this.paying = true
 		try {
-			let result = await Gymkonnect.Booking.Spa.pay(this.clientId, this.transaction, paymentData)
 			// TODO: reset page to zero and goto top
 		} catch (error) {
 			Console.error(error)

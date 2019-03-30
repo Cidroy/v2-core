@@ -60,7 +60,8 @@ export default class BiometricDevices {
 	 * @memberof BiometricDevices
 	 */
 	public static async Initialize() {
-		BiometricDevices.config = await AppConfig.Get(BiometricDevices.Namespace, BiometricDevices.config)
+		let config = await AppConfig.Get(BiometricDevices.Namespace, BiometricDevices.config)
+		BiometricDevices.config = { ...BiometricDevices.config, ...config }
 		BiometricDevices.log.verbose("initialized", BiometricDevices.config)
 	}
 

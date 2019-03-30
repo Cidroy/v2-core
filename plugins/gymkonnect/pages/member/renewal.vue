@@ -39,8 +39,9 @@
 								<v-divider />
 								<v-layout row wrap class="mt-2 px-2">
 									<v-flex xs12>
-										<h2> <v-icon left>people</v-icon> {{ GroupName }} with </h2>
-										<v-list two-line>
+										<!-- TODO: [Vicky] make this component -->
+										<h2> <v-icon left>people</v-icon> {{ GroupName }} {{  Group.members.length > 1?"with":"" }} <small class="text--secondary" v-text="`(${Group.name})`"/> </h2>
+										<v-list two-line v-if="Group.members.length > 1">
 											<!-- TODO: add context menu same as member-list -->
 											<v-list-tile v-for="member in Group.members" :key="member.id" v-show="member.id!==clientId" @click="false">
 												<v-avatar v-text="member.name.charAt(0)" size="30" color="orange darken-4" class="white--text font-weight-light"/>
@@ -79,7 +80,7 @@
 					<v-footer v-if="!error" height="auto" color="primary lighten-1" >
 						<v-layout justify-center row justify-end align-end class="px-4 py-2">
 							<v-spacer />
-							<v-btn v-if="payed" outline @click.native.stop="print"> <v-icon left>print</v-icon> Print Reciept </v-btn>
+							<v-btn v-if="payed" outline @click.native.stop="print"> <v-icon left>print</v-icon> Print Receipt </v-btn>
 							<v-btn v-else :loading="paying" :disable="paying" color="orange darken-4" class="white--text" @click.native.stop="paymentModel = true"> <v-icon class="fas" left>fa-cash-register</v-icon> Make Payment </v-btn>
 						</v-layout>
 					</v-footer>

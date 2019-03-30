@@ -2,7 +2,6 @@ import { VuexModule, Module, getModule, MutationAction, Action } from "vuex-modu
 import store from "@/state/store"
 import { TMemberListTableItems } from "../classes/types/member-list"
 import Gymkonnect from "../classes/clients"
-import { sleep } from "@classes/misc"
 import { Logger } from "@classes/CONSOLE"
 
 const Console = new Logger(`member-list/gk-store`)
@@ -40,7 +39,6 @@ class MembersList extends VuexModule {
 	@Action({}) public async InitializeGKMMembers() {
 		await Promise.all([
 			this.mutateGKMMembersLoading(true),
-			sleep(1000),
 		])
 		let result = await Gymkonnect.Members.getAllMembersForRegistrationList()
 		await this.mutateGKMMembers(result)

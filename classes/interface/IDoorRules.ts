@@ -8,6 +8,6 @@ export default interface IDoorRules extends IEntityBase {
 	counsellorType? : number,
 	trainerType? : number,
 	timeSlot?: number,
-	zoneId: number,
+	zoneIds: number[],
 	
 }

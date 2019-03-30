@@ -44,6 +44,11 @@ import GymOffersResolver from "@positron/resolvers/gymOffers"
 import GymOffersLogicResolver from "@positron/resolvers/gymOffersLogic"
 import AdminUsersResolver from "@positron/resolvers/adminUsers"
 import GymUserHealthResolver from "@positron/resolvers/gymUserHealth"
+import DoorRulesResolver from "@positron/resolvers/doorRules"
+import PTPurposeResolver from "@positron/resolvers/ptPurpose"
+import ServicesAvailableResolver from "@positron/resolvers/servicesAvailable"
+import PTPackagesResolver from "@positron/resolvers/ptPackages"
+import AmenitiesResolver from "@positron/resolvers/amenities"
 
 const Console = new Logger(`gql/positron`)
 export default class GQL{
@@ -88,6 +93,11 @@ export default class GQL{
 		GymOffersLogicResolver,
 		AdminUsersResolver,
 		GymUserHealthResolver,
+		DoorRulesResolver,
+		PTPurposeResolver,
+		ServicesAvailableResolver,
+		PTPackagesResolver,
+		AmenitiesResolver,
 	]
 
 	private static Loaders = {

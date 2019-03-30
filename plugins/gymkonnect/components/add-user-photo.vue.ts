@@ -59,6 +59,7 @@ export default class AddUserPhoto extends Vue{
 	}
 	@Watch("value") private onValueChange(){
 		if(this.value){
+			// FIXME: [Vicky] check if from URL
 			if(fs.existsSync(this.value)) this.photoSrc = this.value
 			else this.error = "Photo Missing"
 		} else this.photoSrc = ""

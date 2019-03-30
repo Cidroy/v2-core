@@ -11,7 +11,13 @@ export async function gotoProfile(clientId: string | number ){
 }
 
 export async function enroll(clientId: string | number ){
-	// TODO:
+	try {
+		Console.verbose("enroll", clientId)
+		await Gymkonnect.MemberRegistration.scanFingerprint(clientId)
+	} catch (error) {
+		Console.error(error)
+		alert(error.toString(), "error")
+	}
 }
 
 export async function freezeUnfreeze(clientId: string | number, mode: USER_MODE){

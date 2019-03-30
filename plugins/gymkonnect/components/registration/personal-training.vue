@@ -105,9 +105,10 @@
 					</v-slide-y-reverse-transition>
 					<v-card-actions>
 						<v-layout row wrap>
-							<v-flex xs12 lg3> <v-text-field v-model="attendeeCount" :min="AttendeeMin" :max="AttendeeMax" type="number" label="Total Attendees" prepend-icon="people" color="orange darken-2" /> </v-flex>
+							<v-flex xs12 lg3> <v-text-field v-model="quantity" :min="QuantityMin" :max="QuantityMax" type="number" label="Quantity" prepend-icon="add" color="orange darken-2" /> </v-flex>
 							<v-spacer />
-							<v-flex xs12 lg3 class="px-2"> <v-text-field :value="amount" :loading="priceLoading" label="Total" prefix="₹" outline readonly color="orange darken-2"/> </v-flex>
+							<v-flex xs12 lg3 class="px-2"> <v-text-field v-model="price" tabindex="-1" label="SubTotal" prefix="₹" :suffix="`X ${quantity}`" readonly color="orange darken-2"/> </v-flex>
+							<v-flex xs12 lg3 class="px-2"> <v-text-field :value="Amount" :loading="priceLoading" label="Total" prefix="₹" outline readonly color="orange darken-2"/> </v-flex>
 						</v-layout>
 					</v-card-actions>
 				</v-card>
@@ -120,5 +121,6 @@
 				<v-btn :loading="paying" :disable="paying" color="orange darken-4" class="white--text" @click.native.stop="paymentModel = true"> <v-icon class="fas" left>fa-cash-register</v-icon> Make Payment </v-btn>
 			</v-layout>
 		</v-footer>
+		<general-payment-modal v-model="paymentModel" @pay="data => pay(data)" :User="clientData" DateTitle="Billing Date" :Qty="quantity" :Price="price" :Amount="Amount" :Description="PaymentDescription" />
 	</div>
 </template>

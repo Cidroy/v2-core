@@ -1,4 +1,5 @@
 import * as GQL from "type-graphql"
+import path from "path"
 import { GENDER } from "@classes/enum/misc"
 import User, { WdmsID } from "@positron/models/user"
 import Address from "@positron/models/address"
@@ -9,6 +10,10 @@ import ZonesAvailable from "@positron/models/zonesAvailable"
 import GymUsers from "@positron/models/gymUsers"
 import GymUserMode from "@positron/models/gymUserMode"
 import { Logger } from "@classes/CONSOLE"
+import { decode_base64 } from "@classes/utils/base64"
+import AppConfig from "@classes/appConfig"
+import uuid from "uuid"
+import * as fs from "fs-extra"
 
 const Console = new Logger(`user/gql-resolver`)
 export async function getWdmsIdForUserId(userId: number, zoneId: number): Promise<number> {
@@ -128,7 +133,8 @@ export default class UserResolver {
 		@GQL.Arg("address", { nullable: true }) address?: number,
 		@GQL.Arg("IDType", { nullable: true }) IDType?: number,
 		@GQL.Arg("IDNumber", { nullable: true }) IDNumber?: string,
-		@GQL.Arg("imagePath", { nullable: true }) imagePath?: string,
+		@GQL.Arg("imageBase64", { nullable: true }) imageBase64?: string,
+		@GQL.Arg("imageExtension", { nullable: true }) imageExtension?: string,
 		@GQL.Arg("category", { nullable: true }) category?: number,
 		@GQL.Arg("occupation", { nullable: true }) occupation?: number,
 		@GQL.Arg("organization", { nullable: true }) organization?: number,
@@ -150,7 +156,8 @@ export default class UserResolver {
 				userID: userinfo[0] ? userinfo[0].userId : 0
 			}
 			user.wdmsId = [wdmsId,]
-
+		} else {
+			// FIXME: [Nikhil] Generate Badgenumber!
 		}
 		if (middleName) user.middleName = middleName
 		if (lastName) user.lastName = lastName
@@ -163,7 +170,14 @@ export default class UserResolver {
 		if (address) user.address = address
 		if (IDType) user.IDType = IDType
 		if (IDNumber) user.IDNumber = IDNumber
-		if (imagePath) user.imagePath = imagePath
+		if (imageBase64){
+			let imageName = `profile-photos/${user.badgenumber || uuid()}-${user.firstName}-${user.middleName}-${user.lastName}.${imageExtension}`
+			await fs.ensureDir(path.resolve(AppConfig.DataFolder, "profile-photos"))
+			// TODO: make this central
+			let imagePath = path.resolve(AppConfig.DataFolder, imageName)
+			await decode_base64(imageBase64, imagePath)
+			user.imagePath = imageName
+		}
 		if (category) user.category = category
 		if (occupation) user.occupation = occupation
 		if (organization) user.organization = organization

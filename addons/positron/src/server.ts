@@ -1,12 +1,14 @@
 import * as API from "@tsed/common"
-import Controllers from "@positron/controllers"
+import * as express from "express"
+import uuid from "uuid"
 import path from "path"
 import cors from "cors"
 import session from "express-session"
 
 import config from "../config"
+import Controllers from "@positron/controllers"
 import { Logger } from "@classes/CONSOLE"
-import uuid from "uuid"
+import AppConfig from "@classes/appConfig"
 
 const DefaultSession = {
 	id: "",
@@ -44,8 +46,8 @@ export class Server extends API.ServerLoader {
 		const MemoryStore = require("memorystore")(session)
 
 		this
-			.use(bodyParser.json())
-			.use(bodyParser.urlencoded({ extended: true }))
+			.use(bodyParser.json({ limit: "50mb" }))
+			.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }))
 			.use(cors())
 			.use(session({
 				name: "positron",
@@ -55,6 +57,8 @@ export class Server extends API.ServerLoader {
 				// FIXME: use some sort of config
 				secret: "positron-server"
 			}))
+			// use from central
+			.use("/profile-photos", express.static(path.resolve(AppConfig.DataFolder, "profile-photos")))
 
 		this.middlewares.forEach(middleware => this.use(middleware))
 	}

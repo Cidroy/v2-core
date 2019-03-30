@@ -1,5 +1,21 @@
 <template>
 	<div>
+		<v-dialog ref="datePicker" v-model="dojMenu" :return-value.sync="doj" persistent lazy full-width width="460px">
+			<div slot="activator"/>
+			<v-date-picker v-model="doj" scrollable color="orange darken-2" :min="MinSessionDate" :max="MaxSessionDate" landscape>
+				<v-spacer />
+				<v-btn flat color="orange darken-2" @click="dojMenu = false">Cancel</v-btn>
+				<v-btn flat color="orange darken-2" @click="$refs.datePicker.save(doj)">OK</v-btn>
+			</v-date-picker>
+		</v-dialog>
+		<!-- <v-dialog ref="dialog" v-model="modal2" :return-value.sync="time" persistent lazy full-width width="290px">
+			<div slot="activator" />
+			<v-time-picker v-if="modal2" v-model="time" full-width landscape>
+				<v-spacer />
+				<v-btn flat color="primary" @click="modal2 = false">Cancel</v-btn>
+				<v-btn flat color="primary" @click="$refs.dialog.save(time)">OK</v-btn>
+			</v-time-picker>
+		</v-dialog> -->
 		<v-layout row wrap class="px-4 py-2">
 			<v-flex xs12 class="my-2">
 				<v-autocomplete v-model="clientId" :items="Clients" :search-input.sync="clientSearch" :loading="clientSearching" :label="label" clearable item-text="name" item-value="id" prepend-icon="search" :placeholder="label" autofocus no-filter color="orange darken-2" auto-select-first>
@@ -30,38 +46,30 @@
 			<v-flex xs12 class="my-2 mt-4">
 				<v-card class="elevation-10 px-4" color="transparent">
 					<v-layout row wrap>
-						<v-flex xs12 md8>
-							<v-radio-group :prepend-icon="UsersCount===1?'person':'people'" label="Booking for" v-model="grouping" row>
-								<v-radio v-for="(grouping, index) in GROUPINGS" :label="grouping.name" :value="grouping.id" :key="index" color="orange darken-2"/>
-							</v-radio-group>
-						</v-flex>
-						<v-flex xs12 md4 class="px-2">
-							<v-text-field color="orange darken-2" v-model="dojFormatted" @blur="doj = parseDate(dojFormatted)" @click:prepend="dojMenu = true" label="Attending on" placeholder="DD/MM/YYYY" prepend-icon="event" mask="##/##/####" return-masked-value persistent-hint />
-							<v-menu ref="dojMenu" :close-on-content-click="false" v-model="dojMenu" :nudge-right="40" lazy transition="scale-transition" offset-y full-width>
-								<div slot="activator"/>
-								<v-date-picker v-model="doj" :min="minDoj" :max="maxDoj" no-title @input="dojMenu = false"  color="orange darken-2"/>
-							</v-menu>
-							<v-checkbox class="ma-0" label="Allow Back Dates" v-model="allowBackDating" color="orange"/>
-						</v-flex>
-						<!-- TODO: add time picker for preffered time slot -->
-						<v-flex xs12 class="mb-3"> <v-divider /> </v-flex>
 						<v-flex xs12>
-							<h3> <v-icon left>add</v-icon> Amenities</h3>
+							<h3> Purpose of taking counselling:</h3>
 							<v-layout align-start row>
-								<v-checkbox v-for="(amenity, index) in AMENITIES" :key="index" v-model="amenities" :value="amenity.id" :label="amenity.name" color="orange darken-2"/>
+								<v-checkbox v-model="purposes" v-for="(purpose,index) in PURPOSES" :key="index" :value="purpose.id" :label="purpose.name" color="orange darken-2"/>
 							</v-layout>
 						</v-flex>
-					</v-layout>
-					<v-slide-y-reverse-transition>
-						<v-alert v-if="!!error" color="red darken-3" type="error" :value="true" >{{ error }}</v-alert>
-					</v-slide-y-reverse-transition>
-					<v-card-actions>
-						<v-layout row wrap>
-							<v-flex xs12 lg3> <v-text-field v-model="attendeeCount" :min="AttendeeMin" :max="AttendeeMax" type="number" label="Total Attendees" prepend-icon="people" color="orange darken-2" /> </v-flex>
-							<v-spacer />
-							<v-flex xs12 lg3 class="px-2"> <v-text-field :value="amount" :loading="priceLoading" label="Total" prefix="₹" outline readonly color="orange darken-2"/> </v-flex>
+					<v-flex xs12 md8>
+						<v-radio-group label="Type of Counsellor:" row>
+							<v-radio v-for="(XtrainerType, index) in COUNSELLORS" :label="XtrainerType.name" :value="XtrainerType.id" :key="index" color="orange darken-2"/>
+						</v-radio-group>
+					</v-flex>
+					<v-flex xs12><v-text-field v-model="sessionCount" :min="MinSessionCount" :max="MaxSessionCount" type="number" label="No. of session"/></v-flex>
+					<v-flex xs12>
+						<v-layout row wrap class="hide-xs-lower">
+							<v-flex xs6> <h3 class="text-xs-center underline">Counselling Date</h3> </v-flex>
+							<v-flex xs6> <h3 class="text-xs-center underline">Counselling Time</h3> </v-flex>
 						</v-layout>
-					</v-card-actions>
+						<v-layout row wrap v-for="(session, key) in sessions"  :key="`session-${key}`">
+								<v-flex xs12 md6 class="px-2"> <v-text-field v-model="sessions[key].dateFormatted" @blur="sessions[key].date = parseDate(sessions[key].dateFormatted)" @click:prepend="showDatePicker(key)" color="orange darken-2" prepend-icon="event" mask="##/##/####" return-masked-value persistent-hint /> </v-flex>
+								<v-flex xs11 md5 class="px-2"> <v-text-field v-model="sessions[key].time" @click:prepend="showTimePicker(key)" color="orange darken-2" prepend-icon="event" mask="##:##" return-masked-value /> </v-flex>
+								<v-flex v-if="SessionsCount > MinSessionCount" xs1> <v-btn @click.native.stop="deleteSession(key)" icon small flat> <v-icon>cancel</v-icon> </v-btn> </v-flex>
+						</v-layout>
+					</v-flex>
+					</v-layout>
 				</v-card>
 			</v-flex>
 		</v-layout>
@@ -72,6 +80,5 @@
 				<v-btn :loading="paying" :disable="paying" color="orange darken-4" class="white--text" @click.native.stop="paymentModel = true"> <v-icon class="fas" left>fa-cash-register</v-icon> Make Payment </v-btn>
 			</v-layout>
 		</v-footer>
-		<spa-booking-modal v-model="paymentModel" :users="{ spaBooker: clientData }" :transaction="transaction" @pay="data => pay(data)" />
 	</div>
 </template>

@@ -5,8 +5,9 @@ import IAddress from "@classes/interface/IAddress"
 import { ADDRESS_TYPE } from "@classes/enum/misc"
 import { PaymentDetail } from "@plugins/gymkonnect/classes/types/payment"
 import moment from "moment"
-import { sleep } from "@classes/misc"
 import { alert } from "@/components/toast"
+import { addTransaction, addPayment, linkTransactionPay, linkTransactionUser } from "./common"
+import { encode_base64 } from "@classes/utils/base64"
 
 let Console = new Logger("registration/gk-client")
 
@@ -167,6 +168,14 @@ async function addMember(userData: TMRegistration): Promise<string|number> {
 	};
 
 	try {
+		let imageBase64: string | undefined = undefined
+		let imageExtension: string | undefined = undefined
+		if (userData.photo){
+			try {
+				imageBase64 = await encode_base64(userData.photo)
+				imageExtension = userData.photo.split(".").pop()
+			} catch (error) { }
+		}
 		let responsePromise = GQLClient.mutate<TResult>(
 			gql`
 				mutation AddUser(
@@ -174,7 +183,8 @@ async function addMember(userData: TMRegistration): Promise<string|number> {
 					$emergencyName: String
 					$occupation: Float
 					$category: Float
-					$imagePath: String
+					$imageBase64: String
+					$imageExtension: String
 					$IDNumber: String
 					$IDType: Float
 					$email: String
@@ -194,7 +204,8 @@ async function addMember(userData: TMRegistration): Promise<string|number> {
 						emergencyNumber: $emergencyNumber,
 						occupation: $occupation,
 						category: $category,
-						imagePath: $imagePath,
+						imageBase64: $imageBase64,
+						imageExtension: $imageExtension,
 						IDNumber: $IDNumber,
 						IDType: $IDType,
 						email: $email,
@@ -221,7 +232,8 @@ async function addMember(userData: TMRegistration): Promise<string|number> {
 				emergencyName: userData.emergencyContactName,
 				occupation: userData.occupation,
 				category: userData.category,
-				imagePath: userData.photo,
+				imageBase64,
+				imageExtension,
 				IDNumber: userData.idNumber,
 				IDType: userData.idType,
 				address: userData.address,
@@ -318,35 +330,6 @@ async function addGymUser(details:{
 }
 
 /**
- * Link Transaction to User
- *
- * @param {(string| number)} transactionId transaction id
- * @param {(string|number)} userId user id
- * @returns {Promise<boolean>} linked status
- */
-async function linkTransactionUser(transactionId: string| number, userId: string|number):Promise<boolean>{
-	try {
-		let response = await GQLClient.mutate<{ linked: boolean }>(
-			gql`
-				mutation linkTransactionUser( $transactionId: Float!, $userId: Float! ){
-					linkTransactionUser( transactionId: $transactionId, userId: $userId )
-				}
-			`,
-			{
-				transactionId,
-				userId,
-			}
-		)
-		if (response.errors) throw response.errors[0].message
-		if (!response.data) throw "Unable to link transaction to user"
-		return response.data.linked
-	} catch (error) {
-		Console.error(error)
-		throw error.toString()
-	}
-}
-
-/**
  * Get Admission Fee rate
  *
  * @returns price
@@ -360,185 +343,6 @@ async function getAdmissionFee() {
 		return response.data.price
 	} catch (error) { throw error.toString() }
 	return 0
-}
-
-/**
- * Add Transaction
- *
- * @param {({
- * 		membershipType: string|number,
- * 		offer?: string|number,
- * 		gymUser: string|number,
- * 		start: Date,
- * 		packageMagnitude: number,
- * 		packages: string|number,
- * 	})} transaction
- * @returns {(Promise<{
- * 	id: string | number,
- * 	mode: string | number,
- * 	start: Date,
- * 	end: Date,
- * 	endExtendedDate: Date,
- * }>)}
- */
-async function addTransaction(
-	transaction: {
-		membershipType: string|number,
-		offer?: string|number,
-		gymUser: string|number,
-		start: Date,
-		packageMagnitude: number,
-		packages: string|number,
-	}
-): Promise<{
-	id: string | number,
-	mode: string | number,
-	start: Date,
-	end: Date,
-	endExtendedDate: Date,
-}>{
-	try {
-		let response = await GQLClient.mutate<{
-			transaction: {
-				id: string | number,
-				mode: string | number,
-				start: Date,
-				end: Date,
-				endExtendedDate: Date,
-			}
-		}>(
-			gql`
-				mutation addTransaction(
-					$membershipType: Float
-					$offer: Float
-					$gymUser: Float
-					$start: DateTime!
-					$packageMagnitude: Float!
-					$packages: Float!
-				){
-					transaction: addTransaction(
-						membershipType: $membershipType
-						offer:$offer
-						gymUser: $gymUser
-						start:$start
-						packageMagnitude: $packageMagnitude
-						packages:$packages
-					){
-						id
-						mode
-						start
-						end
-						endExtendedDate
-					}
-				}
-			`,
-			{
-				membershipType: transaction.membershipType,
-				offer: !transaction.offer ? -1 : transaction.offer,
-				gymUser: transaction.gymUser,
-				start: transaction.start,
-				packageMagnitude: typeof transaction.packageMagnitude==="string"?parseInt(transaction.packageMagnitude):transaction.packageMagnitude,
-				packages: transaction.packages,
-			}
-		)
-		if (response.errors) throw response.errors[0].message
-		if (!response.data) throw "Unable to save transaction"
-		return response.data.transaction
-	} catch (error) {
-		Console.error(error)
-		throw error.toString()
-	}
-}
-
-/**
- * Add Payment
- *
- * @param {({
- * 	adjustment: string|number,
- * 	amount: number,
- * 	receipt: string|number,
- * 	mode: string|number,
- * })} payment details
- * @returns {(Promise<string|number>)} payment id
- */
-async function addPayment(payment:{
-	adjustment?: number,
-	amount: number,
-	receipt: string|number,
-	mode: string|number,
-}):Promise<string|number>{
-	try {
-		if(!payment.adjustment) payment.adjustment = 0
-		let response = await GQLClient.mutate<{ payment: { id: string| number }}>(
-			gql`
-				mutation AddPayment(
-					$adjustment: Float!
-					$amount: Float!
-					$receipt: String!
-					$mode: Float!
-				){
-					payment: addPayment(
-						adjustment: $adjustment
-						amount: $amount
-						receipt: $receipt
-						mode: $mode
-					){
-						id
-					}
-				}
-			`,
-			{
-				adjustment: payment.adjustment,
-				amount: payment.amount,
-				receipt: payment.receipt,
-				mode: payment.mode,
-			}
-		)
-		if (response.errors) throw response.errors[0].message
-		if (!response.data) throw "Unable to save payment"
-		return response.data.payment.id
-	} catch (error) {
-		Console.error(error)
-		throw error.toString()
-	}
-}
-
-/**
- * Link transaction and payment
- *
- * @param {(string|number)} transactionId transaction id
- * @param {(string|number)} paymentId payment id
- * @returns {Promise<boolean>} link status
- */
-async function linkTransactionPay(
-	transactionId: string|number,
-	paymentId: string|number
-):Promise<boolean>{
-	try {
-		let response = await GQLClient.mutate<{linked: boolean}>(
-			gql`
-				mutation linkTransactionPay(
-					$transactionId: Float!
-					$paymentId: Float!
-				){
-					linked: linkTransactionPay(
-						transactionId: $transactionId
-						paymentId: $paymentId
-					)
-				}
-			`,
-			{
-				transactionId,
-				paymentId,
-			}
-		)
-		if (response.errors) throw response.errors[0].message
-		if (!response.data) throw "Unable to link transaction and payment"
-		return response.data.linked
-	} catch (error) {
-		Console.error(error)
-		throw error.toString()
-	}
 }
 
 async function createGroupGymUsers(userIDs: (string | number)[], groupingId: string|number):Promise<{

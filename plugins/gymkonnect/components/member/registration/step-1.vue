@@ -38,14 +38,16 @@
 							<v-select v-model="occupation" prepend-icon="work" :items="Occupations" item-text="name" item-value="id" label="Occupation"  :readonly="Readonly" color="orange darken-2"/>
 						</v-flex>
 
-						<v-flex xs12 class="px-2" v-if="!exclude.includes('badgenumber')">
-							<v-text-field v-model="badgenumber" label="Badge Number" :rules="rules.memberId" placeholder="Enter or Generate Member Id" prepend-icon="fas fa-hashtag">
-								<v-fade-transition slot="append">
-									<v-btn dark :loading="loading" :disabled="loading" color="secondary" @click.native.stop="generateMemberId">Generate</v-btn>
-								</v-fade-transition>
-							</v-text-field>
-						</v-flex>
-
+						<v-flex xs12 class="px-2"> <v-switch v-model="autoGenerateMemberId" label="Auto generate Badge Number" color="orange darken-2" no-hint/> </v-flex>
+						<v-slide-y-transition mode="out-in">
+							<v-flex xs12 class="px-2" v-if="!exclude.includes('badgenumber') && !autoGenerateMemberId">
+								<v-text-field v-model="badgenumber" label="Badge Number" :rules="rules.memberId" placeholder="Enter or Generate Member Id" prepend-icon="fas fa-hashtag">
+									<v-fade-transition slot="append">
+										<v-btn dark :loading="loading" :disabled="loading" color="secondary" @click.native.stop="generateMemberId">Generate</v-btn>
+									</v-fade-transition>
+								</v-text-field>
+							</v-flex>
+						</v-slide-y-transition>
 					</v-layout>
 				</v-form>
 			</v-flex>

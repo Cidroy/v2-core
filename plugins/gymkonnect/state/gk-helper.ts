@@ -13,6 +13,7 @@ export type TGQLBodyTypes = TGQLBasic
 export type TGQLOrganizationTypes = TGQLBasic
 export type TGQLPurposes = TGQLBasic
 export type TGQLPTPurposes = TGQLBasic
+export type TGQLFCPurposes = TGQLBasic
 export type TGQLMembershipTypes = TGQLBasic
 export type TGQLBloodGroup = TGQLBasic
 export type TGQLUTMSource = TGQLBasic
@@ -26,6 +27,7 @@ export type TGQLPTPackages = TGQLBasic & { count: number, duration: string }
 export type TGQLUserMode = TGQLBasic
 export type TGQLSpaAmenities = TGQLBasic
 export type TGQLPTTrainerType = TGQLBasic
+export type TGQLFCCounsellor = TGQLBasic
 export default class GKHelper{
 	public static async GetOccupations(): Promise<TGQLOccupations[]>{
 		let response = await GQLClient.query<{
@@ -84,7 +86,7 @@ export default class GKHelper{
 		let response = await GQLClient.query<{ groupings: TGQLGroupings[] }>(
 			gql`
 				query Groupings{
-					groupings{
+					groupings(service: "GYM"){
 						id
 						name
 						min: minCount
@@ -98,11 +100,10 @@ export default class GKHelper{
 	}
 
 	public static async GetSpaGroupings(): Promise<TGQLSpaGroupings[]>{
-		// FIXME: [Nikhil] change this to spa grouping
 		let response = await GQLClient.query<{ groupings: TGQLSpaGroupings[] }>(
 			gql`
 				query Groupings{
-					groupings{
+					groupings(service: "SPA"){
 						id
 						name
 						min: minCount
@@ -196,6 +197,36 @@ export default class GKHelper{
 			gql`
 				query gymPurposes{
 					gymPurposes{
+						id
+						name
+					}
+				}
+			`,
+		)
+		return response.data.gymPurposes
+	}
+
+	public static async GetFCPurposes(): Promise<TGQLFCPurposes[]> {
+		// FIXME: [Nikhil] make this fitness councelling purposes
+		let response = await GQLClient.query<{ gymPurposes: TGQLFCPurposes[] }>(
+			gql`
+				query gymPurposes{
+					gymPurposes{
+						id
+						name
+					}
+				}
+			`,
+		)
+		return response.data.gymPurposes
+	}
+	public static async GetFCCounsellor(): Promise<TGQLFCCounsellor[]> {
+		// FIXME: [Nikhil] make this fitness councelling Counsellor
+		return []
+		let response = await GQLClient.query<{ gymPurposes: TGQLFCCounsellor[] }>(
+			gql`
+				query gymCounsellor{
+					gymCounsellor{
 						id
 						name
 					}
