@@ -157,7 +157,18 @@ export default class UserResolver {
 			}
 			user.wdmsId = [wdmsId,]
 		} else {
-			// FIXME: [Nikhil] Generate Badgenumber!
+		
+			let entityManager = DB.getManager()
+			let badgenumber = await entityManager.query("select if(max(badgenumber) is null, 1,max(badgenumber)+1 ) as badgenumber from userinfo")
+			let badgenumberStart: string = badgenumber[0].badgenumber
+			user.badgenumber = badgenumberStart
+			await Member.add(badgenumberStart, { name: firstName + " " + ((lastName) ? <string>lastName : "") })
+			let userinfo = await entityManager.query("select userId, company_id from userinfo where badgenumber= ?", [Utils.appendZeroesToBadgenumber(badgenumberStart),])
+			let wdmsId = {
+				zoneID: userinfo[0] ? userinfo[0].company_id : 0,
+				userID: userinfo[0] ? userinfo[0].userId : 0
+			}
+			user.wdmsId = [wdmsId,]
 		}
 		if (middleName) user.middleName = middleName
 		if (lastName) user.lastName = lastName
@@ -175,7 +186,7 @@ export default class UserResolver {
 			await fs.ensureDir(path.resolve(AppConfig.DataFolder, "profile-photos"))
 			// TODO: make this central
 			let imagePath = path.resolve(AppConfig.DataFolder, imageName)
-			await decode_base64(imageBase64, imagePath)
+			await decode_base64(imageBase64, `%POSITRON_URL%/${imagePath}`)
 			user.imagePath = imageName
 		}
 		if (category) user.category = category
