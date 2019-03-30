@@ -1,10 +1,13 @@
 <template>
 	<Layout>
 		<v-toolbar extended>
+			<!-- FIXME: [Kundan] breaks in mobile view -->
 			<v-layout row wrap>
-				<v-flex xs12 md4/>
-				<v-flex xs12 md4> <v-select v-model="report" :items="Object.values(REPORT_TYPES)" item-text="name" item-value="value" color="orange darken-2"  prepend-icon="fas fa-id-card"/> </v-flex>
-				<v-flex xs12 md4>
+				<v-flex xs12 md3 class="px-2"> <v-autocomplete v-model="timePeriod" :items="Object.values(TIME_PERIODS)" item-text="name" item-value="value" color="orange darken-2"  prepend-icon="history" auto-select-first/> </v-flex>
+				<v-spacer />
+				<v-flex xs12 md3> <v-select v-model="report" :items="Object.values(REPORT_TYPES)" item-text="name" item-value="value" color="orange darken-2"  prepend-icon="fas fa-id-card"/> </v-flex>
+				<v-spacer />
+				<v-flex xs1>
 					<v-layout justify-end>
 						<v-tooltip left>
 							<v-btn @click.native.stop="refresh" :disabled="refreshing" :loading="refreshing" outline icon slot="activator"> <v-icon>refresh</v-icon> </v-btn>
@@ -14,23 +17,22 @@
 				</v-flex>
 			</v-layout>
 			<v-layout slot="extension" class="px-2">
-				<v-flex xs12 md3 class="px-2">
-					<v-autocomplete v-model="timePeriod" :items="Object.values(TIME_PERIODS)" item-text="name" item-value="value" color="orange darken-2"  prepend-icon="history" auto-select-first/>
-				</v-flex>
-				<v-flex />
-				<v-flex xs12 md3 class="px-2">
+				<v-flex xs6 md3 class="px-2">
 					<v-text-field color="orange darken-2" v-model="timePeriodStartFormatted" @blur="timePeriodStart = parseDate(timePeriodStartFormatted)" @click:prepend="timePeriodStartMenu = true" :disabled="!CustomRange" label="From" prepend-icon="event" mask="##/##/####" return-masked-value persistent-hint />
 					<v-menu v-model="timePeriodStartMenu" ref="timePeriodStartMenu" :close-on-content-click="false" lazy transition="scale-transition" >
 						<div slot="activator" data-id="timePeriodStart"/>
 						<v-date-picker v-model="timePeriodStart" no-title @input="timePeriodStartMenu = false"  color="orange darken-2"/>
 					</v-menu>
 				</v-flex>
-				<v-flex xs12 md3 class="px-2">
+				<v-flex xs6 md3 class="px-2">
 					<v-text-field color="orange darken-2" v-model="timePeriodEndFormatted" @blur="timePeriodEnd = parseDate(timePeriodEndFormatted)" @click:prepend="timePeriodEndMenu = true" :disabled="!CustomRange" label="To" prepend-icon="event" mask="##/##/####" return-masked-value persistent-hint />
 					<v-menu v-model="timePeriodEndMenu" ref="timePeriodEndMenu" :close-on-content-click="false" lazy transition="scale-transition" >
 						<div slot="activator" data-id="timePeriodEnd"/>
 						<v-date-picker v-model="timePeriodEnd" no-title @input="timePeriodEndMenu = false" :min="timePeriodStart"  color="orange darken-2"/>
 					</v-menu>
+				</v-flex>
+				<v-flex xs12 md6 px-2>
+					<v-text-field v-model="search" single-line hide-details prepend-inner-icon="search" label="Search" color="orange darken-2" class="pt-2" />
 				</v-flex>
 			</v-layout>
 		</v-toolbar>
@@ -50,7 +52,7 @@
 			</template>
 			<template #headers="props">
 				<tr>
-					<th> <v-checkbox  @click.stop="tableToggleAll" :input-value="props.all" :indeterminate="props.indeterminate" primary hide-details color="orange darken-2"/> </th>
+					<th> <v-checkbox  @click.stop="tableToggleAll" :input-value="props.all" :indeterminate="props.indeterminate" primary hide-details color="orange darken-2" style="max-width:10px; width:10px; min-width:10px"/> </th>
 					<th v-for="header in props.headers" @click="tableChangeSort(header.value)" :key="header.text" :class="['column sortable', 'text-truncate', tablePagination.descending ? 'desc' : 'asc', header.value === tablePagination.sortBy ? 'active' : '']" :style="header.width?`max-width:${header.width}; width:${header.width}; min-width:${header.width}`:''" > {{ header.text }} <v-icon small>arrow_upward</v-icon> </th>
 				</tr>
 			</template>

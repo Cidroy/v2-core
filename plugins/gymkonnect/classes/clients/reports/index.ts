@@ -1,13 +1,13 @@
-import { Freezings } from "./freezings"
-import { Renewals } from "./renewals"
+import { FREEZINGS } from "./freezings"
+import { RENEWALS } from "./renewals"
 import { Bookings } from "./bookings"
 import { Enquiry } from "./enquiry"
 import { Prebook } from "./prebook"
 import { AddonRegistrations } from "./addon-registrions"
 
 export const Reports = {
-	Freezings,
-	Renewals,
+	FREEZINGS,
+	RENEWALS,
 	Bookings,
 	Enquiry,
 	Prebook,
