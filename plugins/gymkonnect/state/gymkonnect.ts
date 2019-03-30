@@ -7,7 +7,7 @@ import GKHelper,
 		TGQLBloodGroup, TGQLTimeSlot, TGQLUTMSource, TGQLDoor, TGQLOffer,
 		TGQLUserMode, TGQLSpaAmenities, TGQLSpaGroupings, TGQLPTPackages, TGQLPTPurposes,
 		TGQLPTTrainerType,
-	TGQLFCPurposes, TGQLFCCounsellor
+	TGQLFCPurposes, TGQLFCCounsellor,TGQLODPlans
 	}
 from "./gk-helper"
 import { Logger } from "@classes/CONSOLE"
@@ -38,6 +38,7 @@ let _gk_userModes: TGQLUserMode[] = []
 let _gk_spa_amenities: TGQLSpaAmenities[] = []
 let _gk_pt_trainerType: TGQLPTTrainerType[] = []
 let _gk_fc_counsellor: TGQLFCCounsellor[] = []
+let _gk_od_plans: TGQLODPlans[] = []
 
 @Module({ dynamic: true, store, name: "Gymkonnect" })
 class Gymkonnect extends VuexModule {
@@ -410,6 +411,16 @@ class Gymkonnect extends VuexModule {
 	 */
 	public get GK_FC_COUNSELLOR() { return this._gk_fc_counsellor }
 
+	private _gk_od_plans = _gk_od_plans
+
+	/**
+	 * Get all GROUPINGS
+	 *
+	 * @readonly
+	 * @memberof Gymkonnect
+	 */
+	public get GK_OD_PLANS() { return this._gk_od_plans}
+
 	/**
 	 * Get ALL_OFFER by ID
 	 *
@@ -450,6 +461,7 @@ class Gymkonnect extends VuexModule {
 			"_gk_pt_trainerType",
 			"_gk_fc_purposes",
 			"_gk_fc_counsellor",
+			"_gk_od_plans",
 		]
 	})
 	public async GK_Initialize() {
@@ -505,10 +517,12 @@ class Gymkonnect extends VuexModule {
 				Xpt_trainerType,
 				Xfc_purposes,
 				Xfc_counsellor,
+				Xod_plans,
 			] = await Promise.all([
 				GKHelper.GetPTTrainerTypes(),
 				GKHelper.GetFCPurposes(),
-				GKHelper.GetFCCounsellor(),
+				GKHelper.GetODPlans(),
+
 			])
 			// let [] = await Promise.all([])
 			_gk_occupations = Xoccupations
@@ -534,6 +548,7 @@ class Gymkonnect extends VuexModule {
 			_gk_pt_trainerType = Xpt_trainerType
 			_gk_fc_purposes = Xfc_purposes
 			_gk_fc_counsellor = Xfc_counsellor
+			_gk_od_plans = Xod_plans
 			return {
 				_gk_bloodGroups,
 				_gk_bodyTypes,
@@ -557,7 +572,8 @@ class Gymkonnect extends VuexModule {
 				_gk_pt_packages,
 				_gk_pt_trainerType,
 				_gk_fc_purposes,
-				_gk_fc_counsellor
+				_gk_fc_counsellor,
+				_gk_od_plans
 			}
 		} catch (error) {
 			Console.error("Gymkonnect Store failed to initialize", error)

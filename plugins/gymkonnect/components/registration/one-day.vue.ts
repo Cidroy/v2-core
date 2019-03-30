@@ -121,7 +121,7 @@ export default class OneDayRegistration extends Vue{
 	private get UsersCount() { return GymkonnectStore.GK_SPA_GROUPING(this.grouping)!.count }
 	// TODO: [Vicky][Nikhil] implement spa grouping
 	private get GROUPINGS() { return GymkonnectStore.GK_SPA_GROUPINGS }
-
+	private get PLANS() {return GymkonnectStore.GK_OD_PLANS}
 	private amenities: (string | number)[] = []
 	private get AMENITIES() { return GymkonnectStore.GK_SPA_AMENITIES }
 

@@ -28,7 +28,7 @@
 				<stepper v-else v-model="clientData" @finished="clientId => stepperComplete(clientId)" class="elevation-10"/>
 			</v-flex>
 			<v-flex xs12 class="my-2 mt-4">
-				<v-card class="elevation-10 px-4" color="transparent">
+				<!-- <v-card class="elevation-10 px-4" color="transparent">
 					<v-layout row wrap>
 						<v-flex xs12 md8>
 							<v-radio-group :prepend-icon="UsersCount===1?'person':'people'" label="Booking for" v-model="grouping" row>
@@ -44,14 +44,14 @@
 							<v-checkbox class="ma-0" label="Allow Back Dates" v-model="allowBackDating" color="orange"/>
 						</v-flex>
 						<!-- TODO: add time picker for preffered time slot -->
-						<v-flex xs12 class="mb-3"> <v-divider /> </v-flex>
+						<!-- <v-flex xs12 class="mb-3"> <v-divider /> </v-flex>
 						<v-flex xs12>
 							<h3> <v-icon left>add</v-icon> Amenities</h3>
 							<v-layout align-start row>
 								<v-checkbox v-for="(amenity, index) in AMENITIES" :key="index" v-model="amenities" :value="amenity.id" :label="amenity.name" color="orange darken-2"/>
 							</v-layout>
-						</v-flex>
-					</v-layout>
+						</v-flex> -->
+					<!-- </v-layout>
 					<v-slide-y-reverse-transition>
 						<v-alert v-if="!!error" color="red darken-3" type="error" :value="true" >{{ error }}</v-alert>
 					</v-slide-y-reverse-transition>
@@ -62,6 +62,21 @@
 							<v-flex xs12 lg3 class="px-2"> <v-text-field :value="amount" :loading="priceLoading" label="Total" prefix="₹" outline readonly color="orange darken-2"/> </v-flex>
 						</v-layout>
 					</v-card-actions>
+				</v-card> -->
+				<v-card class="elevation-10 px-4" color="transparent">
+					<v-layout row wrap>
+						<v-flex xs12 md8>
+							<v-radio-group :prepend-icon="UsersCount===1?'person':'people'" label="Booking for" v-model="grouping" row>
+								<v-radio v-for="(grouping, index) in GROUPINGS" :label="grouping.name" :value="grouping.id" :key="index" color="orange darken-2"/>
+							</v-radio-group>
+						</v-flex>
+						<v-flex xs12 md8>
+							<h2>Available Plans</h2>
+							<v-radio-group :prepend-icon="UsersCount===1?'person':'people'"  v-model="grouping" row>
+								<v-radio v-for="(Plans, index) in PLANS" :label="Plans.name" :value="Plans.id" :key="index" color="orange darken-2"/>
+							</v-radio-group>	
+						</v-flex>
+					</v-layout>
 				</v-card>
 			</v-flex>
 		</v-layout>
