@@ -7,6 +7,7 @@ import uuid from "uuid"
 import AppConfig from "@classes/appConfig"
 import Printer from "@electron/printer"
 import { Logger } from "@classes/CONSOLE"
+import PositronClient from "@/utils/positron"
 
 const Console = new Logger(`core/home.vue`)
 @Component({
@@ -37,11 +38,10 @@ export default class HomePage extends Vue {
 		title: uuid(),
 		subtitle: "octavious"
 	}) }
-	private test_2() {
+	private async test_2() {
 		// DeviceStore.gkFPSync()
-		// @ts-ignore
-		this.$refs.focusMe.focus()
-		// @ts-ignore
-		console.log(this.$refs)
+		Console.log(
+			await PositronClient.POST("/biometric-devices/status/all")
+		)
 	}
 }

@@ -1,1 +1,1 @@
-export const Enquiry = {}
+export const ENQUIRY = {}
