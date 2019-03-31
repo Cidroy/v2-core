@@ -42,7 +42,7 @@
 								<v-date-picker v-model="doj" :min="minDoj" :max="maxDoj" no-title @input="dojMenu = false"  color="orange darken-2"/>
 							</v-menu>
 							<v-checkbox class="ma-0" label="Allow Back Dates" v-model="allowBackDating" color="orange"/>
-						</v-flex>
+						</v-flex-->
 						<!-- TODO: add time picker for preffered time slot -->
 						<!-- <v-flex xs12 class="mb-3"> <v-divider /> </v-flex>
 						<v-flex xs12>

@@ -376,6 +376,8 @@ export default class GKHelper{
 	}
 
 	public static async GetODPlans(): Promise<TGQLBasic[]> {
+		if(1) return []
+		// FIXME: [Nikhil]
 		let response = await GQLClient.query<{ ODplans: TGQLBasic[] }>(
 			gql`
 				query ODPlans{

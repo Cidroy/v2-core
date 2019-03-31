@@ -1,4 +1,4 @@
-import { VuexModule, Module, getModule, MutationAction } from "vuex-module-decorators"
+import { VuexModule, Module, getModule, MutationAction, Action } from "vuex-module-decorators"
 import store from "@/state/store"
 import GKHelper,
 	{
@@ -436,150 +436,241 @@ class Gymkonnect extends VuexModule {
 	private _gk_regType = _gk_regType
 	public get GK_REGISTRATION_TYPE() { return this._gk_regType }
 
+	@Action({}) public async GK_Initialize() {
+		try { this.GK_Initialize_Gym() } catch (error) { Console.error(error) }
+		try { this.GK_Initialize_General() } catch (error) { Console.error(error) }
+		try { this.GK_Initialize_Spa() } catch (error) { Console.error(error) }
+		try { this.GK_Initialize_Transaction() } catch (error) { Console.error(error) }
+		try { this.GK_Initialize_PersonalTraining() } catch (error) { Console.error(error) }
+		try { this.GK_Initialize_FitnessCounselling() } catch (error) { Console.error(error) }
+		try { this.GK_Initialize_OneDay() } catch (error) { Console.error(error) }
+		return true
+	}
+
+	@MutationAction({
+		mutate: [
+			"_gk_groupings",
+			"_gk_membershipTypes",
+			"_gk_packages",
+			"_gk_timeSlots",
+		]
+	})
+	public async GK_Initialize_Gym() {
+		try {
+			let [
+				_gk_groupings,
+				_gk_membershipTypes,
+				_gk_packages,
+				_gk_timeSlots,
+			] = await Promise.all([
+				GKHelper.GetGroupings(),
+				GKHelper.GetMembershipTypes(),
+				GKHelper.GetPackages(),
+				GKHelper.GetTimeSlots(),
+			])
+			return {
+				_gk_groupings,
+				_gk_membershipTypes,
+				_gk_packages,
+				_gk_timeSlots,
+			}
+		} catch (error) {
+			Console.error("Gymkonnect Store failed to initialize gym section", error)
+			throw "Gymkonnect Store failed to initialize gym section. Functions are now limited"
+		}
+	}
+
+	@MutationAction({
+		mutate: [
+			"_gk_spa_amenities",
+			"_gk_spa_groupings",
+		]
+	})
+	public async GK_Initialize_Spa() {
+		Console.verbose("initializing")
+		try {
+			let [
+				Xspa_amenities,
+				Xspa_groupings,
+			] = await Promise.all([
+				GKHelper.GetSpaAmenities(),
+				GKHelper.GetSpaGroupings(),
+			])
+			_gk_spa_amenities = Xspa_amenities
+			_gk_spa_groupings = Xspa_groupings
+			return {
+				_gk_spa_amenities,
+				_gk_spa_groupings,
+			}
+		} catch (error) {
+			Console.error("Gymkonnect Store failed to initialize Spa section", error)
+			throw "Gymkonnect Store failed to initialize Spa section. Functions are now limited"
+		}
+	}
+
+	@MutationAction({
+		mutate: [
+			"_gk_pt_purposes",
+			"_gk_pt_packages",
+			"_gk_pt_trainerType",
+		]
+	})
+	public async GK_Initialize_PersonalTraining() {
+		Console.verbose("initializing")
+		try {
+			let [
+				_gk_pt_purposes,
+				_gk_pt_packages,
+				_gk_pt_trainerType,
+			] = await Promise.all([
+				GKHelper.GetPTPurposes(),
+				GKHelper.GetPTPackages(),
+				GKHelper.GetPTTrainerTypes(),
+			])
+			return {
+				_gk_pt_purposes,
+				_gk_pt_packages,
+				_gk_pt_trainerType,
+			}
+		} catch (error) {
+			Console.error("Gymkonnect Store failed to initialize personal training", error)
+			throw "Gymkonnect Store failed to initialize personal training"
+		}
+	}
+
+	@MutationAction({
+		mutate: [
+			"_gk_fc_purposes",
+			"_gk_fc_counsellor",
+		]
+	})
+	public async GK_Initialize_FitnessCounselling() {
+		Console.verbose("initializing")
+		try {
+			let [
+				_gk_fc_purposes,
+				_gk_fc_counsellor,
+			] = await Promise.all([
+				GKHelper.GetFCPurposes(),
+				GKHelper.GetFCPurposes(),
+			])
+			return {
+				_gk_fc_purposes,
+				_gk_fc_counsellor,
+			}
+		} catch (error) {
+			Console.error("Gymkonnect Store failed to initialize fitness counselling", error)
+			throw "Gymkonnect Store failed to initialize fitness counselling"
+		}
+	}
+
+	@MutationAction({
+		mutate: [
+			"_gk_od_plans",
+		]
+	})
+	public async GK_Initialize_OneDay() {
+		Console.verbose("initializing")
+		try {
+			let [
+				_gk_od_plans,
+			] = await Promise.all([
+				GKHelper.GetODPlans(),
+			])
+		} catch (error) {
+			Console.error("Gymkonnect Store failed to initialize one day", error)
+			throw "Gymkonnect Store failed to initialize one day"
+		}
+		return {
+			_gk_od_plans,
+		}
+	}
+
 	@MutationAction({
 		mutate: [
 			"_gk_bloodGroups",
 			"_gk_bodyTypes",
 			"_gk_categories",
-			"_gk_doors",
-			"_gk_groupings",
-			"_gk_idTypes",
-			"_gk_membershipTypes",
 			"_gk_occupations",
 			"_gk_organizationTypes",
-			"_gk_packages",
-			"_gk_paymentModes",
 			"_gk_purposes",
-			"_gk_timeSlots",
-			"_gk_utmSources",
-			"_gk_offers",
+			"_gk_doors",
+			"_gk_idTypes",
 			"_gk_userModes",
-			"_gk_spa_amenities",
-			"_gk_spa_groupings",
-			"_gk_pt_purposes",
-			"_gk_pt_packages",
-			"_gk_pt_trainerType",
-			"_gk_fc_purposes",
-			"_gk_fc_counsellor",
-			"_gk_od_plans",
 		]
 	})
-	public async GK_Initialize() {
-		Console.verbose("initializing")
+	public async GK_Initialize_General() {
+		Console.verbose("Initializing")
 		try {
 			let [
-				Xoccupations,
-				Xcategories,
-				XidTypes,
-				Xgroupings,
-				XbodyTypes,
-				XorganizationTypes,
-				Xpackages,
-				Xpurposes,
-				XmembershipTypes,
-				XpaymentModes,
-			] = await Promise.all([
-				GKHelper.GetOccupations(),
-				GKHelper.GetCategories(),
-				GKHelper.GetIdTypes(),
-				GKHelper.GetGroupings(),
-				GKHelper.GetBodyTypes(),
-				GKHelper.GetOrganizationTypes(),
-				GKHelper.GetPackages(),
-				GKHelper.GetPurposes(),
-				GKHelper.GetMembershipTypes(),
-				GKHelper.GetPaymentModes(),
-			])
-			let [
-				XbloodGroups,
-				XtimeSlots,
-				XutmSources,
-				Xdoors,
-				Xoffers,
-				XuserModes,
-				Xspa_amenities,
-				Xspa_groupings,
-				Xpt_purposes,
-				Xpt_packages,
+				_gk_bloodGroups,
+				_gk_bodyTypes,
+				_gk_categories,
+				_gk_occupations,
+				_gk_organizationTypes,
+				_gk_purposes,
+				_gk_doors,
+				_gk_idTypes,
+				_gk_userModes,
 			] = await Promise.all([
 				GKHelper.GetBloodGroups(),
-				GKHelper.GetTimeSlots(),
-				GKHelper.GetUTMSources(),
+				GKHelper.GetBodyTypes(),
+				GKHelper.GetCategories(),
+				GKHelper.GetOccupations(),
+				GKHelper.GetOrganizationTypes(),
+				GKHelper.GetPurposes(),
 				GKHelper.GetDoors(),
-				GKHelper.GetAllOffers(),
+				GKHelper.GetIdTypes(),
 				GKHelper.GetUserModes(),
-				GKHelper.GetSpaAmenities(),
-				GKHelper.GetSpaGroupings(),
-				GKHelper.GetPTPurposes(),
-				GKHelper.GetPTPackages(),
 			])
-			let [
-				Xpt_trainerType,
-				Xfc_purposes,
-				Xfc_counsellor,
-				Xod_plans,
-			] = await Promise.all([
-				GKHelper.GetPTTrainerTypes(),
-				GKHelper.GetFCPurposes(),
-				GKHelper.GetODPlans(),
-
-			])
-			// let [] = await Promise.all([])
-			_gk_occupations = Xoccupations
-			_gk_categories = Xcategories
-			_gk_idTypes = XidTypes
-			_gk_groupings = Xgroupings
-			_gk_bodyTypes = XbodyTypes
-			_gk_organizationTypes = XorganizationTypes
-			_gk_packages = Xpackages
-			_gk_purposes = Xpurposes
-			_gk_membershipTypes = XmembershipTypes
-			_gk_paymentModes = XpaymentModes
-			_gk_bloodGroups = XbloodGroups
-			_gk_timeSlots = XtimeSlots
-			_gk_utmSources = XutmSources
-			_gk_doors = Xdoors
-			_gk_offers = Xoffers
-			_gk_userModes = XuserModes
-			_gk_spa_amenities = Xspa_amenities
-			_gk_spa_groupings = Xspa_groupings
-			_gk_pt_purposes = Xpt_purposes
-			_gk_pt_packages = Xpt_packages
-			_gk_pt_trainerType = Xpt_trainerType
-			_gk_fc_purposes = Xfc_purposes
-			_gk_fc_counsellor = Xfc_counsellor
-			_gk_od_plans = Xod_plans
 			return {
 				_gk_bloodGroups,
 				_gk_bodyTypes,
 				_gk_categories,
-				_gk_doors,
-				_gk_groupings,
-				_gk_idTypes,
-				_gk_membershipTypes,
 				_gk_occupations,
 				_gk_organizationTypes,
-				_gk_packages,
-				_gk_paymentModes,
 				_gk_purposes,
-				_gk_timeSlots,
-				_gk_utmSources,
-				_gk_offers,
+				_gk_doors,
+				_gk_idTypes,
 				_gk_userModes,
-				_gk_spa_amenities,
-				_gk_spa_groupings,
-				_gk_pt_purposes,
-				_gk_pt_packages,
-				_gk_pt_trainerType,
-				_gk_fc_purposes,
-				_gk_fc_counsellor,
-				_gk_od_plans
 			}
+
 		} catch (error) {
-			Console.error("Gymkonnect Store failed to initialize", error)
-			throw "Gymkonnect Store failed to initialize"
+			Console.error("Gymkonnect Store failed to initialize general settings", error)
+			throw "Gymkonnect Store failed to initialize general settings. Functions are now limited"
 		}
 	}
+
+	@MutationAction({
+		mutate: [
+			"_gk_paymentModes",
+			"_gk_offers",
+		]
+	})
+	public async GK_Initialize_Transaction() {
+		Console.verbose("Initializing")
+		try {
+			let [
+				_gk_paymentModes,
+				_gk_offers,
+			] = await Promise.all([
+				GKHelper.GetPaymentModes(),
+				GKHelper.GetAllOffers(),
+			])
+			
+			return {
+				_gk_paymentModes,
+				_gk_offers,
+
+			}
+
+		} catch (error) {
+			Console.error("Gymkonnect Store failed to initialize gym transaction", error)
+			throw "Gymkonnect Store failed to initialize gym transaction. Functions are now limited"
+		}
+
+	}
+
 }
 
 export const GymkonnectStore = getModule(Gymkonnect)
