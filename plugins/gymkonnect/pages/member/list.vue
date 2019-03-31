@@ -78,6 +78,6 @@
 				</v-list-tile>
 			</v-list>
 		</v-menu>
-		<send-message-fab v-if="members.length" />
+		<send-message-fab v-if="0 && members.length" />
 	</Layout>
 </template>
