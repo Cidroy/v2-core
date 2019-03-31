@@ -5,6 +5,7 @@ import GymUsers from "@positron/models/gymUsers"
 import Transaction from "@positron/models/transaction"
 import GymFreezeRules from "@positron/models/freezeRules"
 import User from "@positron/models/user"
+import moment from "moment"
 
 @GQL.ObjectType()
 export class FreezeAvailability  {
@@ -38,12 +39,13 @@ export default class FreezeResolver{
 
 	@GQL.FieldResolver(returns => FreezeAvailability, { nullable: true })
 	public async freezeAvailability(@GQL.Root() freeze: Freezes) {
+		//FIXME: Nikhil [ad freezerule.prograamme = transaction.progrmame]
 		const user = await Transaction.createQueryBuilder("transaction")
 			.innerJoinAndSelect(GymUsers, "gymUser","gymUser.transaction = transaction.id")
 			.innerJoinAndSelect(User, "user","user.id = gymUser.userid")
-			.innerJoinAndSelect(GymFreezeRules, "freezeRules", "freezeRules.packages = transaction.packages and freezeRules.programme = transaction.programme and  freezeRules.category = user.category")
-			.select(["if(freezeRules.count is null, null, (freezeRules.count - transaction.freezeCount)) as freezeCountAvailable",
-					"if(freezeRules.count is null, (freezeRules.maxDays - transaction.freezeDays) , (freezeRules.count*freezeRules.maxDays - transaction.freezeDays)) as freezeDaysAvailable",])
+			.innerJoinAndSelect(GymFreezeRules, "freezeRules", "freezeRules.packages = transaction.packages and freezeRules.membershipType = transaction.membershipType and  freezeRules.category = user.category")
+			.select(["if(`freezeRules`.`count` is null, 0, (`freezeRules`.`count` - `transaction`.`freezeCount`)) as freezeCountAvailable",
+				"if(`freezeRules`.`count` is null, (`freezeRules`.`maxDays` -isnull(`transaction`.`freezeDays`)) , (freezeRules.count*freezeRules.maxDays - isnull(`transaction`.`freezeDays`))) as freezeDaysAvailable ",])
 			.groupBy("transaction.id")
 			.where({ freezeId: freeze.id })
 			.execute()
@@ -86,13 +88,33 @@ export default class FreezeResolver{
 	// }
 
 	@GQL.Mutation(returns => Freezes)
+	public async Unfreeze(
+		@GQL.Arg("user") user: number,
+		@GQL.Arg("payment", { nullable: true }) payment?: number,
+	) {
+		let userData = await GymUsers.findOne({ where: { active: 1, userId: user } })
+		if (userData === undefined) throw "User doesn't exist"
+		let transaction = await Transaction.findOne({where : {active: 1, id: userData.transaction}})
+		if (transaction === undefined) throw "transaction doesn't exist"
+		let freeze =await Freezes.findOne({ where: { active: 1, id:transaction.freezeId } })
+		if (freeze === undefined) throw "Freeze doesn't exist"
+		if(payment) freeze.payment = payment
+		freeze.end = new Date()
+		transaction.freezeCount = (transaction.freezeCount ? transaction.freezeCount: 0) +1
+		transaction.freezeDays = (transaction.freezeDays ? transaction.freezeDays : 0) + moment().diff(freeze.start, "days")
+		transaction.save()
+		freeze.save()
+
+		return freeze
+	}
+
+	@GQL.Mutation(returns => Freezes)
 	public async addFreeze(
 		@GQL.Arg("user") user : number,
 		@GQL.Arg("start") start: Date,
 		@GQL.Arg("count", { nullable: true }) count? : number,
 		@GQL.Arg("end", { nullable: true }) end? : Date,
 		@GQL.Arg("payment", { nullable: true }) payment? : number,
-		@GQL.Arg("transaction", { nullable: true }) transaction? : number,
 		@GQL.Arg("days", { nullable: true }) days? : number,
 	){
 		let freezes = new Freezes()
@@ -101,7 +123,9 @@ export default class FreezeResolver{
 		if(count) freezes.count = count
 		if(end) freezes.end = end
 		if(payment) freezes.payment = payment
-		if(transaction) freezes.transaction = transaction
+		let userData = await GymUsers.findOne({ where: { active: 1, userId: user } })
+		if(userData === undefined) throw "User doesn't exist"
+		freezes.transaction = userData.transaction
 		if(days) freezes.days = days
 
 		await freezes.save()

@@ -5,6 +5,8 @@ import { TFreezeTransaction } from "../../types/freeze"
 import { sleep } from "@classes/misc"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import { PaymentDetail } from "../../types/payment"
+import { PaymentData } from "../../types/registration"
+import IFreezes from "@classes/interface/IFreezes"
 
 const Console = new Logger(`freeze/gk-client`)
 
@@ -43,6 +45,10 @@ const defaultInfo = async () => {
 				days: 1,
 				count: 1,
 			},
+			used: {
+				days: 0,
+				count: 0,
+			},
 			history: [] as { start: string, end: string }[]
 		}
 	}
@@ -64,6 +70,10 @@ async function info(clientId: string | number): Promise<TFreezingInfo> {
 					packageMagnitude: number,
 					packageType: string | number,
 					purposes: (string | number)[],
+					freezeAvailability?: { days?: number, count?: number },
+					freezeId?: string | number,
+					freezeDays?: number,
+					freezeCount?: number
 				}
 				isGrouped: boolean,
 				group: {
@@ -108,6 +118,13 @@ async function info(clientId: string | number): Promise<TFreezingInfo> {
 							packageMagnitude
 							packageType: packages
 							purposes: purpose
+							freezeAvailability{
+								days: freezeDaysAvailable
+								count: freezeCountAvailable
+							}
+							freezeId
+							freezeDays
+							freezeCount
 						}
 						isGrouped
 						group: userGroupDetails{
@@ -178,11 +195,14 @@ async function info(clientId: string | number): Promise<TFreezingInfo> {
 					end: moment(member.transaction.end).toISOString().substr(0, 10),
 				})),
 			},
-			// FIXME: [Vicky] get from query
 			freezing: {
 				balance: {
-					days: 10,
-					count: 10,
+					days: (response.data.data.transaction.freezeAvailability || { days: 0 }).days || 0,
+					count: (response.data.data.transaction.freezeAvailability || { count: 0 }).count || 0,
+				},
+				used: {
+					days: response.data.data.transaction.freezeDays || 0,
+					count: response.data.data.transaction.freezeCount || 0,
 				},
 				history: []
 			}
@@ -211,16 +231,22 @@ async function basePrice(clientId: string | number, transactionId: string | numb
 }
 
 async function amount(clientId: string | number, transactionId: string | number, transactionData: TFreezeTransaction):Promise<number>{
-	// FIXME: [Vicky]
-	if(1) return 0
 	try {
-		let response = await GQLClient.query<{ price: number }>(
-			gql``,
-			{}
+		let response = await GQLClient.query<{ amount: number }>(
+			gql`
+				query FreezeAmount( $user: Float!, $from: String!, $to: String! ){
+					amount: freezeAmount(user: $user, from : $from, to: $to )
+				}
+			`,
+			{
+				user: clientId,
+				from: transactionData.start,
+				end: transactionData.end,
+			}
 		)
 		if (response.errors) throw response.errors[0].message
 		if (!response.data) throw "Unable to get price"
-		return response.data.price
+		return response.data.amount
 	} catch (error) {
 		Console.error(error)
 		throw error.toString()
@@ -235,34 +261,54 @@ async function addFreeze(
 	freezeId: string | number,
 	paymentId?: string | number
 }>{
-	if (1) return { freezeId: 0, }
-	// FIXME: [Vicky]
 	try {
-		let response = await GQLClient.mutate<{}>(
-			gql``,
-			{}
+		let response = await GQLClient.mutate<{ freezing: { id: string | number } }>(
+			gql`
+				mutation AddFreeze(
+					$start: DateTime!
+					$user: Float!
+					$end: DateTime
+				){
+					freezing: addFreeze(
+						user: $user,
+						start: $start,
+						end: $end,
+					){ id }
+				}
+			`,
+			{
+				user: clientId,
+				start: transactionData.start,
+				end: transactionData.end,
+			}
 		)
+		// TODO: [Vicky] Make Payment
 		if (response.errors) throw response.errors[0].message
 		if (!response.data) throw "Unable to add freezing"
-		return { freezeId: 1, }
+		return { freezeId: response.data.freezing.id, }
 	} catch (error) {
 		Console.error(error)
 		throw error.toString()
 	}
 }
 
-async function unfreeze(clientId: string | number):Promise<boolean>{
-	// FIXME: [Vicky]
-	await sleep(2000)
-	if(1) return true
+async function unfreeze(clientId: string | number, payment: PaymentData):Promise<boolean>{
 	try {
-		let response = await GQLClient.mutate<{ unfreezed: boolean }>(
-			gql``,
-			{}
+		let response = await GQLClient.mutate<{ Unfreeze: Partial<IFreezes> }>(
+			gql`
+				mutation Unfreeze( $payment: Float, $user: Float!, ){
+					Unfreeze(payment:$payment, user: $user){ id }
+				}
+			`,
+			{
+				user: clientId,
+				// FIXME: add payment mechanism
+				// payment: paymentId,
+			}
 		)
 		if (response.errors) throw response.errors[0].message
 		if (!response.data) throw "Unable to Unfreeze member"
-		return response.data.unfreezed
+		return true
 	} catch (error) {
 		Console.error(error)
 		throw error.toString()

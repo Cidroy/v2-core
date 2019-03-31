@@ -8,6 +8,10 @@ import GymPackage from "@positron/models/gymPackage"
 import moment from "moment"
 import MembershipType from "@positron/models/membershipType"
 import { Logger } from "@classes/CONSOLE"
+import Freezes from "@positron/models/freezes"
+import { FreezeAvailability } from "./freezes"
+import User from "@positron/models/user"
+import GymFreezeRules from "@positron/models/freezeRules"
 
 const Console = new Logger(`gql-resolver/transaction`)
 @GQL.Resolver(of => Transaction)
@@ -29,6 +33,21 @@ export default class TransactionResolver{
 	@GQL.FieldResolver(returns => GymUsers, { nullable: true })
 	public async gymUser(@GQL.Root() transaction: Transaction) {
 		return GymUsers.findOne({ where: { active: 1, id: transaction.gymUser } })
+	}
+
+	@GQL.FieldResolver(returns => FreezeAvailability, { nullable: true })
+	public async freezeAvailability(@GQL.Root() transaction: Transaction) {
+		//FIXME: Nikhil [ad freezerule.prograamme = transaction.progrmame]
+		const user = await Transaction.createQueryBuilder("transaction")
+			.innerJoinAndSelect(GymUsers, "gymUser", "gymUser.transaction = transaction.id")
+			.innerJoinAndSelect(User, "user", "user.id = gymUser.userid")
+			.innerJoinAndSelect(GymFreezeRules, "freezeRules", "freezeRules.packages = transaction.packages and freezeRules.membershipType = transaction.membershipType and  freezeRules.category = user.category")
+			.select(["if(freezeRules.count is null, if(freezeRules.count is null, (freezeRules.maxDays - isnull(`transaction`.`freezeDays`)) , (freezeRules.count*freezeRules.maxDays - isnull(`transaction`.`freezeDays`))), (freezeRules.count - transaction.freezeCount)) as freezeCountAvailable",
+				"if(freezeRules.count is null, (freezeRules.maxDays - isnull(`transaction`.`freezeDays`)) , (freezeRules.count*freezeRules.maxDays - isnull(`transaction`.`freezeDays`))) as freezeDaysAvailable",])
+			.groupBy("transaction.id")
+			.where({ id: transaction.id })
+			.execute()
+		return user[0]
 	}
 
 	@GQL.Query(returns => [Transaction,])
@@ -78,7 +97,6 @@ export default class TransactionResolver{
 		@GQL.Arg("transactionId") transactionId: number,
 	){
 		try{
-			//FIXME: 2 way linking not yet done also, check for true transaction id
 			let payment = await Payment.createQueryBuilder()
 				.select(["id", "receipt", "amount",])
 				.where({ id: paymentId })
@@ -106,7 +124,7 @@ export default class TransactionResolver{
 			let gymuser = await GymUsers.find({ where: { userId: userId } })
 			if (gymuser.length == 0) throw "Invalid user"
 			let gymUserId = gymuser[0].id
-			
+
 			let transaction = await Transaction.createQueryBuilder()
 								.update(Transaction)
 								.set({ gymUser: gymUserId })
@@ -135,7 +153,7 @@ export default class TransactionResolver{
 	){
 		return this.getDueDate(packages,packageMagnitude,startDate)
 	}
-	
+
 	public async getDueDate(packages: number,
 							packageMagnitude: number,
 							startDate: Date

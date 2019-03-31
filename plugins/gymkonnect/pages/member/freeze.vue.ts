@@ -41,6 +41,7 @@ export default class MembershipFreezingPage extends Vue {
 	private async Initialize() {
 		this.clientData = await Gymkonnect.Freezing.defaultInfo()
 		this.clientId = this.value
+		this.onFreezeRangePeriodChange()
 	}
 
 	private readonly label = "Search by Mobile Number or Badge Number"
@@ -176,11 +177,11 @@ export default class MembershipFreezingPage extends Vue {
 		this.freezeEnd = moment(this.freezeStart).add(this.freezingPeriod, "days").toISOString().substr(0,10)
 	}
 
-	private freezeStart = new Date().toISOString().substr(0, 10)
+	private freezeStart = moment().endOf("day").toISOString().substr(0, 10)
 	private freezeStartFormatted = this.formatDate(this.freezeStart)
 	private freezeStartMenu = false
 	@Watch("freezeStart") private onFreezeStartChanged() { this.freezeStartFormatted = this.formatDate(this.freezeStart) }
-	private XfreezeStartMin = new Date().toISOString().substr(0, 10)
+	private XfreezeStartMin = moment().endOf("day").toISOString().substr(0, 10)
 	private get freezeStartMin() { return this.allowBackDating? this.XfreezeStartMin: moment().toISOString().substr(0,10) }
 	private get freezeStartMax() {
 		return moment.max([
@@ -226,6 +227,7 @@ export default class MembershipFreezingPage extends Vue {
 	private FreezeWarning = ""
 	private FreezeError = ""
 
+	@Watch("ignoreRemainingRestrictions")
 	@Watch("freezeStart")
 	@Watch("freezeEnd")
 	@Watch("freezingPeriod")
@@ -234,7 +236,6 @@ export default class MembershipFreezingPage extends Vue {
 		this.FreezeWarning = ""
 		if(this.ignoreRemainingRestrictions){
 			if (this.freezingPeriod > this.RemainingFreezeDays) this.FreezeWarning = "Freezing period exceeds the recommended limit"
-
 		} else {
 			if (this.freezingPeriod > this.RemainingFreezeDays) this.FreezeError = "Freezing period is more than the remaining Freezing period"
 			if (this.RemainingFreezeCount < 1) this.FreezeError = "No more Freezing available"

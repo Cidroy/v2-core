@@ -147,25 +147,28 @@ async function LIST(payload: {
 		{},
 		{ fetchPolicy: "no-cache" }
 	)
-	let users: TListResult[] = result.data.Freezings.map(row => ({
-		id: row.userDetails ? (row.userDetails.user ? row.userDetails.user.id : "Unavailable") : "Unavailable",
-		badgenumber: row.userDetails ? (row.userDetails.user.badgenumber ? row.userDetails.user.badgenumber :"Unavailable") : "Unavailable",
-		mode: row.userDetails.mode.name ,
-		name: row.userDetails ? `${row.userDetails.user.firstName || ""} ${row.userDetails.user.middleName || ""} ${row.userDetails.user.lastName || ""}`: "Unavailable",
-		membership: row.userDetails ? (row.userDetails.transaction ? row.userDetails.transaction.membership.name : "Unavailable") : "Unavailable",
-		package: row.userDetails ? (row.userDetails.transaction ? row.userDetails.transaction.packagesType.name : "Unavailable") : "Unavailable",
-		startDate: row.start ? formatDate(row.start.split("T")[0]) : "Unavailable",
-		endDate: row.end ? formatDate(row.end.split("T")[0]) : "Unavailable",
-		mobile: row.userDetails ? row.userDetails.user.mobile  : "Unavailable",
-		transaction: {
-			id: row.userDetails ? (row.userDetails.transaction ? row.userDetails.transaction.id : "0") : "0",
-		},
-		freezing:{
-			id: row.id
-		},
-		freezingBalance: `${row.freezeAvailability.freezeDaysAvailable} Days, ${100 || row.freezeAvailability.freezeCountAvailable} Times`,
-		paid: row.paid
-	}))
+	let users: TListResult[] = []
+	try {
+		users = result.data.Freezings.map(row => ({
+			id: row.userDetails ? (row.userDetails.user ? row.userDetails.user.id : "Unavailable") : "Unavailable",
+			badgenumber: row.userDetails ? (row.userDetails.user.badgenumber ? row.userDetails.user.badgenumber :"Unavailable") : "Unavailable",
+			mode: row.userDetails.mode.name ,
+			name: row.userDetails ? `${row.userDetails.user.firstName || ""} ${row.userDetails.user.middleName || ""} ${row.userDetails.user.lastName || ""}`: "Unavailable",
+			membership: row.userDetails ? (row.userDetails.transaction ? row.userDetails.transaction.membership.name : "Unavailable") : "Unavailable",
+			package: row.userDetails ? (row.userDetails.transaction ? row.userDetails.transaction.packagesType.name : "Unavailable") : "Unavailable",
+			startDate: row.start ? formatDate(row.start.split("T")[0]) : "Unavailable",
+			endDate: row.end ? formatDate(row.end.split("T")[0]) : "Unavailable",
+			mobile: row.userDetails ? row.userDetails.user.mobile  : "Unavailable",
+			transaction: {
+				id: row.userDetails ? (row.userDetails.transaction ? row.userDetails.transaction.id : "0") : "0",
+			},
+			freezing:{
+				id: row.id
+			},
+			freezingBalance: `${row.freezeAvailability.freezeDaysAvailable} Days, ${100 || row.freezeAvailability.freezeCountAvailable} Times`,
+			paid: row.paid
+		}))
+	} catch (error) { Console.error(error) }
 	return users
 }
 

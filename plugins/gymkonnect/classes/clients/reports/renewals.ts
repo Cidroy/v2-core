@@ -94,43 +94,48 @@ async function LIST(payload: {
 			}
 		}
 	}
-	type TResult = { Users: TGQLResultUsers[] }
+	type TResult = { Renewals: TGQLResultUsers[] }
 	let result = await GQLClient.query<TResult>(
-		// FIXME: [Nikhil] Get Renewals list in same format given the param
 		gql`
-			query Users{
-				Users: gymUsers{
-						gymUser{
-							mode{ name,description }
-							user{ id, firstName, middleName, lastName, badgenumber, mobile }
-							transaction{
-								id,
-								membership{ id, name },
-								packagesType{ id,name }
-								start
-								endExtendedDate
-							}
+			query Renewals( $from: String, $to: String ){
+				Renewals: renewals( from: $from, to: $to ){
+					gymUser{
+						mode{ name,description }
+						user{ id, firstName, middleName, lastName, badgenumber, mobile }
+						transaction{
+							id,
+							membership{ id, name },
+							packagesType{ id,name }
+							start
+							endExtendedDate
 						}
+					}
 				}
 			}
 		`,
-		{},
+		{
+			from: payload.start,
+			to: payload.end,
+		},
 		{ fetchPolicy: "no-cache" }
 	)
-	let users: TListResult[] = result.data.Users.map(user => ({
-		id: user.gymUser ? (user.gymUser.user? user.gymUser.user.id: 0) : 0,
-		badgenumber: user.gymUser ? (user.gymUser.user ? user.gymUser.user.badgenumber : "Unavailable") : "Unavailable",
-		mode: user.gymUser ? user.gymUser.mode.name: "",
-		name: user.gymUser ? `${user.gymUser.user.firstName || ""} ${user.gymUser.user.middleName || ""} ${user.gymUser.user.lastName || ""}` : "Unavailable",
-		membership: user.gymUser ? (user.gymUser.transaction ? user.gymUser.transaction.membership.name : "Unavailable") : "Unavailable",
-		package: user.gymUser ? (user.gymUser.transaction ? user.gymUser.transaction.membership.name :"Unavailable") : "Unavailable",
-		startDate: user.gymUser ? (user.gymUser.transaction ? formatDate(user.gymUser.transaction.start.split("T")[0]) : "Unavailable") : "Unavailable",
-		endDate: user.gymUser ? (user.gymUser.transaction ? formatDate(user.gymUser.transaction.endExtendedDate.split("T")[0]) : "Unavailable") : "Unavailable",
-		mobile: user.gymUser ? user.gymUser.user.mobile  : "Unavailable",
-		transaction: {
-			id: user.gymUser ? (user.gymUser.transaction ? user.gymUser.transaction.id : "0") : "0",
-		}
-	}))
+	let users: TListResult[] = []
+	try {
+		users = result.data.Renewals.map(user => ({
+			id: user.gymUser ? (user.gymUser.user? user.gymUser.user.id: 0) : 0,
+			badgenumber: user.gymUser ? (user.gymUser.user ? user.gymUser.user.badgenumber : "Unavailable") : "Unavailable",
+			mode: user.gymUser ? user.gymUser.mode.name: "",
+			name: user.gymUser ? `${user.gymUser.user.firstName || ""} ${user.gymUser.user.middleName || ""} ${user.gymUser.user.lastName || ""}` : "Unavailable",
+			membership: user.gymUser ? (user.gymUser.transaction ? user.gymUser.transaction.membership.name : "Unavailable") : "Unavailable",
+			package: user.gymUser ? (user.gymUser.transaction ? user.gymUser.transaction.membership.name :"Unavailable") : "Unavailable",
+			startDate: user.gymUser ? (user.gymUser.transaction ? formatDate(user.gymUser.transaction.start.split("T")[0]) : "Unavailable") : "Unavailable",
+			endDate: user.gymUser ? (user.gymUser.transaction ? formatDate(user.gymUser.transaction.endExtendedDate.split("T")[0]) : "Unavailable") : "Unavailable",
+			mobile: user.gymUser ? user.gymUser.user.mobile  : "Unavailable",
+			transaction: {
+				id: user.gymUser ? (user.gymUser.transaction ? user.gymUser.transaction.id : "0") : "0",
+			}
+		}))
+	} catch (error) { Console.error(error) }
 	return users
 }
 
