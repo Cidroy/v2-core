@@ -56,6 +56,8 @@ class Device extends VuexModule {
 			else if(result.type==="error") throw result.message
 		} catch (error) {
 			Console.error(error)
+			error = error.toString()
+			if (error.includes("RequestError")) error = "Unable to Connect to Positron"
 			this.mutateGKFPDeviceSyncError(error.toString())
 		}
 		this.gkFPSyncing(false)

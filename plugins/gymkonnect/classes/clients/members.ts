@@ -5,6 +5,8 @@ import { formatDate } from "@/utils/misc"
 import { IUser } from "@classes/interface/IUser"
 import { Logger } from "@classes/CONSOLE"
 import { TMemberInfo } from "../types/misc"
+import IGymUsers from "@classes/interface/IGymUsers"
+import IGymUserMode from "@classes/interface/IGymUserMode"
 
 const Console = new Logger(`members/gk-client`)
 async function getAllMembersForRegistrationList(): Promise<TMemberListTableItems[]> {
@@ -63,7 +65,13 @@ async function getAllMembersForRegistrationList(): Promise<TMemberListTableItems
 	return users
 }
 
-type TMemberResult = (Partial<IUser> & { name: string })
+type TMemberResult = (
+	Partial<IUser> &
+	{
+		name: string,
+		gymUser?: Partial<IGymUsers> & { mode?: Partial<IGymUserMode> }
+	}
+)
 
 async function find( value: string, keys: (keyof IUser)[] = [ "id", ]): Promise<TMemberResult[]>{
 	try {
@@ -75,6 +83,7 @@ async function find( value: string, keys: (keyof IUser)[] = [ "id", ]): Promise<
 						badgenumber
 						mobile
 						name
+						gymUser{ mode{ name, id } }
 					}
 				}
 			`,

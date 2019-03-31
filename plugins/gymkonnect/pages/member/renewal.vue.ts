@@ -12,6 +12,8 @@ import { defaultRegistrationStep3User } from "@plugins/gymkonnect/classes/types/
 import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import { formatDate } from "@/utils/misc"
 import moment from "moment"
+import router from "@/routes"
+import { Routes } from "@plugins/gymkonnect/routes"
 
 const Console = new Logger(`renewal.vue/gk`)
 @Component({
@@ -113,17 +115,28 @@ export default class MembershipRenewalPage extends Vue {
 	private paymentId: string | number = 0
 	private get payed(){ return !!(this.paymentId && this.transactionId) }
 	private transactionId: string | number = 0
-	private async pay(paymentData: PaymentDetail) {
+	private async pay(paymentData?: PaymentDetail) {
 		this.paying = true
 		try {
 			let result = await Gymkonnect.Renewal.renew(
 				this.clientId,
 				this.transactionData,
 				paymentData,
-				this.grouping
 			)
 			this.paymentId = result.paymentId
 			this.transactionId = result.transactionId
+			router.push({
+				name: Routes.REPORTS.name,
+				params: <any>{
+					ReportType: "RENEWAL",
+					TimePeriod: "CUSTOM",
+					TimeRange: {
+						start: moment(this.transactionData.start).toISOString().substr(0, 10),
+						end: moment(this.transactionData.end).toISOString().substr(0, 10),
+					},
+					Focus: result.transactionId,
+				},
+			})
 		} catch (error) { alert(error.toString(), "error") }
 		this.paying = false
 	}
