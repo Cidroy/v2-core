@@ -1,4 +1,5 @@
 import * as GQL from "type-graphql"
+import * as DB from "typeorm"
 import Freezes from "@positron/models/freezes"
 import GymUsers from "@positron/models/gymUsers"
 import Transaction from "@positron/models/transaction"
@@ -17,13 +18,22 @@ export class FreezeAvailability  {
 export default class FreezeResolver{
 
 	@GQL.Query(returns => [Freezes,])
-	public async freezes() {
-		return Freezes.find({ where: { active: 1 } })
+	public async freezings(
+		@GQL.Arg("start", { nullable: true }) start?: string,
+		@GQL.Arg("end", { nullable: true }) end?: string,
+	) {
+		return Freezes.find({
+			createdAt: DB.Between(start, end ? end : new Date().toJSON().slice(0, 10).replace(/-/g, "/"))
+		})
 	}
 
 	@GQL.FieldResolver(returns => GymUsers, { nullable: true })
 	public async userDetails(@GQL.Root() freeze: Freezes) {
 		return GymUsers.findOne({ where: { active: 1, id: freeze.user } })
+	}
+	@GQL.FieldResolver(returns => Boolean)
+	public async paid(@GQL.Root() freeze: Freezes) {
+		return freeze.payment !== 0
 	}
 
 	@GQL.FieldResolver(returns => FreezeAvailability, { nullable: true })
@@ -37,7 +47,7 @@ export default class FreezeResolver{
 			.groupBy("transaction.id")
 			.where({ freezeId: freeze.id })
 			.execute()
-			return user[0]
+		return user[0]
 	}
 
 	@GQL.Query(returns => Freezes)
@@ -47,6 +57,23 @@ export default class FreezeResolver{
 		let gymUser = await GymUsers.findOne({ where: { active: 1, userId : user } })
 		if (gymUser === undefined) throw "Invalid user"
 		return Freezes.findOne({ where: { active: 1 , transaction: gymUser.transaction, user: gymUser.id} })
+	}
+
+	@GQL.Query(returns => Freezes)
+	public async freezeAmount(
+		@GQL.Arg("user") user: number,
+		@GQL.Arg("from") from: string,
+		@GQL.Arg("to") to: string
+	) {
+		const gymUser = await GymUsers.createQueryBuilder("gym_user")
+			.innerJoinAndSelect(Transaction, "transaction", "transaction.id = gym_user.transaction")
+			.innerJoinAndSelect(GymFreezeRules, "freezeRules", "freezeRules.packages = transaction.packages and freezeRules.programme = transaction.programme and  freezeRules.category = user.category")
+			.select(["IF(if(DATEDIFF(CURDATE(), user_freezes.start) > user_freezes.days,"+
+			"user_freezes.days, DATEDIFF(CURDATE(), user_freezes.start)) < gym_freeze_rule.max_days, 400, 400+ (if(DATEDIFF(CURDATE(), user_freezes.start) > user_freezes.days, user_freezes.days, DATEDIFF(CURDATE(), user_freezes.start)) - gym_freeze_rule.max_days )*10) as price",
+				"if(freezeRules.count is null, (freezeRules.maxDays - transaction.freezeDays) , (freezeRules.count*freezeRules.maxDays - transaction.freezeDays)) as freezeDaysAvailable",])
+			.groupBy("transaction.id")
+			.where({ userId: user })
+			.execute()
 	}
 
 	// @GQL.Query(returns => Boolean)

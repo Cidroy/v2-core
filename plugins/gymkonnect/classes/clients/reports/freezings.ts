@@ -8,7 +8,7 @@ import { gotoProfile, blockUnblock, freezeUnfreeze, cancelFreezing } from "../..
 type TListResult = {
 	id: string | number,
 	badgenumber: string,
-	mode: USER_MODE,
+	mode: USER_MODE ,
 	name: string,
 	membership: string,
 	package: string,
@@ -28,6 +28,7 @@ type TListResult = {
 	mobile: string,
 	transaction: { id: string | number }
 	freezing: { id: string | number }
+	paid: boolean
 }
 
 type TTableHeading = {
@@ -91,70 +92,79 @@ async function LIST(payload: {
 	end?: string,
 }): Promise<TListResult[]> {
 	type TGQLResultUsers = {
-		mode: { name: USER_MODE, description: string, },
-		user: {
-			id: number | string,
-			firstName: string,
-			middleName: string,
-			lastName: string,
-			badgenumber: string,
-			mobile: string,
-		},
-		transaction: {
-			id: string | number
-			membership: { id: number | string, name: string }
-			package: { id: number | string, name: string }
-			endDate: string
-			startDate: string
-		},
-		// FIXME: [Nikhil] implement in gql
-		freezing: {
-			balance: {
-				days: number,
-				count: number,
+		id: number | string,
+		userDetails: {
+			mode: { name: USER_MODE, description: string, },
+			user: {
+				id: number | string,
+				firstName: string,
+				middleName: string,
+				lastName: string,
+				badgenumber: string,
+				mobile: string,
+			}
+			transaction: {
+				id: string | number
+				membership: { id: number | string, name: string }
+				packagesType: { id: number | string, name: string }
 			},
-			id: string | number
+		},
+		start: string
+		end: string
+		freezeAvailability: {
+			freezeDaysAvailable: string | number
+			freezeCountAvailable: string | number
 		}
+		paid: boolean
+		// FIXME: [Nikhil] implement in gql
 	}
-	type TResult = { Users: TGQLResultUsers[] }
+	type TResult = { Freezings: TGQLResultUsers[] }
 	let result = await GQLClient.query<TResult>(
-		// FIXME: [Nikhil] Get Renewals list in same format given the param
+		// FIXME: [Nikhil] Get Freezings list in same format given the param
 		gql`
-			query Users{
-				Users: gymUsers{
-					mode{ name, description }
-					user{ id, firstName, middleName, lastName, badgenumber, mobile, }
-					transaction{
-						id
-						membership{ id, name, }
-						package: packagesType{ id, name }
-						endDate: endExtendedDate
-						startDate: start
+			query Freezings{
+				Freezings: freezings{
+					id
+					userDetails{
+						mode{ name,description }
+						user{ id, firstName, middleName, lastName, badgenumber, mobile }
+						transaction{
+							id,
+							membership{ id, name },
+							packagesType{ id,name }
+						}
 					}
+					start
+					end
+					freezeAvailability{
+						freezeDaysAvailable
+						freezeCountAvailable
+					}
+					paid
 				}
 			}
 		`,
 		{},
 		{ fetchPolicy: "no-cache" }
 	)
-	let users: TListResult[] = result.data.Users.map(row => ({
-		id: row.user ? row.user.id : 0,
-		badgenumber: row.user ? row.user.badgenumber : "Unavailable",
-		mode: row.mode.name,
-		name: row.user ? `${row.user.firstName || ""} ${row.user.middleName || ""} ${row.user.lastName || ""}` : "Unavailable",
-		membership: row.transaction ? row.transaction.membership.name : "Unavailable",
-		package: row.transaction ? row.transaction.package.name : "Unavailable",
-		startDate: row.transaction ? formatDate(row.transaction.startDate.split("T")[0]) : "Unavailable",
-		endDate: row.transaction ? formatDate(row.transaction.endDate.split("T")[0]) : "Unavailable",
-		mobile: row.user ? row.user.mobile : "Unavailable",
+	let users: TListResult[] = result.data.Freezings.map(row => ({
+		id: row.userDetails ? (row.userDetails.user ? row.userDetails.user.id : "Unavailable") : "Unavailable",
+		badgenumber: row.userDetails ? (row.userDetails.user.badgenumber ? row.userDetails.user.badgenumber :"Unavailable") : "Unavailable",
+		mode: row.userDetails.mode.name ,
+		name: row.userDetails ? `${row.userDetails.user.firstName || ""} ${row.userDetails.user.middleName || ""} ${row.userDetails.user.lastName || ""}`: "Unavailable",
+		membership: row.userDetails ? (row.userDetails.transaction ? row.userDetails.transaction.membership.name : "Unavailable") : "Unavailable",
+		package: row.userDetails ? (row.userDetails.transaction ? row.userDetails.transaction.packagesType.name : "Unavailable") : "Unavailable",
+		startDate: row.start ? formatDate(row.start.split("T")[0]) : "Unavailable",
+		endDate: row.end ? formatDate(row.end.split("T")[0]) : "Unavailable",
+		mobile: row.userDetails ? row.userDetails.user.mobile  : "Unavailable",
 		transaction: {
-			id: row.transaction ? row.transaction.id : "0",
+			id: row.userDetails ? (row.userDetails.transaction ? row.userDetails.transaction.id : "0") : "0",
 		},
-		// FIXME: remove `1 ||`
-		freezingBalance: `${1 || row.freezing.balance.days} Days, ${100 || row.freezing.balance.count} Times`,
-		freezing: {
-			id: 1 || row.freezing.id
-		}
+		freezing:{
+			id: row.id
+		},
+		freezingBalance: `${row.freezeAvailability.freezeDaysAvailable} Days, ${100 || row.freezeAvailability.freezeCountAvailable} Times`,
+		paid: row.paid
 	}))
 	return users
 }

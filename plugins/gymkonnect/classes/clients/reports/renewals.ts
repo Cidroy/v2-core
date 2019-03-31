@@ -75,21 +75,23 @@ async function LIST(payload: {
 	end?: string,
 }): Promise<TListResult[]> {
 	type TGQLResultUsers = {
-		mode: { name: USER_MODE, description: string, },
-		user: {
-			id: number | string,
-			firstName: string,
-			middleName: string,
-			lastName: string,
-			badgenumber: string,
-			mobile: string,
-		},
-		transaction: {
-			id: string | number
-			membership: { id: number | string, name: string }
-			package: { id: number | string, name: string }
-			endDate: string
-			startDate: string
+		gymUser:{
+			mode: { name: USER_MODE, description: string, },
+			user: {
+				id: number | string,
+				firstName: string,
+				middleName: string,
+				lastName: string,
+				badgenumber: string,
+				mobile: string,
+			},
+			transaction: {
+				id: string | number
+				membership: { id: number | string, name: string }
+				packagesType: { id: number | string, name: string }
+				endExtendedDate: string
+				start: string
+			}
 		}
 	}
 	type TResult = { Users: TGQLResultUsers[] }
@@ -98,15 +100,17 @@ async function LIST(payload: {
 		gql`
 			query Users{
 				Users: gymUsers{
-					mode{ name, description }
-					user{ id, firstName, middleName, lastName, badgenumber, mobile, }
-					transaction{
-						id
-						membership{ id, name, }
-						package: packagesType{ id, name }
-						endDate: endExtendedDate
-						startDate: start
-					}
+						gymUser{
+							mode{ name,description }
+							user{ id, firstName, middleName, lastName, badgenumber, mobile }
+							transaction{
+								id,
+								membership{ id, name },
+								packagesType{ id,name }
+								start
+								endExtendedDate
+							}
+						}
 				}
 			}
 		`,
@@ -114,17 +118,17 @@ async function LIST(payload: {
 		{ fetchPolicy: "no-cache" }
 	)
 	let users: TListResult[] = result.data.Users.map(user => ({
-		id: user.user ? user.user.id : 0,
-		badgenumber: user.user ? user.user.badgenumber : "Unavailable",
-		mode: user.mode.name,
-		name: user.user ? `${user.user.firstName || ""} ${user.user.middleName || ""} ${user.user.lastName || ""}` : "Unavailable",
-		membership: user.transaction ? user.transaction.membership.name : "Unavailable",
-		package: user.transaction ? user.transaction.package.name : "Unavailable",
-		startDate: user.transaction ? formatDate(user.transaction.startDate.split("T")[0]) : "Unavailable",
-		endDate: user.transaction ? formatDate(user.transaction.endDate.split("T")[0]) : "Unavailable",
-		mobile: user.user ? user.user.mobile : "Unavailable",
+		id: user.gymUser ? (user.gymUser.user? user.gymUser.user.id: 0) : 0,
+		badgenumber: user.gymUser ? (user.gymUser.user ? user.gymUser.user.badgenumber : "Unavailable") : "Unavailable",
+		mode: user.gymUser ? user.gymUser.mode.name: "",
+		name: user.gymUser ? `${user.gymUser.user.firstName || ""} ${user.gymUser.user.middleName || ""} ${user.gymUser.user.lastName || ""}` : "Unavailable",
+		membership: user.gymUser ? (user.gymUser.transaction ? user.gymUser.transaction.membership.name : "Unavailable") : "Unavailable",
+		package: user.gymUser ? (user.gymUser.transaction ? user.gymUser.transaction.membership.name :"Unavailable") : "Unavailable",
+		startDate: user.gymUser ? (user.gymUser.transaction ? formatDate(user.gymUser.transaction.start.split("T")[0]) : "Unavailable") : "Unavailable",
+		endDate: user.gymUser ? (user.gymUser.transaction ? formatDate(user.gymUser.transaction.endExtendedDate.split("T")[0]) : "Unavailable") : "Unavailable",
+		mobile: user.gymUser ? user.gymUser.user.mobile  : "Unavailable",
 		transaction: {
-			id: user.transaction ? user.transaction.id : "0",
+			id: user.gymUser ? (user.gymUser.transaction ? user.gymUser.transaction.id : "0") : "0",
 		}
 	}))
 	return users

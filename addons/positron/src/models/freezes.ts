@@ -18,7 +18,7 @@ export default class Freezes extends Base implements IFreezes{
 	@DB.Column("integer", { nullable: true })
 	public transaction?: number
 
-	@GQL.Field(type => Date)
+	@GQL.Field(type => Date, { nullable: true })
 	@DB.Column("date")
 	public start!: Date
 
@@ -27,7 +27,7 @@ export default class Freezes extends Base implements IFreezes{
 	public end?: Date
 
 	@GQL.Field(type => Number, { nullable: true })
-	@DB.Column("integer", { nullable: true })
+	@DB.Column("integer", {default:0,  nullable: true })
 	public payment?: number
 
 	@GQL.Field(type => Number, { nullable: true })
