@@ -66,14 +66,13 @@
 				<v-card class="elevation-10 px-4" color="transparent">
 					<v-layout row wrap>
 						<v-flex xs12 md8>
-							<v-radio-group :prepend-icon="UsersCount===1?'person':'people'" label="Booking for" v-model="grouping" row>
-								<v-radio v-for="(grouping, index) in GROUPINGS" :label="grouping.name" :value="grouping.id" :key="index" color="orange darken-2"/>
-							</v-radio-group>
-						</v-flex>
-						<v-flex xs12 md8>
 							<h2>Available Plans</h2>
-							<v-radio-group :prepend-icon="UsersCount===1?'person':'people'"  v-model="grouping" row>
-								<v-radio v-for="(Plans, index) in PLANS" :label="Plans.name" :value="Plans.id" :key="index" color="orange darken-2"/>
+							<v-radio-group  v-model="ODPlans" row>
+								<v-radio v-for="(Xod_plans, index) in PLANS" :label="Xod_plans.name" :value="Xod_plans.id" :key="index" color="orange darken-2"/>
+							</v-radio-group>
+							<h2>Preferable Time Slot</h2>
+							<v-radio-group  v-model="ODPlans" row>
+								<v-radio v-for="( XtimeSlots, index) in TIMESLOT" :label=" XtimeSlots.name" :value=" XtimeSlots.id" :key="index" color="orange darken-2"/>
 							</v-radio-group>	
 						</v-flex>
 					</v-layout>

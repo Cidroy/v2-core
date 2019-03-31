@@ -458,16 +458,20 @@ class Gymkonnect extends VuexModule {
 	public async GK_Initialize_Gym() {
 		try {
 			let [
-				_gk_groupings,
-				_gk_membershipTypes,
-				_gk_packages,
-				_gk_timeSlots,
+				Xgroupings,
+				XmembershipTypes,
+				Xpackages,
+				XtimeSlots,
 			] = await Promise.all([
 				GKHelper.GetGroupings(),
 				GKHelper.GetMembershipTypes(),
 				GKHelper.GetPackages(),
 				GKHelper.GetTimeSlots(),
 			])
+				_gk_groupings = Xgroupings
+				_gk_membershipTypes = XmembershipTypes
+				_gk_packages = Xpackages
+				_gk_timeSlots = XtimeSlots
 			return {
 				_gk_groupings,
 				_gk_membershipTypes,
@@ -573,10 +577,11 @@ class Gymkonnect extends VuexModule {
 		Console.verbose("initializing")
 		try {
 			let [
-				_gk_od_plans,
+				Xod_plans,
 			] = await Promise.all([
 				GKHelper.GetODPlans(),
 			])
+			_gk_od_plans = Xod_plans
 		} catch (error) {
 			Console.error("Gymkonnect Store failed to initialize one day", error)
 			throw "Gymkonnect Store failed to initialize one day"
