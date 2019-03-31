@@ -61,21 +61,13 @@ export default class FreezeResolver{
 		return Freezes.findOne({ where: { active: 1 , transaction: gymUser.transaction, user: gymUser.id} })
 	}
 
-	@GQL.Query(returns => Freezes)
+	@GQL.Query(returns => Number)
 	public async freezeAmount(
 		@GQL.Arg("user") user: number,
 		@GQL.Arg("from") from: string,
 		@GQL.Arg("to") to: string
 	) {
-		const gymUser = await GymUsers.createQueryBuilder("gym_user")
-			.innerJoinAndSelect(Transaction, "transaction", "transaction.id = gym_user.transaction")
-			.innerJoinAndSelect(GymFreezeRules, "freezeRules", "freezeRules.packages = transaction.packages and freezeRules.programme = transaction.programme and  freezeRules.category = user.category")
-			.select(["IF(if(DATEDIFF(CURDATE(), user_freezes.start) > user_freezes.days,"+
-			"user_freezes.days, DATEDIFF(CURDATE(), user_freezes.start)) < gym_freeze_rule.max_days, 400, 400+ (if(DATEDIFF(CURDATE(), user_freezes.start) > user_freezes.days, user_freezes.days, DATEDIFF(CURDATE(), user_freezes.start)) - gym_freeze_rule.max_days )*10) as price",
-				"if(freezeRules.count is null, (freezeRules.maxDays - transaction.freezeDays) , (freezeRules.count*freezeRules.maxDays - transaction.freezeDays)) as freezeDaysAvailable",])
-			.groupBy("transaction.id")
-			.where({ userId: user })
-			.execute()
+		return 0
 	}
 
 	// @GQL.Query(returns => Boolean)
