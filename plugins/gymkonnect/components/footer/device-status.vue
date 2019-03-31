@@ -1,21 +1,22 @@
 <template>
 	<v-menu v-model="showDevicesMenu" :close-on-content-click="true" top offset-y :nudge-width="150" scrollable class="ma-0" >
 		<v-btn outline small slot="activator">
-			<v-icon left :color="iconColor" small>fingerprint</v-icon>
+			<v-icon left :color="iconColor" small>{{ !error?"fingerprint":"warning" }}</v-icon>
 			Device Status : {{ activeDevice }}/{{ allDevice }}
 		</v-btn>
 		<v-card style="max-height: 50vh">
-			<!-- FIXME: make sure this does not scroll -->
+			<!-- FIXME: [Kundan] make sure v-subheader does not scroll -->
 			<v-subheader class="font-weight-bold ma-0"> BIOMETRIC DEVICES </v-subheader>
 			<v-progress-linear v-if="loading" :indeterminate="true" color="orange darken-2" />
 			<v-divider v-else/>
 			<v-card>
 				<v-list three-line>
+					<v-alert v-if="error" :value="true" type="error" color="red darken-2"> {{ error }} </v-alert>
 					<v-list-tile-sub-title v-if="!devices.length" class="pa-3">
 						<v-icon>priority_high</v-icon> No Biometric Devices Connected
 					</v-list-tile-sub-title>
-					<template v-else v-for="(device, index) in devices">
-						<v-list-tile :key="index">
+					<template v-for="(device, index) in devices">
+						<v-list-tile :key="`device-${index}`">
 							<v-list-tile-avatar>
 								<v-icon :color="device.state==='ONLINE'?'green':'red'" large>fingerprint</v-icon>
 							</v-list-tile-avatar>
@@ -28,7 +29,7 @@
 								<v-list-tile-sub-title class="font-italic" v-text="`serial: ${device.serial}`" />
 							</v-list-tile-content>
 						</v-list-tile>
-						<v-divider :key="index"/>
+						<v-divider :key="`divider-${index}`"/>
 					</template>
 				</v-list>
 			</v-card>

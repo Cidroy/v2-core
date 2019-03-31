@@ -111,6 +111,10 @@ export default class OneDayRegistration extends Vue{
 	private attendeeCount = 0
 	private AttendeeMax = 0
 	private AttendeeMin = 0
+	private ODplans = GymkonnectStore.GK_OD_PLANS[0].id
+	private get PLANS() { return GymkonnectStore.GK_OD_PLANS }
+	private TimeSlot = GymkonnectStore.GK_TIME_SLOTS[0].id
+	private get TIMESLOT() {return GymkonnectStore.GK_TIME_SLOTS}
 	private grouping = GymkonnectStore.GK_SPA_GROUPINGS[0].id
 	@Watch("grouping") private onGroupingChange(){
 		let grouping = GymkonnectStore.GK_SPA_GROUPING(this.grouping)!
@@ -121,7 +125,6 @@ export default class OneDayRegistration extends Vue{
 	private get UsersCount() { return GymkonnectStore.GK_SPA_GROUPING(this.grouping)!.count }
 	// TODO: [Vicky][Nikhil] implement spa grouping
 	private get GROUPINGS() { return GymkonnectStore.GK_SPA_GROUPINGS }
-
 	private amenities: (string | number)[] = []
 	private get AMENITIES() { return GymkonnectStore.GK_SPA_AMENITIES }
 

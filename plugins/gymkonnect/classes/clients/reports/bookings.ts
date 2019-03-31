@@ -1,1 +1,1 @@
-export const Bookings = {}
+export const BOOKINGS = {}

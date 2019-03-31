@@ -137,7 +137,9 @@ export default class ReportsPage extends Vue {
 	private report: keyof typeof REPORT_TYPES = "RENEWAL"
 	private get REPORT_TYPES() { return REPORT_TYPES }
 	private get REPORT(){ return this.REPORT_TYPES[this.report] }
-	@Watch("report") private onReportChange(){
+	@Watch("timePeriod")
+	@Watch("report")
+	private onReportChange(){
 		this.refresh()
 	}
 
@@ -155,8 +157,10 @@ export default class ReportsPage extends Vue {
 
 	private get CustomRange(){ return this.TIME_PERIODS[this.timePeriod].custom }
 	@Watch("timePeriod") private onTimePeriodChange(){
-		this.timePeriodStart = this.TIME_PERIODS[this.timePeriod].start.endOf("day").toISOString().substr(0,10)
-		this.timePeriodEnd = this.TIME_PERIODS[this.timePeriod].end.endOf("day").toISOString().substr(0,10)
+		this.timePeriodStart = this.TIME_PERIODS[this.timePeriod].start.endOf("day").toISOString().substr(0, 10)
+		this.timePeriodEnd = this.TIME_PERIODS[this.timePeriod].end.endOf("day").toISOString().substr(0, 10)
+		if (this.timePeriod === "CUSTOM" && this.TimeRange.start) this.timePeriodStart = moment(this.TimeRange.start).toISOString().substr(0, 10)
+		if (this.timePeriod === "CUSTOM" && this.TimeRange.end) this.timePeriodEnd = moment(this.TimeRange.end).toISOString().substr(0, 10)
 	}
 
 	private selected = []
@@ -199,5 +203,6 @@ export default class ReportsPage extends Vue {
 	// #region props
 	@Prop({ type: String, default: REPORT_TYPES.RENEWAL.value }) public ReportType !: keyof typeof REPORT_TYPES
 	@Prop({ type: String, default: TIME_PERIODS.THIS_MONTH.value }) public TimePeriod !: keyof typeof TIME_PERIODS
+	@Prop({ type: Object, default: () => ({}) }) public TimeRange !: { start?: string, end?: string }
 	// #endregion
 }

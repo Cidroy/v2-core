@@ -28,6 +28,7 @@ export type TGQLUserMode = TGQLBasic
 export type TGQLSpaAmenities = TGQLBasic
 export type TGQLPTTrainerType = TGQLBasic
 export type TGQLFCCounsellor = TGQLBasic
+export type TGQLODPlans = TGQLBasic
 export default class GKHelper{
 	public static async GetOccupations(): Promise<TGQLOccupations[]>{
 		let response = await GQLClient.query<{
@@ -372,6 +373,26 @@ export default class GKHelper{
 			`,
 		)
 		return response.data.amenities
+	}
+
+	public static async GetODPlans(): Promise<TGQLBasic[]> {
+		 return [
+			{ id: 1, name: "plan1", description: "" },
+			{ id: 2, name: "plan2", description: "" },
+		]
+		// FIXME: [Nikhil]
+		let response = await GQLClient.query<{ ODplans: TGQLBasic[] }>(
+			gql`
+				query ODPlans{
+					paymentModes{
+						id
+						name
+						description
+					}
+				}
+			`,
+		)
+		return response.data.ODplans
 	}
 
 }

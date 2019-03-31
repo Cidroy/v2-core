@@ -51,6 +51,10 @@ export default class UserResolver {
 	public async address(@GQL.Root() user: User) {
 		return Address.findOne({ where: { active: 1, id: user.address } })
 	}
+	@GQL.FieldResolver(returns => GymUsers, { nullable: true })
+	public async gymUser(@GQL.Root() user: User) {
+		return GymUsers.findOne({ where: { active: 1, userId: user.id } })
+	}
 
 	@GQL.Query(returns => [User,])
 	public async user() {
@@ -157,7 +161,7 @@ export default class UserResolver {
 			}
 			user.wdmsId = [wdmsId,]
 		} else {
-		
+
 			let entityManager = DB.getManager()
 			let badgenumber = await entityManager.query("select if(max(badgenumber) is null, 1,max(badgenumber)+1 ) as badgenumber from userinfo")
 			let badgenumberStart: string = badgenumber[0].badgenumber
@@ -182,7 +186,7 @@ export default class UserResolver {
 		if (IDType) user.IDType = IDType
 		if (IDNumber) user.IDNumber = IDNumber
 		if (imageBase64){
-			let imageName = `profile-photos/${user.badgenumber || uuid()}-${user.firstName}-${user.middleName}-${user.lastName}.${imageExtension}`
+			let imageName = `profile-photos/${user.badgenumber || uuid()}-${user.firstName || ""}-${user.middleName || ""}-${user.lastName || ""}.${imageExtension}`
 			await fs.ensureDir(path.resolve(AppConfig.DataFolder, "profile-photos"))
 			// TODO: make this central
 			let imagePath = path.resolve(AppConfig.DataFolder, imageName)
