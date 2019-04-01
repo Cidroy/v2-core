@@ -13,8 +13,12 @@
 
 					<v-flex xs12 lg6 class="pr-2"> <v-text-field prepend-icon="fas fa-mobile-alt" v-model="mobile" label="Mobile Number" mask="##### ##### #####" readonly tabindex="-1" color="orange darken-2"/> </v-flex>
 					<v-flex xs12 lg6 class="pl-2"> <v-text-field prepend-icon="fab fa-whatsapp" v-model="whatsappNumber" label="Whatsapp Number" mask="##### ##### #####" readonly tabindex="-1" color="orange darken-2" /> </v-flex>
+
+					<v-flex xs12 lg6 class="pr-2"> <v-text-field prepend-icon="fas fa-envelope" v-model="email" label="Email address" type="email" readonly tabindex="-1" color="orange darken-2"/> </v-flex>
+					<v-flex xs12 lg6 class="pl-2"> <v-text-field prepend-icon="fas fa-id-card" label="IDTypes"  readonly tabindex="-1" color="orange darken-2" /> </v-flex>
+
 					<v-flex xs12 class="pr-2">
-						<v-text-field prepend-icon="fas fa-envelope" v-model="email" label="Email address" type="email" readonly tabindex="-1" color="orange darken-2" />
+						<v-text-field prepend-icon="place" label="Residential Address" readonly tabindex="-1" color="orange darken-2" />
 					</v-flex>
 				</v-layout>
 			</v-flex>

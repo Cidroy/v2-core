@@ -128,7 +128,7 @@
 							</v-toolbar>
 							
 							<!-- Trainer List Start -->
-							<v-data-table :headers="headers" :items="desserts" :expand="expand" item-key="name">
+							<v-data-table :headers="headers" :items="desserts" :expand="expand" item-key="name" :rowsPerPageItems="perpage">
 								<template slot="items" slot-scope="props">
 									<tr @click="props.expanded = !props.expanded">
 										<td>{{ props.item.id }}</td>

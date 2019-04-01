@@ -3,38 +3,15 @@
 		<v-layout>
 			<v-card width="100%" color="transparent" height="500px">
 				<v-layout row wrap>
-					<v-flex xs4>
-						<v-card height="500px">
-							<v-layout row wrap>
-								<v-layout pt-2 class="justify-center">
-
-										<v-avatar size="200">
-										<v-img :src="cards[0].src" height="200px" />
-										</v-avatar>
-								</v-layout>
-								<v-list>
-									<v-list-tile  v-for="(item, index) in profileList" :key="index">
-										<v-list-tile-title>{{ item.text }}</v-list-tile-title>
-									</v-list-tile>
-								</v-list>
-
-							</v-layout>
-
-							<v-layout  class="justify-center">
-							
-										<v-btn>Send SMS</v-btn>
-										<v-btn>Send Email</v-btn>
-							</v-layout>
-						
-						</v-card>
-					</v-flex>
-
-				<v-flex xs8>
+	
+				<v-flex>
 					<v-tabs v-model="active" color="transparent" slider-color="orange darken-4">
       				<v-tab v-for="(name, key) in tabsList" :key="key" ripple>{{ name }}</v-tab>
 				
 						<v-tab-item key="a">
 							<v-card flat color="transparent" height="100px">
+								<m-registration-step-finished>
+								</m-registration-step-finished>
 							</v-card>
 						</v-tab-item>
 
@@ -97,6 +74,41 @@
 
 						<v-tab-item key="c">
 							<v-card flat color="transparent" height="100px">
+								<v-flex xs class="px-2">
+									<h3>Transection</h3>
+
+									
+										<v-card class="elevation-10">
+												<!-- Transection List Start -->
+													<v-data-table :headers="headers" :items="desserts" item-key="name">
+														<template slot="items" slot-scope="props">
+															<tr @click="props.expanded = !props.expanded">
+																<td>{{ props.item.name }}</td>
+																<td>{{ props.item.package }}</td>
+																<td>{{ props.item.startDate }}</td>
+																<td>{{ props.item.endDate }}</td>
+															</tr>
+														</template>
+													</v-data-table>
+													<!-- Transection List End -->
+										</v-card>
+								</v-flex>
+								<v-flex xs class="px-2">
+									<h3>Freezing</h3>
+										<v-card>
+											<!-- Freezing List Start -->
+												<v-data-table :headers="headers2" :items="desserts2" item-key="name2">
+													<template slot="items" slot-scope="props">
+														<tr @click="props.expanded = !props.expanded">
+															<td>{{ props.item.name2 }}</td>
+															<td>{{ props.item.endDate }}</td>
+															<td>{{ props.item.days }}</td>
+														</tr>
+													</template>
+												</v-data-table>
+											<!-- Freezing List End -->
+										</v-card>
+								</v-flex>
 							</v-card>
 						</v-tab-item>
 
