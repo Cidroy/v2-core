@@ -9,9 +9,9 @@
 					<template #item="{ item }">
 						<v-avatar v-text="item.name.charAt(0)" size="30" color="orange darken-4" class="white--text font-weight-light"/>
 						<v-list-tile-content class="ml-2 my-2">
-							<v-list-tile-title> {{ item.name }} <v-icon small class="mr-1">phone</v-icon> <span v-html="clientSearch?item.mobile.replace(clientSearch, clientSearch.bold()):item.mobile"/> </v-list-tile-title>
+							<v-list-tile-title> {{ item.name }} <v-icon small class="mr-1">phone</v-icon> <span v-html="clientSearch?(item.mobile || '').replace(clientSearch, clientSearch.bold()):item.mobile"/> </v-list-tile-title>
 							<v-list-tile-sub-title>
-								<v-icon class="fas mr-1" small>fa-hashtag</v-icon> <span v-html="clientSearch?item.badgenumber.replace(clientSearch, clientSearch.bold()):item.badgenumber"/>
+								<v-icon class="fas mr-1" small>fa-hashtag</v-icon> <span v-html="clientSearch?(item.badgenumber || '').replace(clientSearch, clientSearch.bold()):item.badgenumber"/>
 							</v-list-tile-sub-title>
 						</v-list-tile-content>
 					</template>

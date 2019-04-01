@@ -6,7 +6,7 @@ import * as GQL from "type-graphql"
 @GQL.ObjectType()
 @DB.Entity()
 export default class Transaction extends Base implements ITransaction{
-	@GQL.Field(type => Number, { nullable: true })
+	// @GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer",{nullable: true})
 	public gymUser?: number
 

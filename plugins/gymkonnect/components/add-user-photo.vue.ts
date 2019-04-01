@@ -7,6 +7,8 @@ import defaultPhoto from "@/assets/images/user-default-bg.jpg"
 import { Logger } from "@classes/CONSOLE"
 import AppConfig from "@classes/appConfig"
 import empty from "@/components/empty.vue"
+import PositronClient from "@/utils/positron"
+import { isUrl } from "@classes/utils/utils"
 
 let log = new Logger("electron/camera-input")
 
@@ -51,7 +53,12 @@ export default class AddUserPhoto extends Vue{
 		AppConfig.Set("electron/default-camera", this.cameraName)
 	}
 
-	private get photo(){ return this.photoSrc?"file://"+this.photoSrc:defaultPhoto }
+	private get photo(){
+		return ((this.photoSrc || "").includes("%POSITRON_URL%") && this.photoSrc.replace("%POSITRON_URL%", PositronClient.uri))
+				|| (isUrl(this.photoSrc) && this.photoSrc)
+				|| (fs.existsSync(this.photoSrc) && "file://" + this.photoSrc)
+				|| defaultPhoto
+	}
 	@Prop({ type: String, default: "" }) public value !:string
 	@Emit("input") public inputEmitter(){
 		console.log("emit photo")
@@ -59,8 +66,11 @@ export default class AddUserPhoto extends Vue{
 	}
 	@Watch("value") private onValueChange(){
 		if(this.value){
-			// FIXME: [Vicky] check if from URL
-			if(fs.existsSync(this.value)) this.photoSrc = this.value
+			if (
+				(this.value || "").includes("%POSITRON_URL%")
+				|| fs.existsSync(this.value)
+				|| isUrl(this.value)
+			) this.photoSrc = this.value
 			else this.error = "Photo Missing"
 		} else this.photoSrc = ""
 	}

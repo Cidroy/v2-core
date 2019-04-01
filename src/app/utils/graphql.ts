@@ -31,7 +31,7 @@ export default class GQLClient{
 	}
 
 	public static get uri(){
-		return `http${GQLClient.config.ssl ? "s" : ""}://${GQLClient.config.host}${GQLClient.config.port ? ":" + GQLClient.config.port : ""}${GQLClient.config.path}`
+		return `http${GQLClient.config.ssl ? "s" : ""}://${GQLClient.config.host}${GQLClient.config.port ? ":" + GQLClient.config.port : ""}${GQLClient.config.path || ""}`
 	}
 
 	/**

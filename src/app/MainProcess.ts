@@ -3,6 +3,7 @@ import * as util from "@@/config/util"
 
 import AppConfig from "@classes/appConfig"
 import GQLClient from "@/utils/graphql"
+import PositronClient from "./utils/positron"
 
 export class MainProcess {
 	private static log = new Logger("electron/ui")
@@ -11,6 +12,7 @@ export class MainProcess {
 		MainProcess.log.verbose("initialize")
 		await AppConfig.Initialize()
 		await Promise.all([
+			PositronClient.Initialize(),
 			GQLClient.Initialize(),
 		])
 	}

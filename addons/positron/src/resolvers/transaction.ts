@@ -1,4 +1,5 @@
 import * as GQL from "type-graphql"
+import * as DB from "typeorm"
 import Transaction from "@positron/models/transaction"
 import Payment from "@positron/models/payments"
 import GymUsers from "@positron/models/gymUsers"
@@ -23,6 +24,21 @@ export default class TransactionResolver{
 	@GQL.FieldResolver(returns => GymPackage, { nullable: true })
 	public async packagesType(@GQL.Root() transaction: Transaction) {
 		return GymPackage.findOne({ where: { active: 1, id: transaction.packages } })
+	}
+
+	@GQL.FieldResolver(returns => GymUsers, { nullable: true })
+	public async gymUser(@GQL.Root() transaction: Transaction) {
+		return GymUsers.findOne({ where: { active: 1, id: transaction.gymUser } })
+	}
+
+	@GQL.Query(returns => [Transaction,])
+	public async renewals(
+		@GQL.Arg("from", { nullable: true }) from?: string,
+		@GQL.Arg("to", { nullable: true }) to?: string,
+	) {
+		return Transaction.find({
+			start: DB.Between(from, to ? to : new Date().toJSON().slice(0, 10).replace(/-/g, "/"))
+		})
 	}
 
 	@GQL.Mutation(returns => Transaction)

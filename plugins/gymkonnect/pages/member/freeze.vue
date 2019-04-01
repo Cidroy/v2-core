@@ -16,9 +16,9 @@
 						<template #item="{ item }">
 							<v-avatar v-text="item.name.charAt(0)" size="30" color="orange darken-4" class="white--text font-weight-light"/>
 							<v-list-tile-content class="ml-2 my-2">
-								<v-list-tile-title> {{ item.name }} <v-icon small class="mr-1">phone</v-icon> <span v-html="clientSearch?item.mobile.replace(clientSearch, clientSearch.bold()):item.mobile"/> </v-list-tile-title>
+								<v-list-tile-title> {{ item.name }} <v-icon small class="mr-1">phone</v-icon> <span v-html="clientSearch?(item.mobile || '').replace(clientSearch, clientSearch.bold()):item.mobile"/> </v-list-tile-title>
 								<v-list-tile-sub-title>
-									<v-icon class="fas mr-1" small>fa-hashtag</v-icon> <span v-html="clientSearch?item.badgenumber.replace(clientSearch, clientSearch.bold()):item.badgenumber"/>
+									<v-icon class="fas mr-1" small>fa-hashtag</v-icon> <span v-html="clientSearch?(item.badgenumber || '').replace(clientSearch, clientSearch.bold()):item.badgenumber"/>
 								</v-list-tile-sub-title>
 							</v-list-tile-content>
 						</template>
@@ -83,7 +83,7 @@
 					</v-flex>
 					<v-flex xs12>
 						<v-layout row wrap class="pt-2">
-							<v-flex xs12 md9>
+							<v-flex xs12>
 								<v-alert v-if="!!FreezeWarning" color="yellow darken-4" type="warning" :value="true" >Warning : {{ FreezeWarning }}</v-alert>
 								<v-alert v-if="!!FreezeError" color="red darken-3" type="error" :value="true" >Error : {{ FreezeError }}</v-alert>
 								<v-card color="transparent" class="pa-4 elevation-10">
@@ -113,25 +113,28 @@
 									</v-layout>
 								</v-card>
 							</v-flex>
-							<v-flex xs12 md3 class="pl-4">
+							<!-- TODO: [Vicky] wait for nikhil to give History -->
+							<v-flex v-if="0" xs12 md3 class="pl-4">
 								<v-card class="elevation-5" color="transparent">
-									<h2 class="pa-2"> <v-icon>history</v-icon> Freeze History </h2>
-									<v-list two-line class="py-0">
+									<h2 class="pa-2"> <v-icon>history</v-icon> Other Freezings </h2>
+									<v-list v-if="History.length > 0" two-line class="py-0">
 										<v-divider />
-										<v-list-tile @click="false">
+										<template v-for="(h, index) in History">
+											<v-list-tile @click="false" :key="`list-${index}`">
+												<v-list-tile-content>
+													<v-list-tile-title> {{ formatDate(h.start) }} - {{ formatDate(h.end) }} </v-list-tile-title>
+													<v-list-tile-sub-title> {{ moment(h.end).diff(h.start, "days")+1 }} Days </v-list-tile-sub-title>
+												</v-list-tile-content>
+											</v-list-tile>
+											<v-divider :key="`divider-${index}`"/>
+										</template>
+									</v-list>
+									<v-list v-else>
+										<v-list-tile>
 											<v-list-tile-content>
-												<v-list-tile-title> 12/03/2019 - 19/03/2019 </v-list-tile-title>
-												<v-list-tile-sub-title> 7 Days </v-list-tile-sub-title>
+												<v-list-tile-title> None </v-list-tile-title>
 											</v-list-tile-content>
 										</v-list-tile>
-										<v-divider />
-										<v-list-tile @click="false">
-											<v-list-tile-content>
-												<v-list-tile-title> 12/03/2019 - 19/03/2019 </v-list-tile-title>
-												<v-list-tile-sub-title> 7 Days </v-list-tile-sub-title>
-											</v-list-tile-content>
-										</v-list-tile>
-										<v-divider />
 									</v-list>
 								</v-card>
 							</v-flex>
@@ -141,6 +144,7 @@
 				<v-slide-y-reverse-transition>
 					<v-footer v-if="!error && !FreezeError" height="auto" color="primary lighten-1" >
 						<v-layout justify-center row justify-end align-end class="px-4 py-2">
+							<v-btn :loading="paying" :disable="paying" color="darken-4" class="white--text" @click.native.stop="pay()"> <v-icon class="fas" left>fa-cash-register</v-icon> Pay Later </v-btn>
 							<v-spacer />
 							<v-btn v-if="payed" outline @click.native.stop="print"> <v-icon left>print</v-icon> Print Receipt </v-btn>
 							<v-btn v-else :loading="paying" :disable="paying" color="orange darken-4" class="white--text" @click.native.stop="paymentModel = true"> <v-icon class="fas" left>fa-cash-register</v-icon> Make Payment </v-btn>

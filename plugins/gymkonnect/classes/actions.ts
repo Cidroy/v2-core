@@ -10,6 +10,10 @@ export async function gotoProfile(clientId: string | number ){
 	// TODO:
 }
 
+export async function editRenewal(transactionId: string | number ){
+	// TODO:
+}
+
 export async function enroll(clientId: string | number ){
 	try {
 		Console.verbose("enroll", clientId)
@@ -41,6 +45,10 @@ export async function freezeUnfreeze(clientId: string | number, mode: USER_MODE)
 			params: <any>{ value: clientId },
 		})
 	}
+}
+
+export async function cancelFreezing(freezingId: string | number){
+	// TODO:
 }
 
 export async function renew(clientId: string | number ){

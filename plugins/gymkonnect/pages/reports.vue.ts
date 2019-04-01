@@ -19,6 +19,16 @@ const REPORT_TYPES = {
 		LOADING: "GK_R_LOADING_RENEWALS",
 		CONTEXTMENU: "GK_R_contextmenu_RENEWALS",
 	},
+	FREEZING: {
+		name: "Freezing Reports",
+		value: "FREEZING",
+		report: "FREEZINGS",
+		INITIALIZE: "Initialize_GK_R_FREEZINGS",
+		ITEMS: "GK_R_FREEZINGS",
+		TABLE_HEADING: "GK_R_TABLE_HEADING_FREEZINGS",
+		LOADING: "GK_R_LOADING_FREEZINGS",
+		CONTEXTMENU: "GK_R_contextmenu_FREEZINGS",
+	},
 }
 
 const TODAY = moment()
@@ -127,6 +137,11 @@ export default class ReportsPage extends Vue {
 	private report: keyof typeof REPORT_TYPES = "RENEWAL"
 	private get REPORT_TYPES() { return REPORT_TYPES }
 	private get REPORT(){ return this.REPORT_TYPES[this.report] }
+	@Watch("timePeriod")
+	@Watch("report")
+	private onReportChange(){
+		this.refresh()
+	}
 
 	private timePeriod: keyof typeof TIME_PERIODS = "THIS_MONTH"
 	private get TIME_PERIODS(){ return TIME_PERIODS }
@@ -142,8 +157,10 @@ export default class ReportsPage extends Vue {
 
 	private get CustomRange(){ return this.TIME_PERIODS[this.timePeriod].custom }
 	@Watch("timePeriod") private onTimePeriodChange(){
-		this.timePeriodStart = this.TIME_PERIODS[this.timePeriod].start.endOf("day").toISOString().substr(0,10)
-		this.timePeriodEnd = this.TIME_PERIODS[this.timePeriod].end.endOf("day").toISOString().substr(0,10)
+		this.timePeriodStart = this.TIME_PERIODS[this.timePeriod].start.endOf("day").toISOString().substr(0, 10)
+		this.timePeriodEnd = this.TIME_PERIODS[this.timePeriod].end.endOf("day").toISOString().substr(0, 10)
+		if (this.timePeriod === "CUSTOM" && this.TimeRange.start) this.timePeriodStart = moment(this.TimeRange.start).toISOString().substr(0, 10)
+		if (this.timePeriod === "CUSTOM" && this.TimeRange.end) this.timePeriodEnd = moment(this.TimeRange.end).toISOString().substr(0, 10)
 	}
 
 	private selected = []
@@ -166,7 +183,11 @@ export default class ReportsPage extends Vue {
 	private showMemberContextMenu = false
 	private memberContextMenuSelection: string | number = -1
 	private memberContextMenuPoint: Point = { x: 0, y: 0 }
-	private get memberContextMenu() { return ReportsListStore[this.REPORT.CONTEXTMENU](this.memberContextMenuSelection) }
+	private get memberContextMenu() {
+		return ReportsListStore[this.REPORT.CONTEXTMENU](
+			(<Array<any>>this.tableItems||[]).find(i => i.id === this.memberContextMenuSelection) || null
+		)
+	}
 	private memberContextMenuClicked(e: MouseEvent, id: string | number) {
 		e.preventDefault()
 		this.showMemberContextMenu = false
@@ -182,5 +203,6 @@ export default class ReportsPage extends Vue {
 	// #region props
 	@Prop({ type: String, default: REPORT_TYPES.RENEWAL.value }) public ReportType !: keyof typeof REPORT_TYPES
 	@Prop({ type: String, default: TIME_PERIODS.THIS_MONTH.value }) public TimePeriod !: keyof typeof TIME_PERIODS
+	@Prop({ type: Object, default: () => ({}) }) public TimeRange !: { start?: string, end?: string }
 	// #endregion
 }
