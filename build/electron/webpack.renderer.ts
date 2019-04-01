@@ -86,6 +86,7 @@ let rendererConfig: webpack.Configuration = {
 					},
 					enforce: true,
 					minSize: 102400,
+					// FIXME: make normal chunks also follow this rule
 				},
 				styles: {
 					name: "styles",

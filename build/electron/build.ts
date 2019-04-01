@@ -18,11 +18,11 @@ let applicationBuilder = new ElectronBuilder(
 	buildConfig
 )
 
-// applicationBuilder.onBuild(async (buildPath, electronVersion, platform, arch) => {
-//  	let positronBuilder = new PositronBinaryBuilder(buildPath, platform)
-//  	await positronBuilder.build()
-//  	return true
-// })
+applicationBuilder.onBuild(async (buildPath, electronVersion, platform, arch) => {
+ 	let positronBuilder = new PositronBinaryBuilder(buildPath, platform)
+ 	await positronBuilder.build()
+ 	return true
+})
 
 applicationBuilder.onBuild(async (buildPath, electronVersion, platform, arch) => {
 	let printerTemplateBuilder = new PrinterTemplateBuilder(buildPath, platform)
