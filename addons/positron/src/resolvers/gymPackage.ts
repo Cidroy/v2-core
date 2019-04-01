@@ -9,12 +9,12 @@ export default class GymPackageResolver {
 	public async gymPackages() {
 		return GymPackage.find({ where: { active: 1 } })
 	}
-	
+
 	@GQL.Mutation(returns => GymPackage)
 	public async addGymPackage(
 		@GQL.Arg("name") name: string,
 		@GQL.Arg("count") count: number,
-		@GQL.Arg("duration") duration: DURATION,
+		@GQL.Arg("duration", type => DURATION) duration: DURATION,
 		@GQL.Arg("description", {nullable :true}) description: string,
 	) {
 		let gymPackage = new GymPackage()

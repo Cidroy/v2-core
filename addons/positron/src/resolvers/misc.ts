@@ -19,7 +19,7 @@ export default class miscResolver {
 	public async test(
 		@GQL.Arg("username") username: string,
 		@GQL.Arg("password") password: string,
-		@GQL.Arg("preference") preference: PASSWORD_PREFERENCE,
+		@GQL.Arg("preference", type => PASSWORD_PREFERENCE) preference: PASSWORD_PREFERENCE,
 		@GQL.Ctx() { req: { session }, req }: GQLContext,
 	): Promise<boolean>{
 		Console.log(JSON.stringify(req, undefined, 4))
@@ -55,7 +55,7 @@ export default class miscResolver {
 	// 	}
 	// 	)
 	// }
-	
+
 	@GQL.Query(returns =>String)
 	public async isBadgenumberValid(
 		@GQL.Arg("badgenumber") badgenumber: number,

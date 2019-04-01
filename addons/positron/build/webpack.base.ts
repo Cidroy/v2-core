@@ -2,6 +2,7 @@ import path from "path"
 import UglifyJsPlugin from "uglifyjs-webpack-plugin"
 import webpack from "webpack"
 import { resolve } from "~build/webpack.base"
+import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin"
 
 export const RESOLVE = (src: string) => path.resolve(__dirname, "..", src)
 
@@ -95,8 +96,18 @@ const baseConfig: webpack.Configuration = {
 				include: RESOLVE_PATHS,
 			},
 			{
-				test: /\.((j|t)sx?)$/,
+				test: /\.(jsx?)$/,
 				use: "babel-loader",
+				exclude: /node_modules/,
+				include: RESOLVE_PATHS
+			},
+			{
+				test: /\.(tsx?)$/,
+				loader: "ts-loader",
+				options: {
+					transpileOnly: true,
+					experimentalWatchApi: true,
+				},
 				exclude: /node_modules/,
 				include: RESOLVE_PATHS
 			},
@@ -110,6 +121,12 @@ const baseConfig: webpack.Configuration = {
 			},
 		]
 	},
+	// plugins: [
+		// TODO: implement type check, may cause propblem in production
+	// 	new ForkTsCheckerPlugin({
+	// 		measureCompilationTime: true,
+	// 	}),
+	// ]
 }
 
 export default baseConfig

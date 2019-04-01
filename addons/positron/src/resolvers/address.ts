@@ -9,7 +9,7 @@ export default class AddressResolver {
 	public async addresses() {
 		return Address.find({ where: { active: 1 } })
 	}
-	
+
 	@GQL.Mutation(returns => Address)
 	public async addAddress(
 		@GQL.Arg("receiver") receiver: string,
@@ -19,12 +19,12 @@ export default class AddressResolver {
 		@GQL.Arg("state") state: string,
 		@GQL.Arg("country") country: string,
 		@GQL.Arg("pincode") pincode: string,
-		@GQL.Arg("type") type: ADDRESS_TYPE,
+		@GQL.Arg("type", type => ADDRESS_TYPE) type: ADDRESS_TYPE,
 		@GQL.Arg("user", { nullable: true }) user: number,
 		@GQL.Arg("locality", { nullable: true }) locality: string,
 		@GQL.Arg("landmark", { nullable: true }) landmark: string,
 	) {
-		
+
 		let address = new Address()
 		address.receiver = receiver
 		address.contact = contact

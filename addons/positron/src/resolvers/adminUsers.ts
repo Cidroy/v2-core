@@ -67,7 +67,7 @@ export default class AdminUsersResolver {
 		@GQL.Arg("username") username: string,
 		@GQL.Arg("password",{nullable: true}) password: string,
 		@GQL.Arg("pin", { nullable: true }) pin: string,
-		@GQL.Arg("passwordPreference") passwordPreference: PASSWORD_PREFERENCE,
+		@GQL.Arg("passwordPreference", type => PASSWORD_PREFERENCE) passwordPreference: PASSWORD_PREFERENCE,
 		@GQL.Arg("access") access: number,
 		@GQL.Arg("referredToUsers",type => [Number,],{nullable: true}) referredToUsers: number[],
 		// @GQL.Arg("permissions", { nullable: true }) permissions: object,

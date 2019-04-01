@@ -129,7 +129,7 @@ export default class UserResolver {
 		@GQL.Arg("middleName", { nullable: true }) middleName?: string,
 		@GQL.Arg("lastName", { nullable: true }) lastName?: string,
 		@GQL.Arg("dob", { nullable: true }) dob?: Date,
-		@GQL.Arg("gender", { nullable: true }) gender?: GENDER,
+		@GQL.Arg("gender", type => GENDER ,{ nullable: true }) gender?: GENDER,
 		@GQL.Arg("whatsapp", { nullable: true }) whatsapp?: string,
 		@GQL.Arg("officePhone", { nullable: true }) officePhone?: string,
 		@GQL.Arg("homeNumber", { nullable: true }) homeNumber?: string,

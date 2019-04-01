@@ -17,6 +17,12 @@ const Hindi: ITranslations = {
 			select_language: `select_language(Hi)`,
 			product_key: `product_key(Hi)`,
 			please_wait: `please_wait(Hi)`,
+			select_mode: `select_mode`,
+			slave_mode: `slave_mode`,
+			biometric_select: `biometric_select`,
+			hardware_confirm: `hardware_confirm`,
+			completed: `completed`,
+			login: `login`,
 		},
 	},
 	login: {
