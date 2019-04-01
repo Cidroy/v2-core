@@ -105,8 +105,7 @@ export default class GymUsersResolver {
 					let zone = await ZonesAvailable.findOne({ where: { active: 1, zoneId: zoneId} })
 					if(zone=== undefined) throw "Undefined zone"
 					if(zone.zoneName== "Unfreezed") continue
-					// Member.AddMemberZone(unfreezedId, unfreezedZone)
-					// Member.AddMemberZone()
+					Member.AddMemberZone(unfreezedId.toString(), unfreezedZone.zoneId.toString(), null)
 				}
 				if (gymUser === undefined) throw "invalid user"
 				let userMode = await GymUserMode.find({ where: { name: "ACTIVE" } })

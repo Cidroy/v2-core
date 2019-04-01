@@ -1,1 +1,1 @@
-export const Prebook = {}
+export const PREBOOK = {}

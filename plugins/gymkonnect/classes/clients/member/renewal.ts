@@ -123,7 +123,7 @@ async function info(clientId: string | number): Promise<TRenewalInfo> {
 				}
 			`,
 			{ clientId, },
-			{ fetchPolicy: "network-only", }
+			{ fetchPolicy: "no-cache", }
 		)
 		if (response.errors) throw response.errors[0].message
 		if (!response.data) throw "Unable to get renewal Info"
@@ -174,7 +174,7 @@ async function info(clientId: string | number): Promise<TRenewalInfo> {
 			}
 		}
 	} catch (error) {
-		Console.error(error)
+		Console.error("info", error)
 		throw error.toString()
 	}
 }
@@ -182,39 +182,30 @@ async function info(clientId: string | number): Promise<TRenewalInfo> {
 async function renew(
 	clientId: string | number,
 	transactionData: TMRegistrationStep3,
-	paymentData: PaymentDetail,
-	groupingId: string | number
+	paymentData?: PaymentDetail,
 ): Promise<{
 	paymentId: string | number,
 	transactionId: string | number,
 }> {
 	try {
-		let [
-			transactionResult,
-			paymentId,
-		] = await Promise.all([
-			addTransaction({
-				membershipType: transactionData.membershipType,
-				offer: paymentData.offer,
-				start: moment(transactionData.doj).toDate(),
-				packages: transactionData.packageType,
-				packageMagnitude: transactionData.packageMagnitude,
-				gymUser: clientId,
-			}),
-			addPayment({
+		let transactionResult = await addTransaction({
+			membershipType: transactionData.membershipType,
+			offer: paymentData ? paymentData.offer : undefined,
+			start: moment(transactionData.doj).toDate(),
+			packages: transactionData.packageType,
+			packageMagnitude: transactionData.packageMagnitude,
+			gymUser: clientId,
+		})
+
+		let paymentId: string | number = 0
+		if(paymentData){
+			paymentId = await addPayment({
 				amount: paymentData.amount,
 				receipt: paymentData.receipt,
 				mode: paymentData.mode,
-			}),
-		])
-
-		let [
-			linkedTransactionPay,
-			// linkedTransactionUser,
-		] = await Promise.all([
-			linkTransactionPay(transactionResult.id, paymentId),
-			// linkTransactionUser(transactionResult.id, clientId),
-		])
+			})
+			let linkedTransactionPay = await linkTransactionPay(transactionResult.id, paymentId)
+		}
 
 		return {
 			paymentId: paymentId,
@@ -222,7 +213,7 @@ async function renew(
 		}
 
 	} catch (error) {
-		Console.error(error)
+		Console.error("renew", error)
 		throw error.toString()
 	}
 }
@@ -244,7 +235,7 @@ async function prebookEnroll(clientId: string | number, transactionId: string | 
 		})
 		return response.data.enrolled
 	} catch (error) {
-		Console.error(error)
+		Console.error("prebook enroll", error)
 		throw error.toString()
 	}
 }

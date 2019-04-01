@@ -1,6 +1,7 @@
 import { Logger } from "@classes/CONSOLE"
 import { PORTS } from "@classes/ports"
 import AppConfig from "@classes/appConfig"
+const request = require("request-promise-native").defaults({ simple: false })
 
 let client = undefined
 
@@ -27,5 +28,33 @@ export default class PositronClient{
 			positron: PositronClient.config
 		})).positron
 		return true
+	}
+
+	public static async GET(path: string, body = {}, options = {}){
+		let _options = {
+			method: "GET",
+			url: PositronClient.uri + path,
+			body,
+			jar: true,
+			json: true,
+			followRedirect: true,
+			timeout: 10000,
+			...options
+		}
+		return await request(_options)
+	}
+
+	public static async POST(path: string, body = {}, options = {}){
+		let _options = {
+			method: "POST",
+			url: PositronClient.uri + path,
+			body,
+			jar: true,
+			json: true,
+			followRedirect: true,
+			timeout: 10000,
+			...options
+		}
+		return await request(_options)
 	}
 }

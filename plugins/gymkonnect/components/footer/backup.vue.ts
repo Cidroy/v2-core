@@ -15,8 +15,7 @@ export default class BackupButton extends Vue {
 		this.backingUp = true
 		try {
 			// TODO: backup
-			await sleep(1000)
-			throw "Backup is not implemented"
+			throw "Cloud Backup is disabled"
 		} catch (error) {
 			Toast.fire({
 				type: "error",

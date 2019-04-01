@@ -5,14 +5,29 @@ import { DeviceStore } from "@plugins/gymkonnect/state/device"
 @Component({
 	// @ts-ignore
 	components: { empty, },
+	created(){
+		this.Initialize()
+	}
 })
 // @ts-ignore
 export default class DeviceStatusButton extends Vue {
 	private get iconColor(){
 		let color = "red"
-		if(this.allDevice===0) color = "grey"
+		if(this.error){}
+		else if(this.allDevice===0) color = "grey"
 		else if(this.activeDevice===this.allDevice) color = "green"
 		return color
+	}
+
+	private get error(){ return DeviceStore.GK_FP_DEVICE_SYNC_ERROR }
+
+	private syncDeviceStatus(){
+		try { DeviceStore.gkFPSync() } catch (error) { }
+		setTimeout(() => { this.syncDeviceStatus() }, 60 * 1000)
+	}
+
+	private Initialize(){
+		this.syncDeviceStatus()
 	}
 
 	private get activeDevice(){ return DeviceStore.GK_FP_DEVICES_ACTIVE }

@@ -1,3 +1,3 @@
 <template>
-	<gym-dashboard />
+	<member-list-page />
 </template>

@@ -11,6 +11,9 @@ import { formatDate, parseDate } from "@/utils/misc"
 import moment, { Moment } from "moment"
 import FreezePaymentModal from "@plugins/gymkonnect/components/payment/modal-freeze.vue"
 import { TFreezeTransaction } from "@plugins/gymkonnect/classes/types/freeze"
+import { USER_MODE } from "@classes/enum/user-mode"
+import router from "@/routes"
+import { Routes } from "@plugins/gymkonnect/routes"
 
 const Console = new Logger(`freeze.vue/gk`)
 @Component({
@@ -32,9 +35,11 @@ const Console = new Logger(`freeze.vue/gk`)
 export default class MembershipFreezingPage extends Vue {
 	private get formatDate() { return formatDate }
 	private get parseDate() { return parseDate }
+	private get moment() { return moment }
+
 	private error = ""
 	private async Initialize() {
-		this.clientData = await Gymkonnect.Renewal.defaultInfo()
+		this.clientData = await Gymkonnect.Freezing.defaultInfo()
 		this.clientId = this.value
 	}
 
@@ -47,7 +52,7 @@ export default class MembershipFreezingPage extends Vue {
 		if (!this.clientId) return
 		this.clientDataLoading = true
 		try {
-			this.clientData = await Gymkonnect.Renewal.info(this.clientId)
+			this.clientData = await Gymkonnect.Freezing.info(this.clientId)
 		} catch (error) {
 			Console.error(error)
 			await alert(error.toString(), "error")
@@ -66,7 +71,14 @@ export default class MembershipFreezingPage extends Vue {
 	@Watch("clientSearch") private async onClientSearch() {
 		if (this.clientSearch && this.clientSearch.length >= 3 && this.clientSearch.length % 3 === 0) {
 			this.clientSearching = true
-			this.clients = await Gymkonnect.Members.find(this.clientSearch, ["badgenumber", "mobile", "firstName", "middleName", "lastName",])
+			this.clients = (await Gymkonnect.Members.find(this.clientSearch, ["badgenumber", "mobile", "firstName", "middleName", "lastName",]))
+				.filter(i => {
+					let mode: USER_MODE = USER_MODE.BANNED
+					if(i.gymUser)
+						if(i.gymUser.mode)
+							mode = <USER_MODE>i.gymUser.mode.name || USER_MODE.BANNED
+					return [USER_MODE.ACTIVE,].includes(mode)
+				})
 			this.clientSearching = false
 		}
 	}
@@ -87,7 +99,7 @@ export default class MembershipFreezingPage extends Vue {
 	}
 
 	// @ts-ignore
-	private clientData: Unpacked<ReturnType<typeof Gymkonnect.Renewal.defaultInfo>> = 0
+	private clientData: Unpacked<ReturnType<typeof Gymkonnect.Freezing.defaultInfo>> = 0
 	@Watch("clientData") private onClientDataChange() {
 		this.XfreezeStartMin = this.clientData.transaction.start
 		this.XfreezeEndMax = this.clientData.transaction.end
@@ -102,6 +114,7 @@ export default class MembershipFreezingPage extends Vue {
 	private get Client() { return { ...this.clientData.client, ...this.clientData.transaction } }
 
 	private get TransactionId(){ return this.clientData.transaction.id }
+	private get History(){ return this.clientData.freezing.history }
 
 	private paying = false
 	private paymentModel = false
@@ -109,10 +122,27 @@ export default class MembershipFreezingPage extends Vue {
 	private get payed() { return !!(this.paymentId && this.transactionId) }
 	private transactionId: string | number = 0
 
-	private async pay(paymentData: PaymentDetail) {
+	private async pay(paymentData?: PaymentDetail) {
 		this.paying = true
 		try {
-			throw "Not implemented"
+			let result = await Gymkonnect.Freezing.addFreeze(
+				this.clientId,
+				{ start: this.freezeStart, end: this.freezeEnd },
+				paymentData
+			)
+			router.push({
+				name: Routes.REPORTS.name,
+				params: <any>{
+					ReportType: "FREEZING",
+					TimePeriod: "CUSTOM",
+					TimeRange: {
+						start: moment(this.freezeStart).toISOString().substr(0,10),
+						end: moment(this.freezeEnd).toISOString().substr(0,10),
+					},
+					Focus: result.freezeId,
+				},
+			})
+
 		} catch (error) { alert(error.toString(), "error") }
 		this.paying = false
 	}
@@ -131,8 +161,8 @@ export default class MembershipFreezingPage extends Vue {
 	@Watch("noMinimumPeriod") private onNoMinimumPeriodChange(){
 		this.freezingPeriod = Math.max(this.freezingPeriod, this.MinimumPeriod)
 	}
-	private get RemainingFreezeCount() { return 1 }
-	private get RemainingFreezeDays() { return 15 }
+	private get RemainingFreezeCount() { return this.clientData.freezing.balance.count }
+	private get RemainingFreezeDays() { return this.clientData.freezing.balance.days }
 	private ignoreRemainingRestrictions = false
 	@Watch("ignoreRemainingRestrictions") private onIgnoreRemainingRestrictionsChange(){
 		this.freezingPeriod = Math.min(this.freezingPeriod, this.RemainingFreezeDays, this.MaximumPeriod)
@@ -181,7 +211,7 @@ export default class MembershipFreezingPage extends Vue {
 	private onFreezeEndRangeChange() {
 		let freezeEnd = moment(this.freezeEnd)
 		freezeEnd = moment.min([
-			moment.max([freezeEnd, moment(this.freezeEndMin),]),
+			moment.max([freezeEnd, moment(this.freezeStart).add(this.RemainingFreezeDays-1, "days"),]),
 			moment(this.freezeEndMax),
 		])
 		this.freezeEnd = freezeEnd.add(1, "day").toISOString().substr(0, 10)
