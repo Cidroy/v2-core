@@ -28,6 +28,7 @@ const baseConfig: webpack.Configuration = {
 		filename: "[name].js"
 	},
 	optimization: {
+		minimize: false,
 		minimizer: [
 			// we specify a custom UglifyJsPlugin here to get source maps in production
 			new UglifyJsPlugin({
@@ -35,7 +36,10 @@ const baseConfig: webpack.Configuration = {
 				parallel: true,
 				uglifyOptions: {
 					ecma: 6,
-					mangle: true
+					mangle: true,
+					keep_classnames: true,
+					keep_fnames: true,
+					// compress: false,
 				},
 				sourceMap: true
 			}),
