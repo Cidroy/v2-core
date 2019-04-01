@@ -8,7 +8,7 @@
 				</v-layout>
 			</v-toolbar>
 			<v-layout xs12>
-				<v-flex xs2 row wrap>
+				<v-flex xs2>
 
 					<v-layout pt-2 class="justify-center">
 
@@ -29,20 +29,54 @@
 					</v-layout>
 										
 				</v-flex>
-				<v-flex xs5 row wrap>
-					<v-card>
-								Gender dob
-					</v-card>
-					<v-card>
-								 dob
-					</v-card>
-				</v-flex>
-				<v-flex xs5 row wrap>
-					<v-card>
-								Gender dob
-					</v-card>
-				</v-flex>
+				<v-layout xs12 row wrap>
+					<v-flex>
+						<h3>Personal</h3>
+						<v-card class="elevation-10">
+							<m-registration-step-finished>
+							</m-registration-step-finished>
+						</v-card>
+					</v-flex>					
+					<v-flex xs6 class="px-2">
+						<h3>Transection</h3>
+
+						
+							<v-card class="elevation-10">
+									<!-- Transection List Start -->
+										<v-data-table :headers="headers" :items="desserts" item-key="name">
+											<template slot="items" slot-scope="props">
+												<tr @click="props.expanded = !props.expanded">
+													<td>{{ props.item.name }}</td>
+													<td>{{ props.item.package }}</td>
+													<td>{{ props.item.startDate }}</td>
+													<td>{{ props.item.endDate }}</td>
+												</tr>
+											</template>
+										</v-data-table>
+										<!-- Transection List End -->
+							</v-card>
+						
+					</v-flex>
+					<v-flex xs6 class="px-2">
+						<h3>Freezing</h3>
+							<v-card>
+								<!-- Freezing List Start -->
+									<v-data-table :headers="headers2" :items="desserts2" item-key="name2">
+										<template slot="items" slot-scope="props">
+											<tr @click="props.expanded = !props.expanded">
+												<td>{{ props.item.name2 }}</td>
+												<td>{{ props.item.endDate }}</td>
+												<td>{{ props.item.days }}</td>
+											</tr>
+										</template>
+									</v-data-table>
+								<!-- Freezing List End -->
+							</v-card>
+					</v-flex>
+				
+				</v-layout>
 			</v-layout>
+			
 		</v-card>
 	</v-dialog>
 </template>

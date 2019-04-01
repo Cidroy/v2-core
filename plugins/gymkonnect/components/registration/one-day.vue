@@ -72,7 +72,7 @@
 							</v-radio-group>
 							<h2>Preferable Time Slot</h2>
 							<v-radio-group  v-model="ODPlans" row>
-								<v-radio v-for="( XtimeSlots, index) in TIMESLOT" :label=" XtimeSlots.name" :value=" XtimeSlots.id" :key="index" color="orange darken-2"/>
+								<v-radio v-for="( XtimeSlots, index) in TIMESLOT" :label="XtimeSlots.name" :value=" XtimeSlots.id" :key="index" color="orange darken-2"/>
 							</v-radio-group>	
 						</v-flex>
 					</v-layout>

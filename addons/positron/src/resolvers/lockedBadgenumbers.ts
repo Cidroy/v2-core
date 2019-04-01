@@ -20,7 +20,7 @@ export default class LockedBadgenumbersResolver {
 			if (lockedBadgenumber === undefined) throw "no such badgenumber exists"
 			lockedBadgenumber.remove()
 			return true
-		} catch {
+		} catch(e) {
 			return false
 		}
 	}

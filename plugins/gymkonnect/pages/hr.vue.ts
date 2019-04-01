@@ -38,6 +38,7 @@ export default class Home extends Vue {
 		a: "Trainers",
 		b: "Fitness Consultant",
 	}
+
 	private phone = ""
 	private IDProofs = [
 		"Aadhaar Card",
@@ -73,6 +74,12 @@ export default class Home extends Vue {
 	]
 	private radioGroup2 = "radio-4"
 
+	private perpage = [
+		10,
+		20,
+		30,
+		40,
+	]
 	private headers = [
 		{
 			text: "ID",
@@ -118,6 +125,27 @@ export default class Home extends Vue {
 		{
 			id: 4,
 			name: "hitman",
+			trainerType: "standard",
+			mobno: 42223,
+			joinDate: "12/2/19"
+		},
+		{
+			id: 5,
+			name: "man",
+			trainerType: "standard",
+			mobno: 42223,
+			joinDate: "12/2/19"
+		},
+		{
+			id: 6,
+			name: "sinman",
+			trainerType: "standard",
+			mobno: 42223,
+			joinDate: "12/2/19"
+		},
+		{
+			id: 7,
+			name: "sinan",
 			trainerType: "standard",
 			mobno: 42223,
 			joinDate: "12/2/19"
