@@ -30,6 +30,7 @@ export async function freezeUnfreeze(clientId: string | number, mode: USER_MODE)
 		Console.verbose("unfreeze", clientId)
 		let loader = loading("Unfreezing, Please wait ...")
 		try {
+			// FIXME: [Vicky] add payment if item is unpaid
 			await Gymkonnect.Freezing.unfreeze(clientId)
 			alert("Unfreezed Successfully!", "success")
 		} catch (error) {

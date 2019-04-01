@@ -39,12 +39,15 @@ export default class TransactionResolver{
 	public async freezeAvailability(@GQL.Root() transaction: Transaction) {
 		//FIXME: Nikhil [ad freezerule.prograamme = transaction.progrmame]
 		const user = await Transaction.createQueryBuilder("transaction")
-			.innerJoinAndSelect(GymUsers, "gymUser", "gymUser.transaction = transaction.id")
-			.innerJoinAndSelect(User, "user", "user.id = gymUser.userid")
-			.innerJoinAndSelect(GymFreezeRules, "freezeRules", "freezeRules.packages = transaction.packages and freezeRules.membershipType = transaction.membershipType and  freezeRules.category = user.category")
-			.select(["if(freezeRules.count is null, if(freezeRules.count is null, (freezeRules.maxDays - isnull(`transaction`.`freezeDays`)) , (freezeRules.count*freezeRules.maxDays - isnull(`transaction`.`freezeDays`))), (freezeRules.count - transaction.freezeCount)) as freezeCountAvailable",
-				"if(freezeRules.count is null, (freezeRules.maxDays - isnull(`transaction`.`freezeDays`)) , (freezeRules.count*freezeRules.maxDays - isnull(`transaction`.`freezeDays`))) as freezeDaysAvailable",])
-			.groupBy("transaction.id")
+		.innerJoinAndSelect(GymUsers, "gymUser", "gymUser.transaction = transaction.id")
+		.innerJoinAndSelect(User, "user", "user.id = gymUser.userid")
+		.innerJoinAndSelect(GymFreezeRules, "freezeRules", "freezeRules.packages = transaction.packages and freezeRules.membershipType = transaction.membershipType and  freezeRules.category = user.category")
+		.select([
+			// tslint:disable-next-line: max-line-length
+			"if(freezeRules.count is null, if(freezeRules.count is null, (freezeRules.maxDays - if(`transaction`.`freezeDays` is null, 0,`transaction`.`freezeDays` )) , (freezeRules.count*freezeRules.maxDays - if(`transaction`.`freezeDays` is null, 0,`transaction`.`freezeDays` ))), (freezeRules.count - transaction.freezeCount)) as freezeCountAvailable",
+			"if(freezeRules.count is null, (freezeRules.maxDays - if(`transaction`.`freezeDays` is null, 0,`transaction`.`freezeDays` )) , (freezeRules.count*freezeRules.maxDays - if(`transaction`.`freezeDays` is null, 0,`transaction`.`freezeDays` ))) as freezeDaysAvailable",
+		])
+		.groupBy("transaction.id")
 			.where({ id: transaction.id })
 			.execute()
 		return user[0]

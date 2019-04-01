@@ -35,8 +35,8 @@
 				</template>
 			</v-list>
 
-			<!-- FIXME: make this dynamic and fix routes -->
-			<v-bottom-nav :value="true" absolute color="transparent">
+			<!-- FIXME: [Siddharth] make this dynamic and fix routes -->
+			<!-- <v-bottom-nav :value="true" absolute color="transparent">
 				<v-btn color="orange darken-4" flat  to="/help">
 					<span>Help</span>
 					<v-icon>help</v-icon>
@@ -45,7 +45,7 @@
 					<span>About</span>
 					<v-icon>info</v-icon>
 				</v-btn>
-			</v-bottom-nav>
+			</v-bottom-nav> -->
 		</v-navigation-drawer>
 
 		<v-toolbar color="orange darken-4" dark app :clipped-left="$vuetify.breakpoint.mdAndUp" fixed transition="slide-y-transition">

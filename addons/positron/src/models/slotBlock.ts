@@ -6,13 +6,13 @@ import ISlotBlock from "@classes/interface/ISlotBlock"
 @DB.Entity()
 @GQL.ObjectType()
 export default class SlotBlock extends Base implements ISlotBlock {
-	
+
 	@GQL.Field(type => Date)
-	@DB.Column("date")
+	@DB.Column("datetime")
 	public start!: Date
 
 	@GQL.Field(type => Date)
-	@DB.Column("date")
+	@DB.Column("datetime")
 	public End!: Date
 
 	@GQL.Field(type => Number)

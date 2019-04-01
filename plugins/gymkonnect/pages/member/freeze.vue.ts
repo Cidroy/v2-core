@@ -135,11 +135,11 @@ export default class MembershipFreezingPage extends Vue {
 				name: Routes.REPORTS.name,
 				params: <any>{
 					ReportType: "FREEZING",
-					TimePeriod: "CUSTOM",
-					TimeRange: {
-						start: moment(this.freezeStart).toISOString().substr(0,10),
-						end: moment(this.freezeEnd).toISOString().substr(0,10),
-					},
+					TimePeriod: "TODAY",
+					// TimeRange: {
+					// 	start: moment(this.freezeStart).toISOString().substr(0,10),
+					// 	end: moment(this.freezeEnd).toISOString().substr(0,10),
+					// },
 					Focus: result.freezeId,
 				},
 			})

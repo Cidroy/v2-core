@@ -33,6 +33,20 @@ const REPORT_TYPES = {
 
 const TODAY = moment()
 const TIME_PERIODS = {
+	CUSTOM: {
+		name: "Custom",
+		value: "CUSTOM",
+		start: moment(TODAY),
+		end: moment(TODAY),
+		custom: true,
+	},
+	LIFETIME: {
+		name: "Lifetime",
+		value: "LIFETIME",
+		start: moment(new Date(1947, 7, 15)),
+		end: moment(new Date(2147, 7, 15)),
+		custom: false,
+	},
 	TODAY: {
 		name: "Today",
 		value: "TODAY",
@@ -47,25 +61,11 @@ const TIME_PERIODS = {
 		end: moment(TODAY),
 		custom: false,
 	},
-	LAST_FY: {
-		name: "Last Year",
-		value: "LAST_FY",
-		start: moment(TODAY).set("month", 3).set("date", 1).add(TODAY.month() > 3 ? -1 : -2, "year"),
-		end: moment(TODAY).set("month", 2).set("date", 31).add(TODAY.month() > 3 ? 0 : -1, "year"),
-		custom: false,
-	},
 	THIS_MONTH: {
 		name: "This Month",
 		value: "THIS_MONTH",
 		start: moment(new Date(TODAY.year(), TODAY.month(), 1)),
 		end: moment(TODAY),
-		custom: false,
-	},
-	LAST_MONTH: {
-		name: "Last Month",
-		value: "LAST_MONTH",
-		start: moment(new Date(TODAY.year(), TODAY.month() - 1, 1)),
-		end: moment(new Date(TODAY.year(), TODAY.month() - 1, 1)).endOf("month"),
 		custom: false,
 	},
 	THIS_QUATER: {
@@ -75,26 +75,26 @@ const TIME_PERIODS = {
 		end: moment(TODAY),
 		custom: false,
 	},
+	LAST_FY: {
+		name: "Last Year",
+		value: "LAST_FY",
+		start: moment(TODAY).set("month", 3).set("date", 1).add(TODAY.month() > 3 ? -1 : -2, "year"),
+		end: moment(TODAY).set("month", 2).set("date", 31).add(TODAY.month() > 3 ? 0 : -1, "year"),
+		custom: false,
+	},
+	LAST_MONTH: {
+		name: "Last Month",
+		value: "LAST_MONTH",
+		start: moment(new Date(TODAY.year(), TODAY.month() - 1, 1)),
+		end: moment(new Date(TODAY.year(), TODAY.month() - 1, 1)).endOf("month"),
+		custom: false,
+	},
 	LAST_QUATER: {
 		name: "Last Quater",
 		value: "LAST_QUATER",
 		start: moment(TODAY).startOf("quarter").add(-1, "quarter"),
 		end: moment(TODAY).endOf("quarter").add(-1, "quarter").endOf("month"),
 		custom: false,
-	},
-	LIFETIME: {
-		name: "Lifetime",
-		value: "LIFETIME",
-		start: moment(new Date(1947, 7, 15)),
-		end: moment(TODAY),
-		custom: false,
-	},
-	CUSTOM: {
-		name: "Custom",
-		value: "CUSTOM",
-		start: moment(TODAY),
-		end: moment(TODAY),
-		custom: true,
 	},
 }
 
@@ -139,6 +139,8 @@ export default class ReportsPage extends Vue {
 	private get REPORT(){ return this.REPORT_TYPES[this.report] }
 	@Watch("timePeriod")
 	@Watch("report")
+	@Watch("timePeriodStart")
+	@Watch("timePeriodEnd")
 	private onReportChange(){
 		this.refresh()
 	}

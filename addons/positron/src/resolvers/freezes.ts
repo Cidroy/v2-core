@@ -6,6 +6,7 @@ import Transaction from "@positron/models/transaction"
 import GymFreezeRules from "@positron/models/freezeRules"
 import User from "@positron/models/user"
 import moment from "moment"
+import GymUserMode from "@positron/models/gymUserMode"
 
 @GQL.ObjectType()
 export class FreezeAvailability  {
@@ -41,11 +42,14 @@ export default class FreezeResolver{
 	public async freezeAvailability(@GQL.Root() freeze: Freezes) {
 		//FIXME: Nikhil [ad freezerule.prograamme = transaction.progrmame]
 		const user = await Transaction.createQueryBuilder("transaction")
-			.innerJoinAndSelect(GymUsers, "gymUser","gymUser.transaction = transaction.id")
-			.innerJoinAndSelect(User, "user","user.id = gymUser.userid")
+			.innerJoinAndSelect(GymUsers, "gymUser", "gymUser.transaction = transaction.id")
+			.innerJoinAndSelect(User, "user", "user.id = gymUser.userid")
 			.innerJoinAndSelect(GymFreezeRules, "freezeRules", "freezeRules.packages = transaction.packages and freezeRules.membershipType = transaction.membershipType and  freezeRules.category = user.category")
-			.select(["if(`freezeRules`.`count` is null, 0, (`freezeRules`.`count` - `transaction`.`freezeCount`)) as freezeCountAvailable",
-				"if(`freezeRules`.`count` is null, (`freezeRules`.`maxDays` -isnull(`transaction`.`freezeDays`)) , (freezeRules.count*freezeRules.maxDays - isnull(`transaction`.`freezeDays`))) as freezeDaysAvailable ",])
+			.select([
+				// tslint:disable-next-line: max-line-length
+				"if(freezeRules.count is null, if(freezeRules.count is null, (freezeRules.maxDays - if(`transaction`.`freezeDays` is null, 0,`transaction`.`freezeDays` )) , (freezeRules.count*freezeRules.maxDays - if(`transaction`.`freezeDays` is null, 0,`transaction`.`freezeDays` ))), (freezeRules.count - transaction.freezeCount)) as freezeCountAvailable",
+				"if(freezeRules.count is null, (freezeRules.maxDays - if(`transaction`.`freezeDays` is null, 0,`transaction`.`freezeDays` )) , (freezeRules.count*freezeRules.maxDays - if(`transaction`.`freezeDays` is null, 0,`transaction`.`freezeDays` ))) as freezeDaysAvailable",
+			])
 			.groupBy("transaction.id")
 			.where({ freezeId: freeze.id })
 			.execute()
@@ -90,10 +94,16 @@ export default class FreezeResolver{
 		if (transaction === undefined) throw "transaction doesn't exist"
 		let freeze =await Freezes.findOne({ where: { active: 1, id:transaction.freezeId } })
 		if (freeze === undefined) throw "Freeze doesn't exist"
+		let mode = await GymUserMode.findOne({ where: { active: 1,name: "ACTIVE"} })
+		if (mode === undefined) throw "mode doesn't exist"
 		if(payment) freeze.payment = payment
 		freeze.end = new Date()
+		transaction.endExtendedDate = moment(transaction.end).add(((transaction.freezeDays || 0) - (freeze.days || 0) + (moment().diff(freeze.start, "days")) > (freeze.days || 0) ? freeze.days : (moment().diff(freeze.start, "days"))), "days").toDate()
 		transaction.freezeCount = (transaction.freezeCount ? transaction.freezeCount: 0) +1
-		transaction.freezeDays = (transaction.freezeDays ? transaction.freezeDays : 0) + moment().diff(freeze.start, "days")
+		transaction.freezeDays = ((transaction.freezeDays || 0) - (freeze.days || 0) + (moment().diff(freeze.start, "days"))> (freeze.days||0)? freeze.days: moment().diff(freeze.start, "days"))
+		freeze.days = (moment().diff(freeze.start, "days")) > (freeze.days || 0) ? freeze.days : moment().diff(freeze.start, "days")
+		userData.mode = mode.id
+		userData.save()
 		transaction.save()
 		freeze.save()
 
@@ -109,18 +119,26 @@ export default class FreezeResolver{
 		@GQL.Arg("payment", { nullable: true }) payment? : number,
 		@GQL.Arg("days", { nullable: true }) days? : number,
 	){
+		let userData = await GymUsers.findOne({ where: { active: 1, userId: user } })
+		if (userData === undefined) throw "User doesn't exist"
+		let transaction = await Transaction.findOne({ where: { active: 1, id: userData.transaction } })
+		if (transaction === undefined) throw "transaction doesn't exist"
 		let freezes = new Freezes()
-		freezes.user = user
+		freezes.user = userData.id
 		freezes.start = start
 		if(count) freezes.count = count
 		if(end) freezes.end = end
 		if(payment) freezes.payment = payment
-		let userData = await GymUsers.findOne({ where: { active: 1, userId: user } })
-		if(userData === undefined) throw "User doesn't exist"
 		freezes.transaction = userData.transaction
 		if(days) freezes.days = days
+		else freezes.days = moment(end).diff(start, "days")
 
 		await freezes.save()
+		transaction.freezeId = freezes.id
+		transaction.freezeCount = (transaction.freezeCount ? transaction.freezeCount : 0) + 1
+		transaction.freezeDays = (transaction.freezeDays ? transaction.freezeDays : 0) + moment(end).diff(start, "days")
+		transaction.endExtendedDate = moment(transaction.endExtendedDate).add(moment(end).diff(start, "days"), "days").toDate()
+		transaction.save()
 		return freezes
 	}
 }

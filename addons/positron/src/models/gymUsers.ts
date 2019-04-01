@@ -97,7 +97,7 @@ export default class GymUsers extends Base implements IGymUsers {
 	public agreement?: number
 
 	@GQL.Field(type => Date)
-	@DB.Column("date", { nullable: true })
+	@DB.Column("datetime", { nullable: true })
 	public doj?: Date
 	// public async beforeInsert() {
 	// 	super.beforeInsert()

@@ -111,19 +111,20 @@ async function LIST(payload: {
 		},
 		start: string
 		end: string
-		freezeAvailability: {
-			freezeDaysAvailable: string | number
-			freezeCountAvailable: string | number
+		freezeAvailability?: {
+			days: number
+			count: number
 		}
 		paid: boolean
-		// FIXME: [Nikhil] implement in gql
 	}
 	type TResult = { Freezings: TGQLResultUsers[] }
 	let result = await GQLClient.query<TResult>(
-		// FIXME: [Nikhil] Get Freezings list in same format given the param
 		gql`
-			query Freezings{
-				Freezings: freezings{
+			query Freezings(
+					$end: String
+					$start: String
+				) {
+				Freezings: freezings(start: $start, end: $end){
 					id
 					userDetails{
 						mode{ name,description }
@@ -137,14 +138,17 @@ async function LIST(payload: {
 					start
 					end
 					freezeAvailability{
-						freezeDaysAvailable
-						freezeCountAvailable
+						days: freezeDaysAvailable
+						count: freezeCountAvailable
 					}
 					paid
 				}
 			}
 		`,
-		{},
+		{
+			start: payload.start,
+			end: payload.end,
+		},
 		{ fetchPolicy: "no-cache" }
 	)
 	let users: TListResult[] = []
@@ -165,7 +169,7 @@ async function LIST(payload: {
 			freezing:{
 				id: row.id
 			},
-			freezingBalance: `${row.freezeAvailability.freezeDaysAvailable} Days, ${100 || row.freezeAvailability.freezeCountAvailable} Times`,
+			freezingBalance: `${(row.freezeAvailability || { days: 0 }).days} Days, ${(row.freezeAvailability || { count: 0 }).count} Times`,
 			paid: row.paid
 		}))
 	} catch (error) { Console.error(error) }

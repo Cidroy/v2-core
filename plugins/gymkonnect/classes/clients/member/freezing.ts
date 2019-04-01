@@ -292,7 +292,7 @@ async function addFreeze(
 	}
 }
 
-async function unfreeze(clientId: string | number, payment: PaymentData):Promise<boolean>{
+async function unfreeze(clientId: string | number, payment?: PaymentData & { id: string | number }):Promise<boolean>{
 	try {
 		let response = await GQLClient.mutate<{ Unfreeze: Partial<IFreezes> }>(
 			gql`
@@ -302,8 +302,7 @@ async function unfreeze(clientId: string | number, payment: PaymentData):Promise
 			`,
 			{
 				user: clientId,
-				// FIXME: add payment mechanism
-				// payment: paymentId,
+				payment: payment? payment.id : undefined ,
 			}
 		)
 		if (response.errors) throw response.errors[0].message

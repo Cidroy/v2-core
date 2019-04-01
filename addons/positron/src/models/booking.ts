@@ -15,7 +15,7 @@ export default class Booking extends Base implements IBooking {
 	public bookingType!: number
 
 	@GQL.Field(type => Date)
-	@DB.Column("date")
+	@DB.Column("datetime")
 	public start!: Date
 
 	@GQL.Field(type => Date)

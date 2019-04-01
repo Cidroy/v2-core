@@ -15,11 +15,11 @@ export default class GymOffers extends Base implements IGymOffers {
 	public description?: string
 
 	@GQL.Field(type => Date, { nullable: true })
-	@DB.Column("date", { nullable: true })
+	@DB.Column("datetime", { nullable: true })
 	public startDate?: Date
 
 	@GQL.Field(type => Date, { nullable: true })
-	@DB.Column("date", { nullable: true })
+	@DB.Column("datetime", { nullable: true })
 	public endDate?: Date
 
 	@GQL.Field(type => Boolean, { nullable: true })
@@ -27,7 +27,7 @@ export default class GymOffers extends Base implements IGymOffers {
 	public isPrebookAvailable?: boolean
 
 	@GQL.Field(type => Date, { nullable: true })
-	@DB.Column("date", { nullable: true })
+	@DB.Column("datetime", { nullable: true })
 	public PrebookStartDate?: Date
 
 }
