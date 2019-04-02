@@ -9,6 +9,7 @@ import { Server } from "@positron/server"
 import { INSTALL_STEP } from "@positron/lib/misc"
 import { version } from "@positron/../package.local.json"
 import { Tunnel } from "@positron/lib/localtunnel"
+import Tasks from "./tasks"
 
 export declare const module: any
 
@@ -91,6 +92,7 @@ export class Positron {
 				this.log.info("Will Start server without database. Functions are limited")
 			}
 			await this.startServer()
+			Tasks()
 			if (module && module.hot) {
 				module.hot.accept()
 				module.hot.dispose(() => {
