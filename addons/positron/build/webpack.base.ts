@@ -122,7 +122,7 @@ const baseConfig: webpack.Configuration = {
 		]
 	},
 	// plugins: [
-		// TODO: implement type check, may cause propblem in production
+		// TODO: implement type check, may cause problem in production
 	// 	new ForkTsCheckerPlugin({
 	// 		measureCompilationTime: true,
 	// 	}),

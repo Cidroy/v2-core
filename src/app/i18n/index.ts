@@ -16,12 +16,12 @@ function setI18nLanguage(lang: util.ILanguage): util.ILanguage {
 	return lang
 }
 
-const vI18n = new VueI18n({
+export const vI18n = new VueI18n({
 	locale: util.i18n.current, // set locale
 	fallbackLocale: util.i18n.default,
 	messages // set locale messages
 })
-type ILanguage = util.ILanguage
+export type ILanguage = util.ILanguage
 export class i18n extends util.i18n{
 	public static async loadLanguageAsync(lang: util.ILanguage): Promise<util.ILanguage> {
 		if (!loadedLanguages.includes(lang)) {
@@ -35,8 +35,3 @@ export class i18n extends util.i18n{
 }
 
 i18n.loadLanguageAsync(i18n.default)
-
-export {
-	vI18n,
-	ILanguage
-}
