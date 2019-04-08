@@ -48,7 +48,7 @@ export default class FreezePaymentModal extends Vue {
 	private get mobileNumber() { return this.user.mobile }
 	private get whatsappNumber() { return this.user.whatsappNumber }
 
-	private paymentMode = GymkonnectStore.GK_PAYMENT_MODES[0].id
+	private paymentMode = (GymkonnectStore.GK_PAYMENT_MODES[0] || { id: 0 }).id
 	private get PAYMENT_MODES() { return GymkonnectStore.GK_PAYMENT_MODES }
 	private transactionId = "0000"
 	private get paymentModeIndex() { return (this.paymentMode && false) || GymkonnectStore.GK_PAYMENT_MODES.findIndex(i => i.id === this.paymentMode) }

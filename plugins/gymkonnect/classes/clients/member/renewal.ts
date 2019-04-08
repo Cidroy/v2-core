@@ -20,7 +20,7 @@ const defaultInfo = async () => {
 			start: moment().toISOString().substr(0,10),
 			end: moment().toISOString().substr(0,10),
 		},
-		grouping: GymkonnectStore.GK_GROUPINGS[0].id,
+		grouping: (GymkonnectStore.GK_GROUPINGS[0] || { id: 0 }).id,
 		usersCount: 1,
 		client: defaultRegistrationUser,
 		dojRange: {

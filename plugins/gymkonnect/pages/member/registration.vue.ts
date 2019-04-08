@@ -52,7 +52,7 @@ export default class MemberRegistrationPage extends Vue {
 		})
 	}
 
-	private grouping = GymkonnectStore.GK_GROUPINGS[0].id
+	private grouping = (GymkonnectStore.GK_GROUPINGS[0] || { id: 0 }).id
 	private get groupIndex() { return (this.grouping && false) || this.GROUPINGS.findIndex(i => i.id === this.grouping) }
 	private get GROUPINGS() { return GymkonnectStore.GK_GROUPINGS }
 	private get allowAddPeople() { return this.usersCount < this.GROUPINGS[this.groupIndex].max }

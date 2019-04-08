@@ -41,10 +41,10 @@ export default class MRegistrationStep1 extends Vue {
 	private dobMenu = false
 	@Watch("dob") private onDobChanged() { this.dobFormatted = this.formatDate(this.dob) }
 
-	private occupation: string | number = GymkonnectStore.GK_OCCUPATIONS[0].id
+	private occupation: string | number = (GymkonnectStore.GK_OCCUPATIONS[0] || { id: 0 }).id
 	private get Occupations() { return GymkonnectStore.GK_OCCUPATIONS }
 
-	private idType: string | number = GymkonnectStore.GK_ID_TYPES[0].id
+	private idType: string | number = (GymkonnectStore.GK_ID_TYPES[0] || { id: 0 }).id
 	private idNumber: string = ""
 	private get IDTypes() { return GymkonnectStore.GK_ID_TYPES }
 

@@ -16,9 +16,9 @@ const Console = new Logger(`step-3.vue/registration/gk`)
 		if(this.value){
 			this.onValueChange()
 		} else {
-			this.membershipType = this.MEMBERSHIP_TYPES[0].id
-			this.packageType = this.PACKAGES[0].id
-			this.timeSlot = this.TIME_SLOTS[0].id
+			this.membershipType = (this.MEMBERSHIP_TYPES[0] || { id: 0 }).id
+			this.packageType = (this.PACKAGES[0] || { id: 0 }).id
+			this.timeSlot = (this.TIME_SLOTS[0] || { id: 0 }).id
 		}
 		this.recalculateSubTotal()
 	}
@@ -42,7 +42,7 @@ export default class MRegistrationStep3 extends Vue {
 	private timeSlot: number | string = ""
 	private get TIME_SLOTS() { return GymkonnectStore.GK_TIME_SLOTS }
 
-	private category: string | number = GymkonnectStore.GK_CATEGORIES[0].id
+	private category: string | number = (GymkonnectStore.GK_CATEGORIES[0] || { id: 0 }).id
 	private get Categories() { return GymkonnectStore.GK_CATEGORIES }
 
 	private doj = new Date().toISOString().substr(0, 10)

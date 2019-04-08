@@ -7,7 +7,7 @@ import empty from "@/components/empty.vue"
 	// @ts-ignore
 	components: { empty, },
 	created() {
-		this.utmSource = this.UTM_SOURCES[0].id
+		this.utmSource = (this.UTM_SOURCES[0] || { id: 0 }).id
 	}
 })
 // @ts-ignore

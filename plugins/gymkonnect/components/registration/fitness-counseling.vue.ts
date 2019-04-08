@@ -35,14 +35,18 @@ type TSessions = Record<string, {
 		meta: [{ name: "Fitness Counseling Registration", content: appConfig.description, }, ],
 	},
 	created(){
-		this.reCalculateAmount()
-		this.onSessionCountChange()
+		this.Initialize()
 	}
 })
 // @ts-ignore
 export default class FitnessCounselingRegistration extends Vue{
 	private get formatDate() { return formatDate }
 	private get parseDate() { return parseDate }
+
+	private Initialize(){
+		this.reCalculateAmount()
+		this.onSessionCountChange()
+	}
 
 	private error = ""
 	private clientId: string | number = ""
@@ -105,40 +109,44 @@ export default class FitnessCounselingRegistration extends Vue{
 
 	private get COUNSELLORS(){ return GymkonnectStore.GK_FC_COUNSELLOR }
 
-	private doj = new Date().toISOString().substr(0, 10)
-	private dojIndex = ""
-	private dojFormatted = this.formatDate(this.doj)
-	private dojMenu = false
-	@Watch("doj") private onDateChanged() {
-		this.dojFormatted = this.formatDate(this.doj)
-		this.sessions[this.dojIndex].date = this.doj
-		this.sessions[this.dojIndex].dateFormatted = this.dojFormatted
-	}
-	// TODO: follow minSessionDate
-	private get _minDoj() { return this.allowBackDating ? new Date(1947, 7, 16) : this.dojRange.start }
-	private get minDoj() { return moment(this._minDoj).toISOString().substr(0, 10) }
-	private allowBackDating = false
-	private get _maxDoj() { return this.dojRange.end }
-	private get maxDoj() { return this.dojRange.end ? moment(this._maxDoj).toISOString().substr(0, 10) : undefined }
-	private get getDateFormatted() { return this.formatDate(this.doj) }
-
-	private showDatePicker(index: string){
-		this.dojMenu = true
-		this.dojIndex = index
-		this.doj = this.sessions[index].date
-	}
-
 	private purposes: (string | number)[] = []
 	private get PURPOSES(){ return GymkonnectStore.GK_FC_PURPOSES }
+
+	private dateMenu = false
+	private dateIndex = ""
+	private date = new Date().toISOString().substr(0, 10)
+	private dateFormatted = formatDate(this.date)
+	private showDatePicker(key: string) {
+		this.dateIndex = key
+		this.date = this.sessions[key].date
+		this.dateMenu = true
+	}
+	private saveDate() {
+		this.dateFormatted = formatDate(this.date)
+		this.sessions[this.dateIndex].date = this.date
+		this.sessions[this.dateIndex].dateFormatted = this.dateFormatted
+	}
+
+	private timeMenu = false
+	private timeIndex = ""
+	private time = "06:00"
+	private showTimePicker(key: string) {
+		this.timeIndex = key
+		this.time = this.sessions[key].time
+		this.timeMenu = true
+	}
+	private saveTime() { this.sessions[this.timeIndex].time = this.time }
 
 	// FIXME: [Vicky] get from gql
 	private get MinSessionCount(){ return 1 }
 	private get MaxSessionCount(){ return 10 }
+	private sessions: TSessions = {}
+	private SessionsCount = 0
 	private sessionCount = this.MinSessionCount
 	@Watch("sessionCount")
 	private onSessionCountChange(){
 		let SessionsCount = Object.keys(this.sessions).length
-		if(SessionsCount < this.sessionCount) this.sessions[uuid()] = this.DefaultSession.default
+		if(SessionsCount < this.sessionCount) this.sessions[uuid()] = this.DefaultSession().default
 		else if ( SessionsCount > this.sessionCount ){
 			let lastIndex = Object.keys(this.sessions).splice(-1)[0]
 			if(lastIndex!==undefined) delete this.sessions[lastIndex]
@@ -149,7 +157,7 @@ export default class FitnessCounselingRegistration extends Vue{
 	// FIXME: [Vicky] get from gql
 	private get MinSessionDate(){ return new Date().toISOString().substr(0,10) }
 	private get MaxSessionDate(){ return new Date(2020, 11, 31).toISOString().substr(0,10) }
-	private get DefaultSession(): TSessions{
+	private DefaultSession(): TSessions{
 		return {
 			default: {
 				date: this.MinSessionDate,
@@ -158,8 +166,6 @@ export default class FitnessCounselingRegistration extends Vue{
 			}
 		}
 	}
-	private sessions: TSessions = {}
-	private SessionsCount = 0
 	private deleteSession(sessionIndex: string){
 		delete this.sessions[sessionIndex]
 		this.sessionCount --

@@ -24,24 +24,24 @@ const menu: TMenu[] = [
 		],
 	},
 	// FIXME: [All] remove to access
-	// {
-	// 	name: "gk/addons",
-	// 	icon: "library_add",
-	// 	text: "Add Ons",
-	// 	children: [
-	// 		{ icon: "assignment_ind", text: "Registrations", to: Routes.ADDONS_REGISTRATION.name, permission: Permissions.ADDON_REGISTRATION_ADD },
-	// 		{ icon: "event", text: "Bookings", to: Routes.ADDONS_BOOKING.name, permission: Permissions.BOOKING_ADD },
-	// 		{ icon: "forum", text: "Enquiry", to: Routes.ADDONS_ENQUIRY.name, permission: Permissions.ENQUIRY_ADD },
-	// 	],
-	// 	"icon-alt": "library_add",
-	// 	model: false,
-	// 	permission: [
-	// 		Permissions.ADDON_REGISTRATION_ADD,
-	// 		Permissions.BOOKING_ADD,
-	// 		Permissions.ENQUIRY_ADD,
-	// 	]
-	// },
-	// { icon: "timeline", text: "Sales & Finance", to: Routes.PAYMENT.name, permission: Permissions.PAYMENTS_VIEW },
+	{
+		name: "gk/addons",
+		icon: "library_add",
+		text: "Add Ons",
+		children: [
+			{ icon: "assignment_ind", text: "Registrations", to: Routes.ADDONS_REGISTRATION.name, permission: Permissions.ADDON_REGISTRATION_ADD },
+			{ icon: "event", text: "Bookings", to: Routes.ADDONS_BOOKING.name, permission: Permissions.BOOKING_ADD },
+			{ icon: "forum", text: "Enquiry", to: Routes.ADDONS_ENQUIRY.name, permission: Permissions.ENQUIRY_ADD },
+		],
+		"icon-alt": "library_add",
+		model: false,
+		permission: [
+			Permissions.ADDON_REGISTRATION_ADD,
+			Permissions.BOOKING_ADD,
+			Permissions.ENQUIRY_ADD,
+		]
+	},
+	{ icon: "timeline", text: "Sales & Finance", to: Routes.PAYMENT.name, permission: Permissions.PAYMENTS_VIEW },
 	{ icon: "assessment", text: "Reports", to: Routes.REPORTS.name, permission: Permissions.REPORTS_VIEW },
 	// { icon: "bubble_chart", text: "HR", to: Routes.HR.name, permission: Permissions.HR },
 	// { icon: "bubble_chart", text: "Test Page", to: Routes.TEST.name, permission: Permissions.TEST },

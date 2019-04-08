@@ -67,13 +67,13 @@
 					<v-layout row wrap>
 						<v-flex xs12 md8>
 							<h2>Available Plans</h2>
-							<v-radio-group  v-model="ODPlans" row>
+							<v-radio-group  v-model="plan" row>
 								<v-radio v-for="(Xod_plans, index) in PLANS" :label="Xod_plans.name" :value="Xod_plans.id" :key="index" color="orange darken-2"/>
 							</v-radio-group>
 							<h2>Preferable Time Slot</h2>
-							<v-radio-group  v-model="ODPlans" row>
+							<v-radio-group  v-model="timeSlot" row>
 								<v-radio v-for="( XtimeSlots, index) in TIMESLOT" :label="XtimeSlots.name" :value=" XtimeSlots.id" :key="index" color="orange darken-2"/>
-							</v-radio-group>	
+							</v-radio-group>
 						</v-flex>
 					</v-layout>
 				</v-card>

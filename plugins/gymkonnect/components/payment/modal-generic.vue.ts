@@ -31,7 +31,7 @@ export default class GeneralPaymentModal extends Vue {
 	private offer: string | boolean | number = false
 	private get OFFERS() { return GymkonnectStore.GK_ALL_OFFERS }
 
-	private paymentMode = GymkonnectStore.GK_PAYMENT_MODES[0].id
+	private paymentMode = (GymkonnectStore.GK_PAYMENT_MODES[0] || { id: 0 }).id
 	private get PAYMENT_MODES() { return GymkonnectStore.GK_PAYMENT_MODES }
 	private transactionId = "0000"
 	private get paymentModeIndex() { return (this.paymentMode && false) || GymkonnectStore.GK_PAYMENT_MODES.findIndex(i => i.id === this.paymentMode) }

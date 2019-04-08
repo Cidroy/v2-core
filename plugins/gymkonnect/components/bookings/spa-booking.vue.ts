@@ -111,8 +111,7 @@ export default class SpaBooking extends Vue{
 	private attendeeCount = 0
 	private AttendeeMax = 0
 	private AttendeeMin = 0
-	// TODO: [Nishant] do we need to have different groupings??
-	private grouping = GymkonnectStore.GK_SPA_GROUPINGS[0].id
+	private grouping = (GymkonnectStore.GK_SPA_GROUPINGS[0] || { id: 0 }).id
 	@Watch("grouping") private onGroupingChange(){
 		let grouping = GymkonnectStore.GK_SPA_GROUPING(this.grouping)!
 		this.attendeeCount = grouping.count

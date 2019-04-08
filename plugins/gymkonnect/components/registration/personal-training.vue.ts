@@ -110,7 +110,7 @@ export default class PersonalTrainingRegistration extends Vue{
 	private get maxDoj() { return this.dojRange.end ? moment(this._maxDoj).toISOString().substr(0, 10) : undefined }
 	private get getDateFormatted() { return this.formatDate(this.doj) }
 
-	private grouping = GymkonnectStore.GK_GROUPINGS[0].id
+	private grouping = (GymkonnectStore.GK_GROUPINGS[0] || { id: 0 }).id
 	@Watch("grouping") private onGroupingChange() {
 		let grouping = GymkonnectStore.GK_GROUPING(this.grouping)!
 	}
@@ -121,10 +121,10 @@ export default class PersonalTrainingRegistration extends Vue{
 	private purposes: (string | number)[] = []
 	private get PURPOSES(){ return GymkonnectStore.GK_PT_PURPOSES }
 
-	private packagex = GymkonnectStore.GK_PT_PACKAGES[0].id
+	private packagex = (GymkonnectStore.GK_PT_PACKAGES[0] || { id: 0 }).id
 	private get PACKAGES(){ return GymkonnectStore.GK_PT_PACKAGES }
 
-	private trainerType = GymkonnectStore.GK_PT_TRAINER_TYPES[0].id
+	private trainerType = (GymkonnectStore.GK_PT_TRAINER_TYPES[0] || { id: 0 }).id
 	private get TRAINER_TYPES(){ return GymkonnectStore.GK_PT_TRAINER_TYPES }
 
 	// TODO: [Nishant] Min max time ka concept chahiye ka prefferedtimes main?

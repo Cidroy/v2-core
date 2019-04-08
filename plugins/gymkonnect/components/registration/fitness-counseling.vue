@@ -1,21 +1,21 @@
 <template>
 	<div>
-		<v-dialog ref="datePicker" v-model="dojMenu" :return-value.sync="doj" persistent lazy full-width width="460px">
+		<v-dialog ref="datePicker" v-model="dateMenu" :return-value.sync="date" persistent lazy full-width width="460px">
 			<div slot="activator"/>
-			<v-date-picker v-model="doj" scrollable color="orange darken-2" :min="MinSessionDate" :max="MaxSessionDate" landscape>
+			<v-date-picker v-model="date" scrollable color="orange darken-2" :min="MinSessionDate" :max="MaxSessionDate" landscape>
 				<v-spacer />
 				<v-btn flat color="orange darken-2" @click="dojMenu = false">Cancel</v-btn>
-				<v-btn flat color="orange darken-2" @click="$refs.datePicker.save(doj)">OK</v-btn>
+				<v-btn flat color="orange darken-2" @click="() => { $refs.datePicker.save(date); saveDate() }">OK</v-btn>
 			</v-date-picker>
 		</v-dialog>
-		<!-- <v-dialog ref="dialog" v-model="modal2" :return-value.sync="time" persistent lazy full-width width="290px">
+		<v-dialog ref="timePicker" v-model="timeMenu" :return-value.sync="time" persistent lazy full-width width="300px">
 			<div slot="activator" />
-			<v-time-picker v-if="modal2" v-model="time" full-width landscape>
+			<v-time-picker v-if="timeMenu" v-model="time" full-width color="orange darken-2">
 				<v-spacer />
-				<v-btn flat color="primary" @click="modal2 = false">Cancel</v-btn>
-				<v-btn flat color="primary" @click="$refs.dialog.save(time)">OK</v-btn>
+				<v-btn flat color="primary" @click="timeMenu = false">Cancel</v-btn>
+				<v-btn flat color="primary" @click="() => {$refs.timePicker.save(time); saveTime()}">OK</v-btn>
 			</v-time-picker>
-		</v-dialog> -->
+		</v-dialog>
 		<v-layout row wrap class="px-4 py-2">
 			<v-flex xs12 class="my-2">
 				<v-autocomplete v-model="clientId" :items="Clients" :search-input.sync="clientSearch" :loading="clientSearching" :label="label" clearable item-text="name" item-value="id" prepend-icon="search" :placeholder="label" autofocus no-filter color="orange darken-2" auto-select-first>
@@ -65,7 +65,7 @@
 						</v-layout>
 						<v-layout row wrap v-for="(session, key) in sessions"  :key="`session-${key}`">
 								<v-flex xs12 md6 class="px-2"> <v-text-field v-model="sessions[key].dateFormatted" @blur="sessions[key].date = parseDate(sessions[key].dateFormatted)" @click:prepend="showDatePicker(key)" color="orange darken-2" prepend-icon="event" mask="##/##/####" return-masked-value persistent-hint /> </v-flex>
-								<v-flex xs11 md5 class="px-2"> <v-text-field v-model="sessions[key].time" @click:prepend="showTimePicker(key)" color="orange darken-2" prepend-icon="event" mask="##:##" return-masked-value /> </v-flex>
+								<v-flex xs11 md5 class="px-2"> <v-text-field v-model="sessions[key].time" @click:prepend="showTimePicker(key)" color="orange darken-2" prepend-icon="alarm" mask="##:##" return-masked-value /> </v-flex>
 								<v-flex v-if="SessionsCount > MinSessionCount" xs1> <v-btn @click.native.stop="deleteSession(key)" icon small flat> <v-icon>cancel</v-icon> </v-btn> </v-flex>
 						</v-layout>
 					</v-flex>
