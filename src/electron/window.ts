@@ -21,7 +21,7 @@ interface IWindowSize{
 }
 
 @TS.Strategy(TS.ExclusionPolicy.ALL)
-class WindowSize implements IWindowSize {
+export class WindowSize implements IWindowSize {
 	@readonly
 	@TS.Expose()
 	// tslint:disable-next-line:variable-name
@@ -59,7 +59,7 @@ class WindowSize implements IWindowSize {
 }
 
 @TS.Strategy(TS.ExclusionPolicy.ALL)
-class Window {
+export class Window {
 	private _window: Electron.BrowserWindow
 	private _errors: IWindowError = {
 		url_undefined: "url is empty",
@@ -123,9 +123,4 @@ class Window {
 	public close(){
 		this._window.destroy()
 	}
-}
-
-export {
-	Window,
-	WindowSize
 }

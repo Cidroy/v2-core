@@ -44,6 +44,7 @@
 		[ "@babel/plugin-proposal-pipeline-operator", { "proposal": "minimal" } ],
 		"@babel/plugin-transform-exponentiation-operator",
 		"@babel/plugin-syntax-jsx",
+		"transform-dynamic-import",
 		"@babel/plugin-transform-runtime"
 	]
 }

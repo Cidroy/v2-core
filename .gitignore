@@ -6,6 +6,5 @@ static/icons/*
 node_modules/
 npm-debug.log
 npm-debug.log.*
-package-lock.json
 !.gitignore
 docs/_book
