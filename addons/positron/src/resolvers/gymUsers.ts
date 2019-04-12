@@ -37,8 +37,6 @@ export default class GymUsersResolver {
 		let entityManager = DB.getManager()
 		let userinfo = await entityManager.query("select IF(COUNT(template.userid)>0 , true,false) as enrolled_status from userinfo LEFT JOIN template on template.userid = userinfo.userid where userinfo.userid = ?",
 			[userinfoId,])
-		console.log(userinfo[0].enrolled_status,"========================================================================")
-		console.log(userinfo[0])
 		return !!parseInt(userinfo[0].enrolled_status)
 		// return Math.random() >= 0.5
 	}

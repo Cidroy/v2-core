@@ -186,12 +186,16 @@ export default class UserResolver {
 		if (IDType) user.IDType = IDType
 		if (IDNumber) user.IDNumber = IDNumber
 		if (imageBase64){
-			let imageName = `profile-photos/${user.badgenumber || uuid()}-${user.firstName || ""}-${user.middleName || ""}-${user.lastName || ""}.${imageExtension}`
-			await fs.ensureDir(path.resolve(AppConfig.DataFolder, "profile-photos"))
-			// TODO: make this central
-			let imagePath = path.resolve(AppConfig.DataFolder, imageName)
-			await decode_base64(imageBase64, `%POSITRON_URL%/${imagePath}`)
-			user.imagePath = imageName
+			try {
+				let imageName = `profile-photos/${user.badgenumber || uuid()}-${user.firstName || ""}-${user.middleName || ""}-${user.lastName || ""}.${imageExtension}`
+				await fs.ensureDir(path.resolve(AppConfig.DataFolder, "profile-photos"))
+				// TODO: make this central
+				let imagePath = path.resolve(AppConfig.DataFolder, imageName)
+				await decode_base64(imageBase64, `%POSITRON_URL%/${imagePath}`)
+				user.imagePath = imageName
+			} catch (error) {
+				Console.error("unable to save image", error)
+			}
 		}
 		if (category) user.category = category
 		if (occupation) user.occupation = occupation

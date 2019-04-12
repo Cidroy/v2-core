@@ -22,6 +22,10 @@ export default class GymOffersResolver {
 		let gymOffers = new GymOffers()
 		gymOffers.name = name
 		gymOffers.description = description
+		startDate && (gymOffers.startDate = startDate)
+		endDate && (gymOffers.endDate = endDate)
+		isPrebookAvailable && (gymOffers.isPrebookAvailable = isPrebookAvailable)
+		PrebookStartDate && (gymOffers.PrebookStartDate = PrebookStartDate)
 
 		await gymOffers.save()
 		return gymOffers

@@ -80,7 +80,7 @@ async function addAddress(address: Partial<IAddress>): Promise<number | string> 
 				mutation AddAddress(
 					$landmark: String
 					$locality: String
-					$type: String!
+					$type: ADDRESS_TYPE!
 					$pincode: String!
 					$country: String!
 					$state: String!
@@ -191,7 +191,7 @@ async function addMember(userData: TMRegistration): Promise<string|number> {
 					$homeNumber: String
 					$officePhone: String
 					$whatsapp: String
-					$gender: String
+					$gender: GENDER
 					$dob: DateTime
 					$lastName: String
 					$middleName: String

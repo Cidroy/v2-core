@@ -43,8 +43,8 @@ const menu: TMenu[] = [
 	},
 	{ icon: "timeline", text: "Sales & Finance", to: Routes.PAYMENT.name, permission: Permissions.PAYMENTS_VIEW },
 	{ icon: "assessment", text: "Reports", to: Routes.REPORTS.name, permission: Permissions.REPORTS_VIEW },
-	// { icon: "bubble_chart", text: "HR", to: Routes.HR.name, permission: Permissions.HR },
-	// { icon: "bubble_chart", text: "Test Page", to: Routes.TEST.name, permission: Permissions.TEST },
+	{ icon: "bubble_chart", text: "HR", to: Routes.HR.name, permission: Permissions.HR },
+	{ icon: "bubble_chart", text: "Test Page", to: Routes.TEST.name, permission: Permissions.TEST },
 ]
 
 // ApplicationStore.addAppMenuToSettings([

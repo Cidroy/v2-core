@@ -24,7 +24,7 @@ export default class testuserprofile extends Vue {
 		c: "Membership",
 		d: "Details",
 	}
-	
+
 	private headers = [
 
 		{ text: "MembersShip Type", value: "name" },
