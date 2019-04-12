@@ -1,4 +1,5 @@
 import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
+import { debounce } from "lodash-decorators"
 import moment from "moment"
 import appConfig from "@/app.config"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
@@ -134,6 +135,7 @@ export default class OneDayRegistration extends Vue{
 	@Watch("amenities")
 	@Watch("attendeeCount")
 	@Watch("doj")
+	@debounce()
 	private async reCalculateAmount(){
 		this.priceLoading = true
 		try {

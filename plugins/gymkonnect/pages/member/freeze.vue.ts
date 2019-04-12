@@ -1,4 +1,5 @@
 import { Component, Vue, Watch, Prop, Emit } from "vue-property-decorator"
+import { debounce } from "lodash-decorators"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/layout.vue"
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
@@ -191,6 +192,7 @@ export default class MembershipFreezingPage extends Vue {
 	}
 	@Watch("freezeStartMin")
 	@Watch("freezeStartMax")
+	@debounce()
 	private onFreezeStartRangeChange(){
 		let freezeStart = moment(this.freezeStart)
 		freezeStart = moment.min([
@@ -209,6 +211,7 @@ export default class MembershipFreezingPage extends Vue {
 	private get freezeEndMax() { return this.XfreezeEndMax }
 	@Watch("freezeEndMin")
 	@Watch("freezeEndMax")
+	@debounce()
 	private onFreezeEndRangeChange() {
 		let freezeEnd = moment(this.freezeEnd)
 		freezeEnd = moment.min([
@@ -220,6 +223,7 @@ export default class MembershipFreezingPage extends Vue {
 
 	@Watch("freezeStart")
 	@Watch("freezeEnd")
+	@debounce()
 	private onFreezeRangeChange(){
 		this.freezingPeriod = moment(this.freezeEnd).diff(this.freezeStart, "days") + 1
 	}
@@ -231,6 +235,7 @@ export default class MembershipFreezingPage extends Vue {
 	@Watch("freezeStart")
 	@Watch("freezeEnd")
 	@Watch("freezingPeriod")
+	@debounce()
 	private onFreezeRangePeriodChange(){
 		this.FreezeError = ""
 		this.FreezeWarning = ""

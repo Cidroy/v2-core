@@ -1,4 +1,6 @@
 import { Component, Vue, Prop, Watch, Emit } from "vue-property-decorator"
+import { debounce } from "lodash-decorators"
+import moment from "moment"
 import Layout from "@/layouts/layout.vue"
 import { formatDate, parseDate } from "@/utils/misc"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
@@ -7,7 +9,6 @@ import { PaymentDetail } from "@plugins/gymkonnect/classes/types/payment"
 
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
 import { Logger } from "@classes/CONSOLE"
-import moment from "moment"
 
 const Console = new Logger("gk/payment/modal-single")
 
@@ -36,6 +37,7 @@ export default class SinglePaymentModal extends Vue {
 	@Watch("value")
 	@Watch("users")
 	@Watch("group")
+	@debounce()
 	private computePrimaryUser() {
 		Console.log("recalculating")
 		this.primaryUser = this.users[Object.keys(this.users)[0]]

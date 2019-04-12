@@ -1,4 +1,5 @@
 import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
+import { debounce } from "lodash-decorators"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import { TMRegistrationStep4, defaultRegistrationStep4User } from "@plugins/gymkonnect/classes/types/registration"
 import empty from "@/components/empty.vue"
@@ -53,6 +54,7 @@ export default class MRegistrationStep4 extends Vue {
 	@Watch("toc")
 	@Watch("allowedDoors")
 	@Watch("purposes")
+	@debounce()
 	private doInputEmit() { this.inputEmitter() }
 
 	@Prop({ type: Array, default: () => ([]) }) public exclude !: string[]

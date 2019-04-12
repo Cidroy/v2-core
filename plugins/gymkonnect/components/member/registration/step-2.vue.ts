@@ -4,6 +4,7 @@ import IAddress from "@classes/interface/IAddress"
 import AddressStore from "@plugins/gymkonnect/state/addresses"
 import empty from "@/components/empty.vue"
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
+import { debounce } from "lodash-decorators"
 
 @Component({
 	// @ts-ignore
@@ -46,6 +47,7 @@ export default class MRegistrationStep2 extends Vue {
 	@Watch("mobile")
 	@Watch("sameAsPhone")
 	@Watch("homeSameAsPhone")
+	@debounce()
 	private onSameAsPhoneChange() {
 		if (this.sameAsPhone) this.whatsappNumber = this.mobile
 		if (this.homeSameAsPhone) this.homeNumber = this.mobile

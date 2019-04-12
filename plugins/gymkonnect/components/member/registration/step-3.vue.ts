@@ -1,4 +1,5 @@
 import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
+import { debounce } from "lodash-decorators"
 import moment from "moment"
 import Layout from "@/layouts/layout.vue"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
@@ -102,6 +103,7 @@ export default class MRegistrationStep3 extends Vue {
 	@Watch("timeSlot")
 	@Watch("category")
 	@Watch("doj")
+	@debounce()
 	private doInputEmit() { this.inputEmitter() }
 
 	private packageMagnitude = 1
@@ -120,6 +122,7 @@ export default class MRegistrationStep3 extends Vue {
 	@Watch("category")
 	@Watch("group")
 	@Watch("quantity")
+	@debounce()
 	private async recalculateSubTotal() {
 		this.priceLoading = true
 		try {

@@ -1,11 +1,11 @@
 import { Component, Watch, Vue, Prop } from "vue-property-decorator"
+import { debounce } from "lodash-decorators"
 import moment from "moment"
 import appConfig from "@/app.config"
 import Layout from "@/layouts/layout.vue"
 import { parseDate, formatDate } from "@/utils/misc"
 import { ReportsListStore } from "@plugins/gymkonnect/state/report-list"
 import { Logger } from "@classes/CONSOLE"
-import { sleep } from "@classes/misc"
 
 const Console = new Logger(`reports.vue/gk`)
 const REPORT_TYPES = {
@@ -141,6 +141,7 @@ export default class ReportsPage extends Vue {
 	@Watch("report")
 	@Watch("timePeriodStart")
 	@Watch("timePeriodEnd")
+	@debounce()
 	private onReportChange(){
 		this.refresh()
 	}
