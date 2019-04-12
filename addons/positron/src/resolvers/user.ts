@@ -161,7 +161,6 @@ export default class UserResolver {
 			}
 			user.wdmsId = [wdmsId,]
 		} else {
-
 			let entityManager = DB.getManager()
 			let badgenumber = await entityManager.query("select if(max(badgenumber) is null, 1,max(badgenumber)+1 ) as badgenumber from userinfo")
 			let badgenumberStart: string = badgenumber[0].badgenumber
@@ -191,8 +190,8 @@ export default class UserResolver {
 				await fs.ensureDir(path.resolve(AppConfig.DataFolder, "profile-photos"))
 				// TODO: make this central
 				let imagePath = path.resolve(AppConfig.DataFolder, imageName)
-				await decode_base64(imageBase64, `%POSITRON_URL%/${imagePath}`)
-				user.imagePath = imageName
+				await decode_base64(imageBase64, imagePath)
+				user.imagePath = `%POSITRON_URL%/${imageName}`
 			} catch (error) {
 				Console.error("unable to save image", error)
 			}
