@@ -1,6 +1,9 @@
 import * as TGQL from "type-graphql"
 import { ApolloServer } from "apollo-server-express"
+import { GraphQLSchema } from "graphql"
 import express from "express"
+import path from "path"
+import fs from "fs-extra"
 import { Logger } from "@classes/CONSOLE"
 
 import OptionsResolver from "@positron/resolvers/options"
@@ -106,11 +109,14 @@ export default class GQL{
 
 	private static get URI(){ return "/gql" }
 
-	public static async Schema(){
+	public static async Schema(): Promise<GraphQLSchema>{
 		try {
 			return await TGQL.buildSchema({
 				resolvers: GQL.Resolvers,
-				authChecker: GQL.authChecker
+				authChecker: GQL.authChecker,
+				//# IF DEBUG
+				emitSchemaFile: path.resolve("dist/positron-schema.gql"),
+				//# ENDIF DEBUG
 			})
 		} catch (error) {
 			Console.error("GraphQL Schema generation failed", error)

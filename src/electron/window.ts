@@ -80,9 +80,9 @@ export class Window {
 		}
 		else{
 			this._options = object
-			//#IF DEBUG
+			//# IF DEBUG
 			Console.log("window-options", object)
-			//#ENDIF DEBUG
+			//# ENDIF DEBUG
 			if (process.env.NODE_ENV === "development")
 				object = { ...object, webPreferences: { webSecurity: false } }
 			this._display = <WindowSize>{ ...object, __instance__: "IWindowSize" }

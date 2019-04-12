@@ -50,6 +50,13 @@
 			"es2015",
 			"esnext",
 			"dom"
+		],
+		"plugins": [
+			{
+				"name": "ts-graphql-plugin",
+				"schema": "./dist/positron-schema.json",
+				"tag": "gql"
+			}
 		]
 	},
 	"include": [

@@ -7,7 +7,7 @@ All the components can be accessed using the `~module/**` relative path through 
 
 **`icon-generator`**
 * This is used to generate icons for multiple application from a png file.
-	Usage is as follows: 
+	Usage is as follows:
 	```ts
 	import IconGenerator from "~addons/icon-generator"
 	...
@@ -43,11 +43,11 @@ All the components can be accessed using the `~module/**` relative path through 
 Contains unpublished webpack plugins. Currently it only contains the following
 * `strip-debug-loader` to provide the functionality to remove dev codes during production.
 	```ts
-	#IF DEBUG
+	//# IF DEBUG
 		console.log("DEBUG", "some debug data")
-	#ELSE
+	//# ELSE
 		console.log("IN PRODUCTION MODE")
-	#ENDIF
+	//# ENDIF
 	```
 
 	is converted to this in `production` environment
@@ -78,7 +78,7 @@ Contains unpublished webpack plugins. Currently it only contains the following
 	const buildAddons = async (buildPath, electronVersion, platform, arch) { ... }
 
 	applicationBuilder.onBuild(buildAddons)
-	``` 
+	```
 * `dev.ts` - to start development server with electron
 * `ElectronBuilder.ts` - A generic class that can be used for building the application
 	Usage is as follows
@@ -102,7 +102,7 @@ Contains unpublished webpack plugins. Currently it only contains the following
 **`web`**
 * `build.ts` - this is used to build the web version of the application. The generated output is at `dist/web`
 * `dev.ts` - This is used to run the dev server for web implementation
-* `WebBuilder.ts` - A generic class that can be used for building web application. Note that the config is preset to use `src/app` folder in this case. Usage is as follows : 
+* `WebBuilder.ts` - A generic class that can be used for building web application. Note that the config is preset to use `src/app` folder in this case. Usage is as follows :
 	```ts
 	import { WebBuilder } from "~build/web/WebBuilder"
 
@@ -136,7 +136,7 @@ more like a middle ground for production. Store all webpack builds here.
 	- **`classes`**- UI specific classes and interfaces
 	- **`components`** - Vue components. Here there are multiple types of sub-component, mainly those that are auto imported and those that are not.
 
-	The Application will auto detect the run state of the application and auto import any component that has the naming 
+	The Application will auto detect the run state of the application and auto import any component that has the naming
 
 	`install-*.vue` if the code is inside install segment and
 
@@ -160,17 +160,17 @@ more like a middle ground for production. Store all webpack builds here.
 	- **`layouts`** - Same as components but this stores UI layouts.
 
 	All the install mode layouts must be named as `install-layoutName-layout.vue`
-	
+
 	and the rest of the application layouts as `app-layoutName-layout.vue`
 
 	if you want to use auto import feature. Otherwise you can import as follows
 	```ts
 	import layoutName from "@/layouts/layout-name"
-	``` 
+	```
 	- **`pages`** - All the UI pages that application will transition through are stored here.
 
 	Note that all the install pages are stored in the `install` subfolder
-	- **`routes`** - All the application and install routes are stored in this directory. 
+	- **`routes`** - All the application and install routes are stored in this directory.
 
 	To add a route to install mode use `install.routes.ts`
 
