@@ -16,6 +16,11 @@ export default class ProfileModal extends Vue {
 	@Prop({ type: Boolean, default: false }) public value!: boolean
 	@Watch("value") private onValueChange() { this.showModal = this.value }
 	@Emit("input") public inputEmitter() { return this.showModal }
+
+	@Prop({ type: Number, default: 0 }) public dummy!: number
+	@Watch("dummy") private onDummyChange(){
+		console.log("regenerating dummy", this.dummy)
+	}
 	// #endregion
 
 	// #region kundi code
@@ -32,7 +37,7 @@ export default class ProfileModal extends Vue {
 	]
 
 	private headers = [
-		
+
 		{ text: "MembersShip Type", value: "name" },
 		{ text: "Package", value: "package", sortable: false },
 		{ text: "Start Date", value: "startDate", sortable: false },
@@ -41,28 +46,28 @@ export default class ProfileModal extends Vue {
 
 	private desserts = [
 		{
-			
+
 			name: "Master",
 			package: "$100",
 			startDate: "12/2/18",
 			endDate: "12/2/19"
 		},
 		{
-			
+
 			name: "Noob",
 			package: "$100",
 			startDate: "12/2/18",
 			endDate: "12/2/19"
 		},
 		{
-			
+
 			name: "standard",
 			package: "$100",
 			startDate: "12/2/18",
 			endDate: "12/2/19"
 		},
 		{
-			
+
 			name: "standard",
 			package: "$100",
 			startDate: "12/2/18",
@@ -71,7 +76,7 @@ export default class ProfileModal extends Vue {
 	]
 
 	private headers2 = [
-		
+
 		{ text: "Start Date", value: "name2" },
 		{ text: "End Date", value: "endDate" },
 		{ text: "Days", value: "days" },

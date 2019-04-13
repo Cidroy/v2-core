@@ -154,6 +154,7 @@
 		"rimraf": "^2.6.2",
 		"sass-loader": "^7.1.0",
 		"start-server-webpack-plugin": "^2.2.5",
+		"string-replace-loader": "^2.1.1",
 		"stylus-loader": "^3.0.2",
 		"sw-precache-webpack-plugin": "^0.11.5",
 		"ts-graphql-plugin": "^1.1.2",

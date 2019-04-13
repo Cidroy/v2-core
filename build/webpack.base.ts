@@ -63,6 +63,17 @@ const baseConfig: webpack.Configuration = {
 				include: RESOLVE_PATHS,
 			},
 			{
+				test: /\.(vue|vue.ts|tsx?)$/,
+				enforce: "pre",
+				loader: "string-replace-loader",
+				options: {
+					search: "Vue.default",
+					replace: "Vue",
+					flags: "g",
+				}
+
+			},
+			{
 				test: /\.(jsx?|vue|tsx?)$/,
 				use: "strip-debug-block",
 				enforce: "pre",
