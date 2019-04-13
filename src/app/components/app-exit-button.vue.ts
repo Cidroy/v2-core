@@ -10,8 +10,7 @@ import empty from "@/components/empty.vue"
 	},
 
 })
-// @ts-ignore
-export default class InstallExitButton extends Vue {
+export default class InstallExitButton extends Vue.default {
 	private requireConfirmExit: boolean = true
 	private confirmExit: boolean = false
 

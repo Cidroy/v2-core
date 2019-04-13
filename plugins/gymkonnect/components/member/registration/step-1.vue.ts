@@ -20,8 +20,7 @@ const Console = new Logger(`step-1.vue/registration/gk`)
 		this.onValueChange()
 	}
 })
-// @ts-ignore
-export default class MRegistrationStep1 extends Vue {
+export default class MRegistrationStep1 extends Vue.default {
 
 	private parseDate(date) { return parseDate(date) }
 	private formatDate(date) { return formatDate(date) }

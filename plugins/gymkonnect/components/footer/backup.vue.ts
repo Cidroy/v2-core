@@ -7,8 +7,7 @@ import { Toast } from "@/components/toast"
 	// @ts-ignore
 	components: { empty, },
 })
-// @ts-ignore
-export default class BackupButton extends Vue {
+export default class BackupButton extends Vue.default {
 	private backingUp = false
 
 	private async backup(){

@@ -26,7 +26,7 @@ import store from "@/state/store"
 @Module({ dynamic: true, store, name: "petrol" })
 class _petrol extends VuexModule{
 	private price: number = 0
-	
+
 	@Mutation
 	public increment(delta: number){ this.price += delta }
 	@Mutation
@@ -56,8 +56,9 @@ With usage as follows
 import { Component, Vue } from "vue-property-decorator"
 import { petrol }from "@/store/petrol"
 
+// @ts-ignore
 @Component({})
-export default class PetrolPrices extends Vue{
+export default class PetrolPrices extends Vue.default {
 	onIncrementButtonClick(){ petrol.increment(2) }
 	onDecrementButtonClick(){ petrol.decrement(0.02) }
 }

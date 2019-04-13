@@ -34,7 +34,7 @@ import store from "@/state/store"
 @Module({ dynamic: true, store, name: "petrol" })
 class _petrol extends VuexModule{
 	private price: number = 0
-	
+
 	@Mutation
 	public increment(delta: number){ this.price += delta }
 	@Mutation
@@ -77,8 +77,9 @@ Which makes the usage as follows
 import { Component, Vue } from "vue-property-decorator"
 import { petrol }from "@/store/petrol"
 
+// @ts-ignore
 @Component({})
-export default class PetrolPrices extends Vue{
+export default class PetrolPrices extends Vue.default {
 	onInflation(){ petrol.inflate() }
 	onDeflation(){ petrol.deflate() }
 }
@@ -107,16 +108,16 @@ import crudePriceService from "crude-price"
 @Module({ dynamic: true, store, name: "petrol" })
 class _petrol extends VuexModule{
 	private price: number = 0
-	
+
 	@Mutation
 	public update(delta: number){ this.price += delta }
 
 	@Action({ commit: 'update' })
-	public async updateInflation(){ 
+	public async updateInflation(){
 		let delta = await crudePriceService.getChanges({ lastPrice: this.price })
 		if(delta > 0)
 			return delta++
-		else 
+		else
 			return delta/10
 	}
 }
@@ -137,8 +138,8 @@ export default {
 	},
 	actions: {
 		async updateInflation (context) {
-			var delta = await crudePriceService.getChanges({ 
-				lastPrice: context.state.price 
+			var delta = await crudePriceService.getChanges({
+				lastPrice: context.state.price
 			})
 			context.commit('update', delta)
 		}

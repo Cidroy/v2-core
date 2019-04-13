@@ -33,12 +33,12 @@ class _counter extends VuexModule implements iCounter{
 	get COUNT(){ return this.count }
 
 	@Mutation
-	increment(delta: number = 1){ 
+	increment(delta: number = 1){
 		if(delta < 0) throw "Increment Step cannot be less than Zero"
 		this.count += delta
 	}
 	@Mutation
-	decrement(delta: number = 1){ 
+	decrement(delta: number = 1){
 		if(delta < 0) throw "Decrement Step cannot be less than Zero"
 		this.count -= delta
 	}
@@ -61,8 +61,9 @@ export const Counter = getModule(_counter)
 import { Component, Vue } from "vue-property-decorator"
 import { Counter } from "@/state/counter"
 
+// @ts-ignore
 @Component({})
-export default class AppSFC extends Vue{
+export default class AppSFC extends Vue.default {
 	get count(){ return Counter.count }
 	increment(){ Counter.increment() }
 	decrement(){ Counter.decrement() }
@@ -131,13 +132,13 @@ class _petrol extends VuexModule implements iPetrol{
 	}
 
 	@Mutation
-	public increment(delta: number = 1){ 
+	public increment(delta: number = 1){
 		if(delta < 0) throw "Increment Step cannot be less than Zero"
 		this.basePrice += delta
 		this._hikes++
 	}
 	@Mutation
-	public decrement(delta: number = 1){ 
+	public decrement(delta: number = 1){
 		if(delta < 0) throw "Decrement Step cannot be less than Zero"
 		this.basePrice -= delta
 		this._falls++
@@ -186,7 +187,7 @@ import { Component, Vue } from "vue-property-decorator"
 import { Petrol } from "@/state/petrol"
 
 @Component({})
-export default class AppSFC extends Vue{
+export default class AppSFC extends Vue.default {
 	step: number
 
 	constructor(){
@@ -198,21 +199,21 @@ export default class AppSFC extends Vue{
 	get hikes(){ return Petrol.HIKES }
 	get falls(){ return Petrol.FALLS }
 
-	increment(){ 
-		try{ Petrol.increment(step) } 
+	increment(){
+		try{ Petrol.increment(step) }
 		catch(e){ this.error(e) }
 	}
-	decrement(){ 
-		try{ Petrol.decrement(step) } 
+	decrement(){
+		try{ Petrol.decrement(step) }
 		catch(e){ this.error(e) }
 	}
 
-	inflate(){ 
-		try{ Petrol.inflate() } 
+	inflate(){
+		try{ Petrol.inflate() }
 		catch(e){ this.error(e) }
 	}
-	deflate(){ 
-		try{ Petrol.deflate() } 
+	deflate(){
+		try{ Petrol.deflate() }
 		catch(e){ this.error(e) }
 	}
 

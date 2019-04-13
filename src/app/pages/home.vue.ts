@@ -12,5 +12,4 @@ import GymDashboard from "@plugins/gymkonnect/pages/dashboard.vue"
 		meta: [{ name: "description", content: appConfig.description, },],
 	},
 })
-// @ts-ignore
-export default class HomePage extends Vue { }
+export default class HomePage extends Vue.default { }

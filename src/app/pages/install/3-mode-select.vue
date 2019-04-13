@@ -20,7 +20,7 @@ import { InstallerStore } from "@/state/install-modules/install"
 		meta: [ { name: "Install", content: "Install Gymkonnect now", }, ],
 	},
 })
-export default class ModeSelectPage extends Vue{
+export default class ModeSelectPage extends Vue.default {
 	mode: SoftwareMode = SoftwareMode.MASTER
 	async next(){
 		await MAIN.next({ mode: this.mode, })

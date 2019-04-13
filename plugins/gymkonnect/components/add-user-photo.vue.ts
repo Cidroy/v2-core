@@ -31,8 +31,7 @@ let log = new Logger("electron/camera-input")
 		if(device===undefined) this.cameraID = this.cameraList[0]?this.cameraList[0].deviceId: ""
 	}
 })
-// @ts-ignore
-export default class AddUserPhoto extends Vue{
+export default class AddUserPhoto extends Vue.default {
 	private readonly cameraStreamHeight = 480
 	private readonly cameraStreamWidth = 360
 
@@ -87,8 +86,7 @@ export default class AddUserPhoto extends Vue{
 	private async save(){
 		try{
 			if(!this.captured) return
-			// @ts-ignore
-			this.outputCanvas = this.$refs.outputCanvas
+			this.outputCanvas = <HTMLCanvasElement>this.$refs.outputCanvas
 			let data = this.outputCanvas.toDataURL()
 			data = data.replace(/^data:image\/\w+;base64,/, "")
 			let dataBuffer = new Buffer(data, "base64")
@@ -104,8 +102,7 @@ export default class AddUserPhoto extends Vue{
 		}
 	}
 
-	// @ts-ignore
-	private videoElement = this.$refs.cameraOutput
+	private videoElement = <HTMLVideoElement>this.$refs.cameraOutput
 	private startCameraStream(){
 		// @ts-ignore
 		this.videoElement = this.$refs.cameraOutput
@@ -120,7 +117,6 @@ export default class AddUserPhoto extends Vue{
 			},
 			stream => {
 				this.cameraStream = stream
-				// @ts-ignore
 				log.log(stream, this.videoElement, this.$refs)
 				this.videoElement.srcObject = stream
 				this.videoElement.autoplay = true
@@ -139,15 +135,13 @@ export default class AddUserPhoto extends Vue{
 	}
 
 	private captured = false
-	// @ts-ignore
-	private outputCanvas = this.$refs.outputCanvas
+	private outputCanvas = <HTMLCanvasElement>this.$refs.outputCanvas
 	private capture(){
 		try{
 			if(this.cameraStream===null) throw "Unable to Start Camera Stream"
 			this.captured = true
-			// @ts-ignore
-			this.outputCanvas = this.$refs.outputCanvas
-			this.outputCanvas.getContext("2d").drawImage(this.videoElement, 0, 0)
+			this.outputCanvas = <HTMLCanvasElement>this.$refs.outputCanvas
+			this.outputCanvas.getContext("2d")!.drawImage(this.videoElement, 0, 0)
 			this.stopCameraStream()
 		}catch(error){
 			log.error(error)

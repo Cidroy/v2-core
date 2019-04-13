@@ -10,5 +10,4 @@ import Layout from "@/layouts/layout.vue"
 		meta: [{ name: "description", content: appConfig.description, },],
 	},
 })
-// @ts-ignore
-export default class AboutPage extends Vue { }
+export default class AboutPage extends Vue.default { }

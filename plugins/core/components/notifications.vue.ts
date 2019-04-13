@@ -10,8 +10,7 @@ import moment from "moment"
 		NotificationStore.syncNotifications()
 	}
 })
-// @ts-ignore
-export default class NotificationPanel extends Vue {
+export default class NotificationPanel extends Vue.default {
 	private showNotifications = false
 	private get unseenNotificationsCount(){ return NotificationStore.UNSEEN_NOTIFICATION_COUNT }
 	private get notifications(){ return NotificationStore.ALL_NOTIFICATIONS }

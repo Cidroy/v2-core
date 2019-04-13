@@ -4,8 +4,9 @@ All the public members in the class are converted into data elements by default 
 // Typescript
 import { Component, Vue } from "vue-property-decorator"
 
+// @ts-ignore
 @Component({})
-export default class AppSFC extends Vue{
+export default class AppSFC extends Vue.default {
 	username: string = ""
 	password: string = ""
 	valid: boolean = false

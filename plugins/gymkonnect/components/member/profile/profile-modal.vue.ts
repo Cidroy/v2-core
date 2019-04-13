@@ -1,13 +1,12 @@
 import { Component, Vue, Watch, Prop, Emit } from "vue-property-decorator"
 import MRegistrationStepFinished from "../registration/step-finished.vue"
+// @ts-ignore
 @Component({
-	// @ts-ignore
 	components: {
 		MRegistrationStepFinished,
 	},
 })
-// @ts-ignore
-export default class ProfileModal extends Vue {
+export default class ProfileModal extends Vue.default {
 	// #region modal controls
 	private showModal = false
 	@Watch("showModal") private onShowModalChange() {

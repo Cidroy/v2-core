@@ -13,8 +13,7 @@ import { parseDate, formatDate } from "@/utils/misc"
 		meta: [{ name: "description", content: appConfig.description, },],
 	},
 })
-// @ts-ignore
-export default class Home extends Vue {
+export default class Home extends Vue.default {
 	private get photo() {
 		return "https://cdn.vuetifyjs.com/images/cards/plane.jpg"
 	}

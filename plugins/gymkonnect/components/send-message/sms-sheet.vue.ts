@@ -13,8 +13,7 @@ import { alert } from "@/components/toast"
 		this.Initialize()
 	}
 })
-// @ts-ignore
-export default class SmsSheet extends Vue {
+export default class SmsSheet extends Vue.default {
 	private get PERMISSION() { return { gymkonnect, } }
 	private get permissions() { return gymkonnect.SMS_SEND }
 	private showSheet = false

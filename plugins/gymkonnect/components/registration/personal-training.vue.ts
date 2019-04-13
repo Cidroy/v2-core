@@ -32,8 +32,7 @@ const Console = new Logger(`spa-booking.vue/gk`)
 		this.onGroupingChange()
 	}
 })
-// @ts-ignore
-export default class PersonalTrainingRegistration extends Vue{
+export default class PersonalTrainingRegistration extends Vue.default {
 	private get formatDate() { return formatDate }
 	private get parseDate() { return parseDate }
 

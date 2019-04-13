@@ -12,15 +12,14 @@ import { TSpaBookingArgs, defaultSpaBookingArgs } from "@plugins/gymkonnect/clas
 
 const Console = new Logger("gk/payment/modal-single")
 
+// @ts-ignore
 @Component({
-	// @ts-ignore
 	components: { Layout, },
 	created(){
 		this.Initialize()
 	}
 })
-// @ts-ignore
-export default class SpaBookingModal extends Vue {
+export default class SpaBookingModal extends Vue.default {
 	private get formatDate() { return formatDate }
 	private get parseDate() { return parseDate }
 

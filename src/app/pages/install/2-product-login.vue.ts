@@ -11,8 +11,7 @@ import { TStageProductKey } from "@/classes/install-router"
 		meta: [{ name: "Install", content: "Install Gymkonnect now", },],
 	},
 })
-// @ts-ignore
-export default class ProductLoginPage extends Vue {
+export default class ProductLoginPage extends Vue.default {
 	private username = ""
 	private password = ""
 	private key = ""

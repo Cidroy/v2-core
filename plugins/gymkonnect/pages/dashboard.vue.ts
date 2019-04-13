@@ -11,5 +11,4 @@ import MemberListPage from "./member/list.vue"
 		meta: [{ name: "Dashboard", content: "", },],
 	},
 })
-// @ts-ignore
-export default class GymDashboard extends Vue { }
+export default class GymDashboard extends Vue.default { }

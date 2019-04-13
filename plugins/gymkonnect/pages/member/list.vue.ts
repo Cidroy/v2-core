@@ -24,8 +24,7 @@ import { TMemberListTableItems } from "@plugins/gymkonnect/classes/types/member-
 		this.refresh()
 	}
 })
-// @ts-ignore
-export default class MemberListPage extends Vue {
+export default class MemberListPage extends Vue.default {
 
 	private get PERMISSIONS() { return { gymkonnect } }
 

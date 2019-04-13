@@ -9,8 +9,9 @@ If the name of the event is not supplied via the `event` argument, the function 
 // Typescript
 import { Vue, Component, Emit } from 'vue-property-decorator'
 
+// @ts-ignore
 @Component({})
-export default class YourComponent extends Vue {
+export default class YourComponent extends Vue.default {
   count = 0
 
   @Emit()

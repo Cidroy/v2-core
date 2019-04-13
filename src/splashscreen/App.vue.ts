@@ -16,8 +16,7 @@ import { ipcRenderer } from "electron"
 		})
 	},
 })
-// @ts-ignore
-export default class SplashcreenPage extends Vue{
+export default class SplashcreenPage extends Vue.default {
 	private logo = logo
 	private xMessage = "Loading..."
 	private xError = ""

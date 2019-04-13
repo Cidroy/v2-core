@@ -4,8 +4,9 @@ All the class getters are converted into computed properties
 // Typescript
 import { Component, Vue } from "vue-property-decorator"
 
+// @ts-ignore
 @Component({})
-export default class AppSFC extends Vue{
+export default class AppSFC extends Vue.default {
 	firstName: string = ""
 	lastName: string = ""
 	get name(){

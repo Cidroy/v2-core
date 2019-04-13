@@ -22,7 +22,7 @@
 import { Component, Vue, Emit, Prop } from "vue-property-decorator"
 
 @Component({})
-export default class MRegistrationStep1 extends Vue{
+export default class MRegistrationStep1 extends Vue.default {
 	@Prop({ type: String, default: "Import Details"}) title !: string
 
 	importDialog: boolean = false

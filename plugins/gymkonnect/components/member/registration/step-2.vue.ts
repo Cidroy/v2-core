@@ -13,8 +13,7 @@ import { debounce } from "lodash-decorators"
 		this.onValueChange()
 	},
 })
-// @ts-ignore
-export default class MRegistrationStep2 extends Vue {
+export default class MRegistrationStep2 extends Vue.default {
 	private mobile: string = ""
 	private whatsappNumber: string = ""
 	private homeNumber: string = ""

@@ -25,7 +25,7 @@
 import { Component, Vue } from "vue-property-decorator"
 
 @Component({})
-export default class SystemInformation extends Vue{
+export default class SystemInformation extends Vue.default {
 	electron = process.versions["atom-shell"]
 	name = "landing-page"
 	node = process.versions.node

@@ -21,7 +21,9 @@ type TSessions = Record<string, {
 	date: string,
 	dateFormatted: string,
 	time: string,
-}>
+// tslint:disable-next-line: semicolon
+}>;
+
 @Component({
 	// @ts-ignore
 	components: {
@@ -38,8 +40,7 @@ type TSessions = Record<string, {
 		this.Initialize()
 	}
 })
-// @ts-ignore
-export default class FitnessCounselingRegistration extends Vue{
+export default class FitnessCounselingRegistration extends Vue.default {
 	private get formatDate() { return formatDate }
 	private get parseDate() { return parseDate }
 

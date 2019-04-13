@@ -4,8 +4,8 @@ import PersonalTrainingRegistration from "../components/registration/personal-tr
 import OneDayRegistration from "../components/registration/one-day.vue"
 import FitnessCounselingRegistration from "../components/registration/fitness-counseling.vue"
 
+// @ts-ignore
 @Component({
-	// @ts-ignore
 	components: {
 		Layout,
 		PersonalTrainingRegistration,
@@ -13,8 +13,7 @@ import FitnessCounselingRegistration from "../components/registration/fitness-co
 		FitnessCounselingRegistration,
 	},
 })
-// @ts-ignore
-export default class RegistrationPage extends Vue {
+export default class RegistrationPage extends Vue.default {
 	private printingBlank = false
 	private printBlank() {
 		// TODO:

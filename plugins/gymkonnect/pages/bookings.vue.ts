@@ -2,15 +2,14 @@ import { Component, Vue } from "vue-property-decorator"
 import Layout from "@/layouts/layout.vue"
 import SpaBooking from "../components/bookings/spa-booking.vue"
 
+// @ts-ignore
 @Component({
-	// @ts-ignore
 	components: {
 		Layout,
 		SpaBooking,
 	},
 })
-// @ts-ignore
-export default class BookingPage extends Vue {
+export default class BookingPage extends Vue.default {
 	private printingBlank = false
 	private printBlank(){
 		// TODO:

@@ -13,8 +13,7 @@ import { alert } from "@/components/toast"
 		this.Initialize()
 	}
 })
-// @ts-ignore
-export default class EmailSheet extends Vue {
+export default class EmailSheet extends Vue.default {
 	private get PERMISSION() { return { gymkonnect, } }
 	private get permissions() { return gymkonnect.EMAIL_SEND }
 	private showSheet = false

@@ -7,8 +7,9 @@ To define any class member as prop just add the Prop decorator to that variable.
 // Typescript
 import { Vue, Component, Prop } from 'vue-property-decorator'
 
+// @ts-ignore
 @Component({})
-export default class YourComponent extends Vue {
+export default class YourComponent extends Vue.default {
   @Prop(Number) propA!: number
   @Prop({ default: 'default value' }) propB!: string
   @Prop([String, Boolean]) propC: string | boolean

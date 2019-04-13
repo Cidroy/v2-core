@@ -6,8 +6,9 @@ To create a watcher just add the watch class decorator infront of a member funct
 // Typescript
 import { Component, Vue, Watch } from "vue-property-decorator"
 
+// @ts-ignore
 @Component({})
-export default class AppSFC extends Vue{
+export default class AppSFC extends Vue.default {
 	username: string = ""
 
 	@Watch('username')

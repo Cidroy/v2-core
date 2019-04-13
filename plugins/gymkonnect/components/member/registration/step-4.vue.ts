@@ -11,8 +11,7 @@ import empty from "@/components/empty.vue"
 		this.utmSource = (this.UTM_SOURCES[0] || { id: 0 }).id
 	}
 })
-// @ts-ignore
-export default class MRegistrationStep4 extends Vue {
+export default class MRegistrationStep4 extends Vue.default {
 	private confirmModal = false
 
 	private utmSource: boolean | string | number = false

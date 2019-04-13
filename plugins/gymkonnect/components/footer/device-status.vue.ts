@@ -9,8 +9,7 @@ import { DeviceStore } from "@plugins/gymkonnect/state/device"
 		this.Initialize()
 	}
 })
-// @ts-ignore
-export default class DeviceStatusButton extends Vue {
+export default class DeviceStatusButton extends Vue.default {
 	private get iconColor(){
 		let color = "red"
 		if(this.error){}

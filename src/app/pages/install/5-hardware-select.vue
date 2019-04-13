@@ -19,7 +19,7 @@ import { InstallerStore } from "@/state/install-modules/install"
 		meta: [ { name: "Install", content: "Install Gymkonnect now", }, ],
 	},
 })
-export default class HardwareSelectPage extends Vue{
+export default class HardwareSelectPage extends Vue.default {
 	biometric: IDevice[] = []
 	async next(){
 		await MAIN.next({ biometric: this.biometric, })

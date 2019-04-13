@@ -10,8 +10,8 @@ import Gymkonnect from "@plugins/gymkonnect/classes/clients"
 import { Logger } from "@classes/CONSOLE"
 
 const Console = new Logger(`step-3.vue/registration/gk`)
+// @ts-ignore
 @Component({
-	// @ts-ignore
 	components: { Layout, },
 	created() {
 		if(this.value){
@@ -24,8 +24,7 @@ const Console = new Logger(`step-3.vue/registration/gk`)
 		this.recalculateSubTotal()
 	}
 })
-// @ts-ignore
-export default class MRegistrationStep3 extends Vue {
+export default class MRegistrationStep3 extends Vue.default {
 	private formatDate(date: string) { return formatDate(date) }
 	private parseDate(date: string) { return parseDate(date) }
 	private error = ""

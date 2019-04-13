@@ -67,8 +67,9 @@ export const moduleA = getModule(_moduleA)
 import { Component, Vue } from "vue-property-decorator"
 import { moduleA }from "@/store/moduleA"
 
+// @ts-ignore
 @Component({})
-export default class AppSFC extends Vue{
+export default class AppSFC extends Vue.default {
 	get count(){
 		return moduleA.count
 	}

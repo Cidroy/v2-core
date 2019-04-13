@@ -57,15 +57,16 @@ const store = new Vuex.Store({
 })
 ```
 
-Which makes the usage as follows : 
+Which makes the usage as follows :
 ```ts
 // Typescript
 // @/App.vue
 import { Component, Vue } from "vue-property-decorator"
 import { moduleA }from "@/store/moduleA"
 
+// @ts-ignore
 @Component({})
-export default class AppSFC extends Vue{
+export default class AppSFC extends Vue.default {
 	get doneTodos(){ return moduleA.doneTodos }
 	get allTodos(){ return moduleA.allTodos }
 }

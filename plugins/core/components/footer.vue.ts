@@ -12,16 +12,15 @@ import DeviceStatus from "@plugins/gymkonnect/components/footer/device-status.vu
 import { Permissions as maple } from "../permission"
 import { Permissions as gymkonnect } from "@plugins/gymkonnect/permission"
 
+// @ts-ignore
 @Component({
-	// @ts-ignore
 	components: {
 		Backup,
 		Messages,
 		DeviceStatus,
 	},
 })
-// @ts-ignore
-export default class Footer extends Vue {
+export default class Footer extends Vue.default {
 	private get PERMISSION() {
 		return {
 			maple,

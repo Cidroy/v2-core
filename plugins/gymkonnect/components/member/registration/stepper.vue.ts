@@ -11,12 +11,11 @@ import stepFinished from "@plugins/gymkonnect/components/member/registration/ste
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
 import { alert } from "@/components/toast"
 
+// @ts-ignore
 @Component({
-	// @ts-ignore
 	components: { Layout, stepOne, stepTwo, stepFinished, },
 })
-// @ts-ignore
-export default class MemberRegistrationStepper extends Vue {
+export default class MemberRegistrationStepper extends Vue.default {
 	private userData: TMRegistration = defaultRegistrationUser
 	private get userDataComputed() {
 		return {

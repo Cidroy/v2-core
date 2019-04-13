@@ -1,12 +1,11 @@
 import { Component, Vue } from "vue-property-decorator"
 import tester from "../components/test.vue"
 
+// @ts-ignore
 @Component({
-	// @ts-ignore
 	components: { tester, },
 })
-// @ts-ignore
-export default class TestPage extends Vue {
+export default class TestPage extends Vue.default {
 	private selected: [] | undefined
 	private headers!: [{
 		text: "Dessert (100g serving)";

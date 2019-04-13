@@ -4,11 +4,12 @@ If you do not wish to add a method or member into the `methods` or `data` fields
 // Typescript
 import { Component, Vue } from "vue-property-decorator"
 
+// @ts-ignore
 @Component({
 	beforeCreate(){}
 	'vue-meta': {}
 })
-export default class AppSFC extends Vue{
+export default class AppSFC extends Vue.default {
 	validator(){}
 }
 ```

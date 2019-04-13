@@ -28,7 +28,7 @@ import { MAIN } from "@/classes/setup"
 		meta: [ { name: "Install", content: "Install Gymkonnect now", }, ],
 	},
 })
-export default class WelcomePage extends Vue{
+export default class WelcomePage extends Vue.default {
 	async next(){
 		// await MAIN.next({  })
 	}

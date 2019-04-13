@@ -32,8 +32,7 @@ const Console = new Logger(`renewal.vue/gk`)
 		this.Initialize()
 	}
 })
-// @ts-ignore
-export default class MembershipRenewalPage extends Vue {
+export default class MembershipRenewalPage extends Vue.default {
 	private formatDate(date: string) { return formatDate(date) }
 	private error = ""
 	private async Initialize(){

@@ -12,8 +12,7 @@ import { Component, Vue } from "vue-property-decorator"
 		meta: [{ name: "description", content: appConfig.description, },],
 	},
 })
-// @ts-ignore
-export default class Home extends Vue {
+export default class Home extends Vue.default {
 
 	private open = []
 	private active = []

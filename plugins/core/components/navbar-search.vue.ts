@@ -5,7 +5,6 @@ import empty from "@/components/empty.vue"
 	// @ts-ignore
 	components: { empty, },
 })
-// @ts-ignore
-export default class NavbarSearch extends Vue {
+export default class NavbarSearch extends Vue.default {
 	private search = ""
 }

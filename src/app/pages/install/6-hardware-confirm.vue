@@ -22,7 +22,7 @@ import { InstallerStore } from "@/state/install-modules/install"
 		this.biometric = this.input
 	},
 })
-export default class HardwareConfirmPage extends Vue{
+export default class HardwareConfirmPage extends Vue.default {
 	// @ts-ignore
 	@Prop(Array) value: IDevice[]
 	biometric: IDevice[] = []

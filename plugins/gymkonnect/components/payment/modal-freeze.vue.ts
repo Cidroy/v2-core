@@ -12,15 +12,14 @@ import { TFreezeTransaction, defaultFreezeTransation } from "@plugins/gymkonnect
 
 const Console = new Logger("gk/payment/modal-single")
 
+// @ts-ignore
 @Component({
-	// @ts-ignore
 	components: { Layout, },
 	created(){
 		this.Initialize()
 	}
 })
-// @ts-ignore
-export default class FreezePaymentModal extends Vue {
+export default class FreezePaymentModal extends Vue.default {
 	private get formatDate() { return formatDate }
 	private get parseDate() { return parseDate }
 

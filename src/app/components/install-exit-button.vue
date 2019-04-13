@@ -12,7 +12,7 @@
 					<br>
 					Please select "Yes" to exit,
 					<br>
-					Select "Cancel" to continue with the Installation. 
+					Select "Cancel" to continue with the Installation.
 				</v-card-text>
 				<v-card-actions>
 					<v-btn flat @click.native.stop="confirmExit = false">Cancel</v-btn>
@@ -30,15 +30,14 @@ import { ipcRenderer, remote } from "electron"
 
 // @ts-ignore
 @Component({})
-// @ts-ignore
-export default class InstallExitButton extends Vue{
+export default class InstallExitButton extends Vue.default {
 	private requireConfirmExit:boolean = true
 	private confirmExit:boolean = false
 
 	private exitInstallation(){
 		let thisWindow = remote.getCurrentWindow()
 		thisWindow.close()
-	}	
+	}
 	private mounted(){
 		ipcRenderer.on("app-require-quit-confirm", state=>{ this.requireConfirmExit = state })
 	}

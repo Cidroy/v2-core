@@ -16,8 +16,7 @@ import ResizeWindow from "@@/electron/window-resizer"
 
 // @ts-ignore
 @Component({})
-// @ts-ignore
-export default class DevResizer extends Vue{
+export default class DevResizer extends Vue.default {
 	@Prop({ type: Boolean, default: false }) private show!: boolean
 	private modal: boolean = false
 

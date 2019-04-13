@@ -19,7 +19,7 @@ import { InstallerStore } from "@/state/install-modules/install"
 		meta: [ { name: "Install", content: "Install now", }, ],
 	},
 })
-export default class CompletedPage extends Vue{
+export default class CompletedPage extends Vue.default {
 	done: boolean = true
 	async next(){
 		await MAIN.next({ done: this.done, })

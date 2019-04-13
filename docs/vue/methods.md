@@ -4,8 +4,9 @@ All the public methods in the class are converted into methods by default unless
 // Typescript
 import { Component, Vue } from "vue-property-decorator"
 
+// @ts-ignore
 @Component({})
-export default class AppSFC extends Vue{
+export default class AppSFC extends Vue.default {
 	validator(){}
 }
 ```

@@ -37,8 +37,7 @@ const TUserGenerator = (user: TMRegistration, previous: TUser | {} = {}): TUser 
 		this.onGroupChange()
 	}
 })
-// @ts-ignore
-export default class RegistrationFinalizePage extends Vue {
+export default class RegistrationFinalizePage extends Vue.default {
 	private get moment(){ return moment }
 	private get formatDate(){ return formatDate }
 

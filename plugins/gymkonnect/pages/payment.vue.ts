@@ -15,8 +15,7 @@ import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 		meta: [{ name: "description", content: appConfig.description, },],
 	},
 })
-// @ts-ignore
-export default class SinglePaymentPage extends Vue {
+export default class SinglePaymentPage extends Vue.default {
 	private formatDate(date: string) { return formatDate(date) }
 	private parseDate(date: string) { return parseDate(date) }
 

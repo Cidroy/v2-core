@@ -27,7 +27,7 @@ import { InstallerStore } from "@/state/install-modules/install"
 		meta: [ { name: "Install", content: "Install Gymkonnect now", }, ],
 	},
 })
-export default class SlaveModePage extends Vue{
+export default class SlaveModePage extends Vue.default {
 	ip: string = "0.0.0.0"
 	async next(){
 		await MAIN.next({ ip: this.ip, })

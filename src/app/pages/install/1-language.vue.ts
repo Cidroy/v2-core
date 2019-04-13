@@ -12,8 +12,7 @@ import { TStageProductKey, TStageLanguage } from "@/classes/install-router"
 		meta: [{ name: "Install", content: "Install Gymkonnect now", },],
 	},
 })
-// @ts-ignore
-export default class LanguagePage extends Vue {
+export default class LanguagePage extends Vue.default {
 	private i18n = i18n
 	private language: ILanguage = i18n.default
 	@Watch("language")

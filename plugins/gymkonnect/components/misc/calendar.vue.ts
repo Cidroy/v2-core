@@ -7,8 +7,7 @@ import moment from "moment"
 	// @ts-ignore
 	components: { empty, },
 })
-// @ts-ignore
-export default class CalendarComponent extends Vue {
+export default class CalendarComponent extends Vue.default {
 	// #region calendar
 	private calendar = moment().toISOString().substr(0, 10)
 	private calendarViewMode = this.CalendarViewModeDefault

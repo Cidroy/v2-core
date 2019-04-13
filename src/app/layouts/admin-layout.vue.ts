@@ -9,8 +9,8 @@ import ProfilePanel from "@plugins/core/components/profile-panel.vue"
 import NavbarSearch from "@plugins/core/components/navbar-search.vue"
 import AppFooter from "@plugins/core/components/footer.vue"
 
+// @ts-ignore
 @Component({
-	// @ts-ignore
 	components: {
 		NotificationPanel,
 		ProfilePanel,
@@ -18,8 +18,7 @@ import AppFooter from "@plugins/core/components/footer.vue"
 		AppFooter,
 	},
 })
-// @ts-ignore
-export default class AddAdminLayout extends Vue {
+export default class AddAdminLayout extends Vue.default {
 	private logo = logo
 	private get PERMISSIONS() {
 		return {

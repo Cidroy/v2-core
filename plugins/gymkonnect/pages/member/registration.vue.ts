@@ -21,8 +21,8 @@ import AppConfig from "@classes/appConfig"
 import { sleep } from "@classes/misc"
 
 const Console = new Logger(`gymkonnect/registration.vue`)
+// @ts-ignore
 @Component({
-	// @ts-ignore
 	components: {
 		Layout,
 		stepper,
@@ -35,8 +35,7 @@ const Console = new Logger(`gymkonnect/registration.vue`)
 		this.onGroupingChange()
 	}
 })
-// @ts-ignore
-export default class MemberRegistrationPage extends Vue {
+export default class MemberRegistrationPage extends Vue.default {
 	private error = ""
 
 	private transactionData: TMRegistrationStep3 & TMRegistrationStep4 = {

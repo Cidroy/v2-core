@@ -10,15 +10,14 @@ import { TMemberInfo, defaultMemberInfo } from "@plugins/gymkonnect/classes/type
 
 const Console = new Logger("gk/payment/modal-single")
 
+// @ts-ignore
 @Component({
-	// @ts-ignore
 	components: { Layout, },
 	created() {
 		this.Initialize()
 	},
 })
-// @ts-ignore
-export default class GeneralPaymentModal extends Vue {
+export default class GeneralPaymentModal extends Vue.default {
 	private get formatDate() { return formatDate }
 	private get parseDate() { return parseDate }
 

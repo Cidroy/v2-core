@@ -4,12 +4,11 @@ import { parseDate, formatDate } from "@/utils/misc"
 import { TMRegistration, defaultRegistrationUser } from "@plugins/gymkonnect/classes/types/registration"
 import addUserPhoto from "@plugins/gymkonnect/components/add-user-photo.vue"
 
+// @ts-ignore
 @Component({
-	// @ts-ignore
 	components: { addUserPhoto },
 })
-// @ts-ignore
-export default class MRegistrationStepFinished extends Vue{
+export default class MRegistrationStepFinished extends Vue.default {
 
 	private parseDate(date){ return parseDate(date) }
 	private formatDate(date){ return formatDate(date) }

@@ -25,7 +25,7 @@ import Layout from "@/layouts/layout.vue"
 		meta: [ { name: "description", content: "404", }, ],
 	},
 })
-export default class E404Page extends Vue{
+export default class E404Page extends Vue.default {
 	@Prop({ default: "", type: String, }) resource!: string
 }
 </script>

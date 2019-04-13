@@ -18,12 +18,13 @@ A Basic Counter Component
 <script lang="ts">
 import { Component, Prop, Vue } from "vue-property-decorator"
 
+// @ts-ignore
 @Component({
 	created(){
 		this.count = this.start
 	}
 })
-export default class CounterComponent extends Vue{
+export default class CounterComponent extends Vue.default {
 	count!: number
 
 	increment(){ this.count++ }
@@ -52,7 +53,7 @@ import appCounter from "./counter.vue"
 @Component({
 	components: { appComponent }
 })
-export default AppSFC extends Vue{}
+export default AppSFC extends Vue.default {}
 </script>
 ```
 
@@ -83,7 +84,7 @@ import { Component, Emit, Vue } from "vue-property-decorator"
 import { Petrol } from "@/state/petrol"
 
 @Component({})
-export default class AppSFC extends Vue{
+export default class AppSFC extends Vue.default {
 	step: number
 
 	constructor(){
@@ -95,31 +96,31 @@ export default class AppSFC extends Vue{
 	get hikes(){ return Petrol.HIKES }
 	get falls(){ return Petrol.FALLS }
 
-	increment(){ 
-		try{ Petrol.increment(step) } 
+	increment(){
+		try{ Petrol.increment(step) }
 		catch(e){ this.error(e) }
 		this.updated()
 	}
-	decrement(){ 
-		try{ Petrol.decrement(step) } 
+	decrement(){
+		try{ Petrol.decrement(step) }
 		catch(e){ this.error(e) }
 		this.updated()
 	}
 
-	inflate(){ 
-		try{ Petrol.inflate() } 
+	inflate(){
+		try{ Petrol.inflate() }
 		catch(e){ this.error(e) }
 		this.updated()
 	}
-	deflate(){ 
-		try{ Petrol.deflate() } 
+	deflate(){
+		try{ Petrol.deflate() }
 		catch(e){ this.error(e) }
 		this.updated()
 	}
 
 	@Emit()
-	error(message: string){ 
-		alert(message) 
+	error(message: string){
+		alert(message)
 		return message
 	}
 
@@ -150,14 +151,14 @@ import appPetrol from "./petrol.vue"
 @Component({
 	components: { appPetrol }
 })
-export default class AppSFC extends Vue{
+export default class AppSFC extends Vue.default {
 	updates: number = 0
 	error: strinig = "None"
 	time: Date = new Date()
 
-	onError(e){ 
+	onError(e){
 		this.error = e
-		this.time = new Date() 
+		this.time = new Date()
 	}
 	onUpdate(){ this.updates++ }
 }

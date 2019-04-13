@@ -5,8 +5,8 @@ import uuid from "uuid"
 
 let profileModal: ProfileModal & Vue.default | undefined = undefined
 
+// @ts-ignore
 @Component({
-	// @ts-ignore
 	components: {
 		ProfileModal,
 	},

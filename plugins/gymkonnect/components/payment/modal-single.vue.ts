@@ -12,21 +12,20 @@ import { Logger } from "@classes/CONSOLE"
 
 const Console = new Logger("gk/payment/modal-single")
 
+// @ts-ignore
 @Component({
-	// @ts-ignore
 	components: { Layout, },
 	created() {
 		this.Initialize()
-		this.computePrimaryUser()
 	},
 })
-// @ts-ignore
-export default class SinglePaymentModal extends Vue {
+export default class SinglePaymentModal extends Vue.default {
 	private get formatDate() { return formatDate }
 	private get parseDate() { return parseDate }
 
 	private async Initialize(){
 		this.receipt = await Gymkonnect.receiptNumber()
+		this.computePrimaryUser()
 	}
 
 	private primaryUser: TMRegistration = defaultRegistrationUser

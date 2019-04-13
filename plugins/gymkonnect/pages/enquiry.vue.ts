@@ -18,8 +18,8 @@ import { Logger } from "@classes/CONSOLE"
 import { alert } from "@/components/toast"
 
 const Console = new Logger(`enquiry.vue/gk`)
+// @ts-ignore
 @Component({
-	// @ts-ignore
 	components: {
 		Layout,
 		stepper,
@@ -27,12 +27,10 @@ const Console = new Logger(`enquiry.vue/gk`)
 		stepFour,
 	},
 	created() {
-		// @ts-ignore
 		this.onGroupingChange()
 	}
 })
-// @ts-ignore
-export default class MemberEnquiryPage extends Vue {
+export default class MemberEnquiryPage extends Vue.default {
 	private error = ""
 
 	private transactionData: TMRegistrationStep3 & TMRegistrationStep4 = {

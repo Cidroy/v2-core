@@ -10,10 +10,10 @@
 import { Component, Vue } from "vue-property-decorator"
 
 @Component({
-	page : {		
+	page : {
 		title: "Loading page...",
 		meta: [ { name: "Loading", content: "Loading page...", }, ],
 	},
 })
-export default class Loading extends Vue{}
+export default class Loading extends Vue.default {}
 </script>

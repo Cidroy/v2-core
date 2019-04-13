@@ -32,8 +32,7 @@ const Console = new Logger(`freeze.vue/gk`)
 		this.Initialize()
 	}
 })
-// @ts-ignore
-export default class MembershipFreezingPage extends Vue {
+export default class MembershipFreezingPage extends Vue.default {
 	private get formatDate() { return formatDate }
 	private get parseDate() { return parseDate }
 	private get moment() { return moment }

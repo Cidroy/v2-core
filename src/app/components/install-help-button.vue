@@ -5,7 +5,7 @@
 			<v-card>
 				<v-card-title class="headline">
 					<v-icon large color="blue lighten-2" class="mr-2">help</v-icon>
-					Instant Help 
+					Instant Help
 				</v-card-title>
 				<v-card-text v-html="$t(installHelpDocument)" />
 				<v-card-actions>
@@ -22,8 +22,7 @@ import { InstallerStore } from "@/state/install-modules/install"
 
 // @ts-ignore
 @Component({})
-// @ts-ignore
-export default class InstallHelpButton extends Vue{
+export default class InstallHelpButton extends Vue.default {
 	private showHelpPage:boolean = false
 	private get page(){ return InstallerStore.HELPDOC }
 	private get installHelpDocument(){ return `install.helpdoc.${this.page}` }

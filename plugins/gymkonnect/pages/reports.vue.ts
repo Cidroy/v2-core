@@ -111,8 +111,7 @@ const TIME_PERIODS = {
 		this.Initialize()
 	}
 })
-// @ts-ignore
-export default class ReportsPage extends Vue {
+export default class ReportsPage extends Vue.default {
 	private get parseDate() { return parseDate }
 	private get formatDate() { return formatDate }
 

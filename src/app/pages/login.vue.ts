@@ -24,8 +24,7 @@ const Console = new Logger(`login.vue/core`)
 		this.loadUsers()
 	}
 })
-// @ts-ignore
-export default class LoginPage extends Vue {
+export default class LoginPage extends Vue.default {
 	private logo = logo
 	private username = ""
 	private password = ""

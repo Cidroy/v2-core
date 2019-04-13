@@ -6,8 +6,7 @@ import { MessagesStore } from "@plugins/gymkonnect/state/messages"
 	// @ts-ignore
 	components: { empty, },
 })
-// @ts-ignore
-export default class MessagesStatusButton extends Vue {
+export default class MessagesStatusButton extends Vue.default {
 	private get remainingMessages(){ return MessagesStore.GK_MESSAGES_REMAINING }
 	private get totalMessages(){ return MessagesStore.GK_MESSAGES_ALLOTED }
 

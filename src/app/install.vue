@@ -27,7 +27,7 @@ import { Component, Vue } from "vue-property-decorator"
 import { InstallerStore } from "@/state/install-modules/install"
 
 @Component({})
-export default class Main extends Vue{
+export default class Main extends Vue.default {
 	private get backButton(){ return InstallerStore.REVERT_BUTTON }
 	private get installerLayout(){ return InstallerStore.INSTALLER_LAYOUT }
 }

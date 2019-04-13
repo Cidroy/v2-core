@@ -32,8 +32,7 @@ const Console = new Logger(`gk-vue/${__filename}`)
 		}
 	},
 })
-// @ts-ignore
-export default class App extends Vue {
+export default class App extends Vue.default {
 	private showDevResizer = false
 
 	private get darkTheme(){ return ThemeStore.DARK_THEME }

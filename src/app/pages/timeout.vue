@@ -12,10 +12,10 @@
 import { Component, Vue } from "vue-property-decorator"
 
 @Component({
-	page : {		
+	page : {
 		title: "Page timeout",
 		meta: [ { name: "description", content: "The page timed out while loading.", }, ],
 	},
 })
-export default class Timedout extends Vue{}
+export default class Timedout extends Vue.default {}
 </script>

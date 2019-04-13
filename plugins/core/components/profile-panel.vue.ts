@@ -19,8 +19,7 @@ import { Permission } from "@classes/Permission"
 		})
 	}
 })
-// @ts-ignore
-export default class ProfilePanel extends Vue {
+export default class ProfilePanel extends Vue.default {
 	private profileMenu = false
 
 	private get profileList(){ return ProfilePanelStore.PROFILE_PANEL_LIST }

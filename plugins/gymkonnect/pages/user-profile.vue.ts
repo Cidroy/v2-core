@@ -14,8 +14,7 @@ import MRegistrationStepFinished from "@plugins/gymkonnect/components/member/reg
 		meta: [{ name: "description", content: appConfig.description, },],
 	},
 })
-// @ts-ignore
-export default class testuserprofile extends Vue {
+export default class testuserprofile extends Vue.default {
 	private active = 0
 	private tabsList = {
 		e: "Overview",

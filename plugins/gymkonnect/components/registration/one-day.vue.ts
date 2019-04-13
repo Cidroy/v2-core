@@ -34,8 +34,7 @@ const Console = new Logger(`spa-booking.vue/gk`)
 		this.onGroupingChange()
 	}
 })
-// @ts-ignore
-export default class OneDayRegistration extends Vue{
+export default class OneDayRegistration extends Vue.default {
 	private get formatDate() { return formatDate }
 	private get parseDate() { return parseDate }
 

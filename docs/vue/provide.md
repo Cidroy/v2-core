@@ -1,4 +1,4 @@
-### Provide 
+### Provide
 `@Provide(key?: string | symbol)` / `@Inject(options?: { from?: InjectKey, default?: any } | InjectKey)`
 
 ```ts
@@ -7,8 +7,9 @@ import { Component, Inject, Provide, Vue } from 'vue-property-decorator'
 
 const symbol = Symbol('baz')
 
+// @ts-ignore
 @Component({})
-export class MyComponent extends Vue {
+export class MyComponent extends Vue.default {
   @Inject() foo!: string
   @Inject('bar') bar!: string
   @Inject({ from: 'optional', default: 'default' }) optional!: string

@@ -10,8 +10,7 @@ import { MAIN } from "@/classes/setup"
 
 // @ts-ignore
 @Component({})
-// @ts-ignore
-export default class InstallExitButton extends Vue{
+export default class InstallExitButton extends Vue.default {
 	private back(){ MAIN.previous() }
 }
 </script>
