@@ -1,5 +1,6 @@
 import * as GQL from "type-graphql"
 import ServicesAvailable from "@positron/models/servicesAvailable"
+import { SERVICE_TYPE } from "@classes/enum/misc"
 
 @GQL.Resolver(of => ServicesAvailable)
 export default class ServicesAvailableResolver {
@@ -11,7 +12,7 @@ export default class ServicesAvailableResolver {
 	
 	@GQL.Mutation(returns => ServicesAvailable)
 	public async addServices(
-		@GQL.Arg("name") name: string,
+		@GQL.Arg("name", type => SERVICE_TYPE) name: SERVICE_TYPE,
 		@GQL.Arg("description", {nullable :true}) description: string,
 	) {
 		let servicesAvailable = new ServicesAvailable()

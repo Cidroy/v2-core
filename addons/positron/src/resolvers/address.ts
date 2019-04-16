@@ -24,7 +24,6 @@ export default class AddressResolver {
 		@GQL.Arg("locality", { nullable: true }) locality: string,
 		@GQL.Arg("landmark", { nullable: true }) landmark: string,
 	) {
-
 		let address = new Address()
 		address.receiver = receiver
 		address.contact = contact

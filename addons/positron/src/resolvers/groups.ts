@@ -12,11 +12,11 @@ export default class GroupsResolver {
 	@GQL.FieldResolver(returns => [GymUsers,])
 	public async groupMembers(@GQL.Root() group: Groups){
 		let membersMap = await GroupMap.find({
-			select: ["id",],
+			select: ["gymUserId",],
 			where: { groupId: group.id, }
 		})
 		let userIDs: (string | number)[] = []
-		membersMap.forEach(m => userIDs.push(m.id))
+		membersMap.forEach(m => userIDs.push(m.gymUserId))
 		Console.okay({ group, membersMap, userIDs })
 		return await GymUsers.find({ id: DB.In(userIDs) })
 	}

@@ -1,13 +1,14 @@
 import * as GQL from "type-graphql"
 import Amenities from "@positron/models/amenities"
 import ServicesAvailable from "@positron/models/servicesAvailable"
+import { SERVICE_TYPE } from "@classes/enum/misc"
 
 @GQL.Resolver(of => Amenities)
 export default class AmenitiesResolver {
 
 	@GQL.Query(returns => [Amenities,])
 	public async amenities(
-		@GQL.Arg("service", { nullable: true }) service: string,
+		@GQL.Arg("service", type => SERVICE_TYPE, { nullable: true }) service: SERVICE_TYPE,
 	) {
 		if (service) {
 			let serviceType = await ServicesAvailable.findOne({ where: { active: 1, name: service } })
