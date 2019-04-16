@@ -8,6 +8,7 @@ import { alert } from "@/components/toast"
 import { UserClient } from "@/classes/clients/user"
 import { Logger } from "@classes/CONSOLE"
 import { exit } from "@plugins/core/classes/actions"
+import { sleep } from "@classes/misc"
 
 const Console = new Logger(`login.vue/core`)
 
@@ -37,6 +38,10 @@ export default class LoginPage extends Vue {
 		this.loadingUsers = true
 		try {
 			await UserStore.InitializeLoginUsers()
+			if(UserStore.USERNAMES.length <= 1){
+				await sleep(1000)
+				await UserStore.InitializeLoginUsers()
+			}
 		} catch (error) { alert(error.toString(), "error") }
 		this.loadingUsers = false
 	}

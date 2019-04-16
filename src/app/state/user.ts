@@ -69,6 +69,7 @@ class User extends VuexModule {
 			if (response.errors) throw response.errors[0].message
 			users = response.data.users
 		} catch (error) {
+			Console.error(error)
 			alert(error.toString(), "error")
 			users = []
 		}
