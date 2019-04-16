@@ -21,3 +21,13 @@ export enum PASSWORD_PREFERENCE {
 	PIN = "PIN",
 	PASSWORD = "PASSWORD",
 }
+
+export enum TAX_TYPE {
+	FLAT = "FLAT",
+	PERCENTAGE = "PERCENTAGE"
+}
+
+export enum SERVICE_TYPE {
+	GYM  = "GYM",
+	SPA = "SPA"
+}

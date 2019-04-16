@@ -52,6 +52,8 @@ import PTPurposeResolver from "@positron/resolvers/ptPurpose"
 import ServicesAvailableResolver from "@positron/resolvers/servicesAvailable"
 import PTPackagesResolver from "@positron/resolvers/ptPackages"
 import AmenitiesResolver from "@positron/resolvers/amenities"
+import TaxRulesResolver from "@positron/resolvers/taxRules"
+import SpaBookingResolver from "@positron/resolvers/spaBooking"
 
 const Console = new Logger(`gql/positron`)
 export default class GQL{
@@ -101,6 +103,8 @@ export default class GQL{
 		ServicesAvailableResolver,
 		PTPackagesResolver,
 		AmenitiesResolver,
+		TaxRulesResolver,
+		SpaBookingResolver,
 	]
 
 	private static Loaders = {

@@ -44,6 +44,8 @@ import PTPurpose from "@positron/models/ptPurpose"
 import ServicesAvailable from "@positron/models/servicesAvailable"
 import PTPackages from "@positron/models/ptPackages"
 import Amenities from "@positron/models/amenities"
+import TaxRules from "@positron/models/taxRules"
+import SpaBooking from "@positron/models/spaBooking"
 
 export default [
 	Address,
@@ -90,4 +92,6 @@ export default [
 	ServicesAvailable,
 	PTPackages,
 	Amenities,
+	TaxRules,
+	SpaBooking,
 ]
