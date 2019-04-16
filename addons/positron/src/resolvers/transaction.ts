@@ -118,6 +118,7 @@ export default class TransactionResolver{
 			return false
 		}
 	}
+
 	@GQL.Mutation(returns => Boolean)
 	public async linkTransactionUser(
 		@GQL.Arg("userId") userId: number,
@@ -148,6 +149,7 @@ export default class TransactionResolver{
 			return false
 		}
 	}
+
 	@GQL.Query(returns => Date)
 	public async  getTransactionEndDateDry(
 		@GQL.Arg("packages") packages : number,
