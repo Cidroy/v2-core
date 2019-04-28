@@ -72,13 +72,18 @@ export default class Chronos {
 	 *
 	 * @static
 	 * @param {(args: any) => any} fn function
-	 * @param {*} args arguments
+	 * @param {*} args arguments for function `fn`
 	 * @param {number} interval interval
+	 * @param {boolean} instant instant
 	 * @memberof Chronos
 	 */
-	public static async Repeat(fn: (args: any) => any, args: any, interval: number) {
+	public static async Repeat(fn: (args: any) => any, args: any, interval: number, instant: boolean = false) {
 		if (!jobs.repeating[interval]) Chronos.newRepeat(interval)
 		jobs.repeating[interval].push({ fn, args })
+		if(instant){
+			try { fn(args) }
+			catch (error) { Console.warn(`${fn.name} failed with args ${ args }.\n Error : ${error}`) }
+		}
 	}
 
 	/**
@@ -86,7 +91,7 @@ export default class Chronos {
 	 *
 	 * @static
 	 * @param {(args: any) => any} fn function
-	 * @param {*} args arguments
+	 * @param {*} args arguments for function `fn`
 	 * @param {number} interval interval
 	 * @memberof Chronos
 	 */
@@ -103,16 +108,17 @@ export default class Chronos {
 	 *
 	 * @static
 	 * @param {(args: any) => any} fn function
-	 * @param {*} args arguments
+	 * @param {*} args arguments for function `fn`
 	 * @param {number} interval interval
+	 * @param {boolean} instant instant
 	 * @memberof Chronos
 	 */
-	public static async RepeatParallel(fn: (args: any) => any, args: any, interval: number) {
+	public static async RepeatParallel(fn: (args: any) => any, args: any, interval: number, instant: boolean = false) {
 		let threadedFn = () => new Thread.Worker(async () => {
 			try { fn(args) }
 			catch (error) { Console.warn(`threaded function failed silently with error`, error) }
 		})
-		Chronos.Repeat(threadedFn, undefined, interval)
+		Chronos.Repeat(threadedFn, undefined, interval, instant)
 	}
 
 	/**
@@ -120,7 +126,7 @@ export default class Chronos {
 	 *
 	 * @static
 	 * @param {(args: any) => any} fn function
-	 * @param {*} args arguments
+	 * @param {*} args arguments for function `fn`
 	 * @param {number} interval interval
 	 * @memberof Chronos
 	 */
