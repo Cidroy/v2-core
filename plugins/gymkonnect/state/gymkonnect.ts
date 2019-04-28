@@ -7,7 +7,7 @@ import GKHelper,
 		TGQLBloodGroup, TGQLTimeSlot, TGQLUTMSource, TGQLDoor, TGQLOffer,
 		TGQLUserMode, TGQLSpaAmenities, TGQLSpaGroupings, TGQLPTPackages, TGQLPTPurposes,
 		TGQLPTTrainerType,
-	TGQLFCPurposes, TGQLFCCounsellor,TGQLODPlans
+	TGQLFCPurposes, TGQLFCCounsellor,TGQLODPlans, TGQLTax
 	}
 from "./gk-helper"
 import { Logger } from "@classes/CONSOLE"
@@ -39,6 +39,7 @@ let _gk_spa_amenities: TGQLSpaAmenities[] = []
 let _gk_pt_trainerType: TGQLPTTrainerType[] = []
 let _gk_fc_counsellor: TGQLFCCounsellor[] = []
 let _gk_od_plans: TGQLODPlans[] = []
+let _gk_taxes: TGQLTax[] = []
 
 @Module({ dynamic: true, store, name: "Gymkonnect" })
 class Gymkonnect extends VuexModule {
@@ -60,6 +61,24 @@ class Gymkonnect extends VuexModule {
 	 */
 	public get GK_OCCUPATION() { return (id: string | number) => this._gk_occupations.find(i => i.id === id) }
 
+	private _gk_taxes = _gk_taxes
+
+	/**
+	 * Get all TAXES
+	 *
+	 * @readonly
+	 * @memberof Gymkonnect
+	 */
+	public get GK_TAXES() { return this._gk_taxes }
+
+	/**
+	 * Get TAX by ID
+	 *
+	 * @readonly
+	 * @memberof Gymkonnect
+	 */
+	public get GK_TAX() { return (value: string | number, key: keyof TGQLTax = "id") => this._gk_taxes.find(i => i[key] === value) }
+
 	private _gk_userModes = _gk_userModes
 
 	/**
@@ -76,7 +95,7 @@ class Gymkonnect extends VuexModule {
 	 * @readonly
 	 * @memberof Gymkonnect
 	 */
-	public get GK_USER_MODE() { return (key: string | number, element: keyof TGQLUserMode = "id") => this._gk_userModes.find(i => i["id"] === key) }
+	public get GK_USER_MODE() { return (value: string | number, key: keyof TGQLUserMode = "id") => this._gk_userModes.find(i => i[key] === value) }
 
 	private _gk_categories = _gk_categories
 
@@ -602,6 +621,7 @@ class Gymkonnect extends VuexModule {
 			"_gk_doors",
 			"_gk_idTypes",
 			"_gk_userModes",
+			"_gk_taxes",
 		]
 	})
 	public async GK_Initialize_General() {
@@ -617,6 +637,7 @@ class Gymkonnect extends VuexModule {
 				_gk_doors,
 				_gk_idTypes,
 				_gk_userModes,
+				_gk_taxes,
 			] = await Promise.all([
 				GKHelper.GetBloodGroups(),
 				GKHelper.GetBodyTypes(),
@@ -627,6 +648,7 @@ class Gymkonnect extends VuexModule {
 				GKHelper.GetDoors(),
 				GKHelper.GetIdTypes(),
 				GKHelper.GetUserModes(),
+				GKHelper.GetTaxes(),
 			])
 			return {
 				_gk_bloodGroups,
@@ -638,6 +660,7 @@ class Gymkonnect extends VuexModule {
 				_gk_doors,
 				_gk_idTypes,
 				_gk_userModes,
+				_gk_taxes,
 			}
 
 		} catch (error) {
@@ -662,7 +685,7 @@ class Gymkonnect extends VuexModule {
 				GKHelper.GetPaymentModes(),
 				GKHelper.GetAllOffers(),
 			])
-			
+
 			return {
 				_gk_paymentModes,
 				_gk_offers,

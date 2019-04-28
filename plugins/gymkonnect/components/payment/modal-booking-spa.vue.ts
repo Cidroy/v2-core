@@ -9,6 +9,8 @@ import { TMRegistration } from "@plugins/gymkonnect/classes/types/registration"
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
 import { Logger } from "@classes/CONSOLE"
 import { TSpaBookingArgs, defaultSpaBookingArgs } from "@plugins/gymkonnect/classes/types/bookings"
+import { taxAmount } from "@plugins/gymkonnect/classes/misc"
+import ITaxRules from "@classes/interface/ITaxRules"
 
 const Console = new Logger("gk/payment/modal-single")
 
@@ -57,9 +59,17 @@ export default class SpaBookingModal extends Vue.default {
 
 	private get subTotal() { return this.Amount }
 
+	private get Tax(){
+		return {
+			...GymkonnectStore.GK_TAX(this.taxCode, "name"),
+			amount: taxAmount(this.taxCode, this.subTotal),
+		}
+	}
+
 	private discount = 0
 	private get total() {
 		return this.subTotal
+			+ this.Tax.amount
 			- this.discount
 	}
 
@@ -89,4 +99,5 @@ export default class SpaBookingModal extends Vue.default {
 	}) public transaction !: TSpaBookingArgs
 	@Prop({ type: Object, default: () => ({}) }) public user !: TMRegistration
 	@Prop({ type: String, default: "Spa Booking Receipt" }) public billTitle !: string
+	@Prop({ type: String, default: "spa" }) public taxCode !: string
 }

@@ -22,6 +22,14 @@ export enum PASSWORD_PREFERENCE {
 	PASSWORD = "PASSWORD",
 }
 
+/**
+ * Tax types
+ *
+ * **After Update**
+ * "@plugins/gymkonnect/classes/misc"
+ * @export
+ * @enum {number}
+ */
 export enum TAX_TYPE {
 	FLAT = "FLAT",
 	PERCENTAGE = "PERCENTAGE"

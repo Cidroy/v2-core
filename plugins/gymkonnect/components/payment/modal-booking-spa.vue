@@ -53,8 +53,14 @@
 								<v-layout row wrap>
 									<v-flex xs12 md6/>
 									<v-flex xs12 md1/>
+									<v-flex xs12 md2 class="px-2 py-4"> <span class="title">{{ Tax.description }}</span> </v-flex>
+									<v-flex xs6 md3 class="px-2"> <v-text-field :value="Tax.amount" type="number" prefix="₹" label="Tax" box readonly tabindex="-1" color="orange darken-2"/> </v-flex>
+								</v-layout>
+								<v-layout row wrap>
+									<v-flex xs12 md6/>
+									<v-flex xs12 md1/>
 									<v-flex xs12 md2 class="px-2 py-4"> <span class="title">Discount</span> </v-flex>
-									<v-flex xs6 md3 class="px-2"> <v-text-field v-model="discount" type="number" :min="0" :max="Amount" prefix="₹-" label="Discount Amount" box color="orange darken-2"/> </v-flex>
+									<v-flex xs6 md3 class="px-2"> <v-text-field v-model="discount" type="number" :min="0" :max="Amount" prefix="₹" label="Discount Amount" box color="orange darken-2"/> </v-flex>
 								</v-layout>
 								<v-layout row wrap>
 									<v-flex xs12 md7/>

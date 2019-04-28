@@ -1,6 +1,8 @@
 import GQLClient, { gql } from "@/utils/graphql"
 import { Logger } from "@classes/CONSOLE"
 
+import ITaxRules from "@classes/interface/ITaxRules"
+
 let Console = new Logger("gk/gql-helper")
 
 export type TGQLBasic = { id: number | string, name: string, description: string }
@@ -29,6 +31,8 @@ export type TGQLSpaAmenities = TGQLBasic
 export type TGQLPTTrainerType = TGQLBasic
 export type TGQLFCCounsellor = TGQLBasic
 export type TGQLODPlans = TGQLBasic
+export type TGQLTax = ITaxRules
+
 export default class GKHelper{
 	public static async GetOccupations(): Promise<TGQLOccupations[]>{
 		let response = await GQLClient.query<{
@@ -393,6 +397,26 @@ export default class GKHelper{
 			`,
 		)
 		return response.data.ODplans
+	}
+
+	public static async GetTaxes(): Promise<TGQLTax[]> {
+		let response = await GQLClient.query<{ taxes: TGQLTax[] }>(
+			gql`
+				query tax{
+					taxes: taxRules{
+						id
+						name
+						description
+						taxType
+						magnitude
+						serviceType
+						isInclusive
+						showExplicitly
+					}
+				}
+			`,
+		)
+		return response.data.taxes
 	}
 
 }
