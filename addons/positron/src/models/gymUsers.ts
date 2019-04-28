@@ -1,4 +1,4 @@
-import Base from "./base"
+import Base from "@plugins/core/model/base"
 import { GENDER } from "@classes/enum/misc"
 import * as GQL from "type-graphql"
 import * as DB from "typeorm"

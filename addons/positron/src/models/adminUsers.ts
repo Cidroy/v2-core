@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import * as GQL from "type-graphql"
 
-import Base from "@positron/models/base"
+import Base from "@plugins/core/model/base"
 import { IAdminUsers } from "@classes/interface/IAdminUsers"
 import { PASSWORD_PREFERENCE } from "@classes/enum/misc"
 

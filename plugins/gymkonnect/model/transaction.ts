@@ -1,6 +1,6 @@
 import ITransaction from "@classes/interface/ITransaction"
 import * as DB from "typeorm"
-import Base from "./base"
+import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
 
 @GQL.ObjectType()
@@ -49,7 +49,7 @@ export default class Transaction extends Base implements ITransaction{
 	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
 	public payment?: number
- 
+
 	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
 	public paymentWorkoutCard?: number

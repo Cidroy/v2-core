@@ -1,9 +1,10 @@
 // TODO: use import all for auto import
 // TODO: provide functionality to get Object Repos for query
-import Address from "@positron/models/address"
+import CoreEntities from "@plugins/core/model"
+import GymkonnectEntities from "@plugins/gymkonnect/model"
+
 import Options from "@positron/models/options"
 import User from "@positron/models/user"
-import Transaction from "@positron/models/transaction"
 import GymFreezeRules from "@positron/models/freezeRules"
 import Freezes from "@positron/models/freezes"
 import GymBodyType from "@positron/models/gymBodyType"
@@ -48,10 +49,12 @@ import TaxRules from "@positron/models/taxRules"
 import SpaBooking from "@positron/models/spaBooking"
 
 export default [
-	Address,
+	...CoreEntities,
+	...GymkonnectEntities,
+
 	Options,
 	User,
-	Transaction,
+
 	GymFreezeRules,
 	Freezes,
 	GymBodyType,

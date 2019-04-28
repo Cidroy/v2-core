@@ -1,5 +1,5 @@
 import * as GQL from "type-graphql"
-import Address from "@positron/models/address"
+import Address from "@plugins/core/model/address"
 import { ADDRESS_TYPE } from "@classes/enum/misc"
 
 @GQL.Resolver(of => Address)

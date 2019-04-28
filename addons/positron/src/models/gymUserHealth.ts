@@ -1,5 +1,5 @@
 import * as DB from "typeorm"
-import Base from "./base"
+import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
 import IGymUserHealth from "@classes/interface/IGymUserHealth"
 
@@ -25,5 +25,5 @@ export default class GymUserHealth extends Base implements IGymUserHealth {
 	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", {nullable: true})
 	public bloodGroup?: number
-	
+
 }

@@ -1,6 +1,6 @@
 import * as GQL from "type-graphql"
 import * as DB from "typeorm"
-import Base from "./base"
+import Base from "@plugins/core/model/base"
 import IPayment from "@classes/interface/IPayment"
 
 @GQL.ObjectType()

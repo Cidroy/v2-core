@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import * as GQL from "type-graphql"
 import IGymFreezeRules from "@classes/interface/IGymFreezeRules"
-import Base from "./base"
+import Base from "@plugins/core/model/base"
 
 @GQL.ObjectType()
 @DB.Entity("gym_freeze_rules")

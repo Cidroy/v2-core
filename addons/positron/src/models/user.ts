@@ -1,12 +1,9 @@
-import Base from "./base"
+import Base from "@plugins/core/model/base"
 import { GENDER } from "@classes/enum/misc"
 import * as GQL from "type-graphql"
 import * as DB from "typeorm"
 import * as Validate from "class-validator"
-import { mysql } from "safesql"
 import { IUser } from "@classes/interface/IUser"
-import { GraphQLObjectType } from "graphql"
-import Address from "./address"
 
 GQL.registerEnumType(GENDER, {
 	name: "GENDER",

@@ -1,12 +1,12 @@
 import * as DB from "typeorm"
-import Base from "./base"
+import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
 import IZonesAvailable from "@classes/interface/IZonesAvailable"
 
 @DB.Entity()
 @GQL.ObjectType()
 export default class ZonesAvailable extends Base implements IZonesAvailable {
-	
+
 	@GQL.Field(type => String)
 	@DB.Column("varchar",{ nullable: false, unique: true })
 	public name!: string

@@ -1,10 +1,10 @@
 import IAddress from "@classes/interface/IAddress"
-import Base from "@positron/models/base"
+import Base from "@plugins/core/model/base"
 import * as DB from "typeorm"
 import * as GQL from "type-graphql"
 
 import { ADDRESS_TYPE } from "@classes/enum/misc"
-import User from "./user"
+import User from "../../../addons/positron/src/models/user"
 
 GQL.registerEnumType(ADDRESS_TYPE,{
 	name: "ADDRESS_TYPE",

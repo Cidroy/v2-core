@@ -1,5 +1,5 @@
 import * as DB from "typeorm"
-import Base from "./base"
+import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
 import ITaxRules from "@classes/interface/ITaxRules"
 import { TAX_TYPE, SERVICE_TYPE } from "@classes/enum/misc"
@@ -50,5 +50,5 @@ export default class TaxRules extends Base implements ITaxRules {
 	@GQL.Field(type => Boolean, { nullable: true })
 	@DB.Column("tinyint", { default: false })
 	public showExplicitly?: boolean
-	
+
 }

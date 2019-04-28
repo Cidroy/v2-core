@@ -1,5 +1,5 @@
 import * as DB from "typeorm"
-import Base from "./base"
+import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
 import IGroups from "@classes/interface/IGroups"
 

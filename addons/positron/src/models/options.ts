@@ -1,5 +1,5 @@
 import * as DB from "typeorm"
-import Base from "@positron/models/base"
+import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
 
 @GQL.ObjectType()

@@ -1,5 +1,5 @@
 import * as DB from "typeorm"
-import Base from "./base"
+import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
 import IGymOffersLogic from "@classes/interface/IGymOffersLogic"
 
@@ -33,5 +33,5 @@ export default class GymOffersLogic extends Base implements IGymOffersLogic {
 	@GQL.Field(type => Number, { nullable: true })
 	@DB.Column("integer", { nullable: true })
 	public discountPercentage?: number
-	
+
 }
