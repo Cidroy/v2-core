@@ -4,7 +4,6 @@ import * as DB from "typeorm"
 import * as GQL from "type-graphql"
 
 import { ADDRESS_TYPE } from "@classes/enum/misc"
-import User from "../../../addons/positron/src/models/user"
 
 GQL.registerEnumType(ADDRESS_TYPE,{
 	name: "ADDRESS_TYPE",
