@@ -1,9 +1,9 @@
 import Base from "@plugins/core/model/base"
-import { GENDER } from "@classes/enum/misc"
+import { GENDER } from "@plugins/core/enum/misc"
 import * as GQL from "type-graphql"
 import * as DB from "typeorm"
 import * as Validate from "class-validator"
-import { IUser } from "@classes/interface/IUser"
+import { IUser } from "@plugins/core/interfaces/IUser"
 
 GQL.registerEnumType(GENDER, {
 	name: "GENDER",

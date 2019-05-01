@@ -1,8 +1,8 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import IGymPackage from "@classes/interface/IGymPackage"
-import { DURATION } from "@classes/enum/misc"
+import IGymPackage from "@plugins/gymkonnect/interfaces/IGymPackage"
+import { DURATION } from "@plugins/gymkonnect/enum/misc"
 
 GQL.registerEnumType(DURATION, {
 	name: "DURATION",

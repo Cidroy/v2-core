@@ -8,7 +8,7 @@ import routes from "./routes"
 import { UserStore } from "@/state/user"
 import { ApplicationStore } from "@/state/application"
 import { UserClient } from "@/classes/clients/user"
-import { PASSWORD_PREFERENCE } from "@classes/enum/misc"
+import { PASSWORD_PREFERENCE } from "@plugins/core/enum/misc"
 import { Logger } from "@classes/CONSOLE"
 
 const Console = new Logger(`router/core`)

@@ -1,7 +1,7 @@
 import GQLClient, { gql } from "@/utils/graphql"
 import { Logger } from "@classes/CONSOLE"
 
-import ITaxRules from "@classes/interface/ITaxRules"
+import ITaxRules from "@plugins/gymkonnect/interfaces/ITaxRules"
 
 let Console = new Logger("gk/gql-helper")
 

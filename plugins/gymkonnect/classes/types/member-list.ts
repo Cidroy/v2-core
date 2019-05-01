@@ -1,4 +1,4 @@
-import { USER_MODE } from "@classes/enum/user-mode"
+import { USER_MODE } from "@plugins/gymkonnect/enum/user-mode"
 
 export type TMemberListTableItems = {
 	id: number | string,

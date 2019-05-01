@@ -1,6 +1,6 @@
 import GQLClient, { gql } from "@/utils/graphql"
 import { Logger } from "@classes/CONSOLE"
-import { USER_MODE } from "@classes/enum/user-mode"
+import { USER_MODE } from "@plugins/gymkonnect/enum/user-mode"
 import { formatDate } from "@/utils/misc"
 import { gotoProfile, blockUnblock, editRenewal } from "../../actions"
 

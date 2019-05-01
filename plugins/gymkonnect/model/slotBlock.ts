@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import ISlotBlock from "@classes/interface/ISlotBlock"
+import ISlotBlock from "@plugins/gymkonnect/interfaces/ISlotBlock"
 
 @DB.Entity()
 @GQL.ObjectType()

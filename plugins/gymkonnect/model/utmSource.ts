@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import IUTMSource from "@classes/interface/IUTMSource"
+import IUTMSource from "@plugins/gymkonnect/interfaces/IUTMSource"
 
 @DB.Entity()
 @GQL.ObjectType()

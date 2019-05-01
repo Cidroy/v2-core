@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import IPTPurpose from "@classes/interface/IPTPurpose"
+import IPTPurpose from "@plugins/gymkonnect/interfaces/IPTPurpose"
 
 @DB.Entity()
 @GQL.ObjectType()

@@ -1,7 +1,7 @@
 import * as GQL from "type-graphql"
 import Amenities from "@plugins/gymkonnect/model/amenities"
 import ServicesAvailable from "@plugins/gymkonnect/model/servicesAvailable"
-import { SERVICE_TYPE } from "@classes/enum/misc"
+import { SERVICE_TYPE } from "@plugins/gymkonnect/enum/misc"
 
 @GQL.Resolver(of => Amenities)
 export default class AmenitiesResolver {

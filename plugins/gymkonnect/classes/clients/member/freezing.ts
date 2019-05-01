@@ -6,7 +6,7 @@ import { sleep } from "@classes/misc"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import { PaymentDetail } from "../../types/payment"
 import { PaymentData } from "../../types/registration"
-import IFreezes from "@classes/interface/IFreezes"
+import IFreezes from "@plugins/gymkonnect/interfaces/IFreezes"
 
 const Console = new Logger(`freeze/gk-client`)
 

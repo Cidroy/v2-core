@@ -1,7 +1,7 @@
 import router from "@/routes"
 import { Routes } from "../routes"
 import { Logger } from "@classes/CONSOLE"
-import { USER_MODE } from "@classes/enum/user-mode"
+import { USER_MODE } from "@plugins/gymkonnect/enum/user-mode"
 import { loading, alert } from "@/components/toast"
 import Gymkonnect from "./clients"
 

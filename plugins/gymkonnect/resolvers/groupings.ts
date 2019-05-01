@@ -1,7 +1,7 @@
 import * as GQL from "type-graphql"
 import Groupings from "@plugins/gymkonnect/model/groupings"
 import ServicesAvailable from "@plugins/gymkonnect/model/servicesAvailable"
-import { SERVICE_TYPE } from "@classes/enum/misc"
+import { SERVICE_TYPE } from "@plugins/gymkonnect/enum/misc"
 
 @GQL.Resolver(of => Groupings)
 export default class GroupingsResolver {

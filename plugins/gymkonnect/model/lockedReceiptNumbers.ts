@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import ILockedReceiptNumber from "@classes/interface/ILockedReceiptNumber"
+import ILockedReceiptNumber from "@plugins/gymkonnect/interfaces/ILockedReceiptNumber"
 
 @DB.Entity()
 @GQL.ObjectType()

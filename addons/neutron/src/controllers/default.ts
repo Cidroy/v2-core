@@ -1,5 +1,5 @@
 import * as API from "@tsed/common"
-import { ISuccess } from "@classes/interface/IResponse"
+import { ISuccess } from "@plugins/gymkonnect/interfaces/IResponse"
 
 @API.Controller("/")
 export default class DefaultController{

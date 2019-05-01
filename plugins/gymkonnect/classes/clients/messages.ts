@@ -1,6 +1,6 @@
 import { TSMSTemplates } from "../types/messages"
 import { sleep } from "@classes/misc"
-import { IUser } from "@classes/interface/IUser"
+import { IUser } from "@plugins/core/interfaces/IUser"
 
 async function getTemplates(): Promise<TSMSTemplates[]> {
 	// TODO:

@@ -1,5 +1,5 @@
 import * as API from "@tsed/common"
-import { ISuccess } from "@classes/interface/IResponse"
+import { ISuccess } from "@plugins/gymkonnect/interfaces/IResponse"
 import { Positron } from "@positron/POSITRON"
 import { INSTALL_STEP } from "@positron/lib/misc"
 import { Logger } from "@classes/CONSOLE"

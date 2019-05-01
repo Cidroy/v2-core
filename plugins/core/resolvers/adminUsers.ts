@@ -1,6 +1,6 @@
 import * as GQL from "type-graphql"
 import AdminUsers from "@plugins/core/model/adminUsers"
-import { PASSWORD_PREFERENCE } from "@classes/enum/misc"
+import { PASSWORD_PREFERENCE } from "@plugins/core/enum/misc"
 import { Logger } from "@classes/CONSOLE"
 
 const Console = new Logger(`gql-resolvers/admin-users`)

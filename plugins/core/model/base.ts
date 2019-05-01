@@ -1,4 +1,4 @@
-import { IModification, IEntityBase } from "@classes/interface/IEntityBase"
+import { IModification, IEntityBase } from "@plugins/core/interfaces/IEntityBase"
 import * as GQL from "type-graphql"
 import * as DB from "typeorm"
 import { Positron } from "@positron/POSITRON"

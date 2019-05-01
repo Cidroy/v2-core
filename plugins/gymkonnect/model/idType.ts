@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import IIDType from "@classes/interface/IIDType"
+import IIDType from "@plugins/gymkonnect/interfaces/IIDType"
 
 @DB.Entity()
 @GQL.ObjectType()

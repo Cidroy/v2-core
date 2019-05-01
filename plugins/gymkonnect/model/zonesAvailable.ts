@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import IZonesAvailable from "@classes/interface/IZonesAvailable"
+import IZonesAvailable from "@plugins/gymkonnect/interfaces/IZonesAvailable"
 
 @DB.Entity()
 @GQL.ObjectType()

@@ -7,7 +7,7 @@ import {
 	IStageCollection,
 	TStageMode
 } from "@/classes/install-router"
-import { IResponse, ISuccess } from "@classes/interface/IResponse"
+import { IResponse, ISuccess } from "@plugins/gymkonnect/interfaces/IResponse"
 import { InstallerStore } from "@/state/install-modules/install"
 import router from "@/routes/install"
 import { SoftwareMode } from "@classes/enum/software-mode"
@@ -68,7 +68,7 @@ class MAIN {
 		e = (<IStageCollection[]>e).filter(Boolean)
 		InstallerStore.setRevertButton(!!(<IStageCollection[]>e).length)
 	})
-	
+
 	/**
 	 * Initialize the basic setup for installation
 	 *

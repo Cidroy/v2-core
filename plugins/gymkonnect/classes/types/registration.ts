@@ -1,6 +1,6 @@
 import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
-import { GENDER, ADDRESS_TYPE } from "@classes/enum/misc"
-import IAddress from "@classes/interface/IAddress"
+import { GENDER, ADDRESS_TYPE } from "@plugins/core/enum/misc"
+import IAddress from "@plugins/core/interfaces/IAddress"
 import AddressStore from "@plugins/gymkonnect/state/addresses"
 
 export type TMRegistrationStep1 = {

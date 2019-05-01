@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import IPriceList from "@classes/interface/IPriceList"
+import IPriceList from "@plugins/gymkonnect/interfaces/IPriceList"
 
 @DB.Entity()
 @GQL.ObjectType()

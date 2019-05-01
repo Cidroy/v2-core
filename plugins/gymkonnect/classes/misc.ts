@@ -1,6 +1,6 @@
 import { GymkonnectStore } from "../state/gymkonnect"
 import { Logger } from "@classes/CONSOLE"
-import { TAX_TYPE } from "@classes/enum/misc"
+import { TAX_TYPE } from "@plugins/gymkonnect/enum/misc"
 
 const Console = new Logger(`misc/gk`)
 /**

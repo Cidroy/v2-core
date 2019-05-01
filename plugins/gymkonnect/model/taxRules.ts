@@ -1,8 +1,8 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import ITaxRules from "@classes/interface/ITaxRules"
-import { TAX_TYPE, SERVICE_TYPE } from "@classes/enum/misc"
+import ITaxRules from "@plugins/gymkonnect/interfaces/ITaxRules"
+import { TAX_TYPE, SERVICE_TYPE } from "@plugins/gymkonnect/enum/misc"
 
 GQL.registerEnumType(TAX_TYPE, {
 	name: "TAX_TYPE",

@@ -1,5 +1,5 @@
 import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
-import { GENDER } from "@classes/enum/misc"
+import { GENDER } from "@plugins/core/enum/misc"
 import { parseDate, formatDate } from "@/utils/misc"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import importFromEnquiry from "@plugins/gymkonnect/components/enquiry/import-dialog.vue"

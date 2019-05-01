@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import IOccupation from "@classes/interface/IOccupation"
+import IOccupation from "@plugins/gymkonnect/interfaces/IOccupation"
 
 @DB.Entity()
 @GQL.ObjectType()

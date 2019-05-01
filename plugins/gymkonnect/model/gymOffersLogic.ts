@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import IGymOffersLogic from "@classes/interface/IGymOffersLogic"
+import IGymOffersLogic from "@plugins/gymkonnect/interfaces/IGymOffersLogic"
 
 @DB.Entity()
 @GQL.ObjectType()

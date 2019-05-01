@@ -1,6 +1,6 @@
 import * as GQL from "type-graphql"
 import path from "path"
-import { GENDER } from "@classes/enum/misc"
+import { GENDER } from "@plugins/core/enum/misc"
 import User, { WdmsID } from "@plugins/core/model/user"
 import Address from "@plugins/core/model/address"
 import Member from "@positron/Biometric/Member"

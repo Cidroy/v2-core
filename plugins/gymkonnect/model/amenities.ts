@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import IAmenities from "@classes/interface/IAmenities"
+import IAmenities from "@plugins/gymkonnect/interfaces/IAmenities"
 
 @DB.Entity()
 @GQL.ObjectType()

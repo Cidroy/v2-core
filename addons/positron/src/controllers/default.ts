@@ -1,5 +1,5 @@
 import * as API from "@tsed/common"
-import { ISuccess } from "@classes/interface/IResponse"
+import { ISuccess } from "@plugins/gymkonnect/interfaces/IResponse"
 import { version } from "@positron/../package.local.json"
 import { ROOT } from "@positron/paths"
 import uuid from "uuid"

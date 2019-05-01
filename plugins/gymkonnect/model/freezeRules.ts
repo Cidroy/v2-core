@@ -1,6 +1,6 @@
 import * as DB from "typeorm"
 import * as GQL from "type-graphql"
-import IGymFreezeRules from "@classes/interface/IGymFreezeRules"
+import IGymFreezeRules from "@plugins/gymkonnect/interfaces/IGymFreezeRules"
 import Base from "@plugins/core/model/base"
 
 @GQL.ObjectType()

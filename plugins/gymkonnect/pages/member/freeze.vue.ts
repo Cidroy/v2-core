@@ -12,7 +12,7 @@ import { formatDate, parseDate } from "@/utils/misc"
 import moment, { Moment } from "moment"
 import FreezePaymentModal from "@plugins/gymkonnect/components/payment/modal-freeze.vue"
 import { TFreezeTransaction } from "@plugins/gymkonnect/classes/types/freeze"
-import { USER_MODE } from "@classes/enum/user-mode"
+import { USER_MODE } from "@plugins/gymkonnect/enum/user-mode"
 import router from "@/routes"
 import { Routes } from "@plugins/gymkonnect/routes"
 

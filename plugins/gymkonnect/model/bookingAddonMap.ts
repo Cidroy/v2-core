@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import IBookingAddonMap from "@classes/interface/IBookingAddonMap"
+import IBookingAddonMap from "@plugins/gymkonnect/interfaces/IBookingAddonMap"
 
 @DB.Entity()
 @GQL.ObjectType()

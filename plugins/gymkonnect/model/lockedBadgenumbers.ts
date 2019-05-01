@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import ILockedBadgenumbers from "@classes/interface/ILockedBadgenumbers"
+import ILockedBadgenumbers from "@plugins/gymkonnect/interfaces/ILockedBadgenumbers"
 
 @DB.Entity()
 @GQL.ObjectType()

@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import ITrainerType from "@classes/interface/ITrainerType"
+import ITrainerType from "@plugins/gymkonnect/interfaces/ITrainerType"
 
 @DB.Entity()
 @GQL.ObjectType()

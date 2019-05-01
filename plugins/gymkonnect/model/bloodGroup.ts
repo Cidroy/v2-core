@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import IBloodGroup from "@classes/interface/IBloodGroup"
+import IBloodGroup from "@plugins/gymkonnect/interfaces/IBloodGroup"
 
 @DB.Entity()
 @GQL.ObjectType()

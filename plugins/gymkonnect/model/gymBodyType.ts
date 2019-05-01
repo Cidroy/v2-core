@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import IGymBodyType from "@classes/interface/IGymBodyType"
+import IGymBodyType from "@plugins/gymkonnect/interfaces/IGymBodyType"
 
 @DB.Entity()
 @GQL.ObjectType()

@@ -1,6 +1,6 @@
 import * as GQL from "type-graphql"
 import TaxRules from "@plugins/gymkonnect/model/taxRules"
-import { TAX_TYPE, SERVICE_TYPE } from "@classes/enum/misc"
+import { TAX_TYPE, SERVICE_TYPE } from "@plugins/gymkonnect/enum/misc"
 
 @GQL.Resolver(of => TaxRules)
 export default class TaxRulesResolver {

@@ -1,7 +1,7 @@
 import { VuexModule, Module, getModule, MutationAction, Action } from "vuex-module-decorators"
 import store from "@/state/store"
 import { TUserStoreUsers, TUserStoreUser } from "@/classes/types/user"
-import { PASSWORD_PREFERENCE } from "@classes/enum/misc"
+import { PASSWORD_PREFERENCE } from "@plugins/core/enum/misc"
 import { alert } from "@/components/toast"
 import GQLClient, { gql } from "@/utils/graphql"
 import { Logger } from "@classes/CONSOLE"

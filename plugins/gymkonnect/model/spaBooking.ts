@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import ISpaBooking from "@classes/interface/ISpaBooking"
+import ISpaBooking from "@plugins/gymkonnect/interfaces/ISpaBooking"
 
 @DB.Entity()
 @GQL.ObjectType()

@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import IPaymentMode from "@classes/interface/IPaymentMode"
+import IPaymentMode from "@plugins/gymkonnect/interfaces/IPaymentMode"
 
 @DB.Entity()
 @GQL.ObjectType()

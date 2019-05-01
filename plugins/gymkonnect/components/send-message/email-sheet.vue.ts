@@ -2,7 +2,7 @@ import { Component, Vue, Prop, Emit } from "vue-property-decorator"
 import { Permissions as gymkonnect } from "@plugins/gymkonnect/permission"
 import empty from "@/components/empty.vue"
 import { MessagesStore } from "@plugins/gymkonnect/state/messages"
-import { IUser } from "@classes/interface/IUser"
+import { IUser } from "@plugins/core/interfaces/IUser"
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
 import { alert } from "@/components/toast"
 

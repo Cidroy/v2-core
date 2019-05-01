@@ -1,6 +1,6 @@
 import * as GQL from "type-graphql"
 import Address from "@plugins/core/model/address"
-import { ADDRESS_TYPE } from "@classes/enum/misc"
+import { ADDRESS_TYPE } from "@plugins/core/enum/misc"
 
 @GQL.Resolver(of => Address)
 export default class AddressResolver {

@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import IFreezes from "@classes/interface/IFreezes"
+import IFreezes from "@plugins/gymkonnect/interfaces/IFreezes"
 
 @GQL.ObjectType()
 @DB.Entity()

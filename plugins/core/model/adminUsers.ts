@@ -2,8 +2,8 @@ import * as DB from "typeorm"
 import * as GQL from "type-graphql"
 
 import Base from "@plugins/core/model/base"
-import { IAdminUsers } from "@classes/interface/IAdminUsers"
-import { PASSWORD_PREFERENCE } from "@classes/enum/misc"
+import { IAdminUsers } from "@plugins/core/interfaces/IAdminUsers"
+import { PASSWORD_PREFERENCE } from "@plugins/core/enum/misc"
 
 GQL.registerEnumType(PASSWORD_PREFERENCE, {
 	name: "PASSWORD_PREFERENCE",

@@ -1,6 +1,6 @@
 import * as GQL from "type-graphql"
 import GymPackage from "@plugins/gymkonnect/model/gymPackage"
-import { DURATION } from "@classes/enum/misc"
+import { DURATION } from "@plugins/gymkonnect/enum/misc"
 
 @GQL.Resolver(of => GymPackage)
 export default class GymPackageResolver {

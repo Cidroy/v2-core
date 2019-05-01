@@ -1,7 +1,7 @@
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"
-import ICounsellorType from "@classes/interface/ICounsellorType"
+import ICounsellorType from "@plugins/gymkonnect/interfaces/ICounsellorType"
 
 @DB.Entity()
 @GQL.ObjectType()

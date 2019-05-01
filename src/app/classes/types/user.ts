@@ -1,4 +1,4 @@
-import { PASSWORD_PREFERENCE } from "@classes/enum/misc"
+import { PASSWORD_PREFERENCE } from "@plugins/core/enum/misc"
 
 export type TUserStoreUsers = {
 	name: string,

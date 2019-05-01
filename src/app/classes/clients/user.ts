@@ -1,4 +1,4 @@
-import { PASSWORD_PREFERENCE } from "@classes/enum/misc"
+import { PASSWORD_PREFERENCE } from "@plugins/core/enum/misc"
 import { UserStore } from "@/state/user"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import { ApplicationStore } from "@/state/application"

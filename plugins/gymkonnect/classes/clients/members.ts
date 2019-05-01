@@ -1,12 +1,12 @@
 import { TMemberListTableItems } from "../types/member-list"
 import GQLClient, { gql } from "@/utils/graphql"
-import { USER_MODE } from "@classes/enum/user-mode"
+import { USER_MODE } from "@plugins/gymkonnect/enum/user-mode"
 import { formatDate } from "@/utils/misc"
-import { IUser } from "@classes/interface/IUser"
+import { IUser } from "@plugins/core/interfaces/IUser"
 import { Logger } from "@classes/CONSOLE"
 import { TMemberInfo } from "../types/misc"
-import IGymUsers from "@classes/interface/IGymUsers"
-import IGymUserMode from "@classes/interface/IGymUserMode"
+import IGymUsers from "@plugins/gymkonnect/interfaces/IGymUsers"
+import IGymUserMode from "@plugins/gymkonnect/interfaces/IGymUserMode"
 
 const Console = new Logger(`members/gk-client`)
 async function getAllMembersForRegistrationList(): Promise<TMemberListTableItems[]> {

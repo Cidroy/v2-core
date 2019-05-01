@@ -1,4 +1,4 @@
-import ITransaction from "@classes/interface/ITransaction"
+import ITransaction from "@plugins/gymkonnect/interfaces/ITransaction"
 import * as DB from "typeorm"
 import Base from "@plugins/core/model/base"
 import * as GQL from "type-graphql"

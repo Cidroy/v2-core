@@ -10,7 +10,6 @@ import Gymkonnect from "@plugins/gymkonnect/classes/clients"
 import { Logger } from "@classes/CONSOLE"
 import { TSpaBookingArgs, defaultSpaBookingArgs } from "@plugins/gymkonnect/classes/types/bookings"
 import { taxAmount } from "@plugins/gymkonnect/classes/misc"
-import ITaxRules from "@classes/interface/ITaxRules"
 
 const Console = new Logger("gk/payment/modal-single")
 
