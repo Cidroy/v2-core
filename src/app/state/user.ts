@@ -28,18 +28,26 @@ class User extends VuexModule {
 
 	@Action({}) public async Login() {
 		Console.verbose("set login info")
+		let userStoreData: TUserStoreUser = {
+			id: 0,
+			userType: "Administrator",
+			username: "n/a",
+			permissions: {},
+			name: "n/a",
+		}
+		// FIXME: get proper query
 		let response = await GQLClient.query<{ user: TUserStoreUser }>(gql`
 			query whoAmI{ user: whoAmI{
 				id
-				username
-				permissions
-				name: username
+				# username
+				# permissions
+				name: firstName
 				# FIXME: get remaining data
 			} }
 		`)
 		try {
 			if (response.errors) throw response.errors[0].message
-			CORE_user = { ...response.data.user, userType: "God" }
+			CORE_user = { ...userStoreData, ...response.data.user, }
 			CORE_loggedin = true
 		} catch (error) {
 			Console.error("Login()", error)

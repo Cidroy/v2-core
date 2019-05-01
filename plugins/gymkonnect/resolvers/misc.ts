@@ -7,6 +7,7 @@ import { Logger } from "@classes/CONSOLE"
 import Device from "@positron/Biometric/device"
 import { SupportedBiometricDevice } from "@classes/enum/supported-biometric-devices"
 import { BIOMETRIC_DEVICE_CHECK_TYPE } from "@neutron/lib/IBiometric"
+import User from "@plugins/core/model/user"
 
 const Console = new Logger(`gql-resolver/misc`)
 GQL.registerEnumType(PASSWORD_PREFERENCE, {
@@ -29,11 +30,12 @@ export default class miscResolver {
 		return true
 	}
 
-	@GQL.Query(returns => Number, { nullable: true })
+	@GQL.Query(returns => User, { nullable: true })
 	public async whoAmI(
 		@GQL.Ctx() { req: { session } }: GQLContext
 	){
-		return session!.counter
+		if(!session || !session.user) return null
+		return User.findOne(session.user.id)
 	}
 
 	// @GQL.Query(returns => String, { nullable: true })
