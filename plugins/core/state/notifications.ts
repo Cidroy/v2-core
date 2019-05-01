@@ -16,6 +16,11 @@ class Notification extends VuexModule {
 		return { notifications }
 	}
 
+	@MutationAction({ mutate: ["notifications",] }) public async clearNotification(){
+		notifications = []
+		return { notifications }
+	}
+
 	@MutationAction({ mutate: [ "notifications", ] }) public async newNotification(notification: TNotification) {
 		notifications = [ notification, ...notifications, ]
 		return { notifications }

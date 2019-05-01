@@ -16,14 +16,18 @@
 			</v-btn>
 			<v-card style="max-height: 90vh">
 				<!-- FIXME: make sure this does not scroll -->
-				<v-subheader class="font-weight-bold ma-0"> NOTIFICATIONS </v-subheader>
+				<v-subheader class="font-weight-bold ma-0">
+					NOTIFICATIONS
+					<v-spacer/>
+					<v-btn small icon @click="clearNotification"> <v-icon>clear_all</v-icon> </v-btn>
+				</v-subheader>
 				<v-card>
 					<v-list three-line>
 						<v-list-tile-sub-title v-if="!notifications.length" class="pa-3">
 							<v-icon left>done_all</v-icon> No New Notification
 						</v-list-tile-sub-title>
 						<template v-else v-for="(notification, index) in notifications">
-							<v-subheader v-if="notification.header" :key="notification.header" >
+							<v-subheader v-if="notification.header" :key="`${index}-header`" >
 								<v-icon v-if="notification.icon" :class="notification.iconClass" left>{{ notification.icon }}</v-icon>
 								<p class="ma-0 pa-0">
 									<span class="font-weight-bold" v-text="notification.header" />
@@ -31,7 +35,7 @@
 									<span class="font-italic" v-text="moments(notification.time)"/>
 								</p>
 							</v-subheader>
-							<v-list-tile v-else :key="notification.title" avatar >
+							<v-list-tile v-else :key="`${index}-title`" avatar >
 								<v-list-tile-avatar>
 									<img v-if="notification.avatar" :src="notification.avatar">
 									<v-icon v-else-if="notification.icon" :class="notification.iconClass">{{ notification.icon }}</v-icon>
@@ -43,7 +47,7 @@
 									<v-list-tile-sub-title class="font-italic" v-text="moments(notification.time)" />
 								</v-list-tile-content>
 							</v-list-tile>
-							<v-divider :key="index" />
+							<v-divider :key="`${index}-divider`" />
 						</template>
 					</v-list>
 				</v-card>

@@ -11,6 +11,7 @@ import GKHelper,
 	}
 from "./gk-helper"
 import { Logger } from "@classes/CONSOLE"
+import { NotificationStore } from "@plugins/core/state/notifications"
 
 const Console = new Logger("store/gk")
 
@@ -499,6 +500,14 @@ class Gymkonnect extends VuexModule {
 			}
 		} catch (error) {
 			Console.error("Gymkonnect Store failed to initialize gym section", error)
+			NotificationStore.newNotification({
+				time: new Date(),
+				seen: false,
+				title: "Warning",
+				subtitle: "Gymkonnect Store failed to initialize gym section. Functions are now limited",
+				icon: "warning",
+				iconClass: "red darken-2"
+			})
 			throw "Gymkonnect Store failed to initialize gym section. Functions are now limited"
 		}
 	}
@@ -527,6 +536,14 @@ class Gymkonnect extends VuexModule {
 			}
 		} catch (error) {
 			Console.error("Gymkonnect Store failed to initialize Spa section", error)
+			NotificationStore.newNotification({
+				time: new Date(),
+				seen: false,
+				title: "Warning",
+				subtitle: "Gymkonnect Store failed to initialize Spa section. Functions are now limited",
+				icon: "warning",
+				iconClass: "red darken-2"
+			})
 			throw "Gymkonnect Store failed to initialize Spa section. Functions are now limited"
 		}
 	}
@@ -557,6 +574,14 @@ class Gymkonnect extends VuexModule {
 			}
 		} catch (error) {
 			Console.error("Gymkonnect Store failed to initialize personal training", error)
+			NotificationStore.newNotification({
+				time: new Date(),
+				seen: false,
+				title: "Warning",
+				subtitle: "Gymkonnect Store failed to initialize personal training",
+				icon: "warning",
+				iconClass: "red darken-2"
+			})
 			throw "Gymkonnect Store failed to initialize personal training"
 		}
 	}
@@ -583,6 +608,14 @@ class Gymkonnect extends VuexModule {
 			}
 		} catch (error) {
 			Console.error("Gymkonnect Store failed to initialize fitness counselling", error)
+			NotificationStore.newNotification({
+				time: new Date(),
+				seen: false,
+				title: "Warning",
+				subtitle: "Gymkonnect Store failed to initialize fitness counselling",
+				icon: "warning",
+				iconClass: "red darken-2"
+			})
 			throw "Gymkonnect Store failed to initialize fitness counselling"
 		}
 	}
@@ -603,6 +636,14 @@ class Gymkonnect extends VuexModule {
 			_gk_od_plans = Xod_plans
 		} catch (error) {
 			Console.error("Gymkonnect Store failed to initialize one day", error)
+			NotificationStore.newNotification({
+				time: new Date(),
+				seen: false,
+				title: "Warning",
+				subtitle: "Gymkonnect Store failed to initialize one day",
+				icon: "warning",
+				iconClass: "red darken-2"
+			})
 			throw "Gymkonnect Store failed to initialize one day"
 		}
 		return {
@@ -665,6 +706,14 @@ class Gymkonnect extends VuexModule {
 
 		} catch (error) {
 			Console.error("Gymkonnect Store failed to initialize general settings", error)
+			NotificationStore.newNotification({
+				time: new Date(),
+				seen: false,
+				title: "Warning",
+				subtitle: "Gymkonnect Store failed to initialize general settings. Functions are now limited",
+				icon: "warning",
+				iconClass: "red darken-2"
+			})
 			throw "Gymkonnect Store failed to initialize general settings. Functions are now limited"
 		}
 	}
@@ -694,6 +743,14 @@ class Gymkonnect extends VuexModule {
 
 		} catch (error) {
 			Console.error("Gymkonnect Store failed to initialize gym transaction", error)
+			NotificationStore.newNotification({
+				time: new Date(),
+				seen: false,
+				title: "Warning",
+				subtitle: "Gymkonnect Store failed to initialize gym transaction. Functions are now limited",
+				icon: "warning",
+				iconClass: "red darken-2"
+			})
 			throw "Gymkonnect Store failed to initialize gym transaction. Functions are now limited"
 		}
 

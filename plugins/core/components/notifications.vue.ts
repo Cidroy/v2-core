@@ -26,6 +26,8 @@ export default class NotificationPanel extends Vue.default {
 		this.showPopupNotification = true
 	}
 
+	private clearNotification(){ NotificationStore.clearNotification() }
+
 	private moments(time: string| Date){
 		return moment(time).fromNow()
 	}
