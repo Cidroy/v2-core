@@ -1,7 +1,7 @@
 <template>
 	<Layout>
 		<h1 class="text-md-center">Payment</h1>
-		
+
 
 		<v-card color="transparent">
 			<v-layout class="pt-4 pl-4" row wrap>

@@ -4,7 +4,7 @@ import { Logger } from "@classes/CONSOLE"
 let log = new Logger("gql/test")
 
 async function template(){
-	
+
 }
 async function AddGymPurpose(){
 	let response = await GQLClient.mutate(
@@ -316,7 +316,7 @@ async function gymFreezeRules(){
 							count
 							minDays
 							maxDays
-							
+
   						}
 					}
 				`,
@@ -436,7 +436,7 @@ async function addBooking(){
 					){
 						addBooking(
 							payment : $payment
-							bookingAddons : $bookingAddons 
+							bookingAddons : $bookingAddons
 							bookingPackage : $bookingPackage
 							end : $end
 							start : $start

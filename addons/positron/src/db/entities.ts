@@ -1,9 +1,7 @@
-// TODO: use import all for auto import
-// TODO: provide functionality to get Object Repos for query
-import CoreEntities from "@plugins/core/model"
-import GymkonnectEntities from "@plugins/gymkonnect/model"
+import Plugins from "@classes/core/plugin-list"
 
-export default [
-	...CoreEntities,
-	...GymkonnectEntities,
-]
+let entities: any[] = []
+
+Plugins.forEach(plugin => entities = entities.concat(plugin.models))
+
+export default entities

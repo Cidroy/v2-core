@@ -3,11 +3,11 @@
 		<v-layout>
 			<v-card width="100%" color="transparent" height="500px">
 				<v-layout row wrap>
-	
+
 				<v-flex>
 					<v-tabs v-model="active" color="transparent" slider-color="orange darken-4">
       				<v-tab v-for="(name, key) in tabsList" :key="key" ripple>{{ name }}</v-tab>
-				
+
 						<v-tab-item key="a">
 							<v-card flat color="transparent" height="100px">
 								<m-registration-step-finished>
@@ -77,7 +77,7 @@
 								<v-flex xs class="px-2">
 									<h3>Transection</h3>
 
-									
+
 										<v-card class="elevation-10">
 												<!-- Transection List Start -->
 													<v-data-table :headers="headers" :items="desserts" item-key="name">

@@ -8,9 +8,25 @@ import path from "path"
 import express from "express"
 import webpack from "webpack"
 import proxyMiddleware from "http-proxy-middleware"
-const webpackConfig = process.env.NODE_ENV === "testing"
+import env from "~/config/env"
+import { RESOLVE_PATHS } from "~build/webpack.base"
+const webpackConfig: webpack.Configuration = process.env.NODE_ENV === "testing"
 	? require("~build/webpack.prod").default
 	: require("~build/webpack.dev").default
+
+webpackConfig.module!.rules.push({
+	test: /\.((j|t)sx?)$/,
+	enforce: "pre",
+	loader: "webpack-preprocessor-loader",
+	options: {
+		params: {
+			...env.preprocessor,
+			web: true,
+		},
+	},
+	exclude: /node_modules/,
+	include: RESOLVE_PATHS,
+})
 
 // default port where dev server listens for incoming traffic
 const port = process.env.PORT || config.dev.port
@@ -24,7 +40,7 @@ const app = express()
 const compiler = webpack(webpackConfig)
 
 let devMiddleware = require("webpack-dev-middleware")(compiler, {
-	publicPath: webpackConfig.output.publicPath,
+	publicPath: webpackConfig.output!.publicPath,
 	quiet: true
 })
 

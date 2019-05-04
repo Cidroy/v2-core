@@ -13,7 +13,7 @@ import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import { formatDate } from "@/utils/misc"
 import moment from "moment"
 import router from "@/routes"
-import { Routes } from "@plugins/gymkonnect/routes"
+import { routes } from "@plugins/gymkonnect/routes"
 
 const Console = new Logger(`renewal.vue/gk`)
 @Component({
@@ -125,7 +125,7 @@ export default class MembershipRenewalPage extends Vue.default {
 			this.paymentId = result.paymentId
 			this.transactionId = result.transactionId
 			router.push({
-				name: Routes.REPORTS.name,
+				name: routes.REPORTS.name,
 				params: <any>{
 					ReportType: "RENEWAL",
 					TimePeriod: "CUSTOM",

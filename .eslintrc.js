@@ -42,7 +42,7 @@ module.exports = {
 		"block-scoped-var": "error",
 		"block-spacing": "error",
 		"no-undef-init": "error",
-		"eol-last": 0,
+		"eol-last": "error",
 		"linebreak-style": 0,
 		"comma-dangle": ["error", {
 			"arrays": "always",

@@ -74,13 +74,6 @@ const baseConfig: webpack.Configuration = {
 
 			},
 			{
-				test: /\.(jsx?|vue|tsx?)$/,
-				use: "strip-debug-block",
-				enforce: "pre",
-				exclude: /node_modules/,
-				include: RESOLVE_PATHS,
-			},
-			{
 				test: /\.(jsx?)$/,
 				loader: "eslint-loader",
 				enforce: "pre",

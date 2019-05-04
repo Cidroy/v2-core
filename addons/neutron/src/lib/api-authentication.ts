@@ -18,7 +18,7 @@ export class APIAuthentication implements API.IMiddleware {
 			const options = endpoint.get(API.AuthenticatedMiddleware) || {}
 			APIAuthentication.log.verbose({ options })
 			// options => {role: 'admin'}
-	
+
 			if (!Permission(options)) throw new BadRequest("///bad-request")
 		} catch (error) {
 			APIAuthentication.log.error(error)

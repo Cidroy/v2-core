@@ -6,10 +6,11 @@ import UglifyJsPlugin from "uglifyjs-webpack-plugin"
 import webpackMerge from "webpack-merge"
 import webpack from "webpack"
 import safeParser from "postcss-safe-parser"
-import baseWebpackConfig from "~build/webpack.base"
+import baseWebpackConfig, { RESOLVE_PATHS } from "~build/webpack.base"
 import config from "~config/index"
 import loadMinified from "~config/load-minified"
 import BuildHelper from "~build/helper"
+import env from "~/config/env"
 
 process.env.BABEL_ENV = "web"
 const resolve = BuildHelper.resolve
@@ -38,6 +39,23 @@ const webpackProdConfig: webpack.Configuration = {
 				},
 				sourceMap: true
 			}),
+		],
+	},
+	module: {
+		rules: [
+			{
+				test: /\.((j|t)sx?)$/,
+				enforce: "pre",
+				loader: "webpack-preprocessor-loader",
+				options: {
+					params: {
+						...env.preprocessor,
+						production: true,
+					},
+				},
+				exclude: /node_modules/,
+				include: RESOLVE_PATHS,
+			},
 		],
 	},
 	plugins: [

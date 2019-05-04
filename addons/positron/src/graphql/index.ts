@@ -17,9 +17,9 @@ export default class GQL{
 			return await TGQL.buildSchema({
 				resolvers,
 				authChecker: GQL.authChecker,
-				//# IF DEBUG
+				// #!if debug
 				emitSchemaFile: path.resolve("dist/positron-schema.gql"),
-				//# ENDIF DEBUG
+				//# #!endif
 			})
 		} catch (error) {
 			Console.error("GraphQL Schema generation failed", error)

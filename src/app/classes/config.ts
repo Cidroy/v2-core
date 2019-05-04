@@ -88,7 +88,7 @@ class config implements TStageLanguage, TStageProductKey {
 	 * @returns {object}
 	 * @memberof config
 	 */
-	
+
 	public toObject(): object{
 		return JSON.parse(TS.serialize(this))
 	}

@@ -12,6 +12,6 @@
 				</v-list-tile>
 			</template>
 		</v-flex>
-		<v-btn large block class="ma-0 orange darken-2" @click.native.stop="next">{{ $t('next') }}</v-btn> 
+		<v-btn large block class="ma-0 orange darken-2" @click.native.stop="next">{{ $t('next') }}</v-btn>
 	</v-layout>
 </template>

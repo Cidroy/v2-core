@@ -3,6 +3,7 @@ import UglifyJsPlugin from "uglifyjs-webpack-plugin"
 import webpack from "webpack"
 import { resolve } from "~build/webpack.base"
 import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin"
+import env from "~/config/env"
 
 export const RESOLVE = (src: string) => path.resolve(__dirname, "..", src)
 
@@ -88,6 +89,19 @@ const baseConfig: webpack.Configuration = {
 	},
 	module: {
 		rules: [
+			{
+				test: /\.((j|t)sx?)$/,
+				enforce: "pre",
+				loader: "webpack-preprocessor-loader",
+				options: {
+					params: {
+						...env.preprocessor,
+						positron: true,
+					},
+				},
+				exclude: /node_modules/,
+				include: RESOLVE_PATHS,
+			},
 			{
 				test: /\.js$/,
 				loader: "eslint-loader",

@@ -13,13 +13,6 @@ const serverConfig: webpack.Configuration = {
 	],
 	module: {
 		rules: [
-			{
-				test: /\.((j|t)sx?)$/,
-				use: "strip-debug-block",
-				enforce: "pre",
-				exclude: /node_modules/,
-				include: RESOLVE_PATHS,
-			},
 		]
 	}
 }

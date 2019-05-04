@@ -14,7 +14,7 @@ import paymentSingle from "@plugins/gymkonnect/components/payment/modal-single.v
 
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
 import router from "@/routes"
-import { Routes } from "@plugins/gymkonnect/routes"
+import { routes } from "@plugins/gymkonnect/routes"
 import Printer from "@electron/printer"
 import { Logger } from "@classes/CONSOLE"
 import AppConfig from "@classes/appConfig"
@@ -112,7 +112,7 @@ export default class MemberRegistrationPage extends Vue.default {
 		this.paying = true
 		let result = await Gymkonnect.MemberRegistration.makePayments(this.clientIds, this.transactionData, paymentData, this.grouping)
 		router.push({
-			name: Routes.MEMBER_REGISTRATION_FINALIZE.name,
+			name: routes.MEMBER_REGISTRATION_FINALIZE.name,
 			params: <any>{
 				...result,
 				users: this.users

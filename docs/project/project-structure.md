@@ -41,23 +41,10 @@ All the components can be accessed using the `~module/**` relative path through 
 **`webpack`**
 
 Contains unpublished webpack plugins. Currently it only contains the following
-* `strip-debug-loader` to provide the functionality to remove dev codes during production.
-	```ts
-	//# IF DEBUG
-		console.log("DEBUG", "some debug data")
-	//# ELSE
-		console.log("IN PRODUCTION MODE")
-	//# ENDIF
-	```
+* `vue-import-script` - this is to merge seperated typescript or javascript into the main `.vue` file.
 
-	is converted to this in `production` environment
-	```js
-		console.log("IN PRODUCTION MODE")
-	```
-	and this in `development` environment
-	```js
-		console.log("DEBUG", "some debug data")
-	```
+	If the `.vue` file does not have a `<script ...>...</script>` tag then this loader will look for a `.vue.ts` or `.vue.js` file in respective order and import the script into the vue file.
+
 
 ### **`bin`** - The output for binaries.
 

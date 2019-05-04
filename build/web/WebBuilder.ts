@@ -18,7 +18,7 @@ export class WebBuilder extends BuildHelper {
 		super()
 		this.spinner = ora(this._message.buildingFor)
 	}
-	
+
 	public build() {
 		this.spinner.start()
 		try {

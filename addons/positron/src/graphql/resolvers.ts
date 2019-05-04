@@ -1,9 +1,6 @@
-// TODO: use import all for auto import
-// TODO: provide functionality to get Object Repos for query
-import CoreResolvers from "@plugins/core/resolvers"
-import GymkonnectResolvers from "@plugins/gymkonnect/resolvers"
+import Plugins from "@classes/core/plugin-list"
 
-export default [
-	...CoreResolvers,
-	...GymkonnectResolvers,
-]
+let resolvers: any[] = []
+Plugins.forEach(plugin => resolvers = resolvers.concat(plugin.resolvers))
+
+export default resolvers

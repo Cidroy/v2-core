@@ -289,7 +289,7 @@ export default class ZKTEco_K40_WDMS implements IBiometric {
 			throw BiometricUserAddFailed
 		}
 	}
-	
+
 	public async DeleteMember(id: string): Promise<boolean> {
 		let _options = {
 			method: "POST",
@@ -391,7 +391,7 @@ export default class ZKTEco_K40_WDMS implements IBiometric {
 	public async AddMemberZone(id: string, zoneName: string): Promise<boolean> {
 		if (!BiometricDevices.Zones.hasOwnProperty(zoneName)) throw "Zone name does not exists"
 		let zoneID = BiometricDevices.Zones[zoneName]
-		
+
 		let _options = {
 			method: "POST",
 			url: `${this.wdmsURL}/data/employee/`,
@@ -414,7 +414,7 @@ export default class ZKTEco_K40_WDMS implements IBiometric {
 			throw new Error("Unable to add zone to member")
 		}
 	}
-	
+
 	public async MoveMemberZone(id: string, zoneName: string): Promise<boolean> {
 		if (!BiometricDevices.Zones.hasOwnProperty(zoneName)) throw "Zone name does not exists"
 		let zoneID = BiometricDevices.Zones[zoneName]

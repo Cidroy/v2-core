@@ -12,6 +12,26 @@ import mainConfig from "~build/electron/webpack.main"
 import rendererConfig from "~build/electron/webpack.renderer"
 import splashscreenConfig from "~build/electron/webpack.splashscreen"
 import BuildHelper from "~build/helper"
+import env from "~/config/env"
+import { RESOLVE_PATHS } from "~build/webpack.base"
+
+const debugRule: webpack.RuleSetRule = {
+	test: /\.((j|t)sx?)$/,
+	enforce: "pre",
+	loader: "webpack-preprocessor-loader",
+	options: {
+		params: {
+			...env.preprocessor,
+			debug: true,
+			electron: true,
+		},
+	},
+	exclude: /node_modules/,
+	include: RESOLVE_PATHS,
+}
+mainConfig.module!.rules.push(debugRule)
+rendererConfig.module!.rules.push(debugRule)
+splashscreenConfig.module!.rules.push(debugRule)
 
 type DevServerKeys = "renderer" | "splashscreen"
 class DevServer extends BuildHelper{

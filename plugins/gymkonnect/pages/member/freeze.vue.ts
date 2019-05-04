@@ -14,7 +14,7 @@ import FreezePaymentModal from "@plugins/gymkonnect/components/payment/modal-fre
 import { TFreezeTransaction } from "@plugins/gymkonnect/classes/types/freeze"
 import { USER_MODE } from "@plugins/gymkonnect/enum/user-mode"
 import router from "@/routes"
-import { Routes } from "@plugins/gymkonnect/routes"
+import { routes } from "@plugins/gymkonnect/routes"
 
 const Console = new Logger(`freeze.vue/gk`)
 @Component({
@@ -132,7 +132,7 @@ export default class MembershipFreezingPage extends Vue.default {
 				paymentData
 			)
 			router.push({
-				name: Routes.REPORTS.name,
+				name: routes.REPORTS.name,
 				params: <any>{
 					ReportType: "FREEZING",
 					TimePeriod: "TODAY",

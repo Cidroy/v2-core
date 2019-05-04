@@ -10,7 +10,7 @@
 				<v-card-text>
 					Please select "Yes" to exit,
 					<br>
-					Select "Cancel" to continue working. 
+					Select "Cancel" to continue working.
 				</v-card-text>
 				<v-card-actions>
 					<v-btn flat @click.native.stop="confirmExit = false">Cancel</v-btn>

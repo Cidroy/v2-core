@@ -24,7 +24,7 @@ function VueImportScript(content){
 		let scriptPath = false
 		supportedLangs.some(_lang => {
 			let _scriptPath = `${resourcePath}.${_lang}`
-	
+
 			if(fs.existsSync(_scriptPath)){
 				lang = _lang
 				scriptPath = _scriptPath

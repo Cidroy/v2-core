@@ -1,11 +1,11 @@
 <template>
 	<Layout>
 		<h1 class="text-md-center pb-2">Human Resource</h1>
-		
+
 		<div>
 			<v-tabs v-model="active" color="grey darken-4" dark slider-color="orange darken-4">
       			<v-tab v-for="(tabName, key) in tabsList" :key="key" ripple>{{ tabName }}</v-tab>
-				
+
 				<!-- Tab 1 -->
 				<v-tab-item key="a">
 					<v-card color="transparent">
@@ -45,7 +45,7 @@
 																	<v-radio label="Female" value="radio-5"></v-radio>
 																	<v-radio label="Others" value="radio-6"></v-radio>
 																</v-radio-group>
-															</v-flex>	
+															</v-flex>
 
 															<v-flex xs12 lg6 class="mb-2">
 																<v-menu :close-on-content-click="false" v-model="dobMenu" :nudge-right="40" lazy transition="scale-transition"
@@ -112,21 +112,21 @@
 																	</v-btn>
 																</v-card>
 															</v-flex>
-											
+
 														</v-layout>
-													</v-flex>	
-												</v-layout>	
-											</v-card>	
-											<v-layout class="right">	
+													</v-flex>
+												</v-layout>
+											</v-card>
+											<v-layout class="right">
 												<v-btn dark>Cancel</v-btn>
 												<v-btn dark color="orange darken-4">Submit</v-btn>
-											</v-layout>	
-										</v-card>	
+											</v-layout>
+										</v-card>
 									</v-dialog>
 									<!-- Add Trainer End -->
-								</v-layout>	
+								</v-layout>
 							</v-toolbar>
-							
+
 							<!-- Trainer List Start -->
 							<v-data-table :headers="headers" :items="desserts" :expand="expand" item-key="name" :rowsPerPageItems="perpage">
 								<template slot="items" slot-scope="props">
@@ -138,7 +138,7 @@
 										<td>{{ props.item.joinDate }}</td>
 									</tr>
 								</template>
-								
+
 								<template slot="expand" slot-scope="props">
 									<v-card flat>
 										<v-layout row wrap>
@@ -153,7 +153,7 @@
 							</v-data-table>
 							<!-- Trainer List End -->
   						</div>
-					</v-card>	
+					</v-card>
 				</v-tab-item>
 
 				<!-- Tab 2 -->
@@ -165,7 +165,7 @@
 								<v-spacer></v-spacer>
 								<v-btn color="orange darken-4" dark>Add Consultant</v-btn>
 							</v-toolbar>
-							
+
 							<!-- FC List Start -->
 							<v-data-table :headers="headers2" :items="desserts2" :expand="expand" item-key="name2">
 								<template slot="items" slot-scope="props">
@@ -177,7 +177,7 @@
 										<td>{{ props.item.joinDate2 }}</td>
 									</tr>
 								</template>
-								
+
 								<template slot="expand" slot-scope="props">
 									<v-card flat>
 										<v-layout row wrap>
@@ -194,8 +194,8 @@
   						</div>
 					</v-card>
 					</v-card>
-				</v-tab-item>	
+				</v-tab-item>
 			</v-tabs>
-		</div>	
+		</div>
 	</Layout>
 </template>

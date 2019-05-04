@@ -1,5 +1,5 @@
 import router from "@/routes"
-import { Routes } from "../routes"
+import { routes } from "../routes"
 import { Logger } from "@classes/CONSOLE"
 import { USER_MODE } from "@plugins/gymkonnect/enum/user-mode"
 import { loading, alert } from "@/components/toast"
@@ -42,7 +42,7 @@ export async function freezeUnfreeze(clientId: string | number, mode: USER_MODE)
 	} else {
 		Console.verbose("freeze", clientId)
 		router.push({
-			name: Routes.MEMBER_FREEZE.name,
+			name: routes.MEMBER_FREEZE.name,
 			params: <any>{ value: clientId },
 		})
 	}
@@ -55,7 +55,7 @@ export async function cancelFreezing(freezingId: string | number){
 export async function renew(clientId: string | number ){
 	Console.verbose("renew", clientId)
 	router.push({
-		name: Routes.MEMBER_RENEWAL.name,
+		name: routes.MEMBER_RENEWAL.name,
 		params: <any>{ value: clientId },
 	})
 }

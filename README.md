@@ -1,6 +1,6 @@
 # gymkonnect
 
-Gymkonnects Version 2 
+Gymkonnects Version 2
 
 ## Quick Start
 ```bash

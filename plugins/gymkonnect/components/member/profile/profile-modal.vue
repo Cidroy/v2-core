@@ -27,7 +27,7 @@
 						<v-btn>Send SMS</v-btn>
 						<v-btn>Send Email</v-btn>
 					</v-layout>
-										
+
 				</v-flex>
 				<v-layout xs12 row wrap>
 					<v-flex>
@@ -36,11 +36,11 @@
 							<m-registration-step-finished>
 							</m-registration-step-finished>
 						</v-card>
-					</v-flex>					
+					</v-flex>
 					<v-flex xs6 class="px-2">
 						<h3>Transection</h3>
 
-						
+
 							<v-card class="elevation-10">
 									<!-- Transection List Start -->
 										<v-data-table :headers="headers" :items="desserts" item-key="name">
@@ -55,7 +55,7 @@
 										</v-data-table>
 										<!-- Transection List End -->
 							</v-card>
-						
+
 					</v-flex>
 					<v-flex xs6 class="px-2">
 						<h3>Freezing</h3>
@@ -73,10 +73,10 @@
 								<!-- Freezing List End -->
 							</v-card>
 					</v-flex>
-				
+
 				</v-layout>
 			</v-layout>
-			
+
 		</v-card>
 	</v-dialog>
 </template>

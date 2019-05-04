@@ -2,7 +2,7 @@
 	<Layout>
 		<h1 class="text-md-center">Plans &amp; Offers settings</h1>
 		 <v-card>
-			
+
 			<v-layout justify-space-between pa-3>
 				<v-flex xs5>
 					<v-treeview v-model="tree" :active.sync="active" :open="open" :items="items" activatable item-key="name" open-on-click></v-treeview>
@@ -23,13 +23,13 @@
 						flat
 						max-width="400"
 					>
-						
+
 						sds
 					</v-card>
 					</v-scroll-y-transition>
 				</v-flex>
 			</v-layout>
 		</v-card>
-		
+
 	</Layout>
 </template>

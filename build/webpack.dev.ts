@@ -1,11 +1,12 @@
 import webpack from "webpack"
 import config from "~config/index"
 import webpackMerge from "webpack-merge"
-import baseWebpackConfig, { resolve } from "~build/webpack.base"
+import baseWebpackConfig, { resolve, RESOLVE_PATHS } from "~build/webpack.base"
 import prodWebpackConfig from "~build/webpack.prod"
 import FriendlyErrorsPlugin from "friendly-errors-webpack-plugin"
 import HtmlWebpackPlugin from "html-webpack-plugin"
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
+import env from "~/config/env"
 
 if(!baseWebpackConfig.hasOwnProperty("entry")) baseWebpackConfig.entry = {}
 // add hot-reload related code to entry chunks
@@ -19,6 +20,23 @@ const devConfig: webpack.Configuration = {
 	// cheap-module-eval-source-map is faster for development
 	devtool: "#cheap-module-eval-source-map",
 	target: "node",
+	module: {
+		rules: [
+			{
+				test: /\.((j|t)sx?)$/,
+				enforce: "pre",
+				loader: "webpack-preprocessor-loader",
+				options: {
+					params: {
+						...env.preprocessor,
+						debug: true,
+					},
+				},
+				exclude: /node_modules/,
+				include: RESOLVE_PATHS,
+			},
+		],
+	},
 	plugins: [
 		new BundleAnalyzerPlugin({
 			openAnalyzer: false
@@ -36,7 +54,7 @@ const devConfig: webpack.Configuration = {
 		new webpack.HotModuleReplacementPlugin(),
 		new webpack.NoEmitOnErrorsPlugin(),
 		new FriendlyErrorsPlugin(),
-	]
+	],
 }
 
 export default webpackMerge( baseWebpackConfig, devConfig )

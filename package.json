@@ -179,6 +179,7 @@
 		"webpack-hot-middleware": "^2.23.0",
 		"webpack-merge": "^4.1.4",
 		"webpack-node-externals": "^1.7.2",
+		"webpack-preprocessor-loader": "^1.1.0",
 		"webpack-pwa-manifest": "^4.0.0",
 		"workbox-webpack-plugin": "^4.1.1"
 	},
@@ -188,7 +189,7 @@
 	},
 	"dependencies": {
 		"@rubix-code/electron-update-window-options": "^1.1.1",
-		"@rubix-code/ini": "0.0.2",
+		"@rubix-code/ini": "0.0.4",
 		"@rubix-code/on-change": "0.0.2",
 		"@tsed/common": "^5.0.8",
 		"@tsed/core": "^5.0.8",

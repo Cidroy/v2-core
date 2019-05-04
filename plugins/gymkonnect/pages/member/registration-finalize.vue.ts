@@ -5,7 +5,7 @@ import router from "@/routes"
 import { TMRegistration, TMRegistrationHealth, defaultRegistrationUserHealth } from "@plugins/gymkonnect/classes/types/registration"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
-import { Routes } from "@plugins/gymkonnect/routes"
+import { routes } from "@plugins/gymkonnect/routes"
 import { Permissions as gymkonnect } from "@plugins/gymkonnect/permission"
 import { formatDate } from "@/utils/misc"
 
@@ -113,5 +113,5 @@ export default class RegistrationFinalizePage extends Vue.default {
 		this.userEnrollingFP = false
 	}
 
-	private goBackSimon(){ router.push({ name: Routes.MEMBER_REGISTRATION.name }) }
+	private goBackSimon(){ router.push({ name: routes.MEMBER_REGISTRATION.name }) }
 }
