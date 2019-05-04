@@ -1,4 +1,4 @@
-import { Stage } from "@/classes/install-router"
+import { Stage } from "@plugins/core/classes/install-router"
 
 const English = {
 	install: {

@@ -1,11 +1,12 @@
 import llv from "@classes/utils/lazy-load-view"
+import { TRoute } from "@classes/types/application"
 
 const lazyLoadView = (file: string) => llv(
 	file,
 	(file: string) => import(/* webpackChunkName: "page-[name]" */ `./pages${file}`)
 )
 
-export const Routes = {
+export const routes: Record<string, TRoute> = {
 	MEMBER_LIST: {
 		path: "/gk/member-list",
 		name: "gk/member-list",
@@ -110,4 +111,4 @@ export const Routes = {
 	}
 }
 
-export default Object.values(Routes)
+export default Object.values(routes)

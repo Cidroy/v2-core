@@ -1,8 +1,8 @@
 import { VuexModule, Module, getModule, MutationAction } from "vuex-module-decorators"
-import store from "@/state/store"
+import store from "@plugins/core/state/store"
 import { TProfilePanelAction } from "../classes/types/misc"
 import { logout, exit } from "../classes/actions"
-import { UserStore } from "@/state/user"
+import { UserStore } from "@plugins/core/state/user"
 
 let profilePanelList: TProfilePanelAction[] = [
 	{ text: "Logout", action: logout, icon: "fa-sign-out-alt", iconClass: "fas" },

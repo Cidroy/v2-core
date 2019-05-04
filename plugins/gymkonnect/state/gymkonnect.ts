@@ -1,5 +1,5 @@
 import { VuexModule, Module, getModule, MutationAction, Action } from "vuex-module-decorators"
-import store from "@/state/store"
+import store from "@plugins/core/state/store"
 import GKHelper,
 	{
 		TGQLOccupations, TGQLCategories, TGQLIDProofs, TGQLGroupings, TGQLBodyTypes,

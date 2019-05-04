@@ -1,5 +1,5 @@
 import { Component, Vue } from "vue-property-decorator"
-import { ApplicationStore } from "@/state/application"
+import { ApplicationStore } from "@plugins/core/state/application"
 import { Permissions } from "@plugins/core/permission"
 
 import logo from "@/assets/images/logo-dark.png"

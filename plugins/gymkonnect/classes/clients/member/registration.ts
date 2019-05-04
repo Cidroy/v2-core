@@ -1,4 +1,4 @@
-import GQLClient, { gql } from "@/utils/graphql"
+import GQLClient, { gql } from "@plugins/core/utils/graphql"
 import { TMRegistration, TMRegistrationStep3, TMRegistrationStep4 } from "@plugins/gymkonnect/classes/types/registration"
 import { Logger } from "@classes/CONSOLE"
 import IAddress from "@plugins/core/interfaces/IAddress"

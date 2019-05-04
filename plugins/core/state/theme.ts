@@ -1,5 +1,5 @@
 import { VuexModule, Module, getModule, MutationAction } from "vuex-module-decorators"
-import store from "@/state/store"
+import store from "@plugins/core/state/store"
 
 let _darkTheme: boolean = true
 

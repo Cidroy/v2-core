@@ -1,7 +1,8 @@
-import gymkonnect from "@plugins/gymkonnect/menu"
+import Plugins from "./plugin-list"
+import { TMenu } from "@classes/types/application"
 
-const menus = [
-	...gymkonnect,
-]
+let menus: TMenu[] = []
+
+Plugins.forEach(plugin => menus = menus.concat(plugin.menus) )
 
 export default menus

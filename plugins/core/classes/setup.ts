@@ -1,12 +1,12 @@
 import { remote } from "electron"
 import observe from "@rubix-code/on-change"
-import { config } from "@/classes/config"
+import { config } from "@plugins/core/classes/config"
 import {
 	Stage, routesCollection,
 	TNext, TStageLanguage,
 	IStageCollection,
 	TStageMode
-} from "@/classes/install-router"
+} from "@plugins/core/classes/install-router"
 import { IResponse, ISuccess } from "@plugins/gymkonnect/interfaces/IResponse"
 import { InstallerStore } from "@/state/install-modules/install"
 import router from "@/routes/install"

@@ -1,5 +1,5 @@
 import appConfig from "@/app.config"
-import Layout from "@/layouts/layout.vue"
+import Layout from "@plugins/core/layouts/layout.vue"
 import { Component, Vue } from "vue-property-decorator"
 
 @Component({

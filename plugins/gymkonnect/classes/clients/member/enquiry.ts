@@ -1,4 +1,4 @@
-import GQLClient, { gql } from "@/utils/graphql"
+import GQLClient, { gql } from "@plugins/core/utils/graphql"
 import { Logger } from "@classes/CONSOLE"
 import { TMRegistrationStep3, TMRegistrationStep4 } from "../../types/registration"
 

@@ -2,10 +2,10 @@ import appConfig from "@/app.config"
 import { Component, Vue } from "vue-property-decorator"
 import Keyboard from "mousetrap"
 import devResizer from "@/components/dev-resizer.vue"
-import { ThemeStore } from "@/state/theme"
+import { ThemeStore } from "@plugins/core/state/theme"
 import { Logger } from "@classes/CONSOLE"
-import { ApplicationStore } from "@/state/application"
-import loading from "@/pages/loading.vue"
+import { ApplicationStore } from "@plugins/core/state/application"
+import loading from "@plugins/core/pages/loading.vue"
 
 const Console = new Logger(`gk-vue/${__filename}`)
 @Component({

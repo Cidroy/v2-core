@@ -7,7 +7,7 @@ import defaultPhoto from "@/assets/images/user-default-bg.jpg"
 import { Logger } from "@classes/CONSOLE"
 import AppConfig from "@classes/appConfig"
 import empty from "@/components/empty.vue"
-import PositronClient from "@/utils/positron"
+import PositronClient from "@plugins/core/utils/positron"
 import { isUrl } from "@classes/utils/utils"
 
 let log = new Logger("electron/camera-input")

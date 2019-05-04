@@ -1,6 +1,6 @@
 import { Component, Vue } from "vue-property-decorator"
 import appConfig from "@/app.config"
-import Layout from "@/layouts/layout.vue"
+import Layout from "@plugins/core/layouts/layout.vue"
 
 @Component({
 	// @ts-ignore

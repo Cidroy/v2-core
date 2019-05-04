@@ -6,7 +6,7 @@
 
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator"
-import { MAIN } from "@/classes/setup"
+import { MAIN } from "@plugins/core/classes/setup"
 
 // @ts-ignore
 @Component({})

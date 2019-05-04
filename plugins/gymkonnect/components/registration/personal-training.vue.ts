@@ -7,11 +7,11 @@ import Gymkonnect from "@plugins/gymkonnect/classes/clients"
 import { defaultRegistrationStep1User, defaultRegistrationStep2User, defaultRegistrationStep3User } from "@plugins/gymkonnect/classes/types/registration"
 import { Logger } from "@classes/CONSOLE"
 import { alert } from "@/components/toast"
-import { formatDate, parseDate } from "@/utils/misc"
+import { formatDate, parseDate } from "@plugins/core/utils/misc"
 import { PaymentDetail } from "@plugins/gymkonnect/classes/types/payment"
 import { TRPTTransation } from "@plugins/gymkonnect/classes/types/registrations"
 
-import Layout from "@/layouts/layout.vue"
+import Layout from "@plugins/core/layouts/layout.vue"
 import stepFinished from "@plugins/gymkonnect/components/member/registration/step-finished.vue"
 import GeneralPaymentModal from "../payment/modal-generic.vue"
 

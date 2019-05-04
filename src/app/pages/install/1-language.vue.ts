@@ -1,8 +1,8 @@
 import { Component, Watch, Vue } from "vue-property-decorator"
 import { i18n, ILanguage } from "@/i18n"
 import { InstallerStore } from "@/state/install-modules/install"
-import { MAIN } from "@/classes/setup"
-import { TStageProductKey, TStageLanguage } from "@/classes/install-router"
+import { MAIN } from "@plugins/core/classes/setup"
+import { TStageProductKey, TStageLanguage } from "@plugins/core/classes/install-router"
 
 @Component({
 	// @ts-ignore

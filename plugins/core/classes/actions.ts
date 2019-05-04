@@ -1,6 +1,6 @@
 // FIXME: Proxy sweetalert with vuetify CSS alert, confirm, loading as Mixins
 import sweetalert from "sweetalert2"
-import { UserClient } from "@/classes/clients/user"
+import { UserClient } from "@plugins/core/classes/clients/user"
 
 export const exit = async () => {
 	let result = await sweetalert.fire({

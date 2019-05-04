@@ -1,4 +1,4 @@
-import GQLClient, { gql } from "@/utils/graphql"
+import GQLClient, { gql } from "@plugins/core/utils/graphql"
 import { Logger } from "@classes/CONSOLE"
 import { PaymentDetail } from "../../types/payment"
 import { TSpaBookingArgs } from "../../types/bookings"

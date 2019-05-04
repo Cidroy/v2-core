@@ -1,8 +1,8 @@
 import { VuexModule, Module, getModule, MutationAction, Action } from "vuex-module-decorators"
-import store from "@/state/store"
+import store from "@plugins/core/state/store"
 import { TBiometricDetails } from "@classes/types/biometric"
 import { DEVICE_STATE } from "@classes/enum/biometric"
-import PositronClient from "@/utils/positron"
+import PositronClient from "@plugins/core/utils/positron"
 import { Logger } from "@classes/CONSOLE"
 
 const Console = new Logger(`device/gk-store`)

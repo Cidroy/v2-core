@@ -1,6 +1,6 @@
 import { Component, Vue, Prop, Watch, Emit } from "vue-property-decorator"
-import Layout from "@/layouts/layout.vue"
-import { formatDate, parseDate } from "@/utils/misc"
+import Layout from "@plugins/core/layouts/layout.vue"
+import { formatDate, parseDate } from "@plugins/core/utils/misc"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import { PaymentDetail } from "@plugins/gymkonnect/classes/types/payment"
 

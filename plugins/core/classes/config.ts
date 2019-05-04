@@ -1,6 +1,6 @@
 import * as TS from "@rubix-code/typeserializer"
 import { i18n, ILanguage } from "@/i18n"
-import { TStageLanguage, TStageProductKey } from "@/classes/install-router"
+import { TStageLanguage, TStageProductKey } from "@plugins/core/classes/install-router"
 
 /**
  * Configuration object that stores the root functionality settings

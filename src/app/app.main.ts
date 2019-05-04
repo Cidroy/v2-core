@@ -1,8 +1,8 @@
 import { default as Vue} from "vue"
 
-import "@/layouts"
+import "@plugins/core/layouts"
 import "@/components"
-import store from "@/state/store"
+import store from "@plugins/core/state/store"
 import router from "@/routes"
 
 import App from "@/app.vue"

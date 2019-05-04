@@ -1,5 +1,5 @@
 import appConfig from "@/app.config"
-import Layout from "@/layouts/layout.vue"
+import Layout from "@plugins/core/layouts/layout.vue"
 import { Component, Vue } from "vue-property-decorator"
 import SendMessageFab from "@plugins/gymkonnect/components/send-message/fab.vue"
 import { Permissions as gymkonnect } from "@plugins/gymkonnect/permission"

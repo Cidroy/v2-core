@@ -28,10 +28,10 @@ export default function lazyLoadView(viewName: string, importHandle = (file: str
 	const AsyncHandler = () => ({
 		component: AsyncView,
 		// A component to use while the component is loading.
-		loading: require("@/pages/loading").default,
+		loading: require("@plugins/core/pages/loading").default,
 		// A fallback component in case the timeout is exceeded
 		// when loading the component.
-		error: require("@/pages/timeout").default,
+		error: require("@plugins/core/pages/timeout").default,
 		// Delay before showing the loading component.
 		// Default: 200 (milliseconds).
 		delay: 400,

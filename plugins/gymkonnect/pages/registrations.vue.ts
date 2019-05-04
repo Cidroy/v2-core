@@ -1,5 +1,5 @@
 import { Component, Vue } from "vue-property-decorator"
-import Layout from "@/layouts/layout.vue"
+import Layout from "@plugins/core/layouts/layout.vue"
 import PersonalTrainingRegistration from "../components/registration/personal-training.vue"
 import OneDayRegistration from "../components/registration/one-day.vue"
 import FitnessCounselingRegistration from "../components/registration/fitness-counseling.vue"

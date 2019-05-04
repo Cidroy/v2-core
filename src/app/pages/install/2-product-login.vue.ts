@@ -1,7 +1,7 @@
 import { Component, Watch, Vue } from "vue-property-decorator"
 import { InstallerStore } from "@/state/install-modules/install"
-import { MAIN } from "@/classes/setup"
-import { TStageProductKey } from "@/classes/install-router"
+import { MAIN } from "@plugins/core/classes/setup"
+import { TStageProductKey } from "@plugins/core/classes/install-router"
 
 @Component({
 	// @ts-ignore

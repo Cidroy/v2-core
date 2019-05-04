@@ -4,37 +4,6 @@ import Routes from "@classes/core/routes"
 export default [
 	...Routes,
 	{
-		path: "/",
-		name: "index",
-		component: () => lazyLoadView("/home"),
-		props: true,
-	},
-	{
-		path: "/help",
-		name: "help",
-		component: () => lazyLoadView("/help"),
-		props: true,
-	},
-	{
-		path: "/about",
-		name: "about",
-		component: () => lazyLoadView("/about"),
-		props: true,
-	},
-	{
-		path: "/login",
-		name: "login",
-		component: () => lazyLoadView("/login"),
-		props: true,
-		meta: { noAuth: true }
-	},
-	{
-		path: "/logout",
-		name: "logout",
-		component: () => lazyLoadView("/logout"),
-		props: true,
-	},
-	{
 		path: "/404",
 		name: "404",
 		component: require("@/pages/404").default,

@@ -1,9 +1,9 @@
 import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
 import { debounce } from "lodash-decorators"
 import moment from "moment"
-import Layout from "@/layouts/layout.vue"
+import Layout from "@plugins/core/layouts/layout.vue"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
-import { formatDate, parseDate } from "@/utils/misc"
+import { formatDate, parseDate } from "@plugins/core/utils/misc"
 import { TMRegistrationStep3, defaultRegistrationStep3User } from "@plugins/gymkonnect/classes/types/registration"
 
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"

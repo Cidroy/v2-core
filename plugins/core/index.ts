@@ -8,13 +8,15 @@ let threads = []
 let loaders = []
 
 // #!if positron
-// models = require("./model")
-// resolvers = require("./resolvers")
-// threads = require("./threads")
-// loaders = require("./loaders")
+models = require("./model")
+resolvers = require("./resolvers")
+threads = require("./threads")
+loaders = require("./loaders")
 // #!endif
 
 const CorePlugin: TPlugin = {
+	name: "core",
+	version: "1.0.0",
 	routes,
 	menus,
 	install: null,

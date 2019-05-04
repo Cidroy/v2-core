@@ -2,8 +2,8 @@ import { Logger } from "@classes/CONSOLE"
 import * as util from "@@/config/util"
 
 import AppConfig from "@classes/appConfig"
-import GQLClient from "@/utils/graphql"
-import PositronClient from "./utils/positron"
+import GQLClient from "@plugins/core/utils/graphql"
+import PositronClient from "../../plugins/core/utils/positron"
 
 export class MainProcess {
 	private static log = new Logger("electron/ui")

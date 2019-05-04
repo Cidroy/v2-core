@@ -1,6 +1,6 @@
 import { Component, Vue, Watch, Emit, Prop } from "vue-property-decorator"
 import { GENDER } from "@plugins/core/enum/misc"
-import { parseDate, formatDate } from "@/utils/misc"
+import { parseDate, formatDate } from "@plugins/core/utils/misc"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import importFromEnquiry from "@plugins/gymkonnect/components/enquiry/import-dialog.vue"
 import { TMRegistrationStep1, defaultRegistrationStep1User } from "@plugins/gymkonnect/classes/types/registration"

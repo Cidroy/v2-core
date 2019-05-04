@@ -1,5 +1,5 @@
 import { Component, Vue } from "vue-property-decorator"
-import Layout from "@/layouts/layout.vue"
+import Layout from "@plugins/core/layouts/layout.vue"
 import SpaBooking from "../components/bookings/spa-booking.vue"
 
 // @ts-ignore

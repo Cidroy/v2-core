@@ -1,5 +1,5 @@
 import { ITranslations } from "@/i18n/ITranslations"
-import { Stage } from "@/classes/install-router"
+import { Stage } from "@plugins/core/classes/install-router"
 
 const Hindi: ITranslations = {
 	install: {

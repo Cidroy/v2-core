@@ -1,10 +1,10 @@
 import { PASSWORD_PREFERENCE } from "@plugins/core/enum/misc"
-import { UserStore } from "@/state/user"
+import { UserStore } from "@plugins/core/state/user"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
-import { ApplicationStore } from "@/state/application"
+import { ApplicationStore } from "@plugins/core/state/application"
 import { Logger } from "@classes/CONSOLE"
 import router from "@/routes"
-import GQLClient, { gql } from "@/utils/graphql"
+import GQLClient, { gql } from "@plugins/core/utils/graphql"
 
 const Console = new Logger(`gk/user`)
 export class UserClient{

@@ -1,6 +1,6 @@
 import { Component, Watch, Vue } from "vue-property-decorator"
 import appConfig from "@/app.config"
-import Layout from "@/layouts/layout.vue"
+import Layout from "@plugins/core/layouts/layout.vue"
 import MRegistrationStepFinished from "@plugins/gymkonnect/components/member/registration/step-finished.vue"
 
 @Component({

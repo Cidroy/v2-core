@@ -1,4 +1,4 @@
-import { routesCollection } from "@/classes/install-router"
+import { routesCollection } from "@plugins/core/classes/install-router"
 
 export default [
 	...Object.values(routesCollection),

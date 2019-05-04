@@ -9,7 +9,7 @@
 
 <script lang="ts">
 import { Component, Watch, Vue } from "vue-property-decorator"
-import { MAIN } from "@/classes/setup"
+import { MAIN } from "@plugins/core/classes/setup"
 import { TStageMode } from "@/classes/install-router"
 import { SoftwareMode } from "@classes/enum/software-mode"
 import { InstallerStore } from "@/state/install-modules/install"

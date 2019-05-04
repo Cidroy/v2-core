@@ -1,5 +1,5 @@
 import moment from "moment"
-import GQLClient, { gql } from "@/utils/graphql"
+import GQLClient, { gql } from "@plugins/core/utils/graphql"
 import { Logger } from "@classes/CONSOLE"
 import { TFreezeTransaction } from "../../types/freeze"
 import { sleep } from "@classes/misc"

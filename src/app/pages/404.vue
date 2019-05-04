@@ -16,7 +16,7 @@
 
 <script lang="ts">
 import { Component, Prop, Inject, Vue } from "vue-property-decorator"
-import Layout from "@/layouts/layout.vue"
+import Layout from "@plugins/core/layouts/layout.vue"
 
 @Component({
 	components : { Layout, },

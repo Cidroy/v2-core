@@ -6,13 +6,14 @@ type TMenuExpandable = { icon: string, text: string, children: TMenuLink[], mode
 export type TMenu = TMenuHeading | TMenuLink | TMenuExpandable
 
 export type TRoute = {
-	path: string;
-	name: string;
+	path: string
+	name: string
 	component: () => Promise<{
-		functional: boolean;
-		render(h: any, { data, children }: any): any;
-	}>;
-	props: boolean;
+		functional: boolean
+		render(h: any, { data, children }: any): any
+	}>
+	props: boolean
+	meta?: object
 }
 
 export type TAutoThread = {

@@ -1,7 +1,9 @@
-import { Routes as gymkonnect } from "@plugins/gymkonnect"
+import Plugins from "./plugin-list"
+import { TRoute } from "@classes/types/application"
 
-// FIXME: use require context
+let routes: TRoute[] = []
 
-export default [
-	...gymkonnect,
-]
+Plugins.reverse().forEach(plugin => routes = routes.concat(plugin.routes) )
+
+export default []
+// export default routes

@@ -1,6 +1,6 @@
 import { VuexModule, Module, getModule, MutationAction } from "vuex-module-decorators"
-import store from "@/state/store"
-import GQLClient, { gql } from "@/utils/graphql"
+import store from "@plugins/core/state/store"
+import GQLClient, { gql } from "@plugins/core/utils/graphql"
 import { Logger } from "@classes/CONSOLE"
 
 let log = new Logger("gql/test")

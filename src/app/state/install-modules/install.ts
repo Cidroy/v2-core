@@ -1,7 +1,7 @@
 import { VuexModule, Module, getModule, MutationAction } from "vuex-module-decorators"
 import { i18n, ILanguage } from "@/i18n"
-import store from "@/state/store"
-import { Stage } from "@/classes/install-router"
+import store from "@plugins/core/state/store"
+import { Stage } from "@plugins/core/classes/install-router"
 
 type TInstallerLayout = "app-installer-large-layout" | "app-installer-small-layout"
 export interface IInstallerStore{

@@ -7,9 +7,9 @@ import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
 import { routes } from "@plugins/gymkonnect/routes"
 import { Permissions as gymkonnect } from "@plugins/gymkonnect/permission"
-import { formatDate } from "@/utils/misc"
+import { formatDate } from "@plugins/core/utils/misc"
 
-import Layout from "@/layouts/layout.vue"
+import Layout from "@plugins/core/layouts/layout.vue"
 import MRegistrationStepFinished from "@plugins/gymkonnect/components/member/registration/step-finished.vue"
 
 type TTransactions = Unpacked<ReturnType<typeof Gymkonnect.MemberRegistration.makePayments>>["transactions"]

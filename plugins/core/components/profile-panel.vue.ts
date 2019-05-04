@@ -1,6 +1,6 @@
 import { Component, Vue, Watch } from "vue-property-decorator"
 import empty from "@/components/empty.vue"
-import { ThemeStore } from "@/state/theme"
+import { ThemeStore } from "@plugins/core/state/theme"
 import { ProfilePanelStore } from "../state/profile-panel"
 import { Permissions } from "../permission"
 import { Permission } from "@classes/Permission"

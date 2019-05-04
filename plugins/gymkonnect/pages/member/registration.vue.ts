@@ -2,7 +2,7 @@ import { Component, Vue, Watch } from "vue-property-decorator"
 import uuid from "uuid"
 import _ from "lodash"
 
-import Layout from "@/layouts/layout.vue"
+import Layout from "@plugins/core/layouts/layout.vue"
 import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import { TMRegistration, defaultRegistrationUser, TMRegistrationStep3, defaultRegistrationStep3User, TMRegistrationStep4, defaultRegistrationStep4User } from "@plugins/gymkonnect/classes/types/registration"
 import { PaymentDetail } from "@plugins/gymkonnect/classes/types/payment"
