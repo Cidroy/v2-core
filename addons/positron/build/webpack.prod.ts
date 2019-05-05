@@ -21,6 +21,7 @@ const serverConfig: webpack.Configuration = {
 				options: {
 					params: {
 						...env.preprocessor,
+						positron: true,
 						production: true,
 					},
 				},

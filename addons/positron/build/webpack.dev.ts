@@ -38,6 +38,7 @@ const serverConfig: webpack.Configuration = {
 				options: {
 					params: {
 						...env.preprocessor,
+						positron: true,
 						debug: true,
 					},
 				},

@@ -9,6 +9,7 @@ export const RESOLVE_PATHS = [
 	RESOLVE(""),
 	RESOLVE("src"),
 	RESOLVE("test"),
+	resolve("plugins"),
 	resolve("typescript"),
 	resolve("build"),
 	resolve("classes"),
@@ -68,6 +69,7 @@ const baseConfig: webpack.Configuration = {
 			"~": resolve(""),
 			"@typescript": resolve("typescript"),
 			"@classes": resolve("classes"),
+			"@plugins": resolve("plugins"),
 			"@neutron": RESOLVE("src"),
 		}
 	},

@@ -1,7 +1,7 @@
 import TPlugin from "@classes/interface/TPlugin"
-import routes from "./routes"
-import menus from "./menu"
 
+let routes = []
+let menus = []
 let models = []
 let resolvers = []
 let threads = []
@@ -12,6 +12,9 @@ models = require("./model").default
 resolvers = require("./resolvers").default
 threads = require("./threads").default
 loaders = require("./loaders").default
+// #!else
+routes = require("./routes").default
+menus = require("./menu").default
 // #!endif
 
 const TemplatePlugin: TPlugin = {
