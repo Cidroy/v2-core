@@ -5,5 +5,4 @@ let routes: TRoute[] = []
 
 Plugins.reverse().forEach(plugin => routes = routes.concat(plugin.routes) )
 
-export default []
-// export default routes
+export default routes

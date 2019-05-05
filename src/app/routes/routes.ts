@@ -1,7 +1,7 @@
 import lazyLoadView from "@classes/utils/lazy-load-view"
 import Routes from "@classes/core/routes"
 
-export default [
+const routes = [
 	...Routes,
 	{
 		path: "/404",
@@ -22,3 +22,5 @@ export default [
 		meta: { noAuth: true }
 	},
 ]
+
+export default routes

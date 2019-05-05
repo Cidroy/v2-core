@@ -2,6 +2,7 @@ import GQLClient, { gql } from "@plugins/core/utils/graphql"
 import { Logger } from "@classes/CONSOLE"
 
 import ITaxRules from "@plugins/gymkonnect/interfaces/ITaxRules"
+import { SERVICE_TYPE } from "../enum/misc"
 
 let Console = new Logger("gk/gql-helper")
 
@@ -91,7 +92,7 @@ export default class GKHelper{
 		let response = await GQLClient.query<{ groupings: TGQLGroupings[] }>(
 			gql`
 				query Groupings{
-					groupings(service: "GYM"){
+					groupings(service: ${SERVICE_TYPE.GYM}){
 						id
 						name
 						min: minCount
@@ -108,7 +109,7 @@ export default class GKHelper{
 		let response = await GQLClient.query<{ groupings: TGQLSpaGroupings[] }>(
 			gql`
 				query Groupings{
-					groupings(service: "SPA"){
+					groupings(service: ${SERVICE_TYPE.SPA}){
 						id
 						name
 						min: minCount

@@ -9,10 +9,10 @@ let migrations = []
 let loaders = []
 
 // #!if positron
-models = require("./model")
-resolvers = require("./resolvers")
-loaders = require("./loaders")
-threads = require("./threads")
+models = require("./model").default
+resolvers = require("./resolvers").default
+loaders = require("./loaders").default
+threads = require("./threads").default
 // #!endif
 
 const GymkonnectPlugin: TPlugin = {

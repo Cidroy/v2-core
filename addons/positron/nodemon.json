@@ -3,7 +3,7 @@
 	"execMap": {
 		"ts": "ts-node -r tsconfig-paths/register "
 	},
-	"watch": [ "addons/positron/src", "classes" ],
+	"watch": [ "addons/positron/src", "classes", "plugins" ],
 	"delay": 0,
 	"exec": "ts-node -r tsconfig-paths/register {{filename}}"
 }
