@@ -1,6 +1,6 @@
 import { SupportedBiometricDevice, BiometricDeviceOptions } from "@neutron/supported-biometric-devices"
 import { TBiometricDetails } from "@neutron/lib/IBiometric"
-import { ISuccess, IError } from "@plugins/gymkonnect/interfaces/IResponse"
+import { ISuccess, IError } from "@plugins/core/interfaces/IResponse"
 import { Logger } from "@classes/CONSOLE"
 import BiometricDevices from "@neutron/lib/biometric"
 

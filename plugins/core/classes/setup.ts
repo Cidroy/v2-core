@@ -7,7 +7,7 @@ import {
 	IStageCollection,
 	TStageMode
 } from "@plugins/core/classes/install-router"
-import { IResponse, ISuccess } from "@plugins/gymkonnect/interfaces/IResponse"
+import { IResponse, ISuccess } from "@plugins/core/interfaces/IResponse"
 import { InstallerStore } from "@/state/install-modules/install"
 import router from "@/routes/install"
 import { SoftwareMode } from "@classes/enum/software-mode"

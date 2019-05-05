@@ -1,5 +1,5 @@
 import * as API from "@tsed/common"
-import { ISuccess, IError } from "@plugins/gymkonnect/interfaces/IResponse"
+import { ISuccess, IError } from "@plugins/core/interfaces/IResponse"
 import { SUPPORTED_DATABASE } from "@positron/db/misc"
 import { Database } from "@positron/db"
 import { Logger } from "@classes/CONSOLE"

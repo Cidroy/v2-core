@@ -1,7 +1,7 @@
 import BiometricDevices from "@neutron/lib/biometric"
 import { Logger } from "@classes/CONSOLE"
 import { TBiometricMemberDetails } from "@neutron/lib/IBiometric"
-import { ISuccess, IError } from "@plugins/gymkonnect/interfaces/IResponse"
+import { ISuccess, IError } from "@plugins/core/interfaces/IResponse"
 
 export default class Member{
 	private static log = new Logger("positron/Biometric/Member")
