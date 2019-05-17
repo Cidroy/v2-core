@@ -48,7 +48,10 @@ export class Server extends API.ServerLoader {
 		this
 			.use(bodyParser.json({ limit: "50mb" }))
 			.use(bodyParser.urlencoded({ extended: true, limit: "50mb" }))
-			.use(cors())
+			.use(cors({
+				origin: true,
+				credentials: true,
+			}))
 			.use(session({
 				name: "positron",
 				saveUninitialized: true,
@@ -59,6 +62,11 @@ export class Server extends API.ServerLoader {
 			}))
 			// use from central
 			.use("/profile-photos", express.static(path.resolve(AppConfig.DataFolder, "profile-photos")))
+			.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+				res.setHeader("X-Powered-By", "Positron")
+				res.setHeader("X-Positron", "true")
+				next()
+			})
 
 		this.middlewares.forEach(middleware => this.use(middleware))
 	}

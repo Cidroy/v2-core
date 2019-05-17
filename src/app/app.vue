@@ -2,7 +2,9 @@
 	<div id="app">
 		<v-app :dark="darkTheme">
 			<component :is="layout">
+				<!-- #!if electron -->
 				<dev-resizer :show="showDevResizer" />
+				<!-- #!endif -->
 				<!-- <v-slide-y-transition mode="out-in">
 					<loading v-if="appRouterLoading" />
 				</v-slide-y-transition> -->

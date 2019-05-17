@@ -30,7 +30,11 @@ export default class SystemInformation extends Vue.default {
 	name = "landing-page"
 	node = process.versions.node
 	path = "/"
+	// #!if web
+	platform = "web"
+	// #!else
 	platform = require("os").platform()
+	// #!endif
 	vue = "2.X"
 }
 </script>

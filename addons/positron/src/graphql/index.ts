@@ -4,6 +4,7 @@ import { GraphQLSchema } from "graphql"
 import { Permission } from "@classes/Permission"
 import express from "express"
 import path from "path"
+import cors from "cors"
 import { Logger } from "@classes/CONSOLE"
 import resolvers from "./resolvers"
 import loaders from "@positron/db/loaders"
@@ -49,6 +50,15 @@ export default class GQL{
 			formatError(error: any){ Console.error(error); return error },
 		})
 		let app = express()
+		app.use(cors({
+			origin: true,
+			credentials: true,
+		}))
+		app.use((req: express.Request, res: express.Response, next: express.NextFunction)=>{
+			res.setHeader("X-Powered-By", "Positron-Gql")
+			res.setHeader("X-Positron-Gql", "true")
+			next()
+		})
 		apollo.applyMiddleware({
 			app,
 			path: GQL.URI,

@@ -20,10 +20,13 @@ const devConfig: webpack.Configuration = {
 	// cheap-module-eval-source-map is faster for development
 	devtool: "#cheap-module-eval-source-map",
 	target: "node",
+	entry: {
+		main: resolve("src/app/index.ts")
+	},
 	module: {
 		rules: [
 			{
-				test: /\.((j|t)sx?)$/,
+				test: /\.((j|t)sx?|vue)$/,
 				enforce: "pre",
 				loader: "webpack-preprocessor-loader",
 				options: {

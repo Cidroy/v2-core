@@ -93,12 +93,6 @@ export class Positron {
 			}
 			await this.startServer()
 			Tasks()
-			if (module && module.hot) {
-				module.hot.accept()
-				module.hot.dispose(() => {
-					this.log.info("reloading")
-				})
-			}
 		}
 		catch (error) {
 			this.log.error("server failed to start.", error)

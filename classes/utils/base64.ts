@@ -1,6 +1,7 @@
-import buffer from "buffer"
-import path from "path"
 import fs from "fs-extra"
+// #!if web
+import { Buffer } from "buffer"
+// #!endif
 
 export async function encode_base64(filePath: string){
 	let data = await fs.readFile(filePath)

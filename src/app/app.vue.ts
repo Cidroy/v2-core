@@ -1,17 +1,21 @@
 import appConfig from "@/app.config"
 import { Component, Vue } from "vue-property-decorator"
 import Keyboard from "mousetrap"
-import devResizer from "@/components/dev-resizer.vue"
 import { ThemeStore } from "@plugins/core/state/theme"
 import { Logger } from "@classes/CONSOLE"
 import { ApplicationStore } from "@plugins/core/state/application"
 import loading from "@plugins/core/pages/loading.vue"
+// #!if electron
+import devResizer from "@/components/dev-resizer.vue"
+// #!endif
 
 const Console = new Logger(`gk-vue/${__filename}`)
 @Component({
 	// @ts-ignore
 	components: {
+		// #!if electron
 		devResizer,
+		// #!endif
 		loading,
 	},
 	page: {

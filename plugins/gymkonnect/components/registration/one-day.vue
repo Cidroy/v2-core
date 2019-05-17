@@ -15,6 +15,7 @@
 							</v-list-tile-sub-title>
 						</v-list-tile-content>
 					</template>
+
 				</v-autocomplete>
 			</v-flex>
 			<v-flex xs12 class="my-2">
@@ -89,3 +90,4 @@
 		<spa-booking-modal v-model="paymentModel" :users="{ spaBooker: clientData }" :transaction="transaction" @pay="data => pay(data)" />
 	</div>
 </template>
+

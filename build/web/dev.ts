@@ -14,14 +14,22 @@ const webpackConfig: webpack.Configuration = process.env.NODE_ENV === "testing"
 	? require("~build/webpack.prod").default
 	: require("~build/webpack.dev").default
 
+webpackConfig.target = "web"
+webpackConfig.node = {
+	net: "empty",
+	fs: "empty",
+	os: "empty",
+	tls: "empty",
+}
 webpackConfig.module!.rules.push({
-	test: /\.((j|t)sx?)$/,
+	test: /\.((j|t)sx?|vue)$/,
 	enforce: "pre",
 	loader: "webpack-preprocessor-loader",
 	options: {
 		params: {
 			...env.preprocessor,
 			web: true,
+			debug: true,
 		},
 	},
 	exclude: /node_modules/,
@@ -48,10 +56,10 @@ let hotMiddleware = require("webpack-hot-middleware")(compiler, {
 	log: false
 })
 // force page reload when html-webpack-plugin template changes
-compiler.plugin("compilation", function (compilation) {
+compiler.plugin("compilation", function (compilation: webpack.Compiler) {
 	compilation.plugin("html-webpack-plugin-after-emit", function (data, cb) {
 		hotMiddleware.publish({ action: "reload" })
-		cb()
+		if(typeof cb === "function") cb()
 	})
 })
 

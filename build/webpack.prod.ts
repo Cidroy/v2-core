@@ -44,7 +44,7 @@ const webpackProdConfig: webpack.Configuration = {
 	module: {
 		rules: [
 			{
-				test: /\.((j|t)sx?)$/,
+				test: /\.((j|t)sx?|vue)$/,
 				enforce: "pre",
 				loader: "webpack-preprocessor-loader",
 				options: {
@@ -84,8 +84,9 @@ const webpackProdConfig: webpack.Configuration = {
 				// more options:
 				// https://github.com/kangax/html-minifier#options-quick-reference
 			},
+			// TODO: verify if this works
 			// necessary to consistently work with multiple chunks via CommonsChunkPlugin
-			serviceWorkerLoader: `<script>${loadMinified(resolve("build/service-worker-prod.js"))}</script>`
+			// serviceWorkerLoader: `<script>${loadMinified(resolve("build/service-worker-prod.js"))}</script>`
 		}),
 		new CopyWebpackPlugin([
 			{

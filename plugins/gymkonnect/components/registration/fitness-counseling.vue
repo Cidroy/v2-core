@@ -31,6 +31,7 @@
 							</v-list-tile-sub-title>
 						</v-list-tile-content>
 					</template>
+
 				</v-autocomplete>
 			</v-flex>
 			<v-flex xs12 class="my-2">
@@ -82,3 +83,4 @@
 		</v-footer>
 	</div>
 </template>
+

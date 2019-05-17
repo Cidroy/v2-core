@@ -15,6 +15,7 @@
 							</v-list-tile-sub-title>
 						</v-list-tile-content>
 					</template>
+
 				</v-autocomplete>
 			</v-flex>
 			<v-flex xs12 class="my-2">
@@ -124,3 +125,4 @@
 		<general-payment-modal v-model="paymentModel" @pay="data => pay(data)" :User="clientData" DateTitle="Billing Date" :Qty="quantity" :Price="price" :Amount="Amount" :Description="PaymentDescription" />
 	</div>
 </template>
+

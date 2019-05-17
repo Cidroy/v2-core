@@ -11,13 +11,14 @@ let webpackConfig = webpackMerge(webpackConfigProd, {
 	module: {
 		rules: [
 			{
-				test: /\.((j|t)sx?)$/,
+				test: /\.((j|t)sx?|vue)$/,
 				enforce: "pre",
 				loader: "webpack-preprocessor-loader",
 				options: {
 					params: {
 						...env.preprocessor,
 						web: true,
+						production: true,
 					},
 				},
 				exclude: /node_modules/,

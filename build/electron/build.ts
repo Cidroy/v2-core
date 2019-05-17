@@ -13,7 +13,7 @@ import env from "~/config/env"
 import { RESOLVE_PATHS } from "~build/webpack.base"
 
 const debugRule: webpack.RuleSetRule = {
-	test: /\.((j|t)sx?)$/,
+	test: /\.((j|t)sx?|vue)$/,
 	enforce: "pre",
 	loader: "webpack-preprocessor-loader",
 	options: {

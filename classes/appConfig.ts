@@ -1,6 +1,6 @@
-import { readFileSync, existsSync, writeFileSync, mkdirSync } from "fs"
 import json5 from "json5"
 import { Logger } from "@classes/CONSOLE"
+import { readFileSync, existsSync, writeFileSync, mkdirSync } from "fs"
 import os from "os"
 
 const defaultCache = {
@@ -15,8 +15,11 @@ export default class AppConfig {
 	private static log = new Logger("app-config")
 
 	private static get file(): string {
-		try { if(!existsSync(AppConfig.DataFolder)) mkdirSync(AppConfig.DataFolder) }
-		catch (error) {
+		try {
+			// #!if !web
+			if(!existsSync(AppConfig.DataFolder)) mkdirSync(AppConfig.DataFolder)
+			// #!endif
+		} catch (error) {
 			AppConfig.log.error(error)
 			AppConfig.log.verbose("failed to create data folder")
 		}
@@ -24,7 +27,15 @@ export default class AppConfig {
 		else return `${AppConfig.DataFolder}/${productName}.w+boson`
 	}
 
-	public static get DataFolder() { return os.homedir() + `/${productName}` }
+	public static get DataFolder() {
+		return ""
+		// #!if web
+		// TODO: implement web based source
+		// #!else
+		+ os.homedir()
+		// #!endif
+		+ `/${productName}`
+	}
 
 	private static readonly defaultCache = defaultCache
 
@@ -33,20 +44,28 @@ export default class AppConfig {
 
 	public static async Initialize(refresh: boolean = false) {
 		AppConfig.log.verbose("getting ready")
+		// #!if web
+		// TODO: implement web logic
+		// #!else
 		if (!refresh && AppConfig.cache !== AppConfig.defaultCache) return
 		if (!existsSync(AppConfig.file)) writeFileSync(AppConfig.file, json5.stringify(AppConfig.cache))
 		let conf = readFileSync(AppConfig.file, "utf8")
 		AppConfig.cache = json5.parse(conf)
 		AppConfig.log.verbose("file", AppConfig.file)
 		AppConfig.log.verbose(AppConfig.cache)
+		// #!endif
 	}
 
 	public static async Save(modification = "") {
+		// #!if web
+		// TODO: implement web logic
+		// #!else
 		if (AppConfig.cache === undefined) AppConfig.Initialize()
 		AppConfig.log.verbose("save")
 		AppConfig.cache.lastModified = new Date()
 		AppConfig.cache.lastModification = modification
 		writeFileSync(AppConfig.file, json5.stringify(AppConfig.cache, null, 4))
+		// #!endif
 	}
 
 	public static async Has(name: string): Promise<boolean> {

@@ -25,6 +25,7 @@
 									<td>{{ props.item.status }}</td>
 
 								</template>
+
 							</v-data-table>
 							<!-- List End -->
 						</v-card>
@@ -165,3 +166,4 @@
 
 	</div>
 </template>
+

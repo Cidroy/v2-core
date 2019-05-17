@@ -2,6 +2,7 @@ import * as API from "@tsed/common"
 import Controllers from "@neutron/controllers"
 import path from "path"
 import cors from "cors"
+import express from "express"
 
 import config from "../config"
 import { Logger } from "@classes/CONSOLE"
@@ -26,7 +27,15 @@ export class Server extends API.ServerLoader{
 		this
 			.use(bodyParser.json())
 			.use(bodyParser.urlencoded({ extended: true }))
-			.use(cors())
+			.use(cors({
+				origin: true,
+				credentials: true,
+			}))
+			.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
+				res.setHeader("X-Powered-By", "Neutron")
+				res.setHeader("X-Neutron", "true")
+				next()
+			})
 	}
 
 	public addControllersList(list: { [K: string]: any }) {

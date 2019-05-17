@@ -1,13 +1,28 @@
-import chalk from "chalk"
+// #!if web
+// @ts-ignore
+class LogPrefixColor {
+	public static readonly OKAY = "OKAY"
+	public static readonly INFO = "INFO"
+	public static readonly WARN = "WARN"
+	public static readonly ERROR = "ERR "
+	public static readonly VERBOSE = "VERB"
 
-export class LogPrefixColor{
+	public static readonly PREFIX = (prefix: string) => `${prefix} >>> `
+}
+
+// #!else
+import chalk from "chalk"
+// @ts-ignore
+class LogPrefixColor{
 	public static readonly OKAY = chalk.bgGreen("OKAY")
 	public static readonly INFO = chalk.bgBlue("INFO")
 	public static readonly WARN = chalk.bgYellow("WARN")
 	public static readonly ERROR = chalk.bgRed("ERR ")
 	public static readonly VERBOSE = chalk.gray("VERB")
-}
 
+	public static readonly PREFIX = (prefix: string) => chalk.blue(`${prefix} >>> `)
+}
+// #!endif
 /**
  * Logger proxy class for positron
  * TODO: use some awesome logger in production
@@ -38,5 +53,5 @@ export class Logger{
 		console.info(this.prefix, LogPrefixColor.VERBOSE, ...args)
 	}
 
-	public get prefix() { return chalk.blue(`${this._source} >>> `) }
+	public get prefix() { return LogPrefixColor.PREFIX(this._source) }
 }

@@ -12,7 +12,9 @@ const serverConfig: webpack.Configuration = {
 	name: "positron-dev",
 	mode : "development",
 	entry: {
-		index: [ "webpack/hot/poll?100", RESOLVE("src/index.dev.ts"), ],
+		index: [
+			RESOLVE("src/index.dev.ts"),
+		],
 	},
 	devtool: "cheap-source-map",
 	devServer: {
@@ -23,10 +25,10 @@ const serverConfig: webpack.Configuration = {
 			children: false
 		},
 	},
-	watch: true,
 	externals: [
 		nodeExternals({
-			whitelist: [ "webpack/hot/poll?100", ],
+			whitelist: [
+			],
 		}),
 	],
 	module: {
@@ -49,6 +51,7 @@ const serverConfig: webpack.Configuration = {
 	},
 	plugins: [
 		new webpack.HotModuleReplacementPlugin(),
+		new webpack.NamedModulesPlugin(),
 		new StartServerPlugin("index.js"),
 	]
 }

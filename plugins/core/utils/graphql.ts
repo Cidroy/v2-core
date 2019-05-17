@@ -5,9 +5,12 @@ import { Logger } from "@classes/CONSOLE"
 import AppConfig from "@classes/appConfig"
 import { PORTS } from "@classes/ports"
 import { FetchResult, Observable, DocumentNode } from "apollo-link"
-import { gql as _gql } from "apollo-server-core"
+import gqlTag from "graphql-tag"
 
-export const gql = _gql
+export const gql: (
+	template: TemplateStringsArray | string,
+	...substitutions: any[]
+) => DocumentNode = gqlTag
 
 let cache: InMemoryCache,
 	link: BatchHttpLink,

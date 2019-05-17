@@ -172,7 +172,11 @@ async function addMember(userData: TMRegistration): Promise<string|number> {
 		let imageExtension: string | undefined = undefined
 		if (userData.photo){
 			try {
+				// #!if web
+				// TODO: get image and convert it into base64
+				// #!else
 				imageBase64 = await encode_base64(userData.photo)
+				// #!endif
 				imageExtension = userData.photo.split(".").pop()
 			} catch (error) { }
 		}
