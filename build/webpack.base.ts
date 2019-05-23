@@ -6,6 +6,7 @@ import config from "~config/index"
 import * as utils from "~config/utils"
 import webpack from "webpack"
 import BuildHelper from "~build/helper"
+import env from "~/config/env"
 
 export const resolve = BuildHelper.resolve
 
@@ -166,6 +167,9 @@ const baseConfig: webpack.Configuration = {
 			filename: "[name].css",
 			chunkFilename: "css/[name].css"
 		}),
+		new webpack.DefinePlugin({
+			GOOGLE_ANALYTICS_ID: JSON.stringify(env.analytics.google),
+		})
 	]
 }
 
