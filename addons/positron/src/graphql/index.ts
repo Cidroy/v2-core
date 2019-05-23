@@ -54,7 +54,7 @@ export default class GQL{
 			origin: true,
 			credentials: true,
 		}))
-		app.use((req: express.Request, res: express.Response, next: express.NextFunction)=>{
+		app.use((req: express.Request, res: express.Response, next: express.NextFunction) => {
 			res.setHeader("X-Powered-By", "Positron-Gql")
 			res.setHeader("X-Positron-Gql", "true")
 			next()
@@ -62,6 +62,10 @@ export default class GQL{
 		apollo.applyMiddleware({
 			app,
 			path: GQL.URI,
+			cors: {
+				origin: true,
+				credentials: true,
+			},
 		})
 		return app
 	}
