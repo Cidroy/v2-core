@@ -2,6 +2,15 @@
 	<div>
 		<!-- TODO: [Karthik] implement mini-varient with tooltip on mini mode -->
 		<v-navigation-drawer fixed :clipped="$vuetify.breakpoint.mdAndUp" app v-model="menuDrawer" transition="slide-x-transition">
+			<v-img v-show="!$vuetify.breakpoint.mdAndUp" :aspect-ratio="16/9" :src="navDrawerBG">
+				<v-layout pa-2 column fill-height class="lightbox-bottom-shadow white--text">
+					<v-spacer></v-spacer>
+					<v-flex shrink>
+						<div class="subheading">GymKonnect</div>
+						<!-- <div class="body-1">heyfromjonathan@gmail.com</div> -->
+					</v-flex>
+				</v-layout>
+			</v-img>
 			<v-list dense>
 				<template v-for="menu in menus">
 					<v-layout row v-if="menu.heading" align-center :key="menu.heading" @click="$router.push({name: menu.to})" :color="$router.currentRoute.name===menu.to?'orange darken-3':''">
@@ -72,4 +81,9 @@
 
 <style>
 .app-drag{ -webkit-app-region: drag; }
+
+.lightbox-bottom-shadow {
+    box-shadow: 0 0 20px inset rgba(0, 0, 0, 0.2);
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.4) 0%, transparent 72px);
+  }
 </style>
