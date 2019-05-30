@@ -7,6 +7,7 @@ const defaultEnv = {
 	preprocessor: {
 		debug:false,
 		production: false,
+		development: false,
 		web:false,
 		electron:false,
 		cordova:false,

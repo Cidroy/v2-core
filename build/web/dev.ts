@@ -30,6 +30,7 @@ webpackConfig.module!.rules.push({
 			...env.preprocessor,
 			web: true,
 			debug: true,
+			development: true,
 		},
 	},
 	exclude: /node_modules/,

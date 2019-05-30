@@ -24,6 +24,7 @@ const debugRule: webpack.RuleSetRule = {
 			...env.preprocessor,
 			debug: true,
 			electron: true,
+			development: true,
 		},
 	},
 	exclude: /node_modules/,

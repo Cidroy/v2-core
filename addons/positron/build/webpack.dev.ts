@@ -42,6 +42,7 @@ const serverConfig: webpack.Configuration = {
 						...env.preprocessor,
 						positron: true,
 						debug: true,
+						development: true,
 					},
 				},
 				exclude: /node_modules/,

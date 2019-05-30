@@ -33,6 +33,7 @@ const devConfig: webpack.Configuration = {
 					params: {
 						...env.preprocessor,
 						debug: true,
+						development: true,
 					},
 				},
 				exclude: /node_modules/,
