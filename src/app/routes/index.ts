@@ -29,9 +29,9 @@ router.beforeEach(async (to, from, next) => {
 	Console.verbose(from.name, "=>", to.name)
 	// FIXME: remove this before production
 	// #!if !production
-	// const { UserClient } = await import("@plugins/core/classes/clients/user")
-	// const { PASSWORD_PREFERENCE } = await import("@plugins/core/enum/misc")
-	// if(!UserStore.USER_LOGGEDIN) await UserClient.Login("root","0000",PASSWORD_PREFERENCE.PIN, to.name)
+	const { UserClient } = await import("@plugins/core/classes/clients/user")
+	const { PASSWORD_PREFERENCE } = await import("@plugins/core/enum/misc")
+	if(!UserStore.USER_LOGGEDIN) await UserClient.Login("root","0000",PASSWORD_PREFERENCE.PIN, to.name)
 	// #!endif
 	if (!(to.meta && to.meta.noAuth) && !UserStore.USER_LOGGEDIN) next({ name: "login" })
 	else next()

@@ -20,7 +20,6 @@ const requireComponent = require.context(
 
 // For each matching file name...
 requireComponent.keys().forEach(fileName => {
-	// TODO: implement try catch in other autoloads
 	try {
 		// Get the component config
 		const componentConfig = requireComponent(fileName)

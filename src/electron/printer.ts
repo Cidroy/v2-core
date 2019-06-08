@@ -15,25 +15,32 @@ Logger.Verbose = true
  */
 export default class Printer{
 	private static log = new Logger("electron/printer")
+
+	private static timeout = 1000 * 60
+	private static extension = "twig"
+
+	public static Initialize({ timeout = 1000 * 60, extension = "twig" }: { timeout?: number; extension?: string; } = {}){
+		Printer.timeout = timeout
+		Printer.extension = extension
+	}
+
 	/**
 	 * Timout for pdf printing
-	 * TODO: make this from config
 	 *
 	 * @readonly
 	 * @private
 	 * @static
 	 * @memberof Printer
 	 */
-	private static get TIMEOUT(){ return 1000 * 60 }
+	private static get TIMEOUT(){ return Printer.timeout }
 	/**
 	 * Default template extension
-	 * TODO: make this updatable
 	 *
 	 * @readonly
 	 * @static
 	 * @memberof Printer
 	 */
-	public static get TEMPLATE_EXTENSION(){ return "twig" }
+	public static get TEMPLATE_EXTENSION(){ return Printer.extension }
 
 	/**
 	 * Render File using twig renderer

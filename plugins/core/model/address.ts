@@ -60,5 +60,21 @@ export default class Address extends Base implements IAddress{
 	@DB.Column("varchar", { length: 20 })
 	public pincode!: string
 
-	// TODO: implement toString()
+	public toString(){
+		let address = [
+			this.receiver,
+			this.house,
+			"\n",
+			this.locality,
+			this.landmark,
+			"\n",
+			this.city,
+			this.state,
+			"\n",
+			this.country,
+			this.pincode,
+		]
+		// BUG: does not return with proper localization and formatting
+		return address.join(", ").replace("\n, ", "\n")
+	}
 }

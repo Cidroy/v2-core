@@ -5,7 +5,6 @@ const request = require("request-promise-native").defaults({ simple: false })
 
 let client = undefined
 
-// TODO: [Vicky] implement positron client
 export default class PositronClient{
 	private static Namespace = "electron/ui"
 	private static log = new Logger(PositronClient.Namespace)
@@ -57,4 +56,7 @@ export default class PositronClient{
 		}
 		return await request(_options)
 	}
+
+	// TODO: [Vicky] implement positron client for instant messages
+
 }

@@ -80,7 +80,6 @@ class Application {
 			])
 
 		}
-		// TODO: Get settings from server
 		this.store = await AppConfig.Get("electron/ui", this.store)
 	}
 

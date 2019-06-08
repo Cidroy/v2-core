@@ -8,6 +8,7 @@ const Console = new Logger(`analytics/core`)
 let visitor: Visitor | null = null
 // @ts-ignore
 const analyticsID: string = GOOGLE_ANALYTICS_ID
+// TODO: generate PC based or user based ID
 const userId = uuid()
 
 export default class Analytics{
@@ -29,7 +30,6 @@ export default class Analytics{
 	{
 		if(!visitor) return visitor
 		try {
-			Console.log("pageview", { path, hostname, title, params, callback})
 			visitor.pageview(path, hostname, title, params, callback)
 		} catch (error) {
 			Console.error("page-view", error)
