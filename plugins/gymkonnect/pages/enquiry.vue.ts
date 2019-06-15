@@ -11,7 +11,7 @@ import stepFour from "@plugins/gymkonnect/components/member/registration/step-4.
 import stepper from "@plugins/gymkonnect/components/member/registration/stepper.vue"
 
 import Gymkonnect from "@plugins/gymkonnect/classes/clients"
-import Printer from "@electron/printer"
+import ElectronPDF from "@electron/printer"
 import AppConfig from "@classes/appConfig"
 import { sleep } from "@classes/misc"
 import { Logger } from "@classes/CONSOLE"
@@ -119,19 +119,6 @@ export default class MemberEnquiryPage extends Vue.default {
 
 	private printingBlank = false
 	private async printBlank() {
-		this.printingBlank = true
-		try {
-			// TODO: seperate all printers
-			const pdfPath = AppConfig.DataFolder + "/reports/registration-blank"
-			Console.info("saving", pdfPath, Printer.TEMPLATE_EXTENSION)
-			const pdf = await Printer.renderAndPrintPDF("gymkonnect/registration-blank", pdfPath, {
-				dateTime: new Date()
-			})
-			const { shell } = require("electron")
-			let open = shell.openItem(pdf)
-			Console.log({ pdf, open })
-			if (open) await sleep(1000)
-		} catch (error) { Console.error(error) }
-		this.printingBlank = false
+		// TODO:
 	}
 }

@@ -14,6 +14,8 @@ import { theme } from "@@/config/theme"
 import { Permission } from "@classes/Permission"
 import { Logger } from "@classes/CONSOLE"
 
+if(process.env.NODE_ENV==="development") Logger.Verbose = true
+
 const Console = new Logger(`vue`)
 // Don't warn about using the dev version of Vue in development
 Vue.config["productionTip"] = process.env.NODE_ENV === "production"

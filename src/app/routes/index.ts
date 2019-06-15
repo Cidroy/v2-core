@@ -40,7 +40,6 @@ router.beforeEach(async (to, from, next) => {
 router.afterEach((to, from) => {
 	ApplicationStore.setAppRouterLoading(false)
 	try {
-		console.log(Analytics)
 		Analytics.ready() && Analytics.pageView({
 			path: to.path,
 			hostname: (from || { fullPath: "" }).fullPath,

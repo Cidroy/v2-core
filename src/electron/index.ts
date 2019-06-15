@@ -8,7 +8,7 @@ import { Global } from "@@/typescript/global"
 import { Logger } from "@classes/CONSOLE"
 import AppConfig from "@classes/appConfig"
 import ParticleAccelerator from "@classes/ParticleAccelerator"
-import Printer from "@electron/printer"
+import ElectronPDF from "@electron/printer"
 import loadDevtools from "./load-devtools"
 
 const request = require("request-promise-native").defaults({ simple: false })
@@ -199,16 +199,10 @@ class Application {
 	constructor() {
 		app.on("window-all-closed", this.onExit)
 		ipcMain.on("kill-me", (event, args) => { process.kill(args) })
-		ipcMain.on("print-to-pdf", async (event, args) => {
-			try {
-				Console.log("pdf print request", args.id)
-				let printer: BrowserWindow = new BrowserWindow({ show: false })
-				let result = await Printer.printPDF(args.id, printer, args.source, args.destination, args.options || {})
-				event.sender.send(`wrote-pdf-${args.id}`, result)
-			} catch (error) {
-				Console.log("pdf print failed")
-				event.sender.send(`failed-pdf-${args.id}`, error)
-			}
+		ElectronPDF.Attach({
+			ipcMain,
+			BrowserWindow,
+			logger: Console
 		})
 	}
 

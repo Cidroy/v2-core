@@ -9,7 +9,11 @@ import { GymkonnectStore } from "@plugins/gymkonnect/state/gymkonnect"
 import { TGQLUserMode } from "@plugins/gymkonnect/state/gk-helper"
 import { gotoProfile, enroll, freezeUnfreeze, renew, preebookEnroll, blockUnblock } from "@plugins/gymkonnect/classes/actions"
 import { TMemberListTableItems } from "@plugins/gymkonnect/classes/types/member-list"
+import { Logger } from "@classes/CONSOLE"
+import ElectronPDF from "@electron/printer"
+import { sleep } from "@classes/misc"
 
+const Console = new Logger(`list.vue/gymkonnect`)
 @Component({
 	// @ts-ignore
 	components: {
@@ -92,6 +96,20 @@ export default class MemberListPage extends Vue.default {
 
 	private UserMode(name: string | number) {
 		return (<TGQLUserMode>GymkonnectStore.GK_USER_MODES.find(i => i.name === name)).description
+	}
+
+	private printing: boolean = false
+	private async print(){
+		this.printing = true
+		try {
+			let pdfGen = new ElectronPDF("core", "test")
+			let pdf = await pdfGen.save(null, { name: "LEMMA TEST" })
+			const { shell } = require("electron")
+			let open = shell.openItem(pdf)
+			Console.verbose({ pdf, open })
+			if (open) await sleep(1000)
+		} catch (error) { Console.error(error) }
+		this.printing = false
 	}
 
 }

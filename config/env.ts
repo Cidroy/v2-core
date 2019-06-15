@@ -15,6 +15,9 @@ const defaultEnv = {
 	},
 	analytics: {
 		google: false,
+	},
+	dev: {
+		editor: "code"
 	}
 }
 

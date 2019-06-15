@@ -13,6 +13,10 @@ type TPlugin = {
 	install: null | {},
 	// tslint:disable-next-line: ban-types
 	events: Record<string, Function>,
+	printer?: {
+		templates: string,
+		assets?: string,
+	}
 }
 
 export default TPlugin

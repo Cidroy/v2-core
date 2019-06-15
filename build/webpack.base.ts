@@ -1,20 +1,19 @@
-import path from "path"
 import MiniCssExtractPlugin from "mini-css-extract-plugin"
 import { VueLoaderPlugin } from "vue-loader"
 import vueLoaderConfig from "~config/vue-loader"
 import config from "~config/index"
 import * as utils from "~config/utils"
 import webpack from "webpack"
-import BuildHelper from "~build/helper"
 import env from "~/config/env"
-
-export const resolve = BuildHelper.resolve
+import { resolve } from "~/config/resolve"
 
 export const RESOLVE_PATHS = [
 	resolve("src"),
 	resolve("typescript"),
 	resolve("classes"),
 	resolve("plugins"),
+	resolve("addons"),
+	resolve("config"),
 	resolve("test"),
 ]
 
@@ -45,6 +44,8 @@ const baseConfig: webpack.Configuration = {
 			"@typescript": resolve("typescript"),
 			"@plugins": resolve("plugins"),
 			"@classes": resolve("classes"),
+			"~/addons/pdf-template": resolve("addons/pdf-template"),
+			"~/config": resolve("config"),
 			vue$: "vue/dist/vue.esm.js" // 'vue/dist/vue.common.js' for webpack
 		}
 	},
@@ -68,9 +69,10 @@ const baseConfig: webpack.Configuration = {
 				enforce: "pre",
 				loader: "string-replace-loader",
 				options: {
-					search: "Vue.default",
-					replace: "Vue",
-					flags: "g",
+					multiple: [
+						{ search: "Vue.default", replace: "Vue", flags: "g", },
+						{ search: "__WEBPACK__DIRNAME__", replace: require("path").join(__dirname, ".."), flags: "g", },
+					]
 				}
 
 			},
@@ -169,7 +171,7 @@ const baseConfig: webpack.Configuration = {
 		}),
 		new webpack.DefinePlugin({
 			GOOGLE_ANALYTICS_ID: JSON.stringify(env.analytics.google),
-		})
+		}),
 	]
 }
 

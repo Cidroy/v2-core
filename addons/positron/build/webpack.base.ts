@@ -1,7 +1,7 @@
 import path from "path"
 import UglifyJsPlugin from "uglifyjs-webpack-plugin"
 import webpack from "webpack"
-import { resolve } from "~build/webpack.base"
+import { resolve } from "~/config/resolve"
 import ForkTsCheckerPlugin from "fork-ts-checker-webpack-plugin"
 
 export const RESOLVE = (src: string) => path.resolve(__dirname, "..", src)

@@ -4,9 +4,10 @@ import webpackMerge from "webpack-merge"
 import webpack from "webpack"
 import nodeExternals from "webpack-node-externals"
 import StartServerPlugin from "start-server-webpack-plugin"
-import { resolve, RESOLVE_PATHS } from "~build/webpack.base"
+import { RESOLVE_PATHS } from "~build/webpack.base"
 import webpackBase, { RESOLVE } from "~positron/build/webpack.base"
 import env from "~/config/env"
+import { resolve } from "~/config/resolve"
 
 const serverConfig: webpack.Configuration = {
 	name: "positron-dev",

@@ -1,3 +1,4 @@
+import path from "path"
 import TPlugin from "@classes/interface/TPlugin"
 
 let routes = []
@@ -30,5 +31,8 @@ const GymkonnectPlugin: TPlugin = {
 	migrations,
 	loaders,
 	threads,
+	printer: {
+		templates: path.resolve(__dirname, "templates"),
+	}
 }
 export default GymkonnectPlugin

@@ -4,7 +4,7 @@ import webpackMerge from "webpack-merge"
 import webpack from "webpack"
 import nodeExternals from "webpack-node-externals"
 import StartServerPlugin from "start-server-webpack-plugin"
-import { resolve } from "~build/webpack.base"
+import { resolve } from "~/config/resolve"
 import webpackBase, { RESOLVE } from "~neutron/build/webpack.base"
 
 const serverConfig: webpack.Configuration = {

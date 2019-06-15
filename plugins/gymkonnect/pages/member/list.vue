@@ -10,7 +10,7 @@
 							<span>Refresh</span>
 						</v-tooltip>
 						<v-tooltip left>
-							<v-btn outline slot="activator"> <v-icon>print</v-icon> </v-btn>
+							<v-btn outline slot="activator" @click.native.stop="print" :loading="printing"> <v-icon>print</v-icon> </v-btn>
 							<span>Print List</span>
 						</v-tooltip>
 					</v-layout>
