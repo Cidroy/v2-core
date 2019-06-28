@@ -5,7 +5,8 @@ import webpackMerge from "webpack-merge"
 import BabiliWebpackPlugin from "babili-webpack-plugin"
 import HtmlWebpackPlugin from "html-webpack-plugin"
 
-import webpackBase, { resolve } from "~build/webpack.base"
+import webpackBase from "~build/webpack.base"
+import { resolve } from "~/config/resolve"
 
 let splashscreenConfig: webpack.Configuration = {
 	name: "electron-splashscreen",

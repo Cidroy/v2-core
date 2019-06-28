@@ -3,6 +3,7 @@ import { ApplicationStore } from "@plugins/core/state/application"
 import { Permissions } from "@plugins/core/permission"
 
 import logo from "@/assets/images/logo-dark.png"
+import navDrawerBG from "@plugins/core/assets/nav-drawer-bg.jpg"
 
 import NotificationPanel from "@plugins/core/components/notifications.vue"
 import ProfilePanel from "@plugins/core/components/profile-panel.vue"
@@ -20,6 +21,7 @@ import AppFooter from "@plugins/core/components/footer.vue"
 })
 export default class AddAdminLayout extends Vue.default {
 	private logo = logo
+	private navDrawerBG = navDrawerBG
 	private get PERMISSIONS() {
 		return {
 			maple: Permissions

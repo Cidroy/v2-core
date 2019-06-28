@@ -1,4 +1,11 @@
-// TODO: implement import
+/**
+ * Import all the modules from a given folder
+ * TODO: implement import
+ *
+ * @param {string} directory directory source
+ * @param {RegExp} [regex=/[\w-]+-layout\.vue$/] file selection regex
+ * @param {boolean} [subdirectories=false] include subdirectories
+ */
 function importAll(directory: string, regex: RegExp = /[\w-]+-layout\.vue$/, subdirectories: boolean = false){
 	// https://webpack.js.org/guides/dependency-management/#require-context
 	const requireComponent = require.context(

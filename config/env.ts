@@ -13,6 +13,12 @@ const defaultEnv = {
 		cordova:false,
 		positron:false,
 		neutron:false,
+	},
+	analytics: {
+		google: false,
+	},
+	dev: {
+		editor: "code"
 	}
 }
 

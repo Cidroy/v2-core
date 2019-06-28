@@ -8,7 +8,7 @@ import splashscreenConfig from "~build/electron/webpack.splashscreen"
 
 import { ElectronBuilder } from "~build/electron/ElectronBuilder"
 import PositronBinaryBuilder from "~addons/positron"
-import PrinterTemplateBuilder from "~/addons/printer"
+import PrinterTemplateBuilder from "~/addons/pdf-template"
 import env from "~/config/env"
 import { RESOLVE_PATHS } from "~build/webpack.base"
 
@@ -48,6 +48,7 @@ applicationBuilder.onBuild(async (buildPath, electronVersion, platform, arch) =>
 
 applicationBuilder.onBuild(async (buildPath, electronVersion, platform, arch) => {
 	let printerTemplateBuilder = new PrinterTemplateBuilder(buildPath, platform)
+	await printerTemplateBuilder.useConfig()
 	await printerTemplateBuilder.build()
  	return true
 })

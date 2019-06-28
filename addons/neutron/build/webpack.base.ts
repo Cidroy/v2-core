@@ -1,7 +1,7 @@
 import path from "path"
 import UglifyJsPlugin from "uglifyjs-webpack-plugin"
 import webpack from "webpack"
-import { resolve } from "~build/webpack.base"
+import { resolve } from "~/config/resolve"
 
 export const RESOLVE = (src: string) => path.resolve(__dirname, "..", src)
 

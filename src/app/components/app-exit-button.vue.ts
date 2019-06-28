@@ -22,9 +22,10 @@ export default class InstallExitButton extends Vue.default {
 		// #!if electron
 		let thisWindow = remote.getCurrentWindow()
 		thisWindow.close()
+		// #!else if web
+		window.close()
 		// #!else
-		// TODO: browser close tab
-		alert("Exit")
+		throw "Not Implemented"
 		// #!endif
 	}
 }

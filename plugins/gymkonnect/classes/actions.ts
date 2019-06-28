@@ -25,7 +25,6 @@ export async function enroll(clientId: string | number ){
 }
 
 export async function freezeUnfreeze(clientId: string | number, mode: USER_MODE){
-	// TODO: testing
 	if(mode===USER_MODE.FREEZE){
 		Console.verbose("unfreeze", clientId)
 		let loader = loading("Unfreezing, Please wait ...")

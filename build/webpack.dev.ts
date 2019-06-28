@@ -1,12 +1,13 @@
 import webpack from "webpack"
 import config from "~config/index"
 import webpackMerge from "webpack-merge"
-import baseWebpackConfig, { resolve, RESOLVE_PATHS } from "~build/webpack.base"
+import baseWebpackConfig, { RESOLVE_PATHS } from "~build/webpack.base"
 import prodWebpackConfig from "~build/webpack.prod"
 import FriendlyErrorsPlugin from "friendly-errors-webpack-plugin"
 import HtmlWebpackPlugin from "html-webpack-plugin"
 import { BundleAnalyzerPlugin } from "webpack-bundle-analyzer"
 import env from "~/config/env"
+import { resolve } from "~/config/resolve"
 
 if(!baseWebpackConfig.hasOwnProperty("entry")) baseWebpackConfig.entry = {}
 // add hot-reload related code to entry chunks

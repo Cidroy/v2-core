@@ -1,7 +1,8 @@
 import webpack from "webpack"
 import webpackMerge from "webpack-merge"
-import webpackBase, { resolve } from "~build/webpack.base"
+import webpackBase from "~build/webpack.base"
 import { spawn } from "child_process"
+import { resolve } from "~/config/resolve"
 
 export default webpackMerge(webpackBase, {
 	name: "electron-dev",

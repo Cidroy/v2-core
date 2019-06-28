@@ -1,6 +1,6 @@
 import _package from "~/package.json"
 import electronPackager from "electron-packager"
-import { resolve } from "~build/webpack.base"
+import { resolve } from "~/config/resolve"
 
 type Platform = "linux" | "win32" | "darwin" | "mas" | "all" | undefined
 

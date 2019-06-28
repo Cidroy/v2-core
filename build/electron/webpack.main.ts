@@ -7,7 +7,8 @@ import webpack from "webpack"
 import webpackMerge from "webpack-merge"
 import BabiliWebpackPlugin from "babili-webpack-plugin"
 
-import webpackBase, { resolve } from "~build/webpack.base"
+import webpackBase from "~build/webpack.base"
+import { resolve } from "~/config/resolve"
 
 let mainConfig : webpack.Configuration= {
 	name: "electron-main",

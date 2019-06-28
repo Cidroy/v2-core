@@ -1,28 +1,28 @@
-// #!if web
-// @ts-ignore
-class LogPrefixColor {
-	public static readonly OKAY = "OKAY"
-	public static readonly INFO = "INFO"
-	public static readonly WARN = "WARN"
-	public static readonly ERROR = "ERR "
-	public static readonly VERBOSE = "VERB"
+let LogPrefixColor = {
+	OKAY: "OKAY",
+	INFO: "INFO",
+	WARN: "WARN",
+	ERROR: "ERR ",
+	VERBOSE: "VERB",
 
-	public static readonly PREFIX = (prefix: string) => `${prefix} >>> `
+	PREFIX: (prefix: string) => `${prefix} >>> `
 }
 
-// #!else
+// #!if !web
 import chalk from "chalk"
-// @ts-ignore
-class LogPrefixColor{
-	public static readonly OKAY = chalk.bgGreen("OKAY")
-	public static readonly INFO = chalk.bgBlue("INFO")
-	public static readonly WARN = chalk.bgYellow("WARN")
-	public static readonly ERROR = chalk.bgRed("ERR ")
-	public static readonly VERBOSE = chalk.gray("VERB")
+LogPrefixColor = {
+	OKAY : chalk.bgGreen("OKAY"),
+	INFO : chalk.bgBlue("INFO"),
+	WARN : chalk.bgYellow("WARN"),
+	ERROR : chalk.bgRed("ERR "),
+	VERBOSE : chalk.gray("VERB"),
 
-	public static readonly PREFIX = (prefix: string) => chalk.blue(`${prefix} >>> `)
+	PREFIX:  (prefix: string) => chalk.blue(`${prefix} >>> `)
 }
 // #!endif
+
+let verbosity = false
+
 /**
  * Logger proxy class for positron
  * TODO: use some awesome logger in production
@@ -30,7 +30,8 @@ class LogPrefixColor{
  * @class Logger
  */
 export class Logger{
-	public static Verbose: boolean = false
+	public static get Verbose(){ return verbosity }
+	public static set Verbose(value: boolean){ verbosity = value }
 
 	private _source: string
 

@@ -1,7 +1,7 @@
 /**
  * TODO: build release system for the rest
  */
-import { resolve } from "../webpack.base"
+import { resolve } from "~/config/resolve"
 import PositronBinaryBuilder from "~addons/positron"
 import os from "os"
 

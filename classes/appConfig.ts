@@ -27,6 +27,8 @@ export default class AppConfig {
 		else return `${AppConfig.DataFolder}/${productName}.w+boson`
 	}
 
+	public static get Location(){ return  AppConfig.file }
+
 	public static get DataFolder() {
 		return ""
 		// #!if web

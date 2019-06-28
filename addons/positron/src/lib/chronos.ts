@@ -1,5 +1,5 @@
 import { Logger } from "@classes/CONSOLE"
-import Thread from "webworker-threads"
+import Thread from "@classes/utils/webworker-thread"
 
 const Console = new Logger(`chronos/positron`)
 let jobs = {

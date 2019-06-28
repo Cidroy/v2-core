@@ -9,8 +9,9 @@ import HtmlWebpackPlugin from "html-webpack-plugin"
 import WebpackPwaManifest from "webpack-pwa-manifest"
 // import WorkboxPlugin from "workbox-webpack-plugin"
 
-import webpackBase, { resolve } from "~build/webpack.base"
+import webpackBase from "~build/webpack.base"
 import { manifest } from "~/config/manifest"
+import { resolve } from "~/config/resolve"
 
 /**
  * List of node_modules to include in webpack bundle
@@ -105,9 +106,12 @@ let rendererConfig: webpack.Configuration = {
 if (process.env.NODE_ENV !== "production") {
 	(<webpack.Plugin[]>rendererConfig.plugins).push(
 		new webpack.DefinePlugin({
-			__static: `"${resolve("static").replace(/\\/g, "\\\\")}"`
+			__static: `"${resolve("static").replace(/\\/g, "\\\\")}"`,
 		})
 	)
+	rendererConfig.optimization = {
+		minimize: false,
+	}
 	rendererConfig.mode = "development"
 }
 

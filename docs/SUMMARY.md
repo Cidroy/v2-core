@@ -9,6 +9,7 @@
 
 * [Components](components/README.md)
 	* [Positron](components/positron.md)
+	* [pdf-template](components/pdf-template.md)
 
 * [Typescript](typescript/README.md)
 
