@@ -56,7 +56,7 @@
 				</v-flex>
 
 				<v-flex xs6>
-					<v-select color="orange darken-2" prepend-icon="list" class="pr-4 pl-4" :items="organizationTypes"
+					<v-select color="orange darken-2" prepend-icon="list" class="pr-4 pl-4" :items="OrgType"
 						item-value="id" item-text="name" label="Organization Type"></v-select>
 				</v-flex>
 				<v-flex>

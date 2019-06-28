@@ -30,27 +30,74 @@
 			</v-flex>
 			<v-flex xs12 class="my-2 mt-4">
 				<v-card class="elevation-10 px-4" color="transparent">
-					<v-layout row wrap>
-						<v-flex xs12 md8>
-							<v-radio-group :prepend-icon="UsersCount===1?'person':'people'" label="Booking for" v-model="grouping" row>
-								<v-radio v-for="(grouping, index) in GROUPINGS" :label="grouping.name" :value="grouping.id" :key="index" color="orange darken-2"/>
-							</v-radio-group>
+					<v-layout>
+						<v-flex xs12 lg6 md8 pt-2 pr-2>
+							<v-sheet height="400">
+								<v-calendar
+								:now="today"
+								:value="today"
+								color="primary"
+								>
+								<template v-slot:day="{ present, past, date }">
+									<v-layout
+									fill-height
+									>
+									<template v-if="past && tracked[date]">
+										<v-sheet
+										v-for="(percent, i) in tracked[date]"
+										:key="i"
+										:title="category[i]"
+										:color="colors[i]"
+										:width="`${percent}%`"
+										height="100%"
+										tile
+										></v-sheet>
+									</template>
+									</v-layout>
+								</template>
+									<!--popup-->
+									<!--popup-->
+
+								</v-calendar>
+							</v-sheet>
 						</v-flex>
-						<v-flex xs12 md4 class="px-2">
-							<v-text-field color="orange darken-2" v-model="dojFormatted" @blur="doj = parseDate(dojFormatted)" @click:prepend="dojMenu = true" label="Attending on" placeholder="DD/MM/YYYY" prepend-icon="event" mask="##/##/####" return-masked-value persistent-hint />
-							<v-menu ref="dojMenu" :close-on-content-click="false" v-model="dojMenu" :nudge-right="40" lazy transition="scale-transition" offset-y full-width>
-								<div slot="activator"/>
-								<v-date-picker v-model="doj" :min="minDoj" :max="maxDoj" no-title @input="dojMenu = false"  color="orange darken-2"/>
-							</v-menu>
-							<v-checkbox class="ma-0" label="Allow Back Dates" v-model="allowBackDating" color="orange"/>
-						</v-flex>
-						<!-- TODO: add time picker for preffered time slot -->
-						<v-flex xs12 class="mb-3"> <v-divider /> </v-flex>
-						<v-flex xs12>
-							<h3> <v-icon left>add</v-icon> Amenities</h3>
-							<v-layout align-start row>
-								<v-checkbox v-for="(amenity, index) in AMENITIES" :key="index" v-model="amenities" :value="amenity.id" :label="amenity.name" color="orange darken-2"/>
+						<v-flex row wrap>
+							<v-flex xs12 md8>
+								<v-radio-group :prepend-icon="UsersCount===1?'person':'people'" label="Booking for" v-model="grouping" row>
+									<v-radio v-for="(grouping, index) in GROUPINGS" :label="grouping.name" :value="grouping.id" :key="index" color="orange darken-2"/>
+								</v-radio-group>
+							</v-flex>
+							<v-layout>
+								<v-flex xs12 md4 class="px-2">
+									<v-text-field color="orange darken-2" v-model="dojFormatted" @blur="doj = parseDate(dojFormatted)" @click:prepend="dojMenu = true" label="Preffered Date" placeholder="DD/MM/YYYY" prepend-icon="event" mask="##/##/####" return-masked-value persistent-hint />
+									<v-menu ref="dojMenu" :close-on-content-click="false" v-model="dojMenu" :nudge-right="40" lazy transition="scale-transition" offset-y full-width>
+										<div slot="activator"/>
+										<v-date-picker v-model="doj" :min="minDoj" :max="maxDoj" no-title @input="dojMenu = false"  color="orange darken-2"/>
+									</v-menu>
+									<!--v-checkbox class="ma-0" label="Allow Back Dates" v-model="allowBackDating" color="orange"/-->
+								</v-flex>
+								<v-flex xs12 md4 class="px-2">
+									<v-dialog ref="dialog" v-model="modal2" :return-value.sync="time" persistent lazy	full-width	width="290px">
+										<template v-slot:activator="{ on }">
+										<v-text-field v-model="time" label="Preffered Time" prepend-icon="access_time" readonly v-on="on"></v-text-field>
+										</template>
+										<v-time-picker v-if="modal2" v-model="time" full-width>
+										<v-spacer></v-spacer>
+										<v-btn flat color="primary" @click="modal2 = false">Cancel</v-btn>
+										<v-btn flat color="primary" @click="$refs.dialog.save(time)">OK</v-btn>
+										</v-time-picker>
+									</v-dialog>
+								</v-flex>
 							</v-layout>
+
+							<!-- TODO: add time picker for preffered time slot -->
+							<v-flex xs12 class="mb-3"> <v-divider /> </v-flex>
+							<v-flex xs12>
+								<h3> <v-icon left>add</v-icon> Amenities</h3>
+								<v-layout align-start row>
+									<v-checkbox v-for="(amenity, index) in AMENITIES" :key="index" v-model="amenities" :value="amenity.id" :label="amenity.name" color="orange darken-2"/>
+								</v-layout>
+							</v-flex>
 						</v-flex>
 					</v-layout>
 					<v-slide-y-reverse-transition>

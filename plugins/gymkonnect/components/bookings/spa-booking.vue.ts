@@ -16,6 +16,7 @@ import stepFinished from "@plugins/gymkonnect/components/member/registration/ste
 import SpaBookingModal from "../payment/modal-booking-spa.vue"
 import { TSpaBookingArgs } from "@plugins/gymkonnect/classes/types/bookings"
 
+
 const Console = new Logger(`spa-booking.vue/gk`)
 @Component({
 	// @ts-ignore
@@ -30,13 +31,18 @@ const Console = new Logger(`spa-booking.vue/gk`)
 		meta: [ { name: "Spa Booking", content: appConfig.description, }, ],
 	},
 	created(){
-		this.reCalculateAmount()
-		this.onGroupingChange()
+		this.Initialize()
 	}
 })
 export default class SpaBooking extends Vue.default {
 	private get formatDate() { return formatDate }
 	private get parseDate() { return parseDate }
+
+	private async Initialize(){
+		this.grouping = GymkonnectStore.GK_SPA_GROUPINGS[0].id
+		this.onGroupingChange()
+		this.reCalculateAmount()
+	}
 
 	private error = ""
 	private clientId: string | number = ""
@@ -119,7 +125,6 @@ export default class SpaBooking extends Vue.default {
 		this.AttendeeMax = grouping.max
 	}
 	private get UsersCount() { return GymkonnectStore.GK_SPA_GROUPING(this.grouping)!.count }
-	// TODO: [Vicky][Nikhil] implement spa grouping
 	private get GROUPINGS() { return GymkonnectStore.GK_SPA_GROUPINGS }
 
 	private amenities: (string | number)[] = []
@@ -176,4 +181,54 @@ export default class SpaBooking extends Vue.default {
 		this.paying = false
 	}
 	// #endregion
+	//calendar
+
+		today = '2019-01-10'
+		events = [
+			{
+				details: 'Going to the beach!',
+				date: '2019-01-09',
+				open: false
+			},
+			{
+				details: 'Going to the beach!',
+				date: '2019-01-08',
+				open: false
+			},
+			{
+				details: 'Going to the beach!',
+				date: '2019-01-07',
+				open: false
+			},
+
+		]
+		tracked = {
+			'2019-01-09': [23, 45, 10],
+			'2019-01-08': [10],
+			'2019-01-07': [0, 78, 5],
+			'2019-01-06': [0, 0, 50],
+			'2019-01-05': [0, 10, 23],
+			'2019-01-04': [2, 90],
+			'2019-01-03': [10, 32],
+			'2019-01-02': [80, 10, 10],
+			'2019-01-01': [20, 25, 10]
+		}
+		colors = ['#1867c0', '#fb8c00', '#000000']
+		category = ['Development', 'Meetings', 'Slacking']
+
+
+			// convert the list of events into a map of lists keyed by date
+			eventsMap() {
+				const map = {}
+				this.events.forEach((e: { date: string | number; }) => (map[e.date] = map[e.date] || []).push(e))
+				return map
+			}
+
+			open(event: { title: string; }) {
+			alert(event.title)
+			}
+
+			time = null
+			modal2 = false
+
 }

@@ -23,7 +23,7 @@
 		</v-toolbar>
 		<v-tabs-items v-model="bookingTab">
 			<v-tab-item :value="BookingTypes.SPA.slug"> <spa-booking /> </v-tab-item>
-			<v-tab-item :value="BookingTypes.GROUND.slug"> </v-tab-item>
+			<v-tab-item :value="BookingTypes.GROUND.slug"> <ground-booking /> </v-tab-item>
 		</v-tabs-items>
 	</Layout>
 
